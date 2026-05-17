@@ -1357,10 +1357,9 @@ function renderCalcTiles() {
     tilesEl.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-size:12px">No items found</div>';
     return;
   }
-  const wMap = calcCurrentType === 'weapon' ? buildWeaponIconMap() : null;
   tilesEl.innerHTML = filtered.map(item => {
     const sel = calcSelectedItem && calcSelectedItem.list === item.list ? ' selected' : '';
-    const icon = calcCurrentType === 'mech' ? getMechIcon(item.list) : (wMap[item.list] || '🔧');
+    const icon = calcCurrentType === 'mech' ? getMechIcon(item.list) : '';
     const rc = getRarityColor(item.rarity);
     const enc = encodeURIComponent(item.list);
     return '<div class="calc-tile' + sel + '" onclick="selectCalcTile(\'' + enc + '\')" style="border-bottom:2px solid ' + rc + '">'

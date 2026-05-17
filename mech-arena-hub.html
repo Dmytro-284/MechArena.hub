@@ -187,8 +187,7 @@ select:focus{border-color:var(--acc);}
 .ctype-btn{padding:8px 18px;background:var(--bg);border:1px solid var(--brd);color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;cursor:pointer;border-radius:2px;transition:all .2s;letter-spacing:.5px;}
 .ctype-btn:hover{border-color:var(--acc);color:var(--acc);}
 .ctype-btn.active{background:var(--acc);color:var(--bg);border-color:var(--acc);}
-.calc-tile-wrap{max-height:340px;overflow-y:auto;margin-bottom:14px;border:1px solid var(--brd);border-radius:4px;padding:10px;background:var(--panel);}
-.calc-tile-wrap::-webkit-scrollbar{width:3px;}.calc-tile-wrap::-webkit-scrollbar-thumb{background:var(--brd);}
+.calc-tile-wrap{margin-bottom:14px;border:1px solid var(--brd);border-radius:4px;padding:10px;background:var(--panel);}
 .calc-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;}
 .calc-tile{display:flex;flex-direction:column;align-items:center;padding:12px 6px 10px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;cursor:pointer;transition:all .15s;text-align:center;}
 .calc-tile:hover{border-color:var(--acc);background:rgba(0,212,255,.06);transform:translateY(-1px);}
@@ -474,7 +473,7 @@ select:focus{border-color:var(--acc);}
           </div>
         </div>
         <div>
-          <div id="calc-target-section" style="display:none">
+          <div id="calc-target-section">
             <span class="lbl">Target Star Level</span>
             <div class="star-row" id="calc-tostar-btns">
               <button class="star-btn" onclick="setCalcToStar(1)">1★</button>
@@ -495,9 +494,11 @@ select:focus{border-color:var(--acc);}
               <button class="lvl-btn" onclick="setCalcToLevel(7)">7</button>
             </div>
           </div>
-          <label class="calc-check-row" style="margin-top:12px"><input type="checkbox" id="calc-tomax" checked onchange="toggleCalcToMax(this)"> Upgrade to Max (6★ Lv7)</label>
-          <button class="calc-btn" onclick="calculateUpgrade()">⚙️ CALCULATE UPGRADE COST</button>
         </div>
+      </div>
+      <div style="margin-top:16px;text-align:center">
+        <label class="calc-check-row" style="justify-content:center;margin-bottom:10px"><input type="checkbox" id="calc-tomax" onchange="toggleCalcToMax(this)"> Upgrade to Max (6★ Lv7)</label>
+        <button class="calc-btn" onclick="calculateUpgrade()">⚙️ CALCULATE UPGRADE COST</button>
       </div>
       <div class="card" id="calc-result-panel" style="display:none;margin-top:14px">
         <div class="ctitle">Upgrade Cost</div>

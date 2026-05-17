@@ -1235,8 +1235,7 @@ function getMechIcon(name) {
 }
 
 function getWeaponIcon(name) {
-  const map = buildWeaponIconMap();
-  return map[name] || '🔧';
+  return '';
 }
 
 function setCalcType(type) {
@@ -1275,7 +1274,7 @@ function renderCalcTiles() {
     const rc = getRarityColor(item.rarity);
     const enc = encodeURIComponent(item.list);
     return '<div class="calc-tile' + sel + '" onclick="selectCalcTile(\'' + enc + '\')" style="border-bottom:2px solid ' + rc + '">'
-      + '<div class="calc-tile-icon">' + icon + '</div>'
+      + (icon ? '<div class="calc-tile-icon">' + icon + '</div>' : '')
       + '<div class="calc-tile-name">' + item.list + '</div>'
       + (item.energy ? '<div class="calc-tile-energy">' + item.energy + 'E</div>' : '')
       + '</div>';

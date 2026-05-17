@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/mech-arena-hub.html" }
+  ]
+}

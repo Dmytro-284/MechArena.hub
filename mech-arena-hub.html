@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mech Arena Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060c14;--panel:#0b1622;--p2:#0d1c2e;--brd:#1a3a5c;
+  --acc:#00d4ff;--acc2:#ff6b00;--acc3:#7fff00;
+  --txt:#c8dff0;--dim:#5a7a99;--red:#ff3232;--gold:#ffd700;
+  --common:#aaaaaa;--uncommon:#88cc88;--rare:#00d4ff;--epic:#c44dff;--legendary:#ffd700;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--txt);font-family:'Rajdhani',sans-serif;font-size:15px;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:18px;}
+header{text-align:center;padding:24px 0 18px;border-bottom:1px solid var(--brd);margin-bottom:18px;}
+header h1{font-family:'Orbitron',monospace;font-size:1.9rem;font-weight:900;color:var(--acc);text-shadow:0 0 28px rgba(0,212,255,.5);letter-spacing:4px;}
+header p{color:var(--dim);font-size:11px;margin-top:4px;letter-spacing:2px;text-transform:uppercase;}
+.tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--brd);}
+.tab{padding:9px 20px;background:transparent;border:1px solid transparent;border-bottom:none;color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;position:relative;bottom:-1px;}
+.tab:hover{color:var(--acc);border-color:var(--brd);background:var(--panel);}
+.tab.active{color:var(--acc);border-color:var(--brd);background:var(--panel);border-bottom-color:var(--panel);}
+.pane{display:none;}.pane.active{display:block;}
+
+/* ===== BUILD CALC ===== */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.card{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:18px;}
+.ctitle{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;border-bottom:1px solid var(--brd);padding-bottom:9px;}
+lbl{display:block;color:var(--dim);font-size:10px;letter-spacing:1px;margin-bottom:3px;margin-top:10px;text-transform:uppercase;}
+select,lbl{display:block;}
+select{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 9px;font-family:'Rajdhani',sans-serif;font-size:13px;border-radius:2px;outline:none;transition:border-color .2s;}
+select:focus{border-color:var(--acc);}
+.lbl{display:block;color:var(--dim);font-size:10px;letter-spacing:1px;margin-bottom:3px;margin-top:10px;text-transform:uppercase;}
+.lbl:first-of-type{margin-top:0;}
+.srow{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(26,58,92,.4);font-size:13px;gap:8px;}
+.srow:last-child{border-bottom:none;}
+.sl{color:var(--dim);flex-shrink:0;font-size:12px;}
+.sv{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);text-align:right;}
+.sv.plain{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;}
+.sv.warn{color:var(--acc2);}.sv.good{color:var(--acc3);}.sv.red{color:var(--red);}
+.ebar-w{margin-top:12px;}.ebar-l{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px;}
+.ebar{height:7px;background:var(--bg);border:1px solid var(--brd);border-radius:2px;overflow:hidden;}
+.efill{height:100%;background:var(--acc);transition:width .4s,background .3s;}
+.efill.over{background:var(--red);}
+.tip{margin-top:12px;padding:10px 12px;background:rgba(0,212,255,.05);border-left:3px solid var(--acc);font-size:12px;line-height:1.6;}
+.tip.warn{border-color:var(--acc2);background:rgba(255,107,0,.05);}
+.tip.ok{border-color:var(--acc3);background:rgba(127,255,0,.04);}
+
+/* ===== GEAR HUB ===== */
+.gh-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;min-height:600px;}
+
+/* Sidebar */
+.gh-sidebar{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
+.gh-search{padding:10px;border-bottom:1px solid var(--brd);}
+.gh-search input{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Rajdhani',sans-serif;font-size:13px;border-radius:2px;outline:none;}
+.gh-search input:focus{border-color:var(--acc);}
+.gh-filters{display:flex;flex-wrap:wrap;gap:4px;padding:8px 10px;border-bottom:1px solid var(--brd);}
+.gf{padding:3px 10px;background:var(--bg);border:1px solid var(--brd);color:var(--dim);font-size:11px;font-weight:600;cursor:pointer;border-radius:2px;transition:all .15s;}
+.gf:hover,.gf.on{border-color:var(--acc);color:var(--acc);background:rgba(0,212,255,.06);}
+.gf.r-common.on{border-color:var(--common);color:var(--common);}
+.gf.r-uncommon.on{border-color:var(--uncommon);color:var(--uncommon);}
+.gf.r-rare.on{border-color:var(--rare);color:var(--rare);}
+.gf.r-epic.on{border-color:var(--epic);color:var(--epic);}
+.gf.r-legendary.on{border-color:var(--legendary);color:var(--legendary);}
+.gh-list{flex:1;overflow-y:auto;padding:6px;}
+.gh-list::-webkit-scrollbar{width:3px;}.gh-list::-webkit-scrollbar-thumb{background:var(--brd);}
+.mech-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:3px;cursor:pointer;transition:background .15s;border:1px solid transparent;margin-bottom:3px;}
+.mech-item:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.15);}
+.mech-item.active{background:rgba(0,212,255,.1);border-color:var(--acc);}
+.mitem-icon{width:38px;height:38px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid rgba(255,255,255,.1);}
+.mitem-info{flex:1;min-width:0;}
+.mitem-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mitem-sub{font-size:11px;color:var(--dim);}
+.rarity-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* Detail panel */
+.gh-detail{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
+.gh-empty{display:flex;align-items:center;justify-content:center;flex:1;color:var(--dim);font-size:13px;text-align:center;padding:40px;}
+
+/* Mech header */
+.mech-header{padding:24px;background:linear-gradient(135deg,rgba(0,212,255,.06) 0%,transparent 60%);border-bottom:1px solid var(--brd);display:flex;gap:24px;align-items:flex-start;}
+.mech-avatar{width:140px;height:140px;flex-shrink:0;border-radius:4px;border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:64px;background:rgba(0,0,0,.3);position:relative;overflow:hidden;}
+.mech-avatar::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(0,212,255,.08),transparent 70%);}
+.mech-title h2{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;margin-bottom:4px;}
+.mech-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:2px;font-size:11px;font-weight:700;font-family:'Orbitron',monospace;letter-spacing:.5px;}
+.badge-role{background:rgba(0,212,255,.12);color:var(--acc);border:1px solid rgba(0,212,255,.3);}
+.badge-rarity-common{background:rgba(170,170,170,.12);color:var(--common);border:1px solid rgba(170,170,170,.3);}
+.badge-rarity-uncommon{background:rgba(136,204,136,.12);color:var(--uncommon);border:1px solid rgba(136,204,136,.3);}
+.badge-rarity-rare{background:rgba(0,212,255,.12);color:var(--rare);border:1px solid rgba(0,212,255,.3);}
+.badge-rarity-epic{background:rgba(196,77,255,.12);color:var(--epic);border:1px solid rgba(196,77,255,.3);}
+.badge-rarity-legendary{background:rgba(255,215,0,.12);color:var(--legendary);border:1px solid rgba(255,215,0,.3);}
+.ability-box{background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.25);border-radius:3px;padding:8px 12px;font-size:13px;line-height:1.5;}
+.ability-label{font-size:10px;color:var(--acc2);letter-spacing:1px;font-weight:700;margin-bottom:3px;}
+
+/* Rank selector */
+.rank-section{padding:16px 24px;border-bottom:1px solid var(--brd);}
+.rank-label{font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:10px;}
+.rank-tabs{display:flex;gap:4px;}
+.rank-tab{padding:5px 0;width:48px;text-align:center;background:var(--bg);border:1px solid var(--brd);color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;cursor:pointer;border-radius:2px;transition:all .15s;}
+.rank-tab:hover{border-color:var(--acc);color:var(--acc);}
+.rank-tab.active{background:var(--acc);color:var(--bg);border-color:var(--acc);}
+
+/* Stats grid */
+.stats-section{padding:20px 24px;flex:1;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.stat-block{background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:12px 14px;}
+.stat-block-label{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.stat-block-val{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--acc);}
+.stat-block-val.gold{color:var(--gold);}
+.stat-block-val.green{color:var(--acc3);}
+.stat-block-val.orange{color:var(--acc2);}
+
+.hp-bar-wrap{margin-top:14px;}
+.hp-bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;color:var(--dim);}
+.hp-bar{height:10px;background:var(--bg);border:1px solid var(--brd);border-radius:2px;overflow:hidden;}
+.hp-fill{height:100%;border-radius:1px;transition:width .5s;}
+
+.speed-bar-wrap{margin-top:10px;}
+.speed-bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;color:var(--dim);}
+.speed-bar{height:8px;background:var(--bg);border:1px solid var(--brd);border-radius:2px;overflow:hidden;}
+.speed-fill{height:100%;border-radius:1px;transition:width .5s;background:var(--acc3);}
+
+.energy-pips{display:flex;gap:3px;margin-top:8px;flex-wrap:wrap;}
+.pip{width:20px;height:8px;border-radius:1px;background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.2);transition:all .3s;}
+.pip.filled{background:var(--acc);border-color:var(--acc);}
+
+.rank-info-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.rank-tag{padding:4px 10px;border-radius:2px;font-size:11px;font-weight:600;background:var(--bg);border:1px solid var(--brd);color:var(--dim);}
+.rank-tag span{color:var(--acc);}
+
+/* Cheatsheet */
+.ccols{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.cc{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:14px;margin-bottom:14px;}
+.cr{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(26,58,92,.35);font-size:12px;gap:8px;}
+.cr:last-child{border-bottom:none;}
+.ck{color:var(--dim);min-width:110px;flex-shrink:0;}
+.cv{color:var(--txt);text-align:right;font-weight:600;line-height:1.5;}
+.abl{color:var(--acc2);font-size:10px;font-weight:700;}
+.stitle{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;margin-top:18px;border-left:3px solid var(--acc);padding-left:9px;}
+.stitle:first-child{margin-top:0;}
+.qref{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.qc{background:var(--p2);border:1px solid var(--brd);border-radius:4px;padding:12px;text-align:center;}
+.qn{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--acc);}
+.ql{font-size:10px;color:var(--dim);margin-top:3px;letter-spacing:1px;}
+
+/* ===== CALCULATOR ===== */
+.calc-subtabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--brd);}
+.calc-tab{padding:8px 16px;background:transparent;border:1px solid transparent;border-bottom:none;color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;position:relative;bottom:-1px;}
+.calc-tab:hover{color:var(--acc);border-color:var(--brd);background:var(--panel);}
+.calc-tab.active{color:var(--acc);border-color:var(--brd);background:var(--panel);border-bottom-color:var(--panel);}
+.calc-pane{display:none;}.calc-pane.active{display:block;}
+.calc-layout{display:grid;grid-template-columns:280px 1fr;gap:18px;}
+.calc-left{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:16px;display:flex;flex-direction:column;max-height:640px;}
+.calc-search-input{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Rajdhani',sans-serif;font-size:13px;border-radius:2px;outline:none;margin-bottom:6px;}
+.calc-search-input:focus{border-color:var(--acc);}
+.ci-list{flex:1;overflow-y:auto;margin-top:6px;}
+.ci-list::-webkit-scrollbar{width:3px;}.ci-list::-webkit-scrollbar-thumb{background:var(--brd);}
+.ci-item{padding:7px 10px;border-radius:3px;cursor:pointer;border:1px solid transparent;margin-bottom:2px;transition:all .15s;}
+.ci-item:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.15);}
+.ci-item.selected{background:rgba(0,212,255,.1);border-color:var(--acc);}
+.ci-name{display:block;font-weight:700;font-size:13px;}
+.ci-sub{display:block;font-size:10px;color:var(--dim);margin-top:1px;}
+.calc-right{display:flex;flex-direction:column;gap:14px;}
+.star-row,.level-row,.mod-level-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;margin-bottom:4px;}
+.star-btn,.lvl-btn,.mod-lvl-btn{padding:5px 10px;background:var(--bg);border:1px solid var(--brd);color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;cursor:pointer;border-radius:2px;transition:all .15s;font-weight:700;}
+.star-btn:hover,.lvl-btn:hover,.mod-lvl-btn:hover{border-color:var(--acc);color:var(--acc);}
+.star-btn.active,.lvl-btn.active,.mod-lvl-btn.active{background:var(--acc);color:var(--bg);border-color:var(--acc);}
+.calc-check-row{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--txt);cursor:pointer;}
+.calc-check-row input{accent-color:var(--acc);width:14px;height:14px;cursor:pointer;}
+.calc-btn{width:100%;margin-top:14px;padding:10px;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05));border:1px solid var(--acc);color:var(--acc);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all .2s;}
+.calc-btn:hover{background:rgba(0,212,255,.2);box-shadow:0 0 12px rgba(0,212,255,.2);}
+.calc-res{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;}
+.calc-res-block{background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:12px;text-align:center;}
+.calc-res-lbl{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.calc-res-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--acc);}
+.calc-res-val.gold{color:var(--gold);}
+.calc-res-val.green{color:var(--acc3);}
+.calc-filter-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.calc-filter-row select{flex:1;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:6px 8px;font-family:'Rajdhani',sans-serif;font-size:12px;border-radius:2px;outline:none;}
+.calc-info{padding:10px 12px;background:rgba(0,212,255,.05);border-left:3px solid var(--acc);font-size:12px;line-height:1.6;margin-top:8px;border-radius:0 2px 2px 0;}
+.calc-info.warn{border-color:var(--acc2);background:rgba(255,107,0,.05);}
+.calc-type-row{display:flex;gap:6px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
+.ctype-btn{padding:8px 18px;background:var(--bg);border:1px solid var(--brd);color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;cursor:pointer;border-radius:2px;transition:all .2s;letter-spacing:.5px;}
+.ctype-btn:hover{border-color:var(--acc);color:var(--acc);}
+.ctype-btn.active{background:var(--acc);color:var(--bg);border-color:var(--acc);}
+.calc-tile-wrap{max-height:340px;overflow-y:auto;margin-bottom:14px;border:1px solid var(--brd);border-radius:4px;padding:10px;background:var(--panel);}
+.calc-tile-wrap::-webkit-scrollbar{width:3px;}.calc-tile-wrap::-webkit-scrollbar-thumb{background:var(--brd);}
+.calc-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;}
+.calc-tile{display:flex;flex-direction:column;align-items:center;padding:12px 6px 10px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;cursor:pointer;transition:all .15s;text-align:center;}
+.calc-tile:hover{border-color:var(--acc);background:rgba(0,212,255,.06);transform:translateY(-1px);}
+.calc-tile.selected{border-color:var(--acc)!important;background:rgba(0,212,255,.12);box-shadow:0 0 10px rgba(0,212,255,.15);}
+.calc-tile-icon{font-size:26px;margin-bottom:5px;line-height:1;}
+.calc-tile-name{font-size:9px;font-weight:700;font-family:'Orbitron',monospace;letter-spacing:.3px;color:var(--txt);word-break:break-word;line-height:1.3;}
+.calc-tile-energy{font-size:9px;color:var(--acc);font-family:'Orbitron',monospace;margin-top:2px;}
+.calc-settings-below{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:16px;display:none;}
+.calc-settings-below.visible{display:block;}
+.calc-settings-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+.calc-selected-badge{background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;margin-bottom:12px;}
+</style>
+<script src="calc-data-list.js"></script>
+<script src="calc-data-mech-costs.js"></script>
+<script src="calc-data-pilots.js"></script>
+<script src="calc-data-pilot-costs.js"></script>
+<script src="calc-data-mods.js"></script>
+<script src="calc-data-mod-costs.js"></script>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>⬡ MECH ARENA HUB</h1>
+  <p>Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('build',this)">BUILD CALC</button>
+  <button class="tab" onclick="switchTab('gear',this)">GEAR HUB</button>
+  <button class="tab" onclick="switchTab('cheat',this)">CHEATSHEETS</button>
+  <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
+</div>
+
+<!-- ===== BUILD CALC ===== -->
+<div id="pane-build" class="pane active">
+<div class="bgrid">
+<div class="card">
+  <div class="ctitle">Select Mech &amp; Weapons</div>
+  <span class="lbl">Mech</span>
+  <select id="ms" onchange="upd()">
+    <optgroup label="─ COMMON ─">
+      <option value="paragon">Paragon — Attacker · Heavy · 32E</option>
+      <option value="lancer">Lancer — Scout · Light · 16E</option>
+      <option value="juggernaut">Juggernaut — Tank · Medium · 24E</option>
+      <option value="md">M.D. — Support · Light · 16E</option>
+    </optgroup>
+    <optgroup label="─ UNCOMMON ─">
+      <option value="puma">Puma — Scout · Light · 16E</option>
+      <option value="slingshot">Slingshot — Scout · Medium · 24E</option>
+    </optgroup>
+    <optgroup label="─ RARE ─">
+      <option value="panther">Panther — Attacker · Heavy · 32E</option>
+      <option value="killshot">Killshot — Scout · Medium · 24E</option>
+      <option value="ares">Ares — Tank · Medium · 24E</option>
+      <option value="shadow">Shadow — Scout · Light · 16E</option>
+      <option value="guardian">Guardian — Attacker · Heavy · 32E</option>
+      <option value="cheetah">Cheetah — Scout · Light · 16E</option>
+      <option value="zephyr">Zephyr — Support · Medium · 24E</option>
+      <option value="brickhouse">Brickhouse — Tank · Medium · 24E</option>
+      <option value="redox">Redox — Attacker · Heavy · 32E</option>
+    </optgroup>
+    <optgroup label="─ EPIC ─">
+      <option value="surge">Surge — Scout · Medium · 24E</option>
+      <option value="arachnos">Arachnos — Support · Heavy · 32E</option>
+      <option value="stalker">Stalker — Scout · Light · 16E</option>
+      <option value="tengu">Tengu — Tank · Light · 16E</option>
+      <option value="aegis">Aegis — Tank · Medium · 24E</option>
+      <option value="orion">Orion — Attacker · Medium · 24E</option>
+      <option value="redeemer">Redeemer — Scout · Medium · 24E</option>
+      <option value="sentinel">Sentinel — Tank · Medium · 24E</option>
+    </optgroup>
+    <optgroup label="─ LEGENDARY ─">
+      <option value="gatecrasher">Gatecrasher — Attacker · Heavy · 32E</option>
+      <option value="bastion">Bastion — Tank · Heavy · 32E</option>
+      <option value="onyx">Onyx — Attacker · Heavy · 32E</option>
+      <option value="eclipse">Eclipse — Scout · Medium · 24E</option>
+      <option value="nomad">Nomad — Scout · Medium · 24E</option>
+      <option value="hemlock">Hemlock — Attacker · Medium · 24E</option>
+      <option value="scorpius">Scorpius — Support · Heavy · 32E</option>
+      <option value="vortex">Vortex — Support · Medium · 24E</option>
+      <option value="seeker">Seeker — Scout · Medium · 24E</option>
+      <option value="mimicker">Mimicker — Scout · Heavy · 32E</option>
+      <option value="solis">Solis — Support · Heavy · 32E</option>
+      <option value="lacewing">Lacewing — Scout · Medium · 24E</option>
+      <option value="blockhorn">Blockhorn — Tank · Heavy · 32E</option>
+      <option value="deathwalker">Deathwalker — Scout · Medium · 24E</option>
+      <option value="outlaw">Outlaw — Support · Medium · 24E</option>
+      <option value="salvor">Salvor — Support · Heavy · 32E</option>
+      <option value="dreadnought">Dreadnought — Attacker · Heavy · 32E</option>
+      <option value="parasite">Parasite — Scout · Medium · 24E</option>
+      <option value="volti">Volti — Attacker · Medium · 24E</option>
+      <option value="silverthorn">Silverthorn — Attacker · Heavy · 32E</option>
+      <option value="blizzfrost">Blizzfrost — Support · Medium · 24E</option>
+      <option value="citadel">Citadel — Support · Medium · 24E</option>
+    </optgroup>
+  </select>
+  <span class="lbl" style="margin-top:12px">Weapon Slot 1</span>
+  <select id="w1" onchange="upd()"></select>
+  <span class="lbl" style="margin-top:10px">Weapon Slot 2</span>
+  <select id="w2" onchange="upd()"></select>
+</div>
+<div class="card">
+  <div class="ctitle">Build Stats</div>
+  <div class="srow"><span class="sl">Role</span><span class="sv" id="sr">—</span></div>
+  <div class="srow"><span class="sl">Rarity</span><span class="sv" id="srar">—</span></div>
+  <div class="srow"><span class="sl">Max Energy</span><span class="sv" id="sec">—</span></div>
+  <div class="srow"><span class="sl">Max Speed</span><span class="sv" id="sspd">—</span></div>
+  <div class="srow"><span class="sl">Ability</span><span class="sv plain" id="sabl" style="max-width:55%">—</span></div>
+  <div class="srow"><span class="sl">Energy Used</span><span class="sv" id="sused">—</span></div>
+  <div class="srow"><span class="sl">Energy Free</span><span class="sv" id="sfree">—</span></div>
+  <div class="srow"><span class="sl">W1</span><span class="sv plain" id="sw1n" style="max-width:55%;font-size:12px">—</span></div>
+  <div class="srow"><span class="sl">W2</span><span class="sv plain" id="sw2n" style="max-width:55%;font-size:12px">—</span></div>
+  <div class="ebar-w">
+    <div class="ebar-l"><span style="color:var(--dim)">ENERGY USAGE</span><span id="spct" style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc)">0%</span></div>
+    <div class="ebar"><div class="efill" id="efill" style="width:0%"></div></div>
+  </div>
+  <div id="stip" class="tip"></div>
+</div>
+</div>
+</div>
+
+<!-- ===== GEAR HUB ===== -->
+<div id="pane-gear" class="pane">
+<div class="gh-layout">
+  <!-- SIDEBAR -->
+  <div class="gh-sidebar">
+    <div class="gh-search">
+      <input type="text" id="mech-search" placeholder="🔍  Search mechs..." oninput="filterMechs()">
+    </div>
+    <div class="gh-filters">
+      <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">ROLE:</span>
+      <button class="gf on" data-ftype="role" data-fval="all" onclick="toggleFilter(this)">ALL</button>
+      <button class="gf" data-ftype="role" data-fval="Attacker" onclick="toggleFilter(this)">ATK</button>
+      <button class="gf" data-ftype="role" data-fval="Scout" onclick="toggleFilter(this)">SCT</button>
+      <button class="gf" data-ftype="role" data-fval="Tank" onclick="toggleFilter(this)">TNK</button>
+      <button class="gf" data-ftype="role" data-fval="Support" onclick="toggleFilter(this)">SUP</button>
+    </div>
+    <div class="gh-filters" style="border-top:none;padding-top:0">
+      <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">RARITY:</span>
+      <button class="gf r-common on" data-ftype="rar" data-fval="all" onclick="toggleFilter(this)">ALL</button>
+      <button class="gf r-common" data-ftype="rar" data-fval="Common" onclick="toggleFilter(this)">CMN</button>
+      <button class="gf r-uncommon" data-ftype="rar" data-fval="Uncommon" onclick="toggleFilter(this)">UNC</button>
+      <button class="gf r-rare" data-ftype="rar" data-fval="Rare" onclick="toggleFilter(this)">RARE</button>
+      <button class="gf r-epic" data-ftype="rar" data-fval="Epic" onclick="toggleFilter(this)">EPIC</button>
+      <button class="gf r-legendary" data-ftype="rar" data-fval="Legendary" onclick="toggleFilter(this)">LEG</button>
+    </div>
+    <div class="gh-list" id="mech-list"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div class="gh-detail" id="gh-detail">
+    <div class="gh-empty">← Select a mech to view details</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== CHEATSHEETS ===== -->
+<div id="pane-cheat" class="pane">
+<div class="qref">
+  <div class="qc"><div class="qn">45</div><div class="ql">Total Mechs</div></div>
+  <div class="qc"><div class="qn">241+</div><div class="ql">Total Weapons</div></div>
+  <div class="qc"><div class="qn">10</div><div class="ql">Gear Hub Tiers</div></div>
+  <div class="qc"><div class="qn">5</div><div class="ql">Max Squad Size</div></div>
+  <div class="qc"><div class="qn">800/160</div><div class="ql">XP Win / Loss</div></div>
+  <div class="qc"><div class="qn">9</div><div class="ql">Weapon Categories</div></div>
+</div>
+<div class="ccols">
+  <div>
+    <div class="stitle">Best F2P Builds (2026 meta)</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Surge (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Eclipse (24E)</span><span class="cv">2× Minigun 10 (20E) or Pod Gun 10 + Minigun 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Aegis (24E)</span><span class="cv">2× Pod Gun 8 (16E) or Graviton Beam 10 + Pod Gun 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Orion (24E)</span><span class="cv">2× Storm Rack 10 (20E) or Storm Rack 10 + Overdriver 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Panther (32E)</span><span class="cv">2× Graviton Beam 10 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Hemlock (24E)</span><span class="cv">Storm Rack 10 + Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Killshot (24E)</span><span class="cv">Disc Launcher 12 + Missile Rack 8 (20E) or 2× Revoker 8 (16E)</span></div>
+      <div class="cr"><span class="ck">Gatecrasher (32E)</span><span class="cv">2× Rail Gun 16 (32E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Dreadnought (32E)</span><span class="cv">2× Rocket Mortar 12 (24E) or Storm Rack 16 + Rocket Mortar 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Salvor (32E)</span><span class="cv">Helix Rack 8 + Disc Launcher 12 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Nomad (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Best endgame hanger</span><span class="cv">Surge · Eclipse · Aegis · Orion/Panther · Hemlock/Nomad</span></div>
+    </div>
+
+    <div class="stitle">Gear Hub F2P Strategy</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Tier 1–2</span><span class="cv">Paragon, Lancer, Juggernaut — stars only, don't invest</span></div>
+      <div class="cr"><span class="ck">Tier 3–4</span><span class="cv">Ares ✓ · Guardian (free promo) · avoid Shadow</span></div>
+      <div class="cr"><span class="ck">Tier 5</span><span class="cv">Orion ✓ · Panther ✓ · Killshot ✓ · skip Sentinel</span></div>
+      <div class="cr"><span class="ck">Tier 6</span><span class="cv">Aegis ✓ + Pod Gun 8 · save A-Coins from here</span></div>
+      <div class="cr"><span class="ck">Tier 7</span><span class="cv">Surge ✓ · Eclipse ✓ (A-coins) · avoid Scorpius</span></div>
+      <div class="cr"><span class="ck">Tier 8–10</span><span class="cv">Hemlock ✓ · Nomad ✓ · skip Bastion, Gatecrasher, Onyx</span></div>
+      <div class="cr"><span class="ck">Best weapons</span><span class="cv">Storm Rack · Revoker · Pod Gun · Graviton Beam · Overdriver</span></div>
+      <div class="cr"><span class="ck">Avoid</span><span class="cv">Particle Beam · Chain Gun · Gauss Rifle · F-tier starters</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="stitle">Weapon Categories (all 9)</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Assault</span><span class="cv">Minigun, Pod Gun, Carbine, Overdriver, Repeater, Suppressor, Reaver</span></div>
+      <div class="cr"><span class="ck">Missile</span><span class="cv">Missile Rack, Blast RPG, Disruptor, Hornet, Fuse Mortar, Cryo Launcher, Charge Rocket</span></div>
+      <div class="cr"><span class="ck">Beam</span><span class="cv">Arc Torrent, Graviton Beam, Particle Beam, Burrow Beam, Stasis Beam, Thermal Lance</span></div>
+      <div class="cr"><span class="ck">Close Quarters</span><span class="cv">Ember Gun, Fragment Gun, Shotgun, Revoker, Howler, Quasher, Fusion Cannon</span></div>
+      <div class="cr"><span class="ck">Sniper</span><span class="cv">Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum, Dreadshot, Savant, Quantum Gun, Oracle, Viper, Gauss Rifle</span></div>
+      <div class="cr"><span class="ck">Guided</span><span class="cv">Disc Launcher, Strike Rocket, Gemini</span></div>
+      <div class="cr"><span class="ck">Artillery</span><span class="cv">Javelin Rack, Helix Rack, Rocket Mortar, Nade Launcher, Cryo Javelin</span></div>
+      <div class="cr"><span class="ck">Heavy Duty</span><span class="cv">Chain Gun, Voltaic RPG, Berserker</span></div>
+      <div class="cr"><span class="ck">Barrage</span><span class="cv">Storm Rack, Hellfire</span></div>
+    </div>
+    <div class="stitle">Weapon Rules</div>
+
+    <div class="cc">
+      <div class="cr"><span class="ck">2 copies auto</span><span class="cv">All weapons 8E and below</span></div>
+      <div class="cr"><span class="ck">2nd copy (10E+)</span><span class="cv">Must reach Rank 6 first</span></div>
+      <div class="cr"><span class="ck">Energy levels</span><span class="cv">2 / 4 / 6 / 8 / 10 / 12 / 14 / 16</span></div>
+    </div>
+    <div class="stitle">Pilot System</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Rare pilots</span><span class="cv">2 implant slots</span></div>
+      <div class="cr"><span class="ck">Epic pilots</span><span class="cv">3 implant slots</span></div>
+      <div class="cr"><span class="ck">Legendary pilots</span><span class="cv">4 implant slots</span></div>
+      <div class="cr"><span class="ck">XP win / loss</span><span class="cv">800 / 160 (skip with A-coins)</span></div>
+      <div class="cr"><span class="ck">All pilots give</span><span class="cv">% HP + % Damage + weapon-type skill bonus</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== CALCULATOR ===== -->
+<div id="pane-calc" class="pane">
+  <div class="calc-subtabs">
+    <button class="calc-tab active" onclick="switchCalcTab('upgrade',this)">⚙️ CALCULATOR</button>
+    <button class="calc-tab" onclick="switchCalcTab('pilot',this)">👤 PILOT CALCULATOR</button>
+    <button class="calc-tab" onclick="switchCalcTab('mod',this)">🧩 MOD CALCULATOR</button>
+  </div>
+
+  <!-- Upgrade Calculator -->
+  <div id="calc-upgrade" class="calc-pane active">
+    <div class="calc-type-row">
+      <button class="ctype-btn active" id="ctype-mech" onclick="setCalcType('mech')">⚙️ MECHS</button>
+      <button class="ctype-btn" id="ctype-weapon" onclick="setCalcType('weapon')">🔧 WEAPONS</button>
+      <select id="calc-rarity" onchange="renderCalcTiles()" style="max-width:140px;margin-left:6px">
+        <option value="all">All Rarities</option>
+        <option value="common">Common</option>
+        <option value="uncommon">Uncommon</option>
+        <option value="rare">Rare</option>
+        <option value="epic">Epic</option>
+        <option value="legendary">Legendary</option>
+      </select>
+      <input type="text" id="calc-search" class="calc-search-input" placeholder="🔍 Search..." oninput="renderCalcTiles()" style="flex:1;margin:0;min-width:90px">
+    </div>
+    <div class="calc-tile-wrap">
+      <div class="calc-tiles" id="calc-tiles">
+        <div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-size:12px">Loading data...</div>
+      </div>
+    </div>
+    <div class="calc-settings-below" id="calc-settings-below">
+      <div class="calc-selected-badge" id="calc-selected-badge">
+        <div style="font-size:32px;line-height:1" id="badge-icon">⚙️</div>
+        <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="badge-name">—</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:2px" id="badge-sub">Select a mech or weapon above</div>
+      </div>
+      <div class="calc-settings-grid2">
+        <div>
+          <span class="lbl">Current Star Level</span>
+          <div class="star-row" id="calc-star-btns">
+            <button class="star-btn active" onclick="setCalcStar(1)">1★</button>
+            <button class="star-btn" onclick="setCalcStar(2)">2★</button>
+            <button class="star-btn" onclick="setCalcStar(3)">3★</button>
+            <button class="star-btn" onclick="setCalcStar(4)">4★</button>
+            <button class="star-btn" onclick="setCalcStar(5)">5★</button>
+            <button class="star-btn" onclick="setCalcStar(6)">6★</button>
+          </div>
+          <span class="lbl">Current Level</span>
+          <div class="level-row" id="calc-level-btns">
+            <button class="lvl-btn active" onclick="setCalcLevel(1)">1</button>
+            <button class="lvl-btn" onclick="setCalcLevel(2)">2</button>
+            <button class="lvl-btn" onclick="setCalcLevel(3)">3</button>
+            <button class="lvl-btn" onclick="setCalcLevel(4)">4</button>
+            <button class="lvl-btn" onclick="setCalcLevel(5)">5</button>
+            <button class="lvl-btn" onclick="setCalcLevel(6)">6</button>
+            <button class="lvl-btn" onclick="setCalcLevel(7)">7</button>
+          </div>
+        </div>
+        <div>
+          <div id="calc-target-section" style="display:none">
+            <span class="lbl">Target Star Level</span>
+            <div class="star-row" id="calc-tostar-btns">
+              <button class="star-btn" onclick="setCalcToStar(1)">1★</button>
+              <button class="star-btn" onclick="setCalcToStar(2)">2★</button>
+              <button class="star-btn" onclick="setCalcToStar(3)">3★</button>
+              <button class="star-btn" onclick="setCalcToStar(4)">4★</button>
+              <button class="star-btn" onclick="setCalcToStar(5)">5★</button>
+              <button class="star-btn active" onclick="setCalcToStar(6)">6★</button>
+            </div>
+            <span class="lbl">Target Level</span>
+            <div class="level-row" id="calc-tolevel-btns">
+              <button class="lvl-btn" onclick="setCalcToLevel(1)">1</button>
+              <button class="lvl-btn" onclick="setCalcToLevel(2)">2</button>
+              <button class="lvl-btn" onclick="setCalcToLevel(3)">3</button>
+              <button class="lvl-btn" onclick="setCalcToLevel(4)">4</button>
+              <button class="lvl-btn" onclick="setCalcToLevel(5)">5</button>
+              <button class="lvl-btn active" onclick="setCalcToLevel(6)">6</button>
+              <button class="lvl-btn" onclick="setCalcToLevel(7)">7</button>
+            </div>
+          </div>
+          <label class="calc-check-row" style="margin-top:12px"><input type="checkbox" id="calc-tomax" checked onchange="toggleCalcToMax(this)"> Upgrade to Max (6★ Lv7)</label>
+          <button class="calc-btn" onclick="calculateUpgrade()">⚙️ CALCULATE UPGRADE COST</button>
+        </div>
+      </div>
+      <div class="card" id="calc-result-panel" style="display:none;margin-top:14px">
+        <div class="ctitle">Upgrade Cost</div>
+        <div id="calc-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
+        <div class="calc-res" id="calc-res"></div>
+        <div id="calc-info" class="calc-info" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pilot Calculator -->
+  <div id="calc-pilot" class="calc-pane">
+    <div class="calc-type-row" style="margin-bottom:18px">
+      <button class="ctype-btn" id="pilot-rar-rare" onclick="setPilotRarity('rare')" style="border-color:var(--rare);color:var(--rare)">👤 RARE</button>
+      <button class="ctype-btn active" id="pilot-rar-epic" onclick="setPilotRarity('epic')" style="background:var(--epic);border-color:var(--epic);color:var(--bg)">👤 EPIC</button>
+      <button class="ctype-btn" id="pilot-rar-legendary" onclick="setPilotRarity('legendary')" style="border-color:var(--legendary);color:var(--legendary)">👤 LEGENDARY</button>
+    </div>
+    <div class="calc-settings-below visible" id="pilot-settings">
+      <div class="calc-selected-badge">
+        <div style="font-size:32px;line-height:1" id="pilot-badge-icon">👤</div>
+        <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="pilot-badge-name">EPIC PILOT</div>
+        <div style="font-size:11px;color:var(--epic);margin-top:2px" id="pilot-badge-sub">All epic pilots share the same upgrade cost</div>
+      </div>
+      <div class="calc-settings-grid2">
+        <div>
+          <span class="lbl">Current Star Level</span>
+          <div class="star-row" id="pilot-star-btns">
+            <button class="star-btn active" onclick="setPilotStar(1)">1★</button>
+            <button class="star-btn" onclick="setPilotStar(2)">2★</button>
+            <button class="star-btn" onclick="setPilotStar(3)">3★</button>
+            <button class="star-btn" onclick="setPilotStar(4)">4★</button>
+            <button class="star-btn" onclick="setPilotStar(5)">5★</button>
+            <button class="star-btn" onclick="setPilotStar(6)">6★</button>
+          </div>
+          <span class="lbl">Current Level</span>
+          <div class="level-row" id="pilot-level-btns">
+            <button class="lvl-btn active" onclick="setPilotLevel(1)">1</button>
+            <button class="lvl-btn" onclick="setPilotLevel(2)">2</button>
+            <button class="lvl-btn" onclick="setPilotLevel(3)">3</button>
+            <button class="lvl-btn" onclick="setPilotLevel(4)">4</button>
+            <button class="lvl-btn" onclick="setPilotLevel(5)">5</button>
+            <button class="lvl-btn" onclick="setPilotLevel(6)">6</button>
+            <button class="lvl-btn" onclick="setPilotLevel(7)">7</button>
+          </div>
+        </div>
+        <div>
+          <div id="pilot-target-section" style="display:none">
+            <span class="lbl">Target Star Level</span>
+            <div class="star-row" id="pilot-tostar-btns">
+              <button class="star-btn" onclick="setPilotToStar(1)">1★</button>
+              <button class="star-btn" onclick="setPilotToStar(2)">2★</button>
+              <button class="star-btn" onclick="setPilotToStar(3)">3★</button>
+              <button class="star-btn" onclick="setPilotToStar(4)">4★</button>
+              <button class="star-btn" onclick="setPilotToStar(5)">5★</button>
+              <button class="star-btn active" onclick="setPilotToStar(6)">6★</button>
+            </div>
+            <span class="lbl">Target Level</span>
+            <div class="level-row" id="pilot-tolevel-btns">
+              <button class="lvl-btn" onclick="setPilotToLevel(1)">1</button>
+              <button class="lvl-btn" onclick="setPilotToLevel(2)">2</button>
+              <button class="lvl-btn" onclick="setPilotToLevel(3)">3</button>
+              <button class="lvl-btn" onclick="setPilotToLevel(4)">4</button>
+              <button class="lvl-btn" onclick="setPilotToLevel(5)">5</button>
+              <button class="lvl-btn active" onclick="setPilotToLevel(6)">6</button>
+              <button class="lvl-btn" onclick="setPilotToLevel(7)">7</button>
+            </div>
+          </div>
+          <label class="calc-check-row" style="margin-top:12px"><input type="checkbox" id="pilot-tomax" checked onchange="togglePilotToMax(this)"> Upgrade to Max (6★ Lv7)</label>
+          <button class="calc-btn" onclick="calculatePilot()">👤 CALCULATE PILOT COST</button>
+        </div>
+      </div>
+      <div class="card" id="pilot-result-panel" style="display:none;margin-top:14px">
+        <div class="ctitle">Upgrade Cost</div>
+        <div id="pilot-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
+        <div class="calc-res" id="pilot-res"></div>
+        <div id="pilot-info" class="calc-info" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mod Calculator -->
+  <div id="calc-mod" class="calc-pane">
+    <div class="calc-layout">
+      <div class="calc-left">
+        <div class="ctitle">Select Mod</div>
+        <div class="calc-filter-row">
+          <span class="lbl" style="margin:0;white-space:nowrap">Rarity</span>
+          <select id="mod-rarity" onchange="renderModList()">
+            <option value="all">All</option>
+            <option value="epic">Epic</option>
+            <option value="legendary">Legendary</option>
+          </select>
+        </div>
+        <input type="text" id="mod-search" class="calc-search-input" placeholder="🔍 Search mods..." oninput="renderModList()">
+        <div class="ci-list" id="mod-item-list"><div style="padding:20px;text-align:center;color:var(--dim);font-size:12px">Loading data...</div></div>
+      </div>
+      <div class="calc-right">
+        <div class="card">
+          <div class="ctitle">Upgrade Settings</div>
+          <span class="lbl">Current Level</span>
+          <div class="mod-level-row" id="mod-from-btns">
+            <button class="mod-lvl-btn active" onclick="setModFrom(1)">L1</button>
+            <button class="mod-lvl-btn" onclick="setModFrom(2)">L2</button>
+            <button class="mod-lvl-btn" onclick="setModFrom(3)">L3</button>
+            <button class="mod-lvl-btn" onclick="setModFrom(4)">L4</button>
+            <button class="mod-lvl-btn" onclick="setModFrom(5)">L5</button>
+          </div>
+          <span class="lbl">Target Level</span>
+          <div class="mod-level-row" id="mod-to-btns">
+            <button class="mod-lvl-btn" onclick="setModTo(2)">L2</button>
+            <button class="mod-lvl-btn" onclick="setModTo(3)">L3</button>
+            <button class="mod-lvl-btn" onclick="setModTo(4)">L4</button>
+            <button class="mod-lvl-btn" onclick="setModTo(5)">L5</button>
+            <button class="mod-lvl-btn active" onclick="setModTo(6)">L6</button>
+          </div>
+          <button class="calc-btn" onclick="calculateMod()">🧩 CALCULATE MOD COST</button>
+        </div>
+        <div class="card" id="mod-result-panel" style="display:none">
+          <div class="ctitle">Upgrade Cost</div>
+          <div id="mod-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
+          <div class="calc-res" id="mod-res" style="grid-template-columns:1fr 1fr"></div>
+          <div id="mod-info" class="calc-info" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// MECH DATABASE — all 45 mechs, full rank data
+// HP values scale: startHP at rank1, maxHP at rank6-lv7
+// Energy scales with rank for medium/heavy (starts lower)
+// Speed is constant. Starting rank per rarity.
+// ============================================================
+const MECHS = {
+  paragon:{name:'Paragon',role:'Attacker',rarity:'Common',energy:32,speed:18,icon:'🤖',color:'#aaaaaa',gearTier:1,startRank:1,
+    ability:{name:'Boost',desc:'Redirects power to drive systems for a quick speed burst (~+7 km/h). Useful for capturing points or escaping.'},
+    pros:['Heavy energy (32E) — can equip any weapon combo','Good starter mech for learning','Decent HP for a common mech'],
+    cons:['Ability is weak — just a speed burst','Outclassed quickly by every specialist','No unique niche once you progress'],
+    bestBuilds:['2× Rocket Mortar 12 (backline sniper)','2× Longarm 12','Rail Gun 16 + Disc Launcher 8'],
+    ranks:{1:{hp:29200,energy:8},2:{hp:37100,energy:12},3:{hp:47200,energy:16},4:{hp:60000,energy:20},5:{hp:76400,energy:24},6:{hp:97200,energy:32}}},
+
+  lancer:{name:'Lancer',role:'Scout',rarity:'Common',energy:16,speed:25,icon:'🦅',color:'#cc4444',gearTier:1,startRank:1,
+    ability:{name:'Jump Jets',desc:'Activates thrusters to jump over walls and reach rooftops. Allows high-ground advantage and projectile dodging.'},
+    pros:['Iconic ability — unique vertical movement','Fast (25 km/h) — great for beacon capture','Jump lets you dodge Javelin Racks'],
+    cons:['Only 16E — very limited weapon choice','Map-dependent — useless without vertical terrain','Easy to kill on the ground'],
+    bestBuilds:['Javelin Rack 8 + Shotgun 4 (high-ground rain)','2× Arc Torrent 6','Missile Rack 8 + Shotgun 4'],
+    ranks:{1:{hp:22000,energy:4},2:{hp:28000,energy:6},3:{hp:35600,energy:8},4:{hp:45300,energy:10},5:{hp:57600,energy:12},6:{hp:73200,energy:16}}},
+
+  juggernaut:{name:'Juggernaut',role:'Tank',rarity:'Common',energy:24,speed:16,icon:'🛡️',color:'#5588aa',gearTier:2,startRank:1,
+    ability:{name:'Omni Shield',desc:'Deploys a 360° personal shield that absorbs all incoming damage until it breaks or times out. Shield naturally refreshes between encounters.'},
+    pros:['2nd highest HP in game','360° shield — no weak flanks','Solid mid-game tank'],
+    cons:['16 km/h — slowest class, can\'t chase or retreat','Shield can be bypassed by Arc Torrents, Rocket Mortars','Outclassed by Aegis and Brickhouse late game'],
+    bestBuilds:['2× Arc Torrent 10 (abuse high HP)','Disc Launcher 12 + Pod Gun 8','2× Ember Gun 8'],
+    ranks:{1:{hp:48000,energy:8},2:{hp:61100,energy:10},3:{hp:77600,energy:14},4:{hp:98700,energy:18},5:{hp:125500,energy:20},6:{hp:159500,energy:24}}},
+
+  md:{name:'M.D.',role:'Support',rarity:'Common',energy:16,speed:18,icon:'💊',color:'#44aaaa',gearTier:1,startRank:1,
+    ability:{name:'Heal Field',desc:'Deploys a healing field that restores HP to nearby allied mechs. One of few dedicated healers in the game.'},
+    pros:['Only common healer','Useful in organized team play'],
+    cons:['16E only — very limited weapons','Replaced by Salvor and Guardian at higher ranks','Bots rarely stand still to be healed'],
+    bestBuilds:['Disc Launcher 8 + Fragment Gun 6','Thermal Lance 6 + RPG 6'],
+    ranks:{1:{hp:20000,energy:4},2:{hp:25400,energy:6},3:{hp:32300,energy:8},4:{hp:41000,energy:10},5:{hp:52200,energy:12},6:{hp:66400,energy:16}}},
+
+  puma:{name:'Puma',role:'Scout',rarity:'Uncommon',energy:16,speed:22,icon:'🐆',color:'#88cc88',gearTier:2,startRank:2,
+    ability:{name:'Speed Burst',desc:'Short burst of increased speed for rapid repositioning.'},
+    pros:['Cheap Gear Hub filler for stars'],
+    cons:['16E — limited weapons','No real niche vs Lancer or Shadow','Skip unless needed for progression'],
+    bestBuilds:['Shotgun 4 + Thermal Lance 4'],
+    ranks:{2:{hp:26000,energy:6},3:{hp:33000,energy:8},4:{hp:42000,energy:10},5:{hp:53400,energy:12},6:{hp:67900,energy:16}}},
+
+  slingshot:{name:'Slingshot',role:'Scout',rarity:'Uncommon',energy:24,speed:25,icon:'⚡',color:'#88cc88',gearTier:2,startRank:2,
+    ability:{name:'Charge Dash',desc:'Charges forward at high speed, dealing damage to any mech in the path. Part of the Killshot family.'},
+    pros:['Tied fastest speed (25 km/h)','24E — decent weapon capacity','Good early-game assassin'],
+    cons:['Outclassed by Killshot and Nomad later','Uncommon tier — limited ceiling'],
+    bestBuilds:['Disc Launcher 8 + Shotgun 4','2× Fragment Gun 6'],
+    ranks:{2:{hp:30000,energy:8},3:{hp:38100,energy:12},4:{hp:48500,energy:16},5:{hp:61700,energy:18},6:{hp:78400,energy:24}}},
+
+  panther:{name:'Panther',role:'Attacker',rarity:'Rare',energy:32,speed:20,icon:'🐈‍⬛',color:'#8844aa',gearTier:4,startRank:3,
+    ability:{name:'Stasis Barrier',desc:'Deploys a barrier that blocks enemy projectiles and slows enemies that pass through it. Allies can fire through freely.'},
+    pros:['32E — heaviest loadout possible','Stasis Barrier is uniquely powerful — blocks shots AND counters snipers','Great backline anchor'],
+    cons:['Ability requires positioning knowledge','Slower than pure scouts at 20 km/h'],
+    bestBuilds:['2× Graviton Beam 10 (backline + barrier)','2× Rail Gun 16','Storm Rack 10 + Graviton Beam 10'],
+    ranks:{3:{hp:55000,energy:16},4:{hp:70000,energy:20},5:{hp:89000,energy:24},6:{hp:113200,energy:32}}},
+
+  killshot:{name:'Killshot',role:'Scout',rarity:'Rare',energy:24,speed:25,icon:'💀',color:'#cc2222',gearTier:5,startRank:3,
+    ability:{name:'Melee Dash',desc:'Extremely fast forward dash dealing high AoE damage on impact. 5s cooldown — lowest in game. Can neutralize Cheetah mines, dodge projectiles, capture beacons.'},
+    pros:['Tied fastest speed (25 km/h)','Melee Dash is one of the strongest abilities — damage + mobility','5s cooldown is almost always available','Versatile — works in every situation'],
+    cons:['Lower HP vs tanks — dies fast if caught','Countered hard by Juggernaut, Ares, Zephyr, Surge','Outclassed by Nomad at legendary tier'],
+    bestBuilds:['Disc Launcher 12 + Missile Rack 8','2× Arc Torrent 8','Revoker 10 + Disc Launcher 8'],
+    ranks:{3:{hp:42000,energy:12},4:{hp:53400,energy:16},5:{hp:67900,energy:18},6:{hp:86400,energy:24}}},
+
+  ares:{name:'Ares',role:'Tank',rarity:'Rare',energy:24,speed:18,icon:'⚔️',color:'#cc5500',gearTier:3,startRank:3,
+    ability:{name:'Blast Shield',desc:'Deploys a directional front-facing shield (120–180° arc) with no timer — active until HP depletes. When shield breaks, it explodes dealing EMP to nearby enemies.'},
+    pros:['Directional shield has no time limit — very durable','EMP explosion on break punishes enemies','Higher speed than Juggernaut at 18 km/h','First strong tank in the Gear Hub'],
+    cons:['Flanks are completely exposed — back and sides take full damage','Shield HP doesn\'t refresh unless broken','Outclassed by Aegis and Brickhouse later'],
+    bestBuilds:['2× Arc Torrent 8 (shield + CQC)','Disc Launcher 8 + Missile Rack 8','2× Carbine 8'],
+    ranks:{3:{hp:75000,energy:12},4:{hp:95400,energy:16},5:{hp:121300,energy:18},6:{hp:154300,energy:24}}},
+
+  shadow:{name:'Shadow',role:'Scout',rarity:'Common',energy:16,speed:22,icon:'👤',color:'#334455',gearTier:2,startRank:1,
+    ability:{name:'Dash',desc:'Short-range quick dash for repositioning. Basic mobility tool.'},
+    pros:['Fast for a light mech','Dash helps with beacon capture'],
+    cons:['16E only — very limited','Generic dash with no damage','Outclassed by Killshot, Slingshot, Eclipse immediately'],
+    bestBuilds:['Shotgun 4 + Fragment Gun 6'],
+    ranks:{1:{hp:22500,energy:4},2:{hp:28600,energy:6},3:{hp:36400,energy:8},4:{hp:46200,energy:10},5:{hp:58800,energy:12},6:{hp:74800,energy:16}}},
+
+  guardian:{name:'Guardian',role:'Attacker',rarity:'Rare',energy:32,speed:16,icon:'💉',color:'#22aaaa',gearTier:3,startRank:3,
+    ability:{name:'Regen Shot',desc:'Fires up to 3 healing missiles at allied mechs that restore significant HP. Each missile also slightly heals Guardian on impact at max level.'},
+    pros:['32E heavy — supports any weapon combo','Only Rare healer with offensive potential','Regen Shot heals allies from range','Good HP pool'],
+    cons:['16 km/h — very slow for an attacker','Ability can be countered by Guardian\'s ECM (Hemlock)','Easy backline target'],
+    bestBuilds:['2× Disc Launcher 12 (heal + attack through walls)','Storm Rack 10 + Pod Gun 8','2× Helix Rack 8'],
+    ranks:{3:{hp:60000,energy:16},4:{hp:76300,energy:20},5:{hp:97000,energy:24},6:{hp:123300,energy:32}}},
+
+  cheetah:{name:'Cheetah',role:'Scout',rarity:'Rare',energy:16,speed:20,icon:'🐈',color:'#aaaa22',gearTier:3,startRank:3,
+    ability:{name:'Mine Dropper (Mines)',desc:'Drops proximity mines around itself that deal area damage when triggered by enemy mechs.'},
+    pros:['Area-denial utility — useful for holding beacons','Mines can be very effective in narrow corridors'],
+    cons:['16E — critically limited weapon options','Mines are visible and avoidable at higher divisions','20 km/h is mediocre for a scout'],
+    bestBuilds:['Shotgun 4 + Thermal Lance 4','Fragment Gun 6 + RPG 4'],
+    ranks:{3:{hp:38000,energy:8},4:{hp:48300,energy:10},5:{hp:61400,energy:12},6:{hp:78100,energy:16}}},
+
+  zephyr:{name:'Zephyr',role:'Support',rarity:'Rare',energy:24,speed:19,icon:'⚡',color:'#2244bb',gearTier:3,startRank:3,
+    ability:{name:'Shock Pulse (EMP)',desc:'Triggers an EMP energy pulse in a 30m radius, disabling all nearby enemy mechs for 3 seconds — preventing movement, attacking, and ability use.'},
+    pros:['EMP disables entire area — massive team utility','Counters Killshot, Surge dashes hard','24E — decent mid-range weapons'],
+    cons:['Support role — depends on team to capitalize the stun','Medium speed at 19 km/h','EMP can be activated from stealth or around corners'],
+    bestBuilds:['2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8','2× Disc Launcher 8'],
+    ranks:{3:{hp:45000,energy:12},4:{hp:57200,energy:16},5:{hp:72800,energy:18},6:{hp:92600,energy:24}}},
+
+  brickhouse:{name:'Brickhouse',role:'Tank',rarity:'Rare',energy:24,speed:14,icon:'🏠',color:'#aa6622',gearTier:7,startRank:3,
+    ability:{name:'Double Damage',desc:'Activates an aura that doubles the damage output of all weapons currently equipped. The Brickhouse itself becomes a massive threat when ability is active.'},
+    pros:['HIGHEST HP in the entire game','Double Damage ability — burst threat unlike any tank','Strong solo-carry potential'],
+    cons:['14 km/h — extremely slow even for a tank','Skip recommendation in Gear Hub — costs too many A-coins','Outclassed defensively by Aegis late-game'],
+    bestBuilds:['2× Storm Rack 10 (double damage)','2× Disc Launcher 12','Revoker 10 + Graviton Beam 10'],
+    ranks:{3:{hp:95000,energy:12},4:{hp:120800,energy:16},5:{hp:153600,energy:18},6:{hp:195300,energy:24}}},
+
+  redox:{name:'Redox',role:'Attacker',rarity:'Rare',energy:32,speed:18,icon:'🔄',color:'#22bb55',gearTier:4,startRank:3,
+    ability:{name:'Caustic Clone',desc:'Creates a decoy clone of the mech that distracts enemies and explodes dealing AoE damage when destroyed.'},
+    pros:['32E — full weapon flexibility','Clone creates confusion and draws enemy fire','Good HP for an attacker'],
+    cons:['Clones are predictable at high divisions','Ability is less reliable than direct damage or shields'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Graviton Beam 10','2× Rocket Mortar 10'],
+    ranks:{3:{hp:52000,energy:16},4:{hp:66100,energy:20},5:{hp:84100,energy:24},6:{hp:107000,energy:32}}},
+
+  surge:{name:'Surge',role:'Scout',rarity:'Legendary',energy:24,speed:25,icon:'💥',color:'#ff6600',gearTier:7,startRank:5,
+    ability:{name:'EMP Dash',desc:'Dashes forward at extreme speed. On collision with an enemy, releases an EMP that stuns in the same fashion as Zephyr. If no collision occurs, EMP releases automatically at 40m range. Can stun targets 70m away.'},
+    pros:['One of the best mechs in the game','EMP Dash combines Killshot\'s mobility with Zephyr\'s stun','Tied fastest speed (25 km/h)','24E — great weapon options','Counters Killshot entirely'],
+    cons:['9,375 A-coins — most expensive unlock in game','Counter: Panther\'s Stasis Barrier blocks the dash stun'],
+    bestBuilds:['2× Revoker 10 (dash in, shred)','2× Storm Rack 10','Revoker 10 + Disc Launcher 12'],
+    ranks:{5:{hp:90000,energy:18},6:{hp:114500,energy:24}}},
+
+  arachnos:{name:'Arachnos',role:'Support',rarity:'Epic',energy:32,speed:14,icon:'🕷️',color:'#773399',gearTier:4,startRank:4,
+    ability:{name:'Web Trap',desc:'Deploys webs that slow and immobilize enemy mechs that walk through them. Area-denial utility.'},
+    pros:['32E — can carry heavy weapons for a support','Web Trap provides area control'],
+    cons:['14 km/h — very slow','Considered C-tier at high divisions','Webs are avoidable with awareness'],
+    bestBuilds:['2× Helix Rack 8','Disc Launcher 12 + Helix Rack 8'],
+    ranks:{4:{hp:60000,energy:16},5:{hp:76300,energy:24},6:{hp:97000,energy:32}}},
+
+  stalker:{name:'Stalker',role:'Scout',rarity:'Epic',energy:16,speed:22,icon:'👁️',color:'#554477',gearTier:5,startRank:4,
+    ability:{name:'Cloak',desc:'Activates stealth mode, making the mech invisible to enemies for a set duration. Weapons must be sheathed while cloaked.'},
+    pros:['Cloak enables ambush plays','22 km/h — decent scout speed'],
+    cons:['16E — critically limited','Cloak doesn\'t prevent damage taken','Outclassed by Eclipse and Panther'],
+    bestBuilds:['Disc Launcher 8 + Fragment Gun 6'],
+    ranks:{4:{hp:50000,energy:8},5:{hp:63600,energy:12},6:{hp:80900,energy:16}}},
+
+  tengu:{name:'Tengu',role:'Tank',rarity:'Epic',energy:16,speed:14,icon:'👹',color:'#cc2244',gearTier:4,startRank:4,
+    ability:{name:'Spider Turret',desc:'Deploys a small automated turret that shoots nearby enemy mechs within 30m radius.'},
+    pros:['Turret provides passive damage'],
+    cons:['Only 16E — cannot carry viable weapons','14 km/h slow AND 16E max = worst combo in game','D-tier — avoid'],
+    bestBuilds:['Fragment Gun 6 + RPG 4'],
+    ranks:{4:{hp:70000,energy:8},5:{hp:89000,energy:12},6:{hp:113200,energy:16}}},
+
+  aegis:{name:'Aegis',role:'Tank',rarity:'Epic',energy:24,speed:20,icon:'🔮',color:'#4477cc',gearTier:6,startRank:4,
+    ability:{name:'Dome Shield',desc:'Deploys a massive dome shield covering a 15m radius. The dome has 750,000 HP, lasts 10 seconds, and blocks ALL enemy projectiles and abilities while allies inside can shoot through freely.'},
+    pros:['Top S-tier tank','215,000 HP — extremely tanky','750k HP dome = nearly indestructible shield for team','20 km/h — fastest tank class','Can fire through own dome'],
+    cons:['Dashing mechs (Surge) can enter the dome','Hemlock\'s ECM Shot disables Aegis ability','Zephyr EMP passes through dome'],
+    bestBuilds:['2× Pod Gun 8 (range + dome combo)','2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8'],
+    ranks:{4:{hp:135000,energy:12},5:{hp:171700,energy:18},6:{hp:215000,energy:24}}},
+
+  orion:{name:'Orion',role:'Attacker',rarity:'Epic',energy:24,speed:23,icon:'🌟',color:'#aaaa22',gearTier:5,startRank:4,
+    ability:{name:"Hunter's Mark",desc:"Fires a homing flare at a selected target with infinite range. On hit, applies a Mark that redirects all damage to the enemy's back AND adds 50% bonus damage. Two marks can stack, increasing total damage to 350%. Teammates also deal increased damage to marked targets."},
+    pros:["Hunter's Mark is one of the best damage-amplifying abilities in the game","24E — meta weapons","23 km/h — fast for an attacker","Excellent in 1v1 and team fights"],
+    cons:["Flare has travel time — fast mechs can dodge it","Cloaked mechs (Eclipse, Shadow) cannot be targeted","Less effective solo without teammates to capitalize the mark"],
+    bestBuilds:['2× Storm Rack 10 (mark + barrage)','2× EM Rifle 16 (long-range mark kills)','Storm Rack 10 + Overdriver 10'],
+    ranks:{4:{hp:65000,energy:12},5:{hp:82700,energy:18},6:{hp:105100,energy:24}}},
+
+  redeemer:{name:'Redeemer',role:'Scout',rarity:'Epic',energy:24,speed:22,icon:'↩️',color:'#4488bb',gearTier:5,startRank:4,
+    ability:{name:'Backtrack',desc:'Reverses the mech to its position from ~2 seconds ago. At max rank, also removes all status effects (EMP, stasis, daze) on activation.'},
+    pros:['Backtrack is a unique defensive tool — escape any situation','Debuff removal at max rank is extremely valuable','22 km/h — decent scout speed'],
+    cons:['Takes practice to use backtrack effectively','Backtrack can sometimes go out of bounds on small maps'],
+    bestBuilds:['2× Disc Launcher 12','Revoker 8 + Disc Launcher 8','Storm Rack 8 + Missile Rack 8'],
+    ranks:{4:{hp:58000,energy:12},5:{hp:73800,energy:18},6:{hp:93800,energy:24}}},
+
+  sentinel:{name:'Sentinel',role:'Tank',rarity:'Epic',energy:24,speed:15,icon:'🚧',color:'#556677',gearTier:5,startRank:4,
+    ability:{name:'Shield Wall',desc:'Deploys a deployable wall segment that blocks enemy fire.'},
+    pros:['Provides cover for team'],
+    cons:['Weak overall — skip in Gear Hub','15 km/h — slow and not tanky enough vs Aegis','24E helps but ability is inferior'],
+    bestBuilds:['Pod Gun 8 + Missile Rack 8'],
+    ranks:{4:{hp:100000,energy:12},5:{hp:127200,energy:18},6:{hp:161700,energy:24}}},
+
+  gatecrasher:{name:'Gatecrasher',role:'Attacker',rarity:'Legendary',energy:32,speed:21,icon:'💣',color:'#cc7700',gearTier:10,startRank:5,
+    ability:{name:'Ion Pod',desc:'Fires a slow projectile that sticks to mechs or surfaces. On a mech: explodes in 20m AoE. On a wall: releases a 16m cylindrical beam blast through the wall for 7 seconds. Allows attacking through cover.'},
+    pros:['221,600 HP — highest of any attacker by far','32E — heaviest loadout','21 km/h — surprisingly fast for this bulk','Ion Pod enables unique wall-penetration plays'],
+    cons:['Largest hitbox in game — vulnerable to AOE','Ion Pod is hard to aim and requires map knowledge','Skip per F2P guide — inefficient A-coin spend'],
+    bestBuilds:['2× Rail Gun 16 (pod finisher)','2× EM Rifle 16','Disc Launcher 12 + Rail Gun 16'],
+    ranks:{5:{hp:175000,energy:24},6:{hp:221600,energy:32}}},
+
+  bastion:{name:'Bastion',role:'Tank',rarity:'Legendary',energy:32,speed:14,icon:'🏯',color:'#557755',gearTier:9,startRank:5,
+    ability:{name:'Spider Turret',desc:'Deploys a destructible automated turret that automatically targets and shoots enemy mechs within 30m. High HP turret.'},
+    pros:['32E — strongest tank loadout','Good HP pool','Turret provides passive pressure'],
+    cons:['14 km/h — slowest even by tank standards','F2P guide: skip — inefficient A-coin spend','Aegis outclasses it defensively'],
+    bestBuilds:['2× Disc Launcher 12','2× Rocket Mortar 12','Storm Rack 10 + Pod Gun 10'],
+    ranks:{5:{hp:160000,energy:24},6:{hp:203400,energy:32}}},
+
+  onyx:{name:'Onyx',role:'Attacker',rarity:'Legendary',energy:32,speed:18,icon:'⬛',color:'#222233',gearTier:9,startRank:5,
+    ability:{name:'Quad Rocket',desc:'Built-in weapon ability that fires four simultaneous rockets with splash damage. Acts as a third weapon effectively.'},
+    pros:['32E + built-in weapon = extremely high damage ceiling','Quad Rocket splash can hit multiple targets'],
+    cons:['Skip per F2P guide — inefficient A-coin spend','~100,000 HP is low for a legendary tank-sized mech','Quad Rocket damage is modest at high divisions'],
+    bestBuilds:['2× Disc Launcher 12 + Quad Rocket ability','2× Storm Rack 10','Revoker 10 + Disc Launcher 16'],
+    ranks:{5:{hp:78000,energy:24},6:{hp:99200,energy:32}}},
+
+  eclipse:{name:'Eclipse',role:'Scout',rarity:'Legendary',energy:24,speed:22,icon:'🌑',color:'#3322aa',gearTier:7,startRank:5,
+    ability:{name:'Advanced Cloak',desc:'Activates stealth with added speed boost on activation. More refined than Stalker\'s cloak — better escape mechanics.'},
+    pros:['S-tier scout','Cloak + speed boost = excellent ambush and escape','24E — meta weapons fit perfectly','Strong sustained backline fighter'],
+    cons:['Cloak breaks on weapon fire — can\'t fire while cloaked','22 km/h — slightly slower than Surge/Killshot'],
+    bestBuilds:['2× Minigun 10 (cloak + sustained DPS)','2× Pod Gun 10','Minigun 10 + Storm Rack 8'],
+    ranks:{5:{hp:95000,energy:18},6:{hp:120800,energy:24}}},
+
+  nomad:{name:'Nomad',role:'Scout',rarity:'Legendary',energy:24,speed:25,icon:'🦋',color:'#7722cc',gearTier:10,startRank:5,
+    ability:{name:'Reanimate',desc:'Places a locator beacon on the ground. If Nomad is destroyed while ability is active, it instantly respawns at the beacon location with full HP + temporary invulnerability. Grants speed boost during activation.'},
+    pros:['S-tier — top meta scout','Reanimate is the most powerful defensive ability in the game','Tied fastest speed (25 km/h)','24E — perfect weapon capacity'],
+    cons:['Locator must be placed strategically before dying','Ability has significant cooldown after respawn use'],
+    bestBuilds:['2× Revoker 10','Storm Rack 10 + Revoker 8','2× Disc Launcher 12'],
+    ranks:{5:{hp:140000,energy:18},6:{hp:178000,energy:24}}},
+
+  hemlock:{name:'Hemlock',role:'Attacker',rarity:'Legendary',energy:24,speed:20,icon:'☠️',color:'#22aa44',gearTier:8,startRank:5,
+    ability:{name:'ECM Shot',desc:'Fires a shot that Dazes the target briefly. If the target receives any damage during the Daze, it converts to a full EMP effect — disabling movement and weapons.'},
+    pros:['S-tier attacker','ECM Shot counters ability-heavy mechs (Guardian, Aegis)','24E — meta weapon combos','Strong solo carry'],
+    cons:['Requires landing ECM + follow-up damage for full EMP — skill-based'],
+    bestBuilds:['Storm Rack 10 + Revoker 10','2× Storm Rack 10','Storm Rack 10 + Disc Launcher 12'],
+    ranks:{5:{hp:115000,energy:18},6:{hp:146300,energy:24}}},
+
+  scorpius:{name:'Scorpius',role:'Support',rarity:'Legendary',energy:32,speed:16,icon:'🦂',color:'#aa2244',gearTier:7,startRank:5,
+    ability:{name:'Venom Strike',desc:'Fires a venomous projectile that applies a damage-over-time poison effect to the target.'},
+    pros:['32E — can carry heavy weapons','DoT ability provides sustained pressure'],
+    cons:['F2P guide: skip — not worth A-coins','C-tier — Hemlock and Orion do more in same energy class'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Helix Rack 8'],
+    ranks:{5:{hp:110000,energy:24},6:{hp:139900,energy:32}}},
+
+  vortex:{name:'Vortex',role:'Support',rarity:'Legendary',energy:24,speed:17,icon:'🌀',color:'#2266aa',gearTier:8,startRank:5,
+    ability:{name:'Nanobot Field+',desc:'Deploys a nanobot field that damages enemies within range while simultaneously giving Vortex a speed burst and reducing damage taken by allies inside.'},
+    pros:['Unique triple-use ability — damage + speed + protection','24E — decent weaponry'],
+    cons:['C-tier competitive play','17 km/h — sluggish for a support','Limited range on nanobot field'],
+    bestBuilds:['2× Pod Gun 8','Disc Launcher 8 + Storm Rack 8'],
+    ranks:{5:{hp:100000,energy:18},6:{hp:127200,energy:24}}},
+
+  seeker:{name:'Seeker',role:'Scout',rarity:'Legendary',energy:24,speed:22,icon:'🎯',color:'#cc6622',gearTier:8,startRank:5,
+    ability:{name:'Target Lock',desc:'Locks onto a target enemy mech, temporarily marking it for increased damage from all allied weapons.'},
+    pros:['24E — meta weapons','Target Lock enables team focus-fire'],
+    cons:['C-tier — ability requires coordination','22 km/h average scout speed'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Pod Gun 8'],
+    ranks:{5:{hp:108000,energy:18},6:{hp:137300,energy:24}}},
+
+  mimicker:{name:'Mimicker',role:'Scout',rarity:'Legendary',energy:32,speed:22,icon:'🪞',color:'#aaaaff',gearTier:8,startRank:5,
+    ability:{name:'Mimic',desc:'Copies the appearance and ability of a nearby enemy mech temporarily, confusing enemies.'},
+    pros:['32E — UNIQUE: only scout with heavy energy','Can equip any weapon combo including dual 16E','22 km/h — decent speed for the loadout capacity'],
+    cons:['Mimic ability is situational at high divisions','C-tier currently — ability rarely decisive'],
+    bestBuilds:['2× Rail Gun 16 (unique scout sniper)','2× EM Rifle 16','Disc Launcher 16 + Rail Gun 16'],
+    ranks:{5:{hp:95000,energy:24},6:{hp:120800,energy:32}}},
+
+  solis:{name:'Solis',role:'Support',rarity:'Legendary',energy:32,speed:20,icon:'☀️',color:'#ddaa00',gearTier:8,startRank:5,
+    ability:{name:'Optic Override',desc:'Deploys an orb that temporarily blinds any enemy it contacts — blurring their screen and disabling all guided weapons and abilities. Has an area-of-effect radius even if it misses a direct hit. Can be used twice before recharging (similar to Cheetah mines).'},
+    pros:['32E — heavy loadout available','Optic Override disables guided weapons AND abilities — powerful vs Orion, Killshot, Surge','Can be used twice before cooldown — more coverage','Area-of-effect on miss'],
+    cons:['C-tier overall — ability niche at top level','Low HP for a legendary mech','Relies on enemies using guided weapons to be most effective'],
+    bestBuilds:['2× Disc Launcher 12 (32E = dual 12E guided)','Rail Gun 16 + Disc Launcher 16','2× Storm Rack 10 + Rail Gun 16 slot'],
+    ranks:{5:{hp:100000,energy:24},6:{hp:127200,energy:32}}},
+
+  lacewing:{name:'Lacewing',role:'Scout',rarity:'Legendary',energy:24,speed:23,icon:'🦟',color:'#77bbbb',gearTier:8,startRank:5,
+    ability:{name:'Evasion Dash',desc:'Rapid repositioning dash that increases Lacewing\'s evasion temporarily.'},
+    pros:['23 km/h — near top speed','24E — strong weapon options','B-tier — competitive'],
+    cons:['Ability similar to Shadow but slightly better'],
+    bestBuilds:['Revoker 10 + Disc Launcher 12','2× Storm Rack 8'],
+    ranks:{5:{hp:100000,energy:18},6:{hp:127200,energy:24}}},
+
+  blockhorn:{name:'Blockhorn',role:'Tank',rarity:'Legendary',energy:32,speed:16,icon:'🦬',color:'#885522',gearTier:9,startRank:5,
+    ability:{name:'Barricade',desc:'Deploys a solid wall segment that physically blocks enemy projectiles and debuff abilities. Unlike Aegis dome, it\'s a flat barrier that persists until destroyed.'},
+    pros:['32E — full loadout','Barricade provides unique team cover','B-tier — solid defensive anchor'],
+    cons:['16 km/h tank speed','Barricade is fixed — enemies can go around it'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Pod Gun 10','2× Rocket Mortar 12'],
+    ranks:{5:{hp:160000,energy:24},6:{hp:203400,energy:32}}},
+
+  deathwalker:{name:'Deathwalker',role:'Scout',rarity:'Legendary',energy:24,speed:24,icon:'💀',color:'#553366',gearTier:9,startRank:5,
+    ability:{name:'Reanimate (Moth)',desc:'Identical mechanic to Nomad — places a locator beacon, respawns at full HP if destroyed during active period. Moth aesthetic design.'},
+    pros:['24 km/h — near-top speed','Reanimate = second chance at life','B-tier — strong late-game scout'],
+    cons:['Nomad does the same ability but is arguably better tuned'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Revoker 8'],
+    ranks:{5:{hp:125000,energy:18},6:{hp:159000,energy:24}}},
+
+  outlaw:{name:'Outlaw',role:'Support',rarity:'Legendary',energy:24,speed:20,icon:'🤠',color:'#aa7722',gearTier:9,startRank:5,
+    ability:{name:'Foul Play',desc:'Fires a shot that steals an active buff from the target enemy and removes all debuffs from the targeted ally. Requires line of sight. Higher range than Guardian\'s shots.'},
+    pros:['Unique ability — buff steal is powerful in team settings','A-tier — solid competitive pick','24E — meta weapons'],
+    cons:['Requires enemy to have active buff to be most effective','No cover-shooting — needs clear line of sight'],
+    bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Graviton Beam 10'],
+    ranks:{5:{hp:130000,energy:18},6:{hp:165400,energy:24}}},
+
+  salvor:{name:'Salvor',role:'Support',rarity:'Legendary',energy:32,speed:24,icon:'🚑',color:'#22aa77',gearTier:8,startRank:5,
+    ability:{name:'Regen Shot',desc:'Fires up to 3 healing missiles that restore significant ally HP on impact. Also partially self-heals Salvor. One of the best dedicated healers in the game.'},
+    pros:['Best dedicated healer — fires 3 missiles that heal 60k+ HP if all land','32E — can carry meaningful weapons while healing','24 km/h — fastest support class','A-tier support'],
+    cons:['161,900 HP — moderate for a legendary','Relies on teammates being within range'],
+    bestBuilds:['Helix Rack 8 + Disc Launcher 12','2× Helix Rack 8','Disc Launcher 12 + Storm Rack 8'],
+    ranks:{5:{hp:127500,energy:24},6:{hp:161900,energy:32}}},
+
+  dreadnought:{name:'Dreadnought',role:'Attacker',rarity:'Legendary',energy:32,speed:17,icon:'🚀',color:'#5577bb',gearTier:9,startRank:5,
+    ability:{name:'Wipe Out',desc:'Fires a massive barrage from shoulder-mounted rocket pods. Each rocket stuns on hit. If Wipe Out achieves a kill, the cooldown resets immediately — chaining kills is possible.'},
+    pros:['S-tier attacker','Wipe Out stuns on every rocket hit — massive CC','Kill = instant cooldown reset = chain kills','32E — full loadout'],
+    cons:['17 km/h — slow for its role','Range and splash weapons counter it well','Rockets can be dodged by fast mechs'],
+    bestBuilds:['2× Rocket Mortar 12','Storm Rack 10 + Rocket Mortar 10','2× Storm Rack 10'],
+    ranks:{5:{hp:150000,energy:24},6:{hp:190700,energy:32}}},
+
+  parasite:{name:'Parasite',role:'Scout',rarity:'Legendary',energy:24,speed:22,icon:'🦠',color:'#336622',gearTier:9,startRank:5,
+    ability:{name:'Ability Steal',desc:'Fires a projectile that temporarily steals the active ability of the targeted enemy mech and uses it as Parasite\'s own.'},
+    pros:['Ability steal is uniquely powerful vs ability-heavy metas','24E — meta weapon options','B-tier'],
+    cons:['22 km/h average scout speed','Ability requires knowing enemy abilities to be effective'],
+    bestBuilds:['2× Disc Launcher 12','Revoker 10 + Storm Rack 8'],
+    ranks:{5:{hp:110000,energy:18},6:{hp:139900,energy:24}}},
+
+  volti:{name:'Volti',role:'Attacker',rarity:'Legendary',energy:24,speed:19,icon:'⚡',color:'#aacc00',gearTier:8,startRank:5,
+    ability:{name:'Thunderstorm',desc:'Activates a lightning storm that attaches to a target enemy mech and follows them. Thunderstorm is NOT blocked by walls or obstacles — if an enemy is in range it hits them regardless of line of sight.'},
+    pros:['A-tier attacker','Thunderstorm ignores cover — punishes campers and wall-huggers','24E — meta weapons'],
+    cons:['19 km/h — average attacker speed','Thunderstorm requires staying near target for duration'],
+    bestBuilds:['2× Storm Rack 10','Storm Rack 10 + Overdriver 10','Disc Launcher 12 + Storm Rack 8'],
+    ranks:{5:{hp:120000,energy:18},6:{hp:152600,energy:24}}},
+
+  silverthorn:{name:'Silverthorn',role:'Attacker',rarity:'Legendary',energy:32,speed:20,icon:'⚔️',color:'#aabbcc',gearTier:9,startRank:5,
+    ability:{name:'Blade Burst',desc:'Fires 5 floating blades simultaneously — each blade can hit a separate target. Blades apply a movement speed debuff. On expiry, each blade explodes in a 10m radius — hitting multiple targets causes catastrophic chain explosions.'},
+    pros:['A-tier attacker','Blade Burst can theoretically hit entire enemy team','Chain explosions deal massive multi-target damage','32E — full loadout','Slowing effect reduces enemy mobility'],
+    cons:['Blades fire quickly — hard to aim all 5 intentionally','20 km/h — standard attacker speed'],
+    bestBuilds:['2× Storm Rack 10','2× Disc Launcher 12','Overdriver 12 + Storm Rack 10'],
+    ranks:{5:{hp:145000,energy:24},6:{hp:184400,energy:32}}},
+
+  blizzfrost:{name:'Blizzfrost',role:'Support',rarity:'Legendary',energy:24,speed:20,icon:'❄️',color:'#88ccee',gearTier:9,startRank:5,
+    ability:{name:'Icy Grip',desc:'Creates a freeze zone that immobilizes enemies solid. Unlike EMP, frozen mechs can still rotate and shoot — just can\'t move. Also makes Blizzfrost temporarily immune to Stasis effects. Grants speed boost if no enemies were frozen.'},
+    pros:['B-tier — Christmas 2025 addition','Freeze is unique — different from EMP stun','Stasis immunity is rare and valuable','24E — meta weapons'],
+    cons:['Frozen enemies can still shoot back — position carefully','Speed boost is only consolation if no freeze landed'],
+    bestBuilds:['2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8','2× Pod Gun 8'],
+    ranks:{5:{hp:115000,energy:18},6:{hp:146300,energy:24}}},
+
+  citadel:{name:'Citadel',role:'Support',rarity:'Legendary',energy:24,speed:18,icon:'🏰',color:'#776655',gearTier:10,startRank:5,
+    ability:{name:'Shield Dome',desc:'Deploys a protective dome shield around Citadel and nearby allies, absorbing incoming damage for a duration. As a support mech, Citadel prioritizes team protection over personal offense.'},
+    pros:['Unique support tank hybrid — shield for teammates','24E — decent weapon options','B-tier — solid in organized team play'],
+    cons:['18 km/h — below average speed','24E limits weapon ceiling vs heavy mechs','Relatively new — limited community data'],
+    bestBuilds:['2× Pod Gun 8 (2×8E = 16E, within 24E cap)','Storm Rack 10 + Disc Launcher 8 (18E total)','Graviton Beam 10 + Missile Rack 8 (18E total)'],
+    ranks:{5:{hp:170000,energy:18},6:{hp:216200,energy:24}}},
+};
+
+// Role icons for list
+const ROLE_ICON={Attacker:'⚔️',Scout:'🏃',Tank:'🛡️',Support:'💚'};
+const RARITY_COLOR={Common:'#aaaaaa',Uncommon:'#88cc88',Rare:'#00d4ff',Epic:'#c44dff',Legendary:'#ffd700'};
+const HP_MAX=260000; // for bar normalization (covers Citadel ~216k)
+const SPEED_MAX=26;
+
+let currentMech=null, currentRank=6;
+let filterRole='all', filterRar='all';
+
+// ===== WEAPON DATA (for build calc) =====
+const WGROUPS=[
+  {label:'ASSAULT',items:[['ac2','Autocannon 2 (2E)',[2]],['ac4','Autocannon 4 (4E)',[4]],['mn6','Minigun 6 (6E)',[6]],['mn8','Minigun 8 (8E)',[8]],['mn10','★ Minigun 10 (10E)',[10]],['mn12','Minigun 12 (12E)',[12]],['mn16','Minigun 16 (16E)',[16]],['ca8','Carbine 8 (8E)',[8]],['ca10','Carbine 10 (10E)',[10]],['ca12','Carbine 12 (12E)',[12]],['pg6','Pod Gun 6 (6E)',[6]],['pg8','★ Pod Gun 8 (8E)',[8]],['pg10','★ Pod Gun 10 (10E)',[10]],['pg12','Pod Gun 12 (12E)',[12]],['pg16','Pod Gun 16 (16E)',[16]],['ovd6','Overdriver 6 (6E)',[6]],['ovd8','Overdriver 8 (8E)',[8]],['ovd10','★ Overdriver 10 (10E)',[10]],['ovd12','Overdriver 12 (12E)',[12]],['ovd16','Overdriver 16 (16E)',[16]],['rp6','Repeater 6 (6E)',[6]],['rp8','Repeater 8 (8E)',[8]],['rp10','Repeater 10 (10E)',[10]],['rp12','Repeater 12 (12E)',[12]],['rp16','Repeater 16 (16E)',[16]],['spr6','Suppressor 6 (6E)',[6]],['spr8','Suppressor 8 (8E)',[8]],['spr10','Suppressor 10 (10E)',[10]],['spr12','Suppressor 12 (12E)',[12]],['spr16','Suppressor 16 (16E)',[16]],['rvr6','🆕 Reaver 6 (6E)',[6]],['rvr8','🆕 Reaver 8 (8E)',[8]],['rvr10','🆕 Reaver 10 (10E)',[10]],['rvr12','🆕 Reaver 12 (12E)',[12]],['rvr16','🆕 Reaver 16 (16E)',[16]]]},
+  {label:'MISSILE',items:[['mr6','Missile Rack 6 (6E)',[6]],['mr8','Missile Rack 8 (8E)',[8]],['mr12','Missile Rack 12 (12E)',[12]],['mr16','Missile Rack 16 (16E)',[16]],['brpg6','Blast RPG 6 (6E)',[6]],['brpg8','Blast RPG 8 (8E)',[8]],['brpg10','Blast RPG 10 (10E)',[10]],['brpg12','Blast RPG 12 (12E)',[12]],['brpg16','Blast RPG 16 (16E)',[16]],['dis6','Disruptor 6 (6E)',[6]],['dis8','Disruptor 8 (8E)',[8]],['dis10','Disruptor 10 (10E)',[10]],['dis12','Disruptor 12 (12E)',[12]],['dis16','Disruptor 16 (16E)',[16]],['hnt6','Hornet 6 (6E)',[6]],['hnt8','Hornet 8 (8E)',[8]],['hnt10','Hornet 10 (10E)',[10]],['hnt12','Hornet 12 (12E)',[12]],['hnt16','Hornet 16 (16E)',[16]],['fm8','Fuse Mortar 8 (8E)',[8]],['fm10','Fuse Mortar 10 (10E)',[10]],['fm12','Fuse Mortar 12 (12E)',[12]],['crl6','Cryo Launcher 6 (6E)',[6]],['crl8','Cryo Launcher 8 (8E)',[8]],['crl10','Cryo Launcher 10 (10E)',[10]],['crl12','Cryo Launcher 12 (12E)',[12]],['crl16','Cryo Launcher 16 (16E)',[16]],['chr8','🆕 Charge Rocket 8 (8E)',[8]],['chr10','🆕 Charge Rocket 10 (10E)',[10]],['chr16','🆕 Charge Rocket 16 (16E)',[16]]]},
+  {label:'BEAM',items:[['at6','Arc Torrent 6 (6E)',[6]],['at8','Arc Torrent 8 (8E)',[8]],['at10','Arc Torrent 10 (10E)',[10]],['at12','Arc Torrent 12 (12E)',[12]],['gb10','★ Graviton Beam 10 (10E)',[10]],['gb12','Graviton Beam 12 (12E)',[12]],['gb16','Graviton Beam 16 (16E)',[16]],['pb6','Particle Beam 6 (6E)',[6]],['pb8','Particle Beam 8 (8E)',[8]],['pb10','Particle Beam 10 (10E)',[10]],['pb12','Particle Beam 12 (12E)',[12]],['pb16','Particle Beam 16 (16E)',[16]],['bub6','Burrow Beam 6 (6E)',[6]],['bub8','Burrow Beam 8 (8E)',[8]],['bub10','🆕 Burrow Beam 10 (10E)',[10]],['bub12','Burrow Beam 12 (12E)',[12]],['bub16','Burrow Beam 16 (16E)',[16]],['stb8','Stasis Beam 8 (8E)',[8]],['stb12','Stasis Beam 12 (12E)',[12]],['stb16','Stasis Beam 16 (16E)',[16]],['tl2','Thermal Lance 2 (2E)',[2]],['tl4','Thermal Lance 4 (4E)',[4]],['tl6','Thermal Lance 6 (6E)',[6]]]},
+  {label:'CLOSE QUARTERS',items:[['eg6','Ember Gun 6 (6E)',[6]],['eg8','Ember Gun 8 (8E)',[8]],['eg10','Ember Gun 10 (10E)',[10]],['eg12','Ember Gun 12 (12E)',[12]],['eg16','Ember Gun 16 (16E)',[16]],['fg6','Fragment Gun 6 (6E)',[6]],['fg8','Fragment Gun 8 (8E)',[8]],['fg10','Fragment Gun 10 (10E)',[10]],['fg12','Fragment Gun 12 (12E)',[12]],['fg14','Fragment Gun 14 (14E)',[14]],['sh2','Shotgun 2 (2E)',[2]],['sh4','Shotgun 4 (4E)',[4]],['sh8','Shotgun 8 (8E)',[8]],['rv6','Revoker 6 (6E)',[6]],['rv8','Revoker 8 (8E)',[8]],['rv10','★ Revoker 10 (10E)',[10]],['rv12','Revoker 12 (12E)',[12]],['rv16','Revoker 16 (16E)',[16]],['hw6','Howler 6 (6E)',[6]],['hw8','Howler 8 (8E)',[8]],['hw10','Howler 10 (10E)',[10]],['hw12','Howler 12 (12E)',[12]],['hw16','Howler 16 (16E)',[16]],['qs6','Quasher 6 (6E)',[6]],['qs10','Quasher 10 (10E)',[10]],['qs12','Quasher 12 (12E)',[12]],['fc6','Fusion Cannon 6 (6E)',[6]],['fc8','Fusion Cannon 8 (8E)',[8]],['fc10','Fusion Cannon 10 (10E)',[10]],['fc12','Fusion Cannon 12 (12E)',[12]],['fc16','Fusion Cannon 16 (16E)',[16]]]},
+  {label:'SNIPER',items:[['rg8','Railgun 8 (8E)',[8]],['rg12','Railgun 12 (12E)',[12]],['rg16','★ Railgun 16 (16E)',[16]],['em6','EM Rifle 6 (6E)',[6]],['em8','EM Rifle 8 (8E)',[8]],['em10','EM Rifle 10 (10E)',[10]],['em12','EM Rifle 12 (12E)',[12]],['em16','★ EM Rifle 16 (16E)',[16]],['la8','Longarm 8 (8E)',[8]],['la10','Longarm 10 (10E)',[10]],['la12','Longarm 12 (12E)',[12]],['tr6','Tetra Rifle 6 (6E)',[6]],['tr8','Tetra Rifle 8 (8E)',[8]],['tr10','Tetra Rifle 10 (10E)',[10]],['tr12','Tetra Rifle 12 (12E)',[12]],['tr16','Tetra Rifle 16 (16E)',[16]],['ct6','Continuum 6 (6E)',[6]],['ct8','Continuum 8 (8E)',[8]],['ct10','Continuum 10 (10E)',[10]],['ct12','Continuum 12 (12E)',[12]],['ct16','Continuum 16 ∞ammo (16E)',[16]],['ds6','Dreadshot 6 (6E)',[6]],['ds8','Dreadshot 8 (8E)',[8]],['ds10','Dreadshot 10 (10E)',[10]],['ds12','Dreadshot 12 (12E)',[12]],['ds16','Dreadshot 16 (16E)',[16]],['sv6','Savant 6 (6E)',[6]],['sv8','Savant 8 (8E)',[8]],['sv10','Savant 10 (10E)',[10]],['sv12','Savant 12 (12E)',[12]],['sv16','Savant 16 (16E)',[16]],['qg6','Quantum Gun 6 (6E)',[6]],['qg8','Quantum Gun 8 (8E)',[8]],['qg10','Quantum Gun 10 (10E)',[10]],['qg12','Quantum Gun 12 (12E)',[12]],['qg16','Quantum Gun 16 (16E)',[16]],['or6','Oracle 6 (6E)',[6]],['or8','Oracle 8 (8E)',[8]],['or10','Oracle 10 (10E)',[10]],['or12','Oracle 12 (12E)',[12]],['or16','Oracle 16 (16E)',[16]],['vp6','Viper 6 (6E)',[6]],['vp8','Viper 8 (8E)',[8]],['vp10','Viper 10 (10E)',[10]],['vp12','Viper 12 (12E)',[12]],['vp16','Viper 16 (16E)',[16]],['ga4','Gauss Rifle 4 (4E)',[4]],['ga6','Gauss Rifle 6 (6E)',[6]],['ga10','Gauss Rifle 10 (10E)',[10]]]},
+  {label:'GUIDED',items:[['dl8','Disc Launcher 8 (8E)',[8]],['dl12','★ Disc Launcher 12 (12E)',[12]],['dl16','Disc Launcher 16 (16E)',[16]],['sk6','Strike Rocket 6 (6E)',[6]],['sk8','Strike Rocket 8 (8E)',[8]],['sk10','Strike Rocket 10 (10E)',[10]],['sk12','Strike Rocket 12 (12E)',[12]],['sk16','Strike Rocket 16 (16E)',[16]],['gm6','Gemini 6 (6E)',[6]],['gm8','Gemini 8 (8E)',[8]],['gm10','Gemini 10 (10E)',[10]],['gm12','Gemini 12 (12E)',[12]],['gm16','Gemini 16 (16E)',[16]]]},
+  {label:'ARTILLERY',items:[['jv4','Javelin Rack 4 (4E)',[4]],['jv6','Javelin Rack 6 (6E)',[6]],['jv8','Javelin Rack 8 (8E)',[8]],['jv12','Javelin Rack 12 (12E)',[12]],['jv16','Javelin Rack 16 (16E)',[16]],['hx6','Helix Rack 6 (6E)',[6]],['hx8','★ Helix Rack 8 (8E)',[8]],['hx10','Helix Rack 10 (10E)',[10]],['hx12','Helix Rack 12 (12E)',[12]],['hx16','Helix Rack 16 (16E)',[16]],['rm8','Rocket Mortar 8 (8E)',[8]],['rm10','Rocket Mortar 10 (10E)',[10]],['rm12','★ Rocket Mortar 12 (12E)',[12]],['nl6','Nade Launcher 6 (6E)',[6]],['nl8','Nade Launcher 8 (8E)',[8]],['nl10','Nade Launcher 10 (10E)',[10]],['nl12','Nade Launcher 12 (12E)',[12]],['nl16','Nade Launcher 16 (16E)',[16]],['crj6','Cryo Javelin 6 (6E)',[6]],['crj12','Cryo Javelin 12 (12E)',[12]]]},
+  {label:'HEAVY DUTY',items:[['cg6','Chain Gun 6 (6E)',[6]],['cg8','Chain Gun 8 (8E)',[8]],['cg10','Chain Gun 10 (10E)',[10]],['cg12','Chain Gun 12 (12E)',[12]],['cg16','Chain Gun 16 (16E)',[16]],['vr8','Voltaic RPG 8 (8E)',[8]],['vr14','Voltaic RPG 14 (14E)',[14]],['vr16','Voltaic RPG 16 (16E)',[16]],['bs6','Berserker 6 (6E)',[6]],['bs8','Berserker 8 (8E)',[8]],['bs12','Berserker 12 (12E)',[12]],['bs16','Berserker 16 (16E)',[16]]]},
+  {label:'BARRAGE',items:[['st6','Storm Rack 6 (6E)',[6]],['st8','Storm Rack 8 (8E)',[8]],['st10','★ Storm Rack 10 (10E)',[10]],['st12','Storm Rack 12 (12E)',[12]],['st16','Storm Rack 16 (16E)',[16]],['hf6','Hellfire 6 (6E)',[6]],['hf8','Hellfire 8 (8E)',[8]],['hf10','Hellfire 10 (10E)',[10]],['hf12','Hellfire 12 (12E)',[12]],['hf16','Hellfire 16 (16E)',[16]]]},
+  {label:'EARLY GAME',items:[['rp2','RPG 2 (2E)',[2]],['rp4','RPG 4 (4E)',[4]],['rp6b','RPG 6 (6E)',[6]],['pl2','Plasma Cannon 2 (2E)',[2]],['pl4','Plasma Cannon 4 (4E)',[4]],['pl6','Plasma Cannon 6 (6E)',[6]],['pu4','Pulse Cannon 4 (4E)',[4]],['pu6','Pulse Cannon 6 (6E)',[6]],['pu8','Pulse Cannon 8 (8E)',[8]]]},
+];
+
+// Build weapon selects
+function buildWeaponSelects(){
+  ['w1','w2'].forEach((id,i)=>{
+    const sel=document.getElementById(id);
+    if(i===1){const opt=document.createElement('option');opt.value='n0';opt.textContent='— None —';sel.appendChild(opt);}
+    WGROUPS.forEach(g=>{
+      const og=document.createElement('optgroup');og.label='─ '+g.label+' ─';
+      g.items.forEach(([v,t])=>{const o=document.createElement('option');o.value=v;o.textContent=t;og.appendChild(o);});
+      sel.appendChild(og);
+    });
+    if(i===0){const opt=document.createElement('option');opt.value='n0';opt.textContent='— None —';sel.appendChild(opt);}
+  });
+}
+
+function getWEnergy(val){
+  if(val==='n0')return 0;
+  for(const g of WGROUPS)for(const [v,,e] of g.items)if(v===val)return e[0];
+  return 0;
+}
+function getWName(val){
+  if(val==='n0')return '—';
+  for(const g of WGROUPS)for(const [v,t] of g.items)if(v===val)return t;
+  return '—';
+}
+
+const MD_BUILD={};
+Object.entries(MECHS).forEach(([k,m])=>{MD_BUILD[k]=m;});
+const RC2={Common:'#aaa',Uncommon:'#88cc88',Rare:'var(--acc)',Epic:'#c44dff',Legendary:'var(--gold)'};
+
+function upd(){
+  const mk=document.getElementById('ms').value;
+  const m=MD_BUILD[mk];
+  const e1=getWEnergy(document.getElementById('w1').value);
+  const e2=getWEnergy(document.getElementById('w2').value);
+  const used=e1+e2,free=m.energy-used,over=used>m.energy;
+  const pct=Math.min(100,Math.round(used/m.energy*100));
+  document.getElementById('sr').textContent=m.role;
+  const rar=document.getElementById('srar');rar.textContent=m.rarity;rar.style.color=RC2[m.rarity]||'var(--acc)';
+  document.getElementById('sec').textContent=m.energy+'E';
+  document.getElementById('sspd').textContent=m.speed+' km/h';
+  document.getElementById('sabl').textContent=m.ability.name;
+  document.getElementById('sused').textContent=used+'E';
+  const fe=document.getElementById('sfree');fe.textContent=free+'E';fe.className='sv'+(free<0?' red':free===0?' good':'');
+  document.getElementById('sw1n').textContent=getWName(document.getElementById('w1').value);
+  document.getElementById('sw2n').textContent=getWName(document.getElementById('w2').value);
+  document.getElementById('spct').textContent=pct+'%';
+  document.getElementById('spct').style.color=over?'var(--red)':pct>=90?'var(--acc3)':'var(--acc)';
+  const ef=document.getElementById('efill');ef.style.width=pct+'%';ef.className='efill'+(over?' over':'');
+  const tip=document.getElementById('stip');
+  if(over){tip.className='tip warn';tip.textContent='⚠ Over energy cap by '+Math.abs(free)+'E.';}
+  else if(m.role==='Tank'&&(e1>=14||e2>=14)){tip.className='tip warn';tip.textContent='Heavy snipers on a slow tank are hard to land. Pod Gun, Graviton Beam, or Storm Rack suit Tanks better.';}
+  else if(m.role==='Scout'&&m.energy<=16&&used===m.energy){tip.className='tip ok';tip.textContent='✓ Maxed light scout energy.';}
+  else if(free===0){tip.className='tip ok';tip.textContent='✓ Perfect energy — no waste.';}
+  else{tip.className='tip';tip.textContent=free+'E remaining. '+(free>=8?'Could use a higher-energy variant in one slot.':'Efficient.');}
+}
+
+// ===== GEAR HUB =====
+function buildMechList(){
+  const list=document.getElementById('mech-list');
+  list.innerHTML='';
+  const q=document.getElementById('mech-search').value.toLowerCase();
+  Object.entries(MECHS).forEach(([k,m])=>{
+    if(q&&!m.name.toLowerCase().includes(q))return;
+    if(filterRole!=='all'&&m.role!==filterRole)return;
+    if(filterRar!=='all'&&m.rarity!==filterRar)return;
+    const div=document.createElement('div');
+    div.className='mech-item'+(currentMech===k?' active':'');
+    div.onclick=()=>selectMech(k);
+    div.innerHTML=`
+      <div class="mitem-icon" style="background:${m.color}22;border-color:${m.color}44">${m.icon}</div>
+      <div class="mitem-info">
+        <div class="mitem-name">${m.name}</div>
+        <div class="mitem-sub">${m.role} · <span style="color:${RARITY_COLOR[m.rarity]}">${m.rarity}</span> · ${m.energy}E</div>
+      </div>
+      <div class="rarity-dot" style="background:${RARITY_COLOR[m.rarity]}"></div>`;
+    list.appendChild(div);
+  });
+}
+
+function selectMech(key){
+  currentMech=key;
+  const m=MECHS[key];
+  // pick highest available rank
+  const ranks=Object.keys(m.ranks).map(Number).sort((a,b)=>a-b);
+  currentRank=ranks[ranks.length-1];
+  renderDetail(m);
+  buildMechList();
+}
+
+function renderDetail(m){
+  const ranks=Object.keys(m.ranks).map(Number).sort((a,b)=>a-b);
+  const rd=m.ranks[currentRank];
+  const hpPct=Math.min(100,Math.round(rd.hp/HP_MAX*100));
+  const spdPct=Math.round(m.speed/SPEED_MAX*100);
+  const energyPips=Array.from({length:m.energy/2},(_,i)=>`<div class="pip${i*2<rd.energy?' filled':''}"></div>`).join('');
+
+  const rankTabs=ranks.map(r=>`<button class="rank-tab${r===currentRank?' active':''}" onclick="setRank(${r})">${r}</button>`).join('');
+
+  const prosHTML=m.pros.map(p=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--acc3)">✓ ${p}</span>`).join('');
+  const consHTML=m.cons.map(c=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--red)">✗ ${c}</span>`).join('');
+  const buildsHTML=m.bestBuilds.map(b=>`<div style="padding:4px 0;border-bottom:1px solid rgba(26,58,92,.3);font-size:12px">• ${b}</div>`).join('');
+
+  document.getElementById('gh-detail').innerHTML=`
+    <div class="mech-header">
+      <div class="mech-avatar" style="border-color:${m.color}66">
+        <div style="font-size:70px;position:relative;z-index:1">${m.icon}</div>
+        <div style="position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:Orbitron,monospace;font-size:9px;color:${m.color};letter-spacing:2px">${m.rarity.toUpperCase()}</div>
+      </div>
+      <div class="mech-title" style="flex:1">
+        <h2 style="color:${m.color}">${m.name}</h2>
+        <div class="mech-badges">
+          <span class="badge badge-role">${ROLE_ICON[m.role]} ${m.role}</span>
+          <span class="badge badge-rarity-${m.rarity.toLowerCase()}">${m.rarity}</span>
+          <span class="badge" style="background:rgba(0,212,255,.1);color:var(--acc);border:1px solid rgba(0,212,255,.2)">Gear Hub Tier ${m.gearTier}</span>
+        </div>
+        <div class="ability-box">
+          <div class="ability-label">ABILITY</div>
+          <strong style="color:var(--acc2)">${m.ability.name}</strong><br>
+          <span style="font-size:12px;color:var(--txt)">${m.ability.desc}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-section">
+      <div class="rank-label">SELECT RANK</div>
+      <div class="rank-tabs">${rankTabs}</div>
+    </div>
+
+    <div class="stats-section" style="overflow-y:auto">
+      <div class="stats-grid">
+        <div class="stat-block">
+          <div class="stat-block-label">HP at Rank ${currentRank}</div>
+          <div class="stat-block-val">${rd.hp.toLocaleString()}</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-label">Speed</div>
+          <div class="stat-block-val green">${m.speed} km/h</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-label">Energy at Rank ${currentRank}</div>
+          <div class="stat-block-val">${rd.energy}E</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-label">Max Energy (R6)</div>
+          <div class="stat-block-val gold">${m.energy}E</div>
+        </div>
+      </div>
+
+      <div class="hp-bar-wrap">
+        <div class="hp-bar-label"><span>HP — ${rd.hp.toLocaleString()}</span><span>${Math.round(hpPct)}% of max in game</span></div>
+        <div class="hp-bar"><div class="hp-fill" style="width:${hpPct}%;background:${hpPct>70?'var(--acc3)':hpPct>40?'var(--acc)':'var(--red)'}"></div></div>
+      </div>
+      <div class="speed-bar-wrap">
+        <div class="speed-bar-label"><span>Speed — ${m.speed} km/h</span><span>${spdPct}% of max</span></div>
+        <div class="speed-bar"><div class="speed-fill" style="width:${spdPct}%"></div></div>
+      </div>
+      <div style="margin-top:12px">
+        <div style="font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">ENERGY PIPS AT RANK ${currentRank} (${rd.energy}E / ${m.energy}E max)</div>
+        <div class="energy-pips">${energyPips}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px">
+        <div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc3);letter-spacing:1px;margin-bottom:6px">PROS</div>
+          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${prosHTML}</div>
+        </div>
+        <div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:6px">CONS</div>
+          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${consHTML}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:6px">BEST BUILDS</div>
+        <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${buildsHTML}</div>
+      </div>
+    </div>`;
+}
+
+function setRank(r){
+  currentRank=r;
+  renderDetail(MECHS[currentMech]);
+}
+
+function filterMechs(){buildMechList();}
+
+function toggleFilter(btn){
+  const ftype=btn.dataset.ftype,fval=btn.dataset.fval;
+  btn.closest('.gh-filters').querySelectorAll('.gf[data-ftype="'+ftype+'"]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(ftype==='role')filterRole=fval;
+  else filterRar=fval;
+  buildMechList();
+}
+
+function switchTab(n,b){
+  document.querySelectorAll('.pane').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('pane-'+n).classList.add('active');
+  b.classList.add('active');
+}
+
+// Init
+buildWeaponSelects();
+upd();
+buildMechList();
+// Select Paragon by default
+selectMech('paragon');
+
+// ===== CALCULATOR =====
+let calcSelectedItem = null, calcFromStar = 1, calcFromLevel = 1;
+let calcCurrentType = 'mech';
+let _wIconMap = null;
+let pilotSelectedItem = { rarity: 'epic' }, pilotFromStar = 1, pilotFromLevel = 1;
+let modSelectedItem = null, modFromLevel = 1, modToLevel = 6;
+
+function switchCalcTab(id, btn) {
+  document.querySelectorAll('.calc-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.calc-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('calc-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function getRarityColor(rar) {
+  if (!rar) return 'var(--txt)';
+  if (rar.startsWith('legendary')) return 'var(--gold)';
+  if (rar.startsWith('epic')) return 'var(--epic)';
+  if (rar === 'rare') return 'var(--rare)';
+  if (rar === 'uncommon') return 'var(--uncommon)';
+  return 'var(--common)';
+}
+
+// ---- UPGRADE CALCULATOR ----
+const WCAT_ICONS = {
+  'ASSAULT':'🔫','MISSILE':'🚀','BEAM':'⚡','CLOSE QUARTERS':'💥',
+  'SNIPER':'🎯','GUIDED':'🛸','ARTILLERY':'💣','HEAVY DUTY':'🔩',
+  'BARRAGE':'🌪️','EARLY GAME':'⭐'
+};
+
+function buildWeaponIconMap() {
+  if (_wIconMap) return _wIconMap;
+  _wIconMap = {};
+  for (const g of WGROUPS) {
+    const icon = WCAT_ICONS[g.label] || '🔧';
+    for (const [, name] of g.items) {
+      const base = name.replace(/\s*\(.*?\)/g, '').replace(/[★🆕]\s*/g, '').trim();
+      _wIconMap[base] = icon;
+    }
+  }
+  return _wIconMap;
+}
+
+function getMechIcon(name) {
+  for (const key in MECHS) {
+    if (MECHS[key].name === name) return MECHS[key].icon;
+  }
+  return '🤖';
+}
+
+function getWeaponIcon(name) {
+  const map = buildWeaponIconMap();
+  return map[name] || '🔧';
+}
+
+function setCalcType(type) {
+  calcCurrentType = type;
+  calcSelectedItem = null;
+  document.getElementById('ctype-mech').classList.toggle('active', type === 'mech');
+  document.getElementById('ctype-weapon').classList.toggle('active', type === 'weapon');
+  const sb = document.getElementById('calc-settings-below');
+  sb.classList.remove('visible');
+  document.getElementById('calc-result-panel').style.display = 'none';
+  renderCalcTiles();
+}
+
+function renderCalcTiles() {
+  if (typeof CALC_LIST === 'undefined') return;
+  const search = (document.getElementById('calc-search').value || '').toLowerCase();
+  const rarity = document.getElementById('calc-rarity').value;
+  const tilesEl = document.getElementById('calc-tiles');
+  const filtered = CALC_LIST.filter(item => {
+    if (item.type !== calcCurrentType) return false;
+    if (rarity !== 'all') {
+      const base = item.rarity.split('_')[0];
+      if (base !== rarity) return false;
+    }
+    if (search && !item.list.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  if (!filtered.length) {
+    tilesEl.innerHTML = '<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-size:12px">No items found</div>';
+    return;
+  }
+  const wMap = calcCurrentType === 'weapon' ? buildWeaponIconMap() : null;
+  tilesEl.innerHTML = filtered.map(item => {
+    const sel = calcSelectedItem && calcSelectedItem.list === item.list ? ' selected' : '';
+    const icon = calcCurrentType === 'mech' ? getMechIcon(item.list) : (wMap[item.list] || '🔧');
+    const rc = getRarityColor(item.rarity);
+    const enc = encodeURIComponent(item.list);
+    return '<div class="calc-tile' + sel + '" onclick="selectCalcTile(\'' + enc + '\')" style="border-bottom:2px solid ' + rc + '">'
+      + '<div class="calc-tile-icon">' + icon + '</div>'
+      + '<div class="calc-tile-name">' + item.list + '</div>'
+      + (item.energy ? '<div class="calc-tile-energy">' + item.energy + 'E</div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function selectCalcTile(enc) {
+  const name = decodeURIComponent(enc);
+  calcSelectedItem = CALC_LIST.find(i => i.list === name) || null;
+  if (!calcSelectedItem) return;
+  renderCalcTiles();
+  const icon = calcSelectedItem.type === 'mech' ? getMechIcon(name) : getWeaponIcon(name);
+  const rc = getRarityColor(calcSelectedItem.rarity);
+  document.getElementById('badge-icon').textContent = icon;
+  document.getElementById('badge-name').textContent = name;
+  const sub = calcSelectedItem.type === 'mech'
+    ? calcSelectedItem.energy + 'E Mech'
+    : calcSelectedItem.energy + 'E Weapon';
+  document.getElementById('badge-sub').innerHTML = '<span style="color:' + rc + '">' + calcSelectedItem.rarity + '</span> · ' + sub;
+  const sb = document.getElementById('calc-settings-below');
+  sb.classList.add('visible');
+  document.getElementById('calc-result-panel').style.display = 'none';
+  sb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setCalcStar(s) {
+  calcFromStar = s;
+  document.querySelectorAll('#calc-star-btns .star-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === s));
+}
+
+function setCalcLevel(l) {
+  calcFromLevel = l;
+  document.querySelectorAll('#calc-level-btns .lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === l));
+}
+
+let calcToStar = 6, calcToLevel = 7;
+
+function setCalcToStar(s) {
+  calcToStar = s;
+  document.querySelectorAll('#calc-tostar-btns .star-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === s));
+}
+
+function setCalcToLevel(l) {
+  calcToLevel = l;
+  document.querySelectorAll('#calc-tolevel-btns .lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === l));
+}
+
+function toggleCalcToMax(cb) {
+  document.getElementById('calc-target-section').style.display = cb.checked ? 'none' : 'block';
+}
+
+function calculateUpgrade() {
+  if (!calcSelectedItem) { alert('Please select a mech or weapon first!'); return; }
+  const toMax = document.getElementById('calc-tomax').checked;
+  const key = calcSelectedItem.type === 'mech'
+    ? calcSelectedItem.rarity + '_mech'
+    : calcSelectedItem.rarity + '_weapon_' + calcSelectedItem.energy;
+  const fromIdx = (calcFromStar - 1) * 7 + (calcFromLevel - 1);
+  const toIdx = toMax ? CALC_MECH_COSTS.length : (calcToStar - 1) * 7 + (calcToLevel - 1);
+  if (!toMax && toIdx <= fromIdx) {
+    alert('Target must be higher than current level!'); return;
+  }
+  let cr = 0, ac = 0, bp = 0;
+  for (let i = fromIdx; i < toIdx; i++) {
+    const cost = CALC_MECH_COSTS[i] && CALC_MECH_COSTS[i][key];
+    if (cost) { cr += cost.credits || 0; ac += cost.acoins || 0; bp += cost.blueprints || 0; }
+  }
+  const toLabel = toMax ? '6★ Lv7' : calcToStar + '★ Lv' + calcToLevel;
+  document.getElementById('calc-result-panel').style.display = 'block';
+  document.getElementById('calc-result-item').textContent =
+    calcSelectedItem.list + ' — ' + calcFromStar + '★ Lv' + calcFromLevel + ' → ' + toLabel;
+  document.getElementById('calc-res').innerHTML =
+    '<div class="calc-res-block"><div class="calc-res-lbl">Credits</div><div class="calc-res-val">' + cr.toLocaleString() + '</div></div>'
+    + '<div class="calc-res-block"><div class="calc-res-lbl">Blueprints</div><div class="calc-res-val green">' + bp.toLocaleString() + '</div></div>'
+    + '<div class="calc-res-block"><div class="calc-res-lbl">A-Coins</div><div class="calc-res-val gold">' + ac.toLocaleString() + '</div></div>';
+  const info = document.getElementById('calc-info');
+  if (cr > 0 || bp > 0 || ac > 0) {
+    info.className = 'calc-info';
+    info.textContent = 'Upgrade cost for ' + calcSelectedItem.list + ': ' + calcFromStar + '★ Lv' + calcFromLevel + ' → ' + toLabel + '.';
+  } else {
+    info.className = 'calc-info warn';
+    info.textContent = '⚠ No upgrade data found for this range. The item may already be at target level.';
+  }
+}
+
+// ---- PILOT CALCULATOR ----
+let pilotRarity = 'epic';
+let pilotToStar = 6, pilotToLevel = 7;
+
+const PILOT_ICONS = { rare: '👤', epic: '🧠', legendary: '👑' };
+const PILOT_COLORS = { rare: 'var(--rare)', epic: 'var(--epic)', legendary: 'var(--legendary)' };
+
+function setPilotRarity(rar) {
+  pilotRarity = rar;
+  pilotSelectedItem = { rarity: rar };
+  document.getElementById('pilot-result-panel').style.display = 'none';
+  ['rare','epic','legendary'].forEach(r => {
+    const btn = document.getElementById('pilot-rar-' + r);
+    const rc = PILOT_COLORS[r];
+    if (r === rar) {
+      btn.style.background = rc; btn.style.borderColor = rc; btn.style.color = 'var(--bg)';
+    } else {
+      btn.style.background = ''; btn.style.borderColor = rc; btn.style.color = rc;
+    }
+  });
+  document.getElementById('pilot-badge-icon').textContent = PILOT_ICONS[rar];
+  document.getElementById('pilot-badge-name').textContent = rar.toUpperCase() + ' PILOT';
+  document.getElementById('pilot-badge-sub').style.color = PILOT_COLORS[rar];
+  document.getElementById('pilot-badge-sub').textContent = 'All ' + rar + ' pilots share the same upgrade cost';
+}
+
+function renderPilotList() { /* replaced by rarity buttons */ }
+
+function setPilotStar(s) {
+  pilotFromStar = s;
+  document.querySelectorAll('#pilot-star-btns .star-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === s));
+}
+
+function setPilotLevel(l) {
+  pilotFromLevel = l;
+  document.querySelectorAll('#pilot-level-btns .lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === l));
+}
+
+function setPilotToStar(s) {
+  pilotToStar = s;
+  document.querySelectorAll('#pilot-tostar-btns .star-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === s));
+}
+
+function setPilotToLevel(l) {
+  pilotToLevel = l;
+  document.querySelectorAll('#pilot-tolevel-btns .lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === l));
+}
+
+function togglePilotToMax(cb) {
+  document.getElementById('pilot-target-section').style.display = cb.checked ? 'none' : 'block';
+}
+
+function calculatePilot() {
+  const rar = pilotRarity;
+  const toMax = document.getElementById('pilot-tomax').checked;
+  const fromIdx = (pilotFromStar - 1) * 7 + (pilotFromLevel - 1);
+  const toIdx = toMax ? CALC_PILOT_COSTS.length : (pilotToStar - 1) * 7 + (pilotToLevel - 1);
+  if (!toMax && toIdx <= fromIdx) {
+    alert('Target must be higher than current level!'); return;
+  }
+  let ac = 0, marks = 0, xp = 0;
+  for (let i = fromIdx; i < toIdx; i++) {
+    const cost = CALC_PILOT_COSTS[i] && CALC_PILOT_COSTS[i][rar];
+    if (cost) { ac += cost.acoins || 0; marks += cost.marks || 0; xp += cost.xp || 0; }
+  }
+  const toLabel = toMax ? '6★ Lv7' : pilotToStar + '★ Lv' + pilotToLevel;
+  document.getElementById('pilot-result-panel').style.display = 'block';
+  document.getElementById('pilot-result-item').textContent =
+    rar.charAt(0).toUpperCase() + rar.slice(1) + ' Pilot — ' + pilotFromStar + '★ Lv' + pilotFromLevel + ' → ' + toLabel;
+  document.getElementById('pilot-res').innerHTML =
+    '<div class="calc-res-block"><div class="calc-res-lbl">A-Coins</div><div class="calc-res-val gold">' + ac.toLocaleString() + '</div></div>'
+    + '<div class="calc-res-block"><div class="calc-res-lbl">XP</div><div class="calc-res-val">' + xp.toLocaleString() + '</div></div>'
+    + '<div class="calc-res-block"><div class="calc-res-lbl">Marks</div><div class="calc-res-val green">' + marks.toLocaleString() + '</div></div>';
+  const info = document.getElementById('pilot-info');
+  info.className = 'calc-info';
+  const wins = xp > 0 ? ' (~' + Math.ceil(xp / 800).toLocaleString() + ' match wins)' : '';
+  info.textContent = rar.charAt(0).toUpperCase() + rar.slice(1) + ' pilot cost: ' + pilotFromStar + '★ Lv' + pilotFromLevel + ' → ' + toLabel + '.' + wins;
+}
+
+// ---- MOD CALCULATOR ----
+function renderModList() {
+  if (typeof CALC_MODS === 'undefined') return;
+  const search = (document.getElementById('mod-search').value || '').toLowerCase();
+  const rarity = document.getElementById('mod-rarity').value;
+  const listEl = document.getElementById('mod-item-list');
+  const filtered = CALC_MODS.filter(m => {
+    if (rarity !== 'all' && m.rarity !== rarity) return false;
+    if (search && !m.mod_label.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  listEl.innerHTML = filtered.map(m => {
+    const sel = modSelectedItem && modSelectedItem.mod_name === m.mod_name && modSelectedItem.rarity === m.rarity ? ' selected' : '';
+    const rc = getRarityColor(m.rarity);
+    return '<div class="ci-item' + sel + '" onclick="selectMod(\'' + m.mod_name + '\',\'' + m.rarity + '\')">'
+      + '<span class="ci-name">' + m.mod_label.trim() + '</span>'
+      + '<span class="ci-sub"><span style="color:' + rc + '">' + m.rarity + '</span></span>'
+      + '</div>';
+  }).join('');
+}
+
+function selectMod(name, rarity) {
+  modSelectedItem = CALC_MODS.find(m => m.mod_name === name && m.rarity === rarity) || null;
+  renderModList();
+}
+
+function setModFrom(l) {
+  modFromLevel = l;
+  document.querySelectorAll('#mod-from-btns .mod-lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === l));
+  if (modToLevel <= l) { modToLevel = l + 1; document.querySelectorAll('#mod-to-btns .mod-lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 2 === modToLevel)); }
+}
+
+function setModTo(l) {
+  modToLevel = l;
+  document.querySelectorAll('#mod-to-btns .mod-lvl-btn').forEach((b, i) => b.classList.toggle('active', i + 2 === l));
+}
+
+function calculateMod() {
+  if (!modSelectedItem) { alert('Please select a mod first!'); return; }
+  if (modToLevel <= modFromLevel) { alert('Target level must be greater than current level!'); return; }
+  const key = modSelectedItem.rarity + '_' + modSelectedItem.mod_name;
+  let basic = 0, elite = 0;
+  for (const entry of CALC_MOD_COSTS) {
+    if (entry.level > modFromLevel && entry.level <= modToLevel) {
+      const cost = entry[key];
+      if (cost) { basic += cost.basic_mod_parts || 0; elite += cost.elite_mod_parts || 0; }
+    }
+  }
+  const panel = document.getElementById('mod-result-panel');
+  panel.style.display = 'block';
+  document.getElementById('mod-result-item').textContent =
+    modSelectedItem.mod_label.trim() + ' (' + modSelectedItem.rarity + ') — L' + modFromLevel + ' → L' + modToLevel;
+  document.getElementById('mod-res').innerHTML =
+    '<div class="calc-res-block"><div class="calc-res-lbl">Basic Mod Parts</div><div class="calc-res-val">' + basic.toLocaleString() + '</div></div>'
+    + '<div class="calc-res-block"><div class="calc-res-lbl">Elite Mod Parts</div><div class="calc-res-val gold">' + elite.toLocaleString() + '</div></div>';
+  const info = document.getElementById('mod-info');
+  info.className = 'calc-info';
+  info.textContent = 'Cost to upgrade ' + modSelectedItem.mod_label.trim() + ' from Level ' + modFromLevel + ' to Level ' + modToLevel + '.';
+}
+
+// Init all calculator lists on page load
+renderCalcTiles();
+renderPilotList();
+renderModList();
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--txt);font-family:'Montserrat',sans-serif;font-size:15px;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(600px circle at var(--gx,50%) var(--gy,50%),rgba(0,212,255,.09) 0%,rgba(0,212,255,.03) 35%,transparent 65%);transition:background .04s;}
 .app{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:18px;}
 header{text-align:center;padding:24px 0 18px;border-bottom:1px solid var(--brd);margin-bottom:18px;}
 header h1{font-family:'Orbitron',monospace;font-size:1.9rem;font-weight:900;color:var(--acc);text-shadow:0 0 28px rgba(0,212,255,.5);letter-spacing:4px;}
@@ -1976,6 +1977,12 @@ function renderCmpTable() {
 
 // Init compare selects
 buildCmpSelects();
+
+// ===== CURSOR GLOW =====
+document.addEventListener('mousemove', e => {
+  document.body.style.setProperty('--gx', e.clientX + 'px');
+  document.body.style.setProperty('--gy', e.clientY + 'px');
+});
 </script>
 </body>
 </html>

@@ -2653,7 +2653,7 @@ function mgOnUp(e) {
     const dx = pos.x - mgDragStart.x, dy = pos.y - mgDragStart.y;
     if (Math.sqrt(dx*dx + dy*dy) > 10 && mgArrows.length < 10) {
       const id = 'a' + Date.now();
-      mgArrows = [...mgArrows, { id, x1: mgDragStart.x, y1: mgDragStart.y, x2: pos.x, y2: pos.y, color: mgArrowColor, label: 'Arrow ' + (mgArrows.length + 1) }];
+      mgArrows = [...mgArrows, { id, x1: mgDragStart.x, y1: mgDragStart.y, x2: pos.x, y2: pos.y, color: mgArrowColor, label: 'Player ' + (mgArrows.length + 1) }];
       mgPush();
       mgSelected = id;
       mgDrawMode = false;
@@ -2671,7 +2671,7 @@ function mgHitTest(arr, x, y) {
   return Math.sqrt(nx*nx+ny*ny) < 14;
 }
 
-function mgDrawArrow(ctx, x1, y1, x2, y2, color, selected) {
+function mgDrawArrow(ctx, x1, y1, x2, y2, color, selected, label) {
   const dx = x2-x1, dy = y2-y1, len = Math.sqrt(dx*dx+dy*dy);
   if (len < 5) return;
   const ang = Math.atan2(dy, dx);
@@ -2700,6 +2700,22 @@ function mgDrawArrow(ctx, x1, y1, x2, y2, color, selected) {
     ctx.strokeStyle = color; ctx.lineWidth = 2;
     ctx.stroke();
   }
+  // Label near the tail of the arrow
+  if (label) {
+    const perp = ang - Math.PI / 2;
+    const lx = x1 + Math.cos(ang) * Math.min(len * 0.28, 40) + Math.cos(perp) * 14;
+    const ly = y1 + Math.sin(ang) * Math.min(len * 0.28, 40) + Math.sin(perp) * 14;
+    const fs = Math.max(11, Math.min(14, len * 0.07));
+    ctx.font = `bold ${fs}px Orbitron, monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Dark outline for readability on any map
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(0,0,0,0.75)';
+    ctx.strokeText(label, lx, ly);
+    ctx.fillStyle = color;
+    ctx.fillText(label, lx, ly);
+  }
   ctx.restore();
 }
 
@@ -2707,9 +2723,9 @@ function mgDraw() {
   if (!mgCtx || !mgCanvas) return;
   const W = mgCanvas.width, H = mgCanvas.height;
   mgCtx.clearRect(0, 0, W, H);
-  mgArrows.forEach(a => mgDrawArrow(mgCtx, a.x1, a.y1, a.x2, a.y2, a.color, a.id === mgSelected));
+  mgArrows.forEach(a => mgDrawArrow(mgCtx, a.x1, a.y1, a.x2, a.y2, a.color, a.id === mgSelected, a.label));
   if (mgDrawMode && mgDrawing && mgDragStart && mgDragCur) {
-    mgDrawArrow(mgCtx, mgDragStart.x, mgDragStart.y, mgDragCur.x, mgDragCur.y, mgArrowColor, false);
+    mgDrawArrow(mgCtx, mgDragStart.x, mgDragStart.y, mgDragCur.x, mgDragCur.y, mgArrowColor, false, null);
   }
   mgCanvas.className = mgDrawMode ? 'mode-draw' : '';
   mgUpdateBtns();

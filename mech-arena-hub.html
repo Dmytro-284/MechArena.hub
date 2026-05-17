@@ -199,6 +199,55 @@ select:focus{border-color:var(--acc);}
 .calc-settings-below.visible{display:block;}
 .calc-settings-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
 .calc-selected-badge{background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;margin-bottom:12px;}
+
+/* ===== GEAR HUB TYPE SWITCHER ===== */
+.gh-type-row{display:flex;gap:0;border-bottom:1px solid var(--brd);}
+.gh-type-btn{flex:1;padding:9px 6px;background:transparent;border:none;color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;border-right:1px solid var(--brd);}
+.gh-type-btn:last-child{border-right:none;}
+.gh-type-btn:hover{color:var(--acc);background:rgba(0,212,255,.04);}
+.gh-type-btn.active{color:var(--acc);background:rgba(0,212,255,.08);}
+.wep-group-label{padding:6px 10px 4px;font-family:'Orbitron',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;border-bottom:1px solid rgba(26,58,92,.3);}
+.wep-item{display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;border:1px solid transparent;border-radius:3px;margin:2px 6px;transition:all .15s;}
+.wep-item:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.15);}
+.wep-item.active{background:rgba(0,212,255,.1);border-color:var(--acc);}
+.wep-energy-badge{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--acc);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:2px;padding:2px 6px;white-space:nowrap;}
+.wep-detail-header{padding:24px;background:linear-gradient(135deg,rgba(0,212,255,.06) 0%,transparent 60%);border-bottom:1px solid var(--brd);}
+.wep-detail-name{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;margin-bottom:8px;}
+.wep-stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;padding:20px;}
+
+/* ===== COMPARE ===== */
+.cmp-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+.cmp-slot{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;transition:border-color .2s;}
+.cmp-slot.filled{border-color:var(--brd);}
+.cmp-slot-num{font-family:'Orbitron',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;}
+.cmp-slot-empty{color:var(--dim);font-size:12px;margin:12px 0;}
+.cmp-slot select{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 9px;font-family:'Rajdhani',sans-serif;font-size:13px;border-radius:2px;outline:none;transition:border-color .2s;}
+.cmp-slot select:focus{border-color:var(--acc);}
+.cmp-mech-icon{font-size:50px;line-height:1;margin:4px 0;}
+.cmp-mech-name{font-family:'Orbitron',monospace;font-size:12px;font-weight:900;}
+.cmp-mech-sub{font-size:11px;color:var(--dim);}
+.cmp-clear{position:absolute;top:8px;right:8px;background:transparent;border:1px solid var(--brd);color:var(--dim);font-size:11px;cursor:pointer;padding:2px 7px;border-radius:2px;line-height:1.4;transition:all .15s;}
+.cmp-clear:hover{border-color:var(--red);color:var(--red);}
+.cmp-table{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;}
+.cmp-thead{display:grid;grid-template-columns:150px repeat(3,1fr);background:rgba(0,212,255,.05);border-bottom:1px solid var(--brd);}
+.cmp-th{padding:11px 14px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:1px;text-align:center;border-right:1px solid var(--brd);}
+.cmp-th:last-child{border-right:none;}
+.cmp-th:first-child{text-align:left;color:var(--dim);}
+.cmp-row{display:grid;grid-template-columns:150px repeat(3,1fr);border-bottom:1px solid rgba(26,58,92,.25);}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-row:hover{background:rgba(0,212,255,.02);}
+.cmp-label{padding:11px 14px;font-size:11px;color:var(--dim);font-family:'Orbitron',monospace;letter-spacing:.5px;border-right:1px solid var(--brd);display:flex;align-items:center;}
+.cmp-cell{padding:10px 14px;text-align:center;border-right:1px solid rgba(26,58,92,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+.cmp-cell:last-child{border-right:none;}
+.cmp-val{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--txt);}
+.cmp-val.best{color:var(--acc3);}
+.cmp-val.worst{color:var(--dim);}
+.cmp-val.plain{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;}
+.cmp-val.plain.best{color:var(--acc3);font-weight:700;}
+.cmp-bar-wrap{width:80%;background:var(--bg);border:1px solid var(--brd);border-radius:2px;height:4px;}
+.cmp-bar{height:100%;border-radius:2px;transition:width .5s;}
+.cmp-dash{color:var(--brd);font-size:20px;}
+.cmp-section-head{grid-column:1/-1;background:rgba(0,212,255,.04);padding:7px 14px;font-family:'Orbitron',monospace;font-size:9px;color:var(--acc);letter-spacing:2px;border-bottom:1px solid rgba(26,58,92,.3);}
 </style>
 <script src="calc-data-list.js"></script>
 <script src="calc-data-mech-costs.js"></script>
@@ -219,6 +268,7 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('gear',this)">GEAR HUB</button>
   <button class="tab" onclick="switchTab('cheat',this)">CHEATSHEETS</button>
   <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
+  <button class="tab" onclick="switchTab('compare',this)">⚡ COMPARE</button>
 </div>
 
 <!-- ===== BUILD CALC ===== -->
@@ -314,25 +364,36 @@ select:focus{border-color:var(--acc);}
 <div class="gh-layout">
   <!-- SIDEBAR -->
   <div class="gh-sidebar">
-    <div class="gh-search">
-      <input type="text" id="mech-search" placeholder="🔍  Search mechs..." oninput="filterMechs()">
+    <div class="gh-type-row">
+      <button class="gh-type-btn active" id="gtype-mechs" onclick="setGearType('mechs')">⚙️ MECHS</button>
+      <button class="gh-type-btn" id="gtype-weapons" onclick="setGearType('weapons')">🔧 WEAPONS</button>
     </div>
-    <div class="gh-filters">
-      <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">ROLE:</span>
-      <button class="gf on" data-ftype="role" data-fval="all" onclick="toggleFilter(this)">ALL</button>
-      <button class="gf" data-ftype="role" data-fval="Attacker" onclick="toggleFilter(this)">ATK</button>
-      <button class="gf" data-ftype="role" data-fval="Scout" onclick="toggleFilter(this)">SCT</button>
-      <button class="gf" data-ftype="role" data-fval="Tank" onclick="toggleFilter(this)">TNK</button>
-      <button class="gf" data-ftype="role" data-fval="Support" onclick="toggleFilter(this)">SUP</button>
+    <div id="gh-mech-controls">
+      <div class="gh-search">
+        <input type="text" id="mech-search" placeholder="🔍  Search mechs..." oninput="filterMechs()">
+      </div>
+      <div class="gh-filters">
+        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">ROLE:</span>
+        <button class="gf on" data-ftype="role" data-fval="all" onclick="toggleFilter(this)">ALL</button>
+        <button class="gf" data-ftype="role" data-fval="Attacker" onclick="toggleFilter(this)">ATK</button>
+        <button class="gf" data-ftype="role" data-fval="Scout" onclick="toggleFilter(this)">SCT</button>
+        <button class="gf" data-ftype="role" data-fval="Tank" onclick="toggleFilter(this)">TNK</button>
+        <button class="gf" data-ftype="role" data-fval="Support" onclick="toggleFilter(this)">SUP</button>
+      </div>
+      <div class="gh-filters" style="border-top:none;padding-top:0">
+        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">RARITY:</span>
+        <button class="gf r-common on" data-ftype="rar" data-fval="all" onclick="toggleFilter(this)">ALL</button>
+        <button class="gf r-common" data-ftype="rar" data-fval="Common" onclick="toggleFilter(this)">CMN</button>
+        <button class="gf r-uncommon" data-ftype="rar" data-fval="Uncommon" onclick="toggleFilter(this)">UNC</button>
+        <button class="gf r-rare" data-ftype="rar" data-fval="Rare" onclick="toggleFilter(this)">RARE</button>
+        <button class="gf r-epic" data-ftype="rar" data-fval="Epic" onclick="toggleFilter(this)">EPIC</button>
+        <button class="gf r-legendary" data-ftype="rar" data-fval="Legendary" onclick="toggleFilter(this)">LEG</button>
+      </div>
     </div>
-    <div class="gh-filters" style="border-top:none;padding-top:0">
-      <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">RARITY:</span>
-      <button class="gf r-common on" data-ftype="rar" data-fval="all" onclick="toggleFilter(this)">ALL</button>
-      <button class="gf r-common" data-ftype="rar" data-fval="Common" onclick="toggleFilter(this)">CMN</button>
-      <button class="gf r-uncommon" data-ftype="rar" data-fval="Uncommon" onclick="toggleFilter(this)">UNC</button>
-      <button class="gf r-rare" data-ftype="rar" data-fval="Rare" onclick="toggleFilter(this)">RARE</button>
-      <button class="gf r-epic" data-ftype="rar" data-fval="Epic" onclick="toggleFilter(this)">EPIC</button>
-      <button class="gf r-legendary" data-ftype="rar" data-fval="Legendary" onclick="toggleFilter(this)">LEG</button>
+    <div id="gh-wep-search" style="display:none">
+      <div class="gh-search">
+        <input type="text" id="wep-search" placeholder="🔍  Search weapons..." oninput="filterWeapons()">
+      </div>
     </div>
     <div class="gh-list" id="mech-list"></div>
   </div>
@@ -626,6 +687,35 @@ select:focus{border-color:var(--acc);}
     </div>
   </div>
 </div>
+</div>
+
+<!-- ===== COMPARE ===== -->
+<div id="pane-compare" class="pane">
+  <div class="ctitle" style="margin-bottom:16px">Select up to 3 mechs to compare side by side</div>
+  <div class="cmp-slots">
+    <div class="cmp-slot" id="cmp-slot-0">
+      <div class="cmp-slot-num">SLOT 1</div>
+      <div class="cmp-slot-empty">Click to pick a mech</div>
+      <select onchange="setCmpSlot(0,this.value)">
+        <option value="">— Choose Mech —</option>
+      </select>
+    </div>
+    <div class="cmp-slot" id="cmp-slot-1">
+      <div class="cmp-slot-num">SLOT 2</div>
+      <div class="cmp-slot-empty">Click to pick a mech</div>
+      <select onchange="setCmpSlot(1,this.value)">
+        <option value="">— Choose Mech —</option>
+      </select>
+    </div>
+    <div class="cmp-slot" id="cmp-slot-2">
+      <div class="cmp-slot-num">SLOT 3</div>
+      <div class="cmp-slot-empty">Click to pick a mech</div>
+      <select onchange="setCmpSlot(2,this.value)">
+        <option value="">— Choose Mech —</option>
+      </select>
+    </div>
+  </div>
+  <div id="cmp-table-wrap"></div>
 </div>
 
 <script>
@@ -1503,6 +1593,310 @@ function calculateMod() {
 renderCalcTiles();
 renderPilotList();
 renderModList();
+
+// ===== GEAR HUB — MECHS / WEAPONS SWITCHER =====
+let ghType = 'mechs';
+let currentWeapon = null; // {groupLabel, itemIdx}
+
+function setGearType(type) {
+  ghType = type;
+  document.getElementById('gtype-mechs').classList.toggle('active', type === 'mechs');
+  document.getElementById('gtype-weapons').classList.toggle('active', type === 'weapons');
+  document.getElementById('gh-mech-controls').style.display = type === 'mechs' ? '' : 'none';
+  document.getElementById('gh-wep-search').style.display = type === 'weapons' ? '' : 'none';
+  document.getElementById('gh-detail').innerHTML = '<div class="gh-empty">← Select ' + (type === 'mechs' ? 'a mech' : 'a weapon') + ' to view details</div>';
+  if (type === 'mechs') {
+    buildMechList();
+  } else {
+    buildWeaponList();
+  }
+}
+
+function buildWeaponList() {
+  const list = document.getElementById('mech-list');
+  const q = (document.getElementById('wep-search').value || '').toLowerCase();
+  list.innerHTML = '';
+  WGROUPS.forEach(g => {
+    const filtered = g.items.filter(([, name]) => !q || name.toLowerCase().includes(q));
+    if (!filtered.length) return;
+    const label = document.createElement('div');
+    label.className = 'wep-group-label';
+    label.textContent = g.label;
+    list.appendChild(label);
+    filtered.forEach(([id, name, energyArr]) => {
+      const isActive = currentWeapon && currentWeapon.id === id;
+      const div = document.createElement('div');
+      div.className = 'wep-item' + (isActive ? ' active' : '');
+      div.onclick = () => selectWeapon(g.label, id, name, energyArr);
+      const baseName = name.replace(/\s*\(.*?\)/g, '').replace(/[★🆕]\s*/g, '').trim();
+      const isNew = name.includes('🆕');
+      const isBest = name.includes('★');
+      div.innerHTML = `
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+            ${isNew ? '<span style="color:var(--acc3);font-size:10px;margin-right:4px">NEW</span>' : ''}
+            ${isBest ? '<span style="color:var(--gold);font-size:10px;margin-right:4px">★</span>' : ''}
+            ${baseName}
+          </div>
+        </div>
+        <div class="wep-energy-badge">${energyArr[0]}E</div>`;
+      list.appendChild(div);
+    });
+  });
+}
+
+function filterWeapons() { buildWeaponList(); }
+
+const WEP_CAT_DESC = {
+  'ASSAULT': 'High fire rate, medium range. Best for sustained damage.',
+  'MISSILE': 'Area damage and splash. Great for bunched-up enemies.',
+  'BEAM': 'Continuous damage with precise aim. Strong at range.',
+  'CLOSE QUARTERS': 'High burst damage up close. Deadly in tight spaces.',
+  'SNIPER': 'Long range, high single-hit damage. Requires good aim.',
+  'GUIDED': 'Lock-on projectiles. Strong vs slow or large targets.',
+  'ARTILLERY': 'Arcing shots that clear zones. High area suppression.',
+  'HEAVY DUTY': 'Slow but devastating. Built for tanky mechs.',
+  'BARRAGE': 'Rapid multi-shot salvos. Overwhelm enemies with volume.',
+  'EARLY GAME': 'Starter weapons. Replace as soon as possible.'
+};
+
+function selectWeapon(groupLabel, id, name, energyArr) {
+  currentWeapon = { id, groupLabel };
+  buildWeaponList();
+  const baseName = name.replace(/\s*\(.*?\)/g, '').replace(/[★🆕]\s*/g, '').trim();
+  const isNew = name.includes('🆕');
+  const isBest = name.includes('★');
+  const desc = WEP_CAT_DESC[groupLabel] || '';
+  document.getElementById('gh-detail').innerHTML = `
+    <div class="wep-detail-header">
+      <div style="font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:6px">${groupLabel}</div>
+      <div class="wep-detail-name">${baseName}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+        <span class="badge badge-role">${groupLabel}</span>
+        ${isBest ? '<span class="badge" style="background:rgba(255,215,0,.12);color:var(--gold);border:1px solid rgba(255,215,0,.3)">★ META PICK</span>' : ''}
+        ${isNew ? '<span class="badge" style="background:rgba(127,255,0,.1);color:var(--acc3);border:1px solid rgba(127,255,0,.3)">🆕 NEW</span>' : ''}
+      </div>
+    </div>
+    <div class="wep-stat-grid">
+      <div class="stat-block">
+        <div class="stat-block-label">Energy Cost</div>
+        <div class="stat-block-val">${energyArr[0]}E</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block-label">Category</div>
+        <div class="stat-block-val" style="font-size:13px;font-family:'Rajdhani',sans-serif;font-weight:700">${groupLabel}</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block-label">Weapon ID</div>
+        <div class="stat-block-val" style="font-size:11px;color:var(--dim)">${id}</div>
+      </div>
+    </div>
+    <div style="padding:0 20px 20px">
+      <div class="tip">${desc}</div>
+      <div style="margin-top:16px">
+        <div class="ctitle">Energy Efficiency</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.7">
+          At <strong>${energyArr[0]}E</strong> this weapon uses
+          <strong style="color:${energyArr[0] <= 8 ? 'var(--acc3)' : energyArr[0] <= 12 ? 'var(--acc)' : 'var(--acc2)'}">${Math.round(energyArr[0] / 32 * 100)}%</strong>
+          of a 32E mech's total capacity.<br>
+          ${energyArr[0] <= 8 ? 'Low energy — pairs well with a second weapon.' :
+            energyArr[0] <= 12 ? 'Medium energy — balanced single or dual loadout.' :
+            'High energy — typically used as the primary weapon only.'}
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div class="ctitle">Suggested Mechs</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+          ${Object.entries(MECHS).filter(([,m]) => m.energy >= energyArr[0]).slice(0,12).map(([,m]) =>
+            `<span style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:4px 10px;font-size:12px">${m.icon} ${m.name} (${m.energy}E)</span>`
+          ).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ===== COMPARE =====
+let compareSlots = [null, null, null];
+
+function buildCmpSelects() {
+  const opts = '<option value="">— Choose Mech —</option>' +
+    Object.entries(MECHS).sort((a,b) => a[1].name.localeCompare(b[1].name))
+      .map(([k,m]) => `<option value="${k}">${m.icon} ${m.name} (${m.rarity} · ${m.energy}E)</option>`).join('');
+  document.querySelectorAll('.cmp-slot select').forEach(s => { s.innerHTML = opts; });
+}
+
+function setCmpSlot(idx, key) {
+  compareSlots[idx] = key || null;
+  renderCmpSlot(idx);
+  renderCmpTable();
+}
+
+function clearCmpSlot(idx) {
+  compareSlots[idx] = null;
+  const sel = document.querySelector(`#cmp-slot-${idx} select`);
+  if (sel) sel.value = '';
+  renderCmpSlot(idx);
+  renderCmpTable();
+}
+
+function renderCmpSlot(idx) {
+  const slot = document.getElementById('cmp-slot-' + idx);
+  const key = compareSlots[idx];
+  const sel = slot.querySelector('select');
+  if (!key) {
+    slot.style.borderColor = '';
+    slot.innerHTML = `<div class="cmp-slot-num">SLOT ${idx + 1}</div>
+      <div class="cmp-slot-empty">Pick a mech below</div>`;
+    slot.appendChild(sel);
+    return;
+  }
+  const m = MECHS[key];
+  const rc = RARITY_COLOR[m.rarity];
+  slot.style.borderColor = rc + '66';
+  slot.innerHTML = `
+    <button class="cmp-clear" onclick="clearCmpSlot(${idx})">✕</button>
+    <div class="cmp-slot-num">SLOT ${idx + 1}</div>
+    <div class="cmp-mech-icon">${m.icon}</div>
+    <div class="cmp-mech-name" style="color:${rc}">${m.name}</div>
+    <div class="cmp-mech-sub">${m.role} · <span style="color:${rc}">${m.rarity}</span></div>
+    <div class="cmp-mech-sub">${m.energy}E · Tier ${m.gearTier}</div>`;
+  slot.appendChild(sel);
+  sel.value = key;
+}
+
+function renderCmpTable() {
+  const wrap = document.getElementById('cmp-table-wrap');
+  const filled = compareSlots.filter(Boolean);
+  if (filled.length < 2) {
+    wrap.innerHTML = filled.length < 1
+      ? '<div style="text-align:center;padding:30px;color:var(--dim);font-size:13px">Pick at least 2 mechs to start comparing</div>'
+      : '<div style="text-align:center;padding:30px;color:var(--dim);font-size:13px">Pick one more mech to compare</div>';
+    return;
+  }
+  const mechs = compareSlots.map(k => k ? MECHS[k] : null);
+  const maxRank = k => k ? Math.max(...Object.keys(MECHS[k].ranks).map(Number)) : 0;
+  const getRd = k => k ? MECHS[k].ranks[maxRank(k)] : null;
+
+  // collect numeric values for highlighting
+  function bestWorst(vals) {
+    const nums = vals.map(v => typeof v === 'number' ? v : -Infinity);
+    const max = Math.max(...nums);
+    const min = Math.min(...nums.filter(v => v > -Infinity));
+    return { max, min };
+  }
+
+  const hpVals = compareSlots.map(k => { const rd = getRd(k); return rd ? rd.hp : null; });
+  const spdVals = compareSlots.map(k => k ? MECHS[k].speed : null);
+  const enVals = compareSlots.map(k => k ? MECHS[k].energy : null);
+  const tierVals = compareSlots.map(k => k ? MECHS[k].gearTier : null);
+
+  function cellClass(val, bw, invert) {
+    if (val === null) return '';
+    if (val === bw.max && !invert) return 'best';
+    if (val === bw.min && !invert && bw.min !== bw.max) return 'worst';
+    if (val === bw.min && invert) return 'best';
+    return '';
+  }
+
+  function numRow(label, vals, suffix, bw, invert, barMax) {
+    const cells = compareSlots.map((k, i) => {
+      if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+      const v = vals[i];
+      const cls = cellClass(v, bw, invert);
+      const pct = barMax ? Math.round(v / barMax * 100) : 0;
+      const barColor = cls === 'best' ? 'var(--acc3)' : cls === 'worst' ? 'var(--red)' : 'var(--acc)';
+      return `<div class="cmp-cell">
+        <span class="cmp-val ${cls}">${v.toLocaleString()}${suffix}</span>
+        ${barMax ? `<div class="cmp-bar-wrap"><div class="cmp-bar" style="width:${pct}%;background:${barColor}"></div></div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="cmp-row"><div class="cmp-label">${label}</div>${cells}</div>`;
+  }
+
+  function textRow(label, vals) {
+    const cells = compareSlots.map((k, i) => {
+      if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+      const rc = i === 0 ? 'var(--acc)' : i === 1 ? 'var(--epic)' : 'var(--gold)';
+      return `<div class="cmp-cell"><span class="cmp-val plain">${vals[i]}</span></div>`;
+    }).join('');
+    return `<div class="cmp-row"><div class="cmp-label">${label}</div>${cells}</div>`;
+  }
+
+  function rarRow() {
+    const cells = compareSlots.map((k) => {
+      if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+      const m = MECHS[k]; const rc = RARITY_COLOR[m.rarity];
+      return `<div class="cmp-cell"><span class="cmp-val plain" style="color:${rc}">${m.rarity}</span></div>`;
+    }).join('');
+    return `<div class="cmp-row"><div class="cmp-label">Rarity</div>${cells}</div>`;
+  }
+
+  function abilRow() {
+    const cells = compareSlots.map((k) => {
+      if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+      const m = MECHS[k];
+      return `<div class="cmp-cell">
+        <span class="cmp-val plain" style="color:var(--acc2);font-size:11px">${m.ability.name}</span>
+        <span style="font-size:10px;color:var(--dim);line-height:1.4;max-width:160px;text-align:center">${m.ability.desc.substring(0,80)}${m.ability.desc.length>80?'…':''}</span>
+      </div>`;
+    }).join('');
+    return `<div class="cmp-row" style="align-items:start"><div class="cmp-label" style="padding-top:14px">Ability</div>${cells}</div>`;
+  }
+
+  const headCells = compareSlots.map((k, i) => {
+    if (!k) return '<div class="cmp-th" style="color:var(--brd)">EMPTY</div>';
+    const m = MECHS[k]; const rc = RARITY_COLOR[m.rarity];
+    return `<div class="cmp-th" style="color:${rc}">${m.icon} ${m.name}</div>`;
+  }).join('');
+
+  const hpBW = bestWorst(hpVals.map(v => v ?? -Infinity));
+  const spdBW = bestWorst(spdVals.map(v => v ?? -Infinity));
+  const enBW = bestWorst(enVals.map(v => v ?? -Infinity));
+  const tierBW = bestWorst(tierVals.map(v => v ? -v : -Infinity));
+
+  wrap.innerHTML = `<div class="cmp-table">
+    <div class="cmp-thead">
+      <div class="cmp-th">STAT</div>${headCells}
+    </div>
+    <div class="cmp-row"><div class="cmp-section-head">COMBAT STATS</div></div>
+    ${numRow('HP (Max Rank)', hpVals, '', hpBW, false, HP_MAX)}
+    ${numRow('Speed', spdVals, ' km/h', spdBW, false, SPEED_MAX)}
+    ${numRow('Max Energy', enVals, 'E', enBW, false, 32)}
+    <div class="cmp-row"><div class="cmp-section-head">PROFILE</div></div>
+    ${textRow('Role', compareSlots.map(k => k ? MECHS[k].role : '—'))}
+    ${rarRow()}
+    ${numRow('Gear Tier', tierVals, '', bestWorst(tierVals.map(v => v ? -v : -Infinity)), false, 0)}
+    ${numRow('Start Rank', compareSlots.map(k => k ? MECHS[k].startRank : null), '', bestWorst(compareSlots.map(k => k ? -MECHS[k].startRank : -Infinity)), false, 0)}
+    <div class="cmp-row"><div class="cmp-section-head">ABILITY</div></div>
+    ${abilRow()}
+    <div class="cmp-row"><div class="cmp-section-head">PROS &amp; CONS</div></div>
+    ${compareSlots.map((k,i) => '').join('')}
+    <div class="cmp-row" style="align-items:start">
+      <div class="cmp-label">Pros</div>
+      ${compareSlots.map(k => {
+        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+        return `<div class="cmp-cell" style="align-items:start;text-align:left">${MECHS[k].pros.map(p=>`<div style="font-size:11px;color:var(--acc3);padding:2px 0">✓ ${p}</div>`).join('')}</div>`;
+      }).join('')}
+    </div>
+    <div class="cmp-row" style="align-items:start">
+      <div class="cmp-label">Cons</div>
+      ${compareSlots.map(k => {
+        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+        return `<div class="cmp-cell" style="align-items:start;text-align:left">${MECHS[k].cons.map(c=>`<div style="font-size:11px;color:var(--red);padding:2px 0">✗ ${c}</div>`).join('')}</div>`;
+      }).join('')}
+    </div>
+    <div class="cmp-row" style="align-items:start">
+      <div class="cmp-label">Best Builds</div>
+      ${compareSlots.map(k => {
+        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+        return `<div class="cmp-cell" style="align-items:start;text-align:left">${MECHS[k].bestBuilds.map(b=>`<div style="font-size:11px;color:var(--txt);padding:2px 0">• ${b}</div>`).join('')}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+// Init compare selects
+buildCmpSelects();
 </script>
 </body>
 </html>

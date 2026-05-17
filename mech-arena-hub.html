@@ -840,17 +840,17 @@ select:focus{border-color:var(--acc);}
 
 <!-- ===== HANGAR RATE ===== -->
 <div id="pane-hangar" class="pane">
-  <!-- Search + count row -->
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-    <input type="text" class="calc-search-input" id="hr-search" placeholder="🔍  Search mechs..." oninput="hrSearchChange(this.value)" style="margin-bottom:0;flex:1;max-width:340px">
-    <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap">0/5</span>
+  <!-- Search row (same as calc-type-row) -->
+  <div class="calc-type-row">
+    <input type="text" class="calc-search-input" id="hr-search" placeholder="🔍  Search mechs..." oninput="hrSearchChange(this.value)" style="margin-bottom:0;flex:1">
+    <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);white-space:nowrap">0/5</span>
     <div id="hr-warn" style="display:none;padding:6px 12px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:11px;color:var(--acc2)">
       Hangar is full — remove a mech first.
     </div>
   </div>
-  <!-- Full-width tile grid -->
-  <div style="background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:14px;margin-bottom:14px">
-    <div class="calc-tiles" id="hr-tile-wrap" style="grid-template-columns:repeat(auto-fill,minmax(86px,1fr))"></div>
+  <!-- Tile grid (same as calc-tile-wrap) -->
+  <div class="calc-tile-wrap">
+    <div class="calc-tiles" id="hr-tile-wrap"></div>
   </div>
   <!-- Selected mechs bar + Rate button -->
   <div class="card" style="padding:14px;margin-bottom:14px">
@@ -1531,6 +1531,7 @@ function switchTab(n,b){
   document.getElementById('pane-'+n).classList.add('active');
   b.classList.add('active');
   history.replaceState(null,'','#'+n);
+  if(n==='hangar') renderHangarTiles();
 }
 
 // Init
@@ -2323,11 +2324,10 @@ function renderHangarTiles(q = '') {
   wrap.innerHTML = mechs.map(([k, m]) => {
     const sel = hangarSlots.includes(k);
     const rc = RARITY_COLOR[m.rarity];
-    return `<div class="hr-tile${sel ? ' selected' : ''}" onclick="toggleHangarSlot('${k}')"
-      style="border-color:${sel ? rc : 'var(--brd)'}" title="${m.name} · ${m.role} · ${m.rarity}">
-      ${sel ? `<span style="position:absolute;top:3px;right:5px;font-size:9px;color:${rc};font-weight:900">✓</span>` : ''}
-      <div class="hr-tile-icon">${m.icon}</div>
-      <div class="hr-tile-name" style="color:${sel ? rc : 'var(--txt)'}">${m.name}</div>
+    return `<div class="calc-tile${sel ? ' selected' : ''}" onclick="toggleHangarSlot('${k}')"
+      style="border-bottom:2px solid ${rc}" title="${m.name} · ${m.role} · ${m.rarity}">
+      <div class="calc-tile-icon">${m.icon}</div>
+      <div class="calc-tile-name">${m.name}</div>
     </div>`;
   }).join('');
 }

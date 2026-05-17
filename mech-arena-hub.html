@@ -840,32 +840,27 @@ select:focus{border-color:var(--acc);}
 
 <!-- ===== HANGAR RATE ===== -->
 <div id="pane-hangar" class="pane">
-<div class="calc-layout">
-  <!-- Left: mech tile picker (matches calc-left style) -->
-  <div class="calc-left">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-      <input type="text" class="calc-search-input" id="hr-search" placeholder="🔍  Search mechs..." oninput="hrSearchChange(this.value)" style="margin-bottom:0;flex:1">
-      <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);white-space:nowrap;flex-shrink:0">0/5</span>
-    </div>
-    <div id="hr-warn" style="display:none;margin-bottom:6px;padding:7px 10px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:11px;color:var(--acc2)">
+  <!-- Search + count row -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <input type="text" class="calc-search-input" id="hr-search" placeholder="🔍  Search mechs..." oninput="hrSearchChange(this.value)" style="margin-bottom:0;flex:1;max-width:340px">
+    <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap">0/5</span>
+    <div id="hr-warn" style="display:none;padding:6px 12px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:11px;color:var(--acc2)">
       Hangar is full — remove a mech first.
     </div>
-    <div class="ci-list" style="margin-top:4px">
-      <div class="calc-tiles" id="hr-tile-wrap"></div>
-    </div>
   </div>
-  <!-- Right: selected mechs + rating result -->
-  <div class="calc-right">
-    <div class="card" style="padding:14px">
-      <div class="ctitle" style="margin-bottom:10px">Selected Mechs <span style="color:var(--dim);font-weight:400;font-family:'Montserrat',sans-serif;font-size:11px;text-transform:none;letter-spacing:0">(pick up to 5)</span></div>
-      <div class="hr-selected-bar" id="hr-selected-bar">
-        <span style="color:var(--dim);font-size:12px">No mechs selected — pick from the list</span>
-      </div>
-      <button class="calc-btn" onclick="rateHangar()">🏆 RATE MY HANGAR</button>
-    </div>
-    <div id="hr-result" style="display:none"></div>
+  <!-- Full-width tile grid -->
+  <div style="background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:14px;margin-bottom:14px">
+    <div class="calc-tiles" id="hr-tile-wrap" style="grid-template-columns:repeat(auto-fill,minmax(86px,1fr))"></div>
   </div>
-</div>
+  <!-- Selected mechs bar + Rate button -->
+  <div class="card" style="padding:14px;margin-bottom:14px">
+    <div class="ctitle" style="margin-bottom:10px">Selected Mechs <span style="color:var(--dim);font-weight:400;font-family:'Montserrat',sans-serif;font-size:11px;text-transform:none;letter-spacing:0">(pick up to 5)</span></div>
+    <div class="hr-selected-bar" id="hr-selected-bar">
+      <span style="color:var(--dim);font-size:12px">No mechs selected — pick from the list</span>
+    </div>
+    <button class="calc-btn" onclick="rateHangar()">🏆 RATE MY HANGAR</button>
+  </div>
+  <div id="hr-result" style="display:none"></div>
 </div>
 
 <!-- ===== MAP GUIDE ===== -->

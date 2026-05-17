@@ -374,7 +374,7 @@ select:focus{border-color:var(--acc);}
       <option value="killshot">Killshot — Scout · Medium · 24E</option>
       <option value="ares">Ares — Tank · Medium · 24E</option>
       <option value="shadow">Shadow — Scout · Light · 16E</option>
-      <option value="guardian">Guardian — Attacker · Heavy · 32E</option>
+      <option value="guardian">Guardian — Support · Heavy · 32E</option>
       <option value="cheetah">Cheetah — Scout · Light · 16E</option>
       <option value="zephyr">Zephyr — Support · Medium · 24E</option>
       <option value="brickhouse">Brickhouse — Tank · Medium · 24E</option>
@@ -840,35 +840,32 @@ select:focus{border-color:var(--acc);}
 
 <!-- ===== HANGAR RATE ===== -->
 <div id="pane-hangar" class="pane">
-  <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;align-items:start">
-    <!-- Left: mech picker -->
-    <div>
-      <div class="ctitle" style="margin-bottom:12px">Pick Your Hangar (up to 5 mechs)</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <input type="text" id="hr-search" placeholder="🔍 Search mechs..." oninput="hrSearchChange(this.value)"
-          style="flex:1;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;">
-        <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap">0/5</span>
-      </div>
-      <div id="hr-warn" style="display:none;margin-bottom:8px;padding:8px 12px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:12px;color:var(--acc2)">
-        Hangar is full — remove a mech first.
-      </div>
-      <div style="background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:10px;max-height:520px;overflow-y:auto;">
-        <div class="hr-grid" id="hr-tile-wrap"></div>
-      </div>
+<div class="calc-layout">
+  <!-- Left: mech tile picker (matches calc-left style) -->
+  <div class="calc-left">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <input type="text" class="calc-search-input" id="hr-search" placeholder="🔍  Search mechs..." oninput="hrSearchChange(this.value)" style="margin-bottom:0;flex:1">
+      <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);white-space:nowrap;flex-shrink:0">0/5</span>
     </div>
-    <!-- Right: selected + result -->
-    <div>
-      <div class="ctitle" style="margin-bottom:10px">Selected Mechs</div>
-      <div class="hr-selected-bar" id="hr-selected-bar">
-        <span style="color:var(--dim);font-size:12px">No mechs selected yet — pick up to 5</span>
-      </div>
-      <button onclick="rateHangar()" style="width:100%;padding:11px;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05));border:1px solid var(--acc);color:var(--acc);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all .2s;margin-bottom:16px;"
-        onmouseover="this.style.background='rgba(0,212,255,.2)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05))'">
-        🏆 RATE MY HANGAR
-      </button>
-      <div id="hr-result" style="display:none"></div>
+    <div id="hr-warn" style="display:none;margin-bottom:6px;padding:7px 10px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:11px;color:var(--acc2)">
+      Hangar is full — remove a mech first.
+    </div>
+    <div class="ci-list" style="margin-top:4px">
+      <div class="calc-tiles" id="hr-tile-wrap"></div>
     </div>
   </div>
+  <!-- Right: selected mechs + rating result -->
+  <div class="calc-right">
+    <div class="card" style="padding:14px">
+      <div class="ctitle" style="margin-bottom:10px">Selected Mechs <span style="color:var(--dim);font-weight:400;font-family:'Montserrat',sans-serif;font-size:11px;text-transform:none;letter-spacing:0">(pick up to 5)</span></div>
+      <div class="hr-selected-bar" id="hr-selected-bar">
+        <span style="color:var(--dim);font-size:12px">No mechs selected — pick from the list</span>
+      </div>
+      <button class="calc-btn" onclick="rateHangar()">🏆 RATE MY HANGAR</button>
+    </div>
+    <div id="hr-result" style="display:none"></div>
+  </div>
+</div>
 </div>
 
 <!-- ===== MAP GUIDE ===== -->
@@ -908,8 +905,9 @@ select:focus{border-color:var(--acc);}
       </div>
     </div>
     <!-- Canvas -->
-    <div style="background:#000;position:relative">
-      <canvas id="mg-draw-canvas"></canvas>
+    <div style="position:relative;background:#060c14;line-height:0">
+      <img id="mg-bg-img" alt="" style="display:block;width:100%;opacity:1" onerror="this.style.opacity='.3'">
+      <canvas id="mg-draw-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
     </div>
     <div class="mg-hint" id="mg-hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
@@ -987,14 +985,14 @@ const MECHS = {
     bestBuilds:['2× Arc Torrent 8 (shield + CQC)','Disc Launcher 8 + Missile Rack 8','2× Carbine 8'],
     ranks:{3:{hp:75000,energy:12},4:{hp:95400,energy:16},5:{hp:121300,energy:18},6:{hp:154300,energy:24}}},
 
-  shadow:{name:'Shadow',role:'Scout',rarity:'Common',energy:16,speed:22,icon:'👤',color:'#334455',gearTier:2,startRank:1,
+  shadow:{name:'Shadow',role:'Scout',rarity:'Rare',energy:16,speed:22,icon:'👤',color:'#334455',gearTier:2,startRank:1,
     ability:{name:'Dash',desc:'Short-range quick dash for repositioning. Basic mobility tool.'},
     pros:['Fast for a light mech','Dash helps with beacon capture'],
     cons:['16E only — very limited','Generic dash with no damage','Outclassed by Killshot, Slingshot, Eclipse immediately'],
     bestBuilds:['Shotgun 4 + Fragment Gun 6'],
     ranks:{1:{hp:22500,energy:4},2:{hp:28600,energy:6},3:{hp:36400,energy:8},4:{hp:46200,energy:10},5:{hp:58800,energy:12},6:{hp:74800,energy:16}}},
 
-  guardian:{name:'Guardian',role:'Attacker',rarity:'Rare',energy:32,speed:16,icon:'💉',color:'#22aaaa',gearTier:3,startRank:3,
+  guardian:{name:'Guardian',role:'Support',rarity:'Rare',energy:32,speed:16,icon:'💉',color:'#22aaaa',gearTier:3,startRank:3,
     ability:{name:'Regen Shot',desc:'Fires up to 3 healing missiles at allied mechs that restore significant HP. Each missile also slightly heals Guardian on impact at max level.'},
     pros:['32E heavy — supports any weapon combo','Only Rare healer with offensive potential','Regen Shot heals allies from range','Good HP pool'],
     cons:['16 km/h — very slow for an attacker','Ability can be countered by Guardian\'s ECM (Hemlock)','Easy backline target'],
@@ -1537,6 +1535,7 @@ function switchTab(n,b){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('pane-'+n).classList.add('active');
   b.classList.add('active');
+  history.replaceState(null,'','#'+n);
 }
 
 // Init
@@ -2450,58 +2449,58 @@ function rateHangar() {
 
 // ===== MAP GUIDE =====
 const MAP_CPC = [
-  { name: 'Biogear Lab',       file: 'Biogear lab.png' },
-  { name: 'Campaings Forge',   file: 'Campaings forge.png' },
-  { name: 'Elon Station Gray', file: 'Elon station gray.png' },
-  { name: 'Forbidden City',    file: 'Forbidden city.png' },
-  { name: 'Imperial Temple',   file: 'Imperial temple.png' },
-  { name: 'Mech Arena',        file: 'Mech Arena.png' },
-  { name: 'Mesa Verde Annex',  file: 'Mesa verde annex.png' },
-  { name: 'Paradise Plaza',    file: 'Paradise plaza.png' },
-  { name: 'Patterson Station', file: 'Patterson station.png' },
-  { name: 'Scarlet Atrium',    file: 'Scarlet atrium.png' },
-  { name: 'Site 313',          file: 'Site 313.png' },
-  { name: 'Skyship 11',        file: 'Skyship 11.png' },
-  { name: 'Smokestacks',       file: 'Smokestacks.png' },
+  { name: 'Biogear Lab',       file: 'Biogear lab.png',        slug: 'biogear-lab' },
+  { name: 'Campaings Forge',   file: 'Campaings forge.png',    slug: 'campaings-forge' },
+  { name: 'Elon Station Gray', file: 'Elon station gray.png',  slug: 'elon-station-gray' },
+  { name: 'Forbidden City',    file: 'Forbidden city.png',     slug: 'forbidden-city' },
+  { name: 'Imperial Temple',   file: 'Imperial temple.png',    slug: 'imperial-temple' },
+  { name: 'Mech Arena',        file: 'Mech Arena.png',         slug: 'mech-arena' },
+  { name: 'Mesa Verde Annex',  file: 'Mesa verde annex.png',   slug: 'mesa-verde-annex' },
+  { name: 'Paradise Plaza',    file: 'Paradise plaza.png',     slug: 'paradise-plaza' },
+  { name: 'Patterson Station', file: 'Patterson station.png',  slug: 'patterson-station' },
+  { name: 'Scarlet Atrium',    file: 'Scarlet atrium.png',     slug: 'scarlet-atrium' },
+  { name: 'Site 313',          file: 'Site 313.png',           slug: 'site-313' },
+  { name: 'Skyship 11',        file: 'Skyship 11.png',         slug: 'skyship-11' },
+  { name: 'Smokestacks',       file: 'Smokestacks.png',        slug: 'smokestacks' },
 ];
 
 const MAP_5V5 = [
-  { name: 'Acropolis',        file: 'Acropolis.png' },
-  { name: 'Agora',            file: 'Agora.png' },
-  { name: 'Artifact X',       file: 'Artifact X.png' },
-  { name: 'Backalley',        file: 'Backalley.png' },
-  { name: 'Beatdown Club',    file: 'Beatdown club.png' },
-  { name: 'Central Station',  file: 'Central station.png' },
-  { name: 'Colonnade',        file: 'Colonnade.png' },
-  { name: 'Constant',         file: 'Constant.png' },
-  { name: 'Container City',   file: 'Container city.png' },
-  { name: 'Crane Yard',       file: 'Crane yard.png' },
-  { name: 'Crimson Works',    file: 'Crimson works.png' },
-  { name: 'Dockyard',         file: 'Dockyard.png' },
-  { name: 'EQuilibrium',      file: 'Equilibrium.png' },
-  { name: 'Fortune Towers',   file: 'Fortune towers.png' },
-  { name: 'Freight Depot',    file: 'Freight depot.png' },
-  { name: 'Frost Rink',       file: 'Frost rink.png' },
-  { name: 'Ground Zero',      file: 'Ground zero.png' },
-  { name: 'Hanging Gardens',  file: 'Hanging gardens.png' },
-  { name: 'High Bridge',      file: 'High bridge.png' },
-  { name: 'Hope Launchpad',   file: 'Hope launchpad.png' },
-  { name: 'Imperial Temple',  file: 'Imperial temple.png' },
-  { name: 'Nebula Square',    file: 'Nebula sQuare.png' },
-  { name: 'Neon Central',     file: 'Neon central.png' },
-  { name: 'Paradise Plaza',   file: 'Paradise plaza.png' },
-  { name: 'Powder Parkway',   file: 'Powder parkway.png' },
-  { name: 'Shevchenko Park',  file: 'Shevchenko park.png' },
-  { name: 'Singularity',      file: 'Singularity.png' },
-  { name: 'Skyship 11',       file: 'Skyship 11.png' },
-  { name: 'Snowdrift Stage',  file: 'Snowdrift stage.png' },
-  { name: 'The Stacks',       file: 'The stacks.png' },
-  { name: 'Tunnel of Fate',   file: 'Tunnel of fate.png' },
-  { name: 'Two Arches',       file: 'Two arches.png' },
-  { name: 'VMD Lab',          file: 'VMD lab.png' },
-  { name: 'ZC Cargo Dock',    file: 'Z C Cargo dock.png' },
-  { name: 'ZC Control',       file: 'Z C control.png' },
-  { name: 'ZC Shop Floor',    file: 'Z C shop floor.png' },
+  { name: 'Acropolis',        file: 'Acropolis.png',          slug: 'acropolis' },
+  { name: 'Agora',            file: 'Agora.png',              slug: 'agora' },
+  { name: 'Artifact X',       file: 'Artifact X.png',         slug: 'artifact-x' },
+  { name: 'Backalley',        file: 'Backalley.png',          slug: 'backalley' },
+  { name: 'Beatdown Club',    file: 'Beatdown club.png',      slug: 'beatdown-club' },
+  { name: 'Central Station',  file: 'Central station.png',    slug: 'central-station' },
+  { name: 'Colonnade',        file: 'Colonnade.png',          slug: 'colonnade' },
+  { name: 'Constant',         file: 'Constant.png',           slug: 'constant' },
+  { name: 'Container City',   file: 'Container city.png',     slug: 'container-city' },
+  { name: 'Crane Yard',       file: 'Crane yard.png',         slug: 'crane-yard' },
+  { name: 'Crimson Works',    file: 'Crimson works.png',      slug: 'crimson-works' },
+  { name: 'Dockyard',         file: 'Dockyard.png',           slug: 'dockyard' },
+  { name: 'EQuilibrium',      file: 'Equilibrium.png',        slug: 'equilibrium' },
+  { name: 'Fortune Towers',   file: 'Fortune towers.png',     slug: 'fortune-towers' },
+  { name: 'Freight Depot',    file: 'Freight depot.png',      slug: 'freight-depot' },
+  { name: 'Frost Rink',       file: 'Frost rink.png',         slug: 'frost-rink' },
+  { name: 'Ground Zero',      file: 'Ground zero.png',        slug: 'ground-zero' },
+  { name: 'Hanging Gardens',  file: 'Hanging gardens.png',    slug: 'hanging-gardens' },
+  { name: 'High Bridge',      file: 'High bridge.png',        slug: 'high-bridge' },
+  { name: 'Hope Launchpad',   file: 'Hope launchpad.png',     slug: 'hope-launchpad' },
+  { name: 'Imperial Temple',  file: 'Imperial temple.png',    slug: 'imperial-temple' },
+  { name: 'Nebula Square',    file: 'Nebula sQuare.png',      slug: 'nebula-square' },
+  { name: 'Neon Central',     file: 'Neon central.png',       slug: 'neon-central' },
+  { name: 'Paradise Plaza',   file: 'Paradise plaza.png',     slug: 'paradise-plaza' },
+  { name: 'Powder Parkway',   file: 'Powder parkway.png',     slug: 'powder-parkway' },
+  { name: 'Shevchenko Park',  file: 'Shevchenko park.png',    slug: 'shevchenko-park' },
+  { name: 'Singularity',      file: 'Singularity.png',        slug: 'singularity' },
+  { name: 'Skyship 11',       file: 'Skyship 11.png',         slug: 'skyship-11' },
+  { name: 'Snowdrift Stage',  file: 'Snowdrift stage.png',    slug: 'snowdrift-stage' },
+  { name: 'The Stacks',       file: 'The stacks.png',         slug: 'the-stacks' },
+  { name: 'Tunnel of Fate',   file: 'Tunnel of fate.png',     slug: 'tunnel-of-fate' },
+  { name: 'Two Arches',       file: 'Two arches.png',         slug: 'two-arches' },
+  { name: 'VMD Lab',          file: 'VMD lab.png',            slug: 'vmd-lab' },
+  { name: 'ZC Cargo Dock',    file: 'Z C Cargo dock.png',     slug: 'zc-cargo-dock' },
+  { name: 'ZC Control',       file: 'Z C control.png',        slug: 'zc-control' },
+  { name: 'ZC Shop Floor',    file: 'Z C shop floor.png',     slug: 'zc-shop-floor' },
 ];
 
 let mgMode = 'cpc';
@@ -2516,6 +2515,7 @@ function setMgMode(mode) {
   document.getElementById('mg-btn-cpc').classList.toggle('active', mode === 'cpc');
   document.getElementById('mg-btn-5v5').classList.toggle('active', mode === '5v5');
   renderMgGrid();
+  history.replaceState(null, '', '#maps');
 }
 
 function renderMgGrid() {
@@ -2543,7 +2543,6 @@ let mgDrawing = false;
 let mgDragStart = null;
 let mgDragCur = null;
 let mgArrowColor = '#ff4444';
-let mgMapImg = null;
 let mgMapName = '';
 let mgCanvas = null;
 let mgCtx = null;
@@ -2574,6 +2573,7 @@ function openMgModal(idx) {
 
   document.getElementById('mg-color-pick').value = mgArrowColor;
   document.getElementById('mg-modal').classList.add('open');
+  history.replaceState(null, '', `#maps/${mgMode}/${m.slug}`);
 
   // Init canvas after modal is shown
   requestAnimationFrame(() => {
@@ -2595,19 +2595,18 @@ function openMgModal(idx) {
     mgCanvas.addEventListener('touchmove', mgOnMove, { passive: false });
     mgCanvas.addEventListener('touchend', mgOnUp);
 
-    // Load map image
-    mgMapImg = new Image();
-    mgMapImg.crossOrigin = 'anonymous';
-    mgMapImg.onload = () => {
-      mgCanvas.width = mgMapImg.naturalWidth || 552;
-      mgCanvas.height = mgMapImg.naturalHeight || 600;
+    // Load map via <img> tag (no CORS restriction for display)
+    const bgImg = document.getElementById('mg-bg-img');
+    bgImg.src = src;
+    bgImg.onload = () => {
+      mgCanvas.width = bgImg.naturalWidth || 552;
+      mgCanvas.height = bgImg.naturalHeight || 600;
       mgDraw();
     };
-    mgMapImg.onerror = () => {
+    bgImg.onerror = () => {
       mgCanvas.width = 552; mgCanvas.height = 600;
       mgDraw();
     };
-    mgMapImg.src = src;
     mgUpdateBtns();
   });
 }
@@ -2615,6 +2614,7 @@ function openMgModal(idx) {
 function closeMgModal() {
   document.getElementById('mg-modal').classList.remove('open');
   mgDrawMode = false; mgDrawing = false;
+  history.replaceState(null, '', '#maps');
 }
 
 function mgGetPos(e) {
@@ -2707,13 +2707,6 @@ function mgDraw() {
   if (!mgCtx || !mgCanvas) return;
   const W = mgCanvas.width, H = mgCanvas.height;
   mgCtx.clearRect(0, 0, W, H);
-  if (mgMapImg && mgMapImg.complete && mgMapImg.naturalWidth > 0) {
-    mgCtx.drawImage(mgMapImg, 0, 0, W, H);
-  } else {
-    mgCtx.fillStyle = '#060c14'; mgCtx.fillRect(0, 0, W, H);
-    mgCtx.fillStyle = '#1a3a5c'; mgCtx.font = '14px monospace';
-    mgCtx.textAlign = 'center'; mgCtx.fillText('Map image unavailable', W/2, H/2);
-  }
   mgArrows.forEach(a => mgDrawArrow(mgCtx, a.x1, a.y1, a.x2, a.y2, a.color, a.id === mgSelected));
   if (mgDrawMode && mgDrawing && mgDragStart && mgDragCur) {
     mgDrawArrow(mgCtx, mgDragStart.x, mgDragStart.y, mgDragCur.x, mgDragCur.y, mgArrowColor, false);
@@ -2776,23 +2769,37 @@ function mgColorChange(color) {
   }
 }
 
+function mgCompositeDataUrl() {
+  const off = document.createElement('canvas');
+  off.width = mgCanvas.width; off.height = mgCanvas.height;
+  const octx = off.getContext('2d');
+  try {
+    const bgImg = document.getElementById('mg-bg-img');
+    if (bgImg && bgImg.complete && bgImg.naturalWidth) octx.drawImage(bgImg, 0, 0, off.width, off.height);
+    octx.drawImage(mgCanvas, 0, 0);
+    return off.toDataURL('image/png'); // throws if cross-origin tainted
+  } catch(e) {
+    // Cross-origin tainted — return arrows-only canvas
+    return mgCanvas.toDataURL('image/png');
+  }
+}
+
 async function mgCopyClipboard() {
   const btn = document.getElementById('mg-copy-btn');
   try {
-    await new Promise((res, rej) => mgCanvas.toBlob(async b => {
-      try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]); res(); }
-      catch(e) { rej(e); }
-    }));
-    if (btn) { const prev = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = prev, 1800); }
+    const dataUrl = mgCompositeDataUrl();
+    const blob = await (await fetch(dataUrl)).blob();
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    if (btn) { const p = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = p, 1800); }
   } catch(e) {
-    if (btn) { const prev = btn.textContent; btn.textContent = '✗ Failed'; setTimeout(() => btn.textContent = prev, 1800); }
+    if (btn) { const p = btn.textContent; btn.textContent = '✗ Failed'; setTimeout(() => btn.textContent = p, 1800); }
   }
 }
 
 function mgDownload() {
   const a = document.createElement('a');
-  a.download = mgMapName.replace(/\s+/g, '_') + '_arrows.png';
-  a.href = mgCanvas.toDataURL('image/png'); a.click();
+  a.download = mgMapName.replace(/\s+/g, '_') + '_map.png';
+  a.href = mgCompositeDataUrl(); a.click();
 }
 
 // Keyboard shortcuts for undo/redo
@@ -2807,6 +2814,27 @@ document.addEventListener('keydown', e => {
 // Init hangar tiles and map grid on load
 renderHangarTiles();
 renderMgGrid();
+
+// ===== URL HASH ROUTING =====
+(function initFromHash() {
+  const hash = location.hash.replace('#', '');
+  if (!hash) return;
+  const parts = hash.split('/');
+  const tabName = parts[0];
+  const tabBtn = [...document.querySelectorAll('.tab')].find(b => {
+    const oc = b.getAttribute('onclick') || '';
+    return oc.includes("'" + tabName + "'");
+  });
+  if (tabBtn) switchTab(tabName, tabBtn);
+  if (tabName === 'maps' && parts[1] && parts[2]) {
+    const mode = parts[1], slug = parts[2];
+    if (mode !== mgMode) setMgMode(mode);
+    else renderMgGrid();
+    const maps = mode === 'cpc' ? MAP_CPC : MAP_5V5;
+    const idx = maps.findIndex(m => m.slug === slug);
+    if (idx >= 0) setTimeout(() => openMgModal(idx), 80);
+  }
+})();
 
 // ===== CURSOR GLOW =====
 document.addEventListener('mousemove', e => {

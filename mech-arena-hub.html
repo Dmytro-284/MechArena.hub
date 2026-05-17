@@ -310,6 +310,23 @@ select:focus{border-color:var(--acc);}
 .mg-modal-info{padding:14px 18px;font-size:13px;color:var(--dim);line-height:1.6;border-top:1px solid var(--brd);}
 .mg-cp-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
 .mg-cp{padding:4px 14px;border-radius:2px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--acc);}
+.mg-toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--brd);background:rgba(11,22,34,.95);}
+.mg-tbtn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:6px 12px;border-radius:3px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:.5px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap;}
+.mg-tbtn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.mg-tbtn.add{background:var(--acc);color:var(--bg);border-color:var(--acc);}
+.mg-tbtn.add:hover{opacity:.85;}
+.mg-tbtn.add.drawing{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.mg-tbtn.del{background:var(--red);color:#fff;border-color:var(--red);}
+.mg-tbtn.del:hover:not(:disabled){opacity:.85;}
+.mg-tbtn.sec{background:var(--bg);color:var(--dim);border-color:var(--brd);}
+.mg-tbtn.sec:hover:not(:disabled){border-color:var(--acc);color:var(--acc);}
+.mg-tbtn.ico{width:32px;height:32px;padding:0;background:var(--bg);color:var(--dim);border-color:var(--brd);font-size:14px;}
+.mg-tbtn.ico:hover:not(:disabled){border-color:var(--acc);color:var(--acc);}
+.mg-tbtn.grn{background:#22863a;color:#fff;border-color:#22863a;}
+.mg-tbtn.grn:hover{opacity:.85;}
+#mg-draw-canvas{display:block;width:100%;cursor:default;}
+#mg-draw-canvas.mode-draw{cursor:crosshair;}
+.mg-hint{text-align:center;font-size:11px;color:var(--dim);padding:8px 16px;letter-spacing:.5px;border-top:1px solid var(--brd);}
 </style>
 <script src="calc-data-list.js"></script>
 <script src="calc-data-mech-costs.js"></script>
@@ -865,12 +882,36 @@ select:focus{border-color:var(--acc);}
 
 <!-- Map modal -->
 <div class="mg-modal-overlay" id="mg-modal" onclick="if(event.target===this)closeMgModal()">
-  <div class="mg-modal-box">
+  <div class="mg-modal-box" style="max-width:580px">
     <div class="mg-modal-header">
-      <div class="mg-modal-title" id="mg-modal-title">Map Name</div>
-      <button class="mg-modal-close" onclick="closeMgModal()">✕ CLOSE</button>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="mg-modal-title" id="mg-modal-title">Map Name</div>
+        <div id="mg-mode-badge" style="font-size:9px;font-family:'Orbitron',monospace;padding:3px 8px;border-radius:2px"></div>
+      </div>
+      <button class="mg-modal-close" onclick="closeMgModal()">✕</button>
     </div>
-    <img class="mg-modal-img" id="mg-modal-img" src="" alt="" onerror="this.style.display='none'">
+    <!-- Arrow toolbar -->
+    <div class="mg-toolbar">
+      <button class="mg-tbtn add" id="mg-add-btn" onclick="mgAddArrow()">+ Add Arrow (0/10)</button>
+      <button class="mg-tbtn del" id="mg-del-btn" onclick="mgDeleteSelected()" disabled>🗑 Delete</button>
+      <button class="mg-tbtn sec" id="mg-reset-btn" onclick="mgReset()" disabled>↺ Reset</button>
+      <button class="mg-tbtn ico" id="mg-undo-btn" onclick="mgUndo()" disabled title="Undo (Ctrl+Z)">↩</button>
+      <button class="mg-tbtn ico" id="mg-redo-btn" onclick="mgRedo()" disabled title="Redo (Ctrl+Y)">↪</button>
+      <div style="display:flex;align-items:center;gap:5px;margin-left:2px">
+        <span style="font-size:9px;color:var(--dim);font-family:'Orbitron',monospace;letter-spacing:1px">COLOR</span>
+        <input type="color" id="mg-color-pick" value="#ff4444" oninput="mgColorChange(this.value)"
+          style="width:32px;height:32px;cursor:pointer;background:none;border:1px solid var(--brd);border-radius:2px;padding:1px;">
+      </div>
+      <div style="margin-left:auto;display:flex;gap:5px">
+        <button class="mg-tbtn grn" id="mg-copy-btn" onclick="mgCopyClipboard()" title="Copy to clipboard">📋 Copy</button>
+        <button class="mg-tbtn sec" onclick="mgDownload()" title="Download PNG">💾 Save</button>
+      </div>
+    </div>
+    <!-- Canvas -->
+    <div style="background:#000;position:relative">
+      <canvas id="mg-draw-canvas"></canvas>
+    </div>
+    <div class="mg-hint" id="mg-hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
   </div>
 </div>
@@ -2409,31 +2450,66 @@ function rateHangar() {
 
 // ===== MAP GUIDE =====
 const MAP_CPC = [
-  { name: 'Biogear Lab',       img: 'Biogear lab' },
-  { name: 'Campaings Forge',   img: 'Campaings Forge' },
-  { name: 'Elon Station Gray', img: 'Elon Station Gray' },
-  { name: 'Forbidden City',    img: 'Forbidden City' },
-  { name: 'Imperial Temple',   img: 'Imperial Temple' },
-  { name: 'Mech Arena',        img: 'Mech Arena' },
-  { name: 'Mesa Verde Annex',  img: 'Mesa Verde Annex' },
-  { name: 'Paradise Plaza',    img: 'Paradise Plaza' },
-  { name: 'Patterson Station', img: 'Patterson Station' },
-  { name: 'Scarlet Atrium',    img: 'Scarlet Atrium' },
-  { name: 'Site 313',          img: 'Site 313' },
-  { name: 'Skyship 11',        img: 'Skyship 11' },
-  { name: 'Smokestacks',       img: 'Smokestacks' },
+  { name: 'Biogear Lab',       file: 'Biogear lab.png' },
+  { name: 'Campaings Forge',   file: 'Campaings forge.png' },
+  { name: 'Elon Station Gray', file: 'Elon station gray.png' },
+  { name: 'Forbidden City',    file: 'Forbidden city.png' },
+  { name: 'Imperial Temple',   file: 'Imperial temple.png' },
+  { name: 'Mech Arena',        file: 'Mech Arena.png' },
+  { name: 'Mesa Verde Annex',  file: 'Mesa verde annex.png' },
+  { name: 'Paradise Plaza',    file: 'Paradise plaza.png' },
+  { name: 'Patterson Station', file: 'Patterson station.png' },
+  { name: 'Scarlet Atrium',    file: 'Scarlet atrium.png' },
+  { name: 'Site 313',          file: 'Site 313.png' },
+  { name: 'Skyship 11',        file: 'Skyship 11.png' },
+  { name: 'Smokestacks',       file: 'Smokestacks.png' },
 ];
 
 const MAP_5V5 = [
-  'Acropolis','Agora','Artifact X','Backalley','Beatdown Club','Central Station',
-  'Colonnade','Constant','Container City','Crane Yard','Crimson Works','Dockyard',
-  'EQuilibrium','Fortune Towers','Freight Depot','Frost Rink','Ground Zero','Hanging Gardens',
-  'High Bridge','Hope Launchpad','Imperial Temple','Nebula Square','Neon Central','Paradise Plaza',
-  'Powder Parkway','Shevchenko Park','Singularity','Skyship 11','Snowdrift Stage','The Stacks',
-  'Tunnel of Fate','Two Arches','VMD Lab','ZC Cargo Dock','ZC Control','ZC Shop Floor',
-].map(name => ({ name, img: name }));
+  { name: 'Acropolis',        file: 'Acropolis.png' },
+  { name: 'Agora',            file: 'Agora.png' },
+  { name: 'Artifact X',       file: 'Artifact X.png' },
+  { name: 'Backalley',        file: 'Backalley.png' },
+  { name: 'Beatdown Club',    file: 'Beatdown club.png' },
+  { name: 'Central Station',  file: 'Central station.png' },
+  { name: 'Colonnade',        file: 'Colonnade.png' },
+  { name: 'Constant',         file: 'Constant.png' },
+  { name: 'Container City',   file: 'Container city.png' },
+  { name: 'Crane Yard',       file: 'Crane yard.png' },
+  { name: 'Crimson Works',    file: 'Crimson works.png' },
+  { name: 'Dockyard',         file: 'Dockyard.png' },
+  { name: 'EQuilibrium',      file: 'Equilibrium.png' },
+  { name: 'Fortune Towers',   file: 'Fortune towers.png' },
+  { name: 'Freight Depot',    file: 'Freight depot.png' },
+  { name: 'Frost Rink',       file: 'Frost rink.png' },
+  { name: 'Ground Zero',      file: 'Ground zero.png' },
+  { name: 'Hanging Gardens',  file: 'Hanging gardens.png' },
+  { name: 'High Bridge',      file: 'High bridge.png' },
+  { name: 'Hope Launchpad',   file: 'Hope launchpad.png' },
+  { name: 'Imperial Temple',  file: 'Imperial temple.png' },
+  { name: 'Nebula Square',    file: 'Nebula sQuare.png' },
+  { name: 'Neon Central',     file: 'Neon central.png' },
+  { name: 'Paradise Plaza',   file: 'Paradise plaza.png' },
+  { name: 'Powder Parkway',   file: 'Powder parkway.png' },
+  { name: 'Shevchenko Park',  file: 'Shevchenko park.png' },
+  { name: 'Singularity',      file: 'Singularity.png' },
+  { name: 'Skyship 11',       file: 'Skyship 11.png' },
+  { name: 'Snowdrift Stage',  file: 'Snowdrift stage.png' },
+  { name: 'The Stacks',       file: 'The stacks.png' },
+  { name: 'Tunnel of Fate',   file: 'Tunnel of fate.png' },
+  { name: 'Two Arches',       file: 'Two arches.png' },
+  { name: 'VMD Lab',          file: 'VMD lab.png' },
+  { name: 'ZC Cargo Dock',    file: 'Z C Cargo dock.png' },
+  { name: 'ZC Control',       file: 'Z C control.png' },
+  { name: 'ZC Shop Floor',    file: 'Z C shop floor.png' },
+];
 
 let mgMode = 'cpc';
+
+function mgImgUrl(mode, file) {
+  const folder = mode === 'cpc' ? 'CPC' : '5V5';
+  return `https://mecharena.infohubhq.in/Maps/${folder}/${encodeURIComponent(file)}`;
+}
 
 function setMgMode(mode) {
   mgMode = mode;
@@ -2444,9 +2520,8 @@ function setMgMode(mode) {
 
 function renderMgGrid() {
   const maps = mgMode === 'cpc' ? MAP_CPC : MAP_5V5;
-  const folder = mgMode === 'cpc' ? 'CPC' : '5V5';
   document.getElementById('mg-grid').innerHTML = maps.map((m, i) => {
-    const src = `https://mecharena.infohubhq.in/Maps/${folder}/${encodeURIComponent(m.img)}.png`;
+    const src = mgImgUrl(mgMode, m.file);
     return `<div class="mg-card" onclick="openMgModal(${i})">
       <div class="mg-card-img">
         <img src="${src}" alt="${m.name}" loading="lazy"
@@ -2458,26 +2533,276 @@ function renderMgGrid() {
   }).join('');
 }
 
+// ===== ARROW DRAWING STATE =====
+let mgArrows = [];
+let mgHistory = [[]];
+let mgHistIdx = 0;
+let mgSelected = null;
+let mgDrawMode = false;
+let mgDrawing = false;
+let mgDragStart = null;
+let mgDragCur = null;
+let mgArrowColor = '#ff4444';
+let mgMapImg = null;
+let mgMapName = '';
+let mgCanvas = null;
+let mgCtx = null;
+
 function openMgModal(idx) {
   const maps = mgMode === 'cpc' ? MAP_CPC : MAP_5V5;
-  const folder = mgMode === 'cpc' ? 'CPC' : '5V5';
   const m = maps[idx];
-  const src = `https://mecharena.infohubhq.in/Maps/${folder}/${encodeURIComponent(m.img)}.png`;
+  const src = mgImgUrl(mgMode, m.file);
+  mgMapName = m.name;
+
+  // Reset arrow state
+  mgArrows = []; mgHistory = [[]]; mgHistIdx = 0;
+  mgSelected = null; mgDrawMode = false; mgDrawing = false;
+  mgDragStart = null; mgDragCur = null;
+  mgArrowColor = '#ff4444';
+
   document.getElementById('mg-modal-title').textContent = m.name;
-  const img = document.getElementById('mg-modal-img');
-  img.src = src; img.alt = m.name; img.style.display = 'block';
+  const badge = document.getElementById('mg-mode-badge');
+  if (mgMode === 'cpc') {
+    badge.textContent = 'CPC'; badge.style.cssText = 'font-size:9px;font-family:Orbitron,monospace;padding:3px 8px;border-radius:2px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--acc)';
+  } else {
+    badge.textContent = '5v5'; badge.style.cssText = 'font-size:9px;font-family:Orbitron,monospace;padding:3px 8px;border-radius:2px;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);color:var(--acc2)';
+  }
   document.getElementById('mg-modal-info').innerHTML = mgMode === 'cpc'
-    ? `<strong style="color:var(--acc)">CPC — Control Point Capture</strong><br>
-       Capture and hold control points to accumulate score. First team to the threshold wins.
+    ? `<strong style="color:var(--acc)">CPC — Control Point Capture</strong> &nbsp;Capture and hold control points to accumulate score. First team to the threshold wins.
        <div class="mg-cp-row">${['A','B','C','D','E'].map(p => `<span class="mg-cp">${p}</span>`).join('')}</div>`
-    : `<strong style="color:var(--acc2)">5v5 Deathmatch</strong><br>
-       Eliminate enemy mechs to score kills. First team to reach the kill threshold wins.`;
+    : `<strong style="color:var(--acc2)">5v5 Deathmatch</strong> &nbsp;Eliminate enemy mechs to score kills. First team to the kill threshold wins.`;
+
+  document.getElementById('mg-color-pick').value = mgArrowColor;
   document.getElementById('mg-modal').classList.add('open');
+
+  // Init canvas after modal is shown
+  requestAnimationFrame(() => {
+    mgCanvas = document.getElementById('mg-draw-canvas');
+    mgCtx = mgCanvas.getContext('2d');
+    mgCanvas.className = '';
+
+    // Remove old listeners by cloning
+    const fresh = mgCanvas.cloneNode(true);
+    mgCanvas.parentNode.replaceChild(fresh, mgCanvas);
+    mgCanvas = fresh;
+    mgCtx = mgCanvas.getContext('2d');
+
+    mgCanvas.addEventListener('mousedown', mgOnDown);
+    mgCanvas.addEventListener('mousemove', mgOnMove);
+    mgCanvas.addEventListener('mouseup', mgOnUp);
+    mgCanvas.addEventListener('mouseleave', mgOnUp);
+    mgCanvas.addEventListener('touchstart', mgOnDown, { passive: false });
+    mgCanvas.addEventListener('touchmove', mgOnMove, { passive: false });
+    mgCanvas.addEventListener('touchend', mgOnUp);
+
+    // Load map image
+    mgMapImg = new Image();
+    mgMapImg.crossOrigin = 'anonymous';
+    mgMapImg.onload = () => {
+      mgCanvas.width = mgMapImg.naturalWidth || 552;
+      mgCanvas.height = mgMapImg.naturalHeight || 600;
+      mgDraw();
+    };
+    mgMapImg.onerror = () => {
+      mgCanvas.width = 552; mgCanvas.height = 600;
+      mgDraw();
+    };
+    mgMapImg.src = src;
+    mgUpdateBtns();
+  });
 }
 
 function closeMgModal() {
   document.getElementById('mg-modal').classList.remove('open');
+  mgDrawMode = false; mgDrawing = false;
 }
+
+function mgGetPos(e) {
+  const rect = mgCanvas.getBoundingClientRect();
+  const sx = mgCanvas.width / rect.width, sy = mgCanvas.height / rect.height;
+  const src = e.touches ? e.touches[0] : e;
+  return { x: (src.clientX - rect.left) * sx, y: (src.clientY - rect.top) * sy };
+}
+
+function mgOnDown(e) {
+  e.preventDefault();
+  const pos = mgGetPos(e);
+  if (mgDrawMode) {
+    mgDragStart = pos; mgDragCur = pos; mgDrawing = true;
+  } else {
+    let hit = null;
+    for (let i = mgArrows.length - 1; i >= 0; i--) {
+      if (mgHitTest(mgArrows[i], pos.x, pos.y)) { hit = mgArrows[i].id; break; }
+    }
+    mgSelected = hit;
+    mgDraw();
+  }
+}
+
+function mgOnMove(e) {
+  e.preventDefault();
+  if (!mgDrawing) return;
+  mgDragCur = mgGetPos(e);
+  mgDraw();
+}
+
+function mgOnUp(e) {
+  if (!mgDrawing) return;
+  if (e.type !== 'mouseleave') {
+    const pos = mgGetPos(e);
+    const dx = pos.x - mgDragStart.x, dy = pos.y - mgDragStart.y;
+    if (Math.sqrt(dx*dx + dy*dy) > 10 && mgArrows.length < 10) {
+      const id = 'a' + Date.now();
+      mgArrows = [...mgArrows, { id, x1: mgDragStart.x, y1: mgDragStart.y, x2: pos.x, y2: pos.y, color: mgArrowColor, label: 'Arrow ' + (mgArrows.length + 1) }];
+      mgPush();
+      mgSelected = id;
+      mgDrawMode = false;
+    }
+  }
+  mgDrawing = false; mgDragStart = null; mgDragCur = null;
+  mgDraw();
+}
+
+function mgHitTest(arr, x, y) {
+  const dx = arr.x2 - arr.x1, dy = arr.y2 - arr.y1, len = Math.sqrt(dx*dx+dy*dy);
+  if (len < 1) return false;
+  const t = Math.max(0, Math.min(1, ((x-arr.x1)*dx+(y-arr.y1)*dy)/(len*len)));
+  const nx = arr.x1+t*dx-x, ny = arr.y1+t*dy-y;
+  return Math.sqrt(nx*nx+ny*ny) < 14;
+}
+
+function mgDrawArrow(ctx, x1, y1, x2, y2, color, selected) {
+  const dx = x2-x1, dy = y2-y1, len = Math.sqrt(dx*dx+dy*dy);
+  if (len < 5) return;
+  const ang = Math.atan2(dy, dx);
+  const hl = Math.min(22, len * 0.35);
+  ctx.save();
+  ctx.strokeStyle = color; ctx.fillStyle = color;
+  ctx.lineWidth = selected ? 4 : 3;
+  ctx.lineCap = 'round';
+  if (selected) { ctx.shadowBlur = 10; ctx.shadowColor = color; }
+  // Shaft
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2 - Math.cos(ang) * hl * 0.6, y2 - Math.sin(ang) * hl * 0.6);
+  ctx.stroke();
+  // Head
+  ctx.shadowBlur = 0;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - hl * Math.cos(ang - Math.PI/6), y2 - hl * Math.sin(ang - Math.PI/6));
+  ctx.lineTo(x2 - hl * Math.cos(ang + Math.PI/6), y2 - hl * Math.sin(ang + Math.PI/6));
+  ctx.closePath(); ctx.fill();
+  // Selection ring at base
+  if (selected) {
+    ctx.beginPath();
+    ctx.arc(x1, y1, 6, 0, Math.PI*2);
+    ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function mgDraw() {
+  if (!mgCtx || !mgCanvas) return;
+  const W = mgCanvas.width, H = mgCanvas.height;
+  mgCtx.clearRect(0, 0, W, H);
+  if (mgMapImg && mgMapImg.complete && mgMapImg.naturalWidth > 0) {
+    mgCtx.drawImage(mgMapImg, 0, 0, W, H);
+  } else {
+    mgCtx.fillStyle = '#060c14'; mgCtx.fillRect(0, 0, W, H);
+    mgCtx.fillStyle = '#1a3a5c'; mgCtx.font = '14px monospace';
+    mgCtx.textAlign = 'center'; mgCtx.fillText('Map image unavailable', W/2, H/2);
+  }
+  mgArrows.forEach(a => mgDrawArrow(mgCtx, a.x1, a.y1, a.x2, a.y2, a.color, a.id === mgSelected));
+  if (mgDrawMode && mgDrawing && mgDragStart && mgDragCur) {
+    mgDrawArrow(mgCtx, mgDragStart.x, mgDragStart.y, mgDragCur.x, mgDragCur.y, mgArrowColor, false);
+  }
+  mgCanvas.className = mgDrawMode ? 'mode-draw' : '';
+  mgUpdateBtns();
+}
+
+function mgUpdateBtns() {
+  const addBtn = document.getElementById('mg-add-btn');
+  if (addBtn) {
+    const full = mgArrows.length >= 10;
+    addBtn.disabled = full;
+    addBtn.textContent = mgDrawMode ? '✏️ Drawing… drag to place' : `+ Add Arrow (${mgArrows.length}/10)`;
+    addBtn.className = 'mg-tbtn add' + (mgDrawMode ? ' drawing' : '');
+  }
+  const q = (id, dis) => { const el = document.getElementById(id); if (el) el.disabled = dis; };
+  q('mg-del-btn', !mgSelected);
+  q('mg-reset-btn', mgArrows.length === 0);
+  q('mg-undo-btn', mgHistIdx <= 0);
+  q('mg-redo-btn', mgHistIdx >= mgHistory.length - 1);
+}
+
+function mgPush() {
+  mgHistory = mgHistory.slice(0, mgHistIdx + 1);
+  mgHistory.push(JSON.parse(JSON.stringify(mgArrows)));
+  mgHistIdx = mgHistory.length - 1;
+}
+
+function mgAddArrow() {
+  if (mgArrows.length >= 10) return;
+  mgDrawMode = !mgDrawMode;
+  mgSelected = null;
+  mgDraw();
+}
+
+function mgDeleteSelected() {
+  if (!mgSelected) return;
+  mgArrows = mgArrows.filter(a => a.id !== mgSelected);
+  mgSelected = null; mgPush(); mgDraw();
+}
+
+function mgReset() {
+  mgArrows = []; mgSelected = null; mgPush(); mgDraw();
+}
+
+function mgUndo() {
+  if (mgHistIdx > 0) { mgHistIdx--; mgArrows = JSON.parse(JSON.stringify(mgHistory[mgHistIdx])); mgSelected = null; mgDraw(); }
+}
+
+function mgRedo() {
+  if (mgHistIdx < mgHistory.length - 1) { mgHistIdx++; mgArrows = JSON.parse(JSON.stringify(mgHistory[mgHistIdx])); mgSelected = null; mgDraw(); }
+}
+
+function mgColorChange(color) {
+  mgArrowColor = color;
+  if (mgSelected) {
+    const a = mgArrows.find(x => x.id === mgSelected);
+    if (a) { a.color = color; mgPush(); mgDraw(); }
+  }
+}
+
+async function mgCopyClipboard() {
+  const btn = document.getElementById('mg-copy-btn');
+  try {
+    await new Promise((res, rej) => mgCanvas.toBlob(async b => {
+      try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]); res(); }
+      catch(e) { rej(e); }
+    }));
+    if (btn) { const prev = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = prev, 1800); }
+  } catch(e) {
+    if (btn) { const prev = btn.textContent; btn.textContent = '✗ Failed'; setTimeout(() => btn.textContent = prev, 1800); }
+  }
+}
+
+function mgDownload() {
+  const a = document.createElement('a');
+  a.download = mgMapName.replace(/\s+/g, '_') + '_arrows.png';
+  a.href = mgCanvas.toDataURL('image/png'); a.click();
+}
+
+// Keyboard shortcuts for undo/redo
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('mg-modal').classList.contains('open')) return;
+  if (e.ctrlKey && e.key === 'z') { e.preventDefault(); mgUndo(); }
+  if (e.ctrlKey && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))) { e.preventDefault(); mgRedo(); }
+  if (e.key === 'Delete' || e.key === 'Backspace') { if (mgSelected) { e.preventDefault(); mgDeleteSelected(); } }
+  if (e.key === 'Escape') { if (mgDrawMode) { mgDrawMode = false; mgDraw(); } else closeMgModal(); }
+});
 
 // Init hangar tiles and map grid on load
 renderHangarTiles();

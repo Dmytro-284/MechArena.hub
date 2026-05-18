@@ -52,10 +52,10 @@ select:focus{border-color:var(--acc);}
 .tip.ok{border-color:var(--acc3);background:rgba(127,255,0,.04);}
 
 /* ===== GEAR HUB ===== */
-.gh-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;min-height:600px;}
+.gh-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;height:calc(100vh - 195px);min-height:560px;}
 
 /* Sidebar */
-.gh-sidebar{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
+.gh-sidebar{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
 .gh-search{padding:10px;border-bottom:1px solid var(--brd);}
 .gh-search input{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;}
 .gh-search input:focus{border-color:var(--acc);}
@@ -79,7 +79,7 @@ select:focus{border-color:var(--acc);}
 .rarity-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
 /* Detail panel */
-.gh-detail{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;}
+.gh-detail{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
 .gh-empty{display:flex;align-items:center;justify-content:center;flex:1;color:var(--dim);font-size:13px;text-align:center;padding:40px;}
 
 /* Mech header */
@@ -108,7 +108,7 @@ select:focus{border-color:var(--acc);}
 .rank-tab.locked{opacity:.25;cursor:not-allowed;pointer-events:none;border-style:dashed;}
 
 /* Stats grid */
-.stats-section{padding:20px 24px;flex:1;}
+.stats-section{padding:20px 24px;flex:1;overflow-y:auto;min-height:0;}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .stat-block{background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:12px 14px;}
 .stat-block-label{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
@@ -1196,7 +1196,7 @@ const RARITY_COLOR={Common:'#aaaaaa',Uncommon:'#88cc88',Rare:'#00d4ff',Epic:'#c4
 const HP_MAX=350000; // for bar normalization (covers Bastion 340,920 at rank 7)
 const SPEED_MAX=26;
 
-let currentMech=null, currentRank=7;
+let currentMech=null, currentRank=1;
 let filterRole='all', filterRar='all';
 
 // ===== WEAPON DATA (for build calc) =====
@@ -1393,7 +1393,6 @@ function renderDetail(m){
 
   const prosHTML=m.pros.map(p=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--acc3)">✓ ${p}</span>`).join('');
   const consHTML=m.cons.map(c=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--red)">✗ ${c}</span>`).join('');
-  const buildsHTML=m.bestBuilds.map(b=>`<div style="padding:4px 0;border-bottom:1px solid rgba(26,58,92,.3);font-size:12px">• ${b}</div>`).join('');
 
   document.getElementById('gh-detail').innerHTML=`
     <div class="mech-header">
@@ -1421,7 +1420,7 @@ function renderDetail(m){
       <div class="rank-tabs">${rankTabs}</div>
     </div>
 
-    <div class="stats-section" style="overflow-y:auto">
+    <div class="stats-section">
       <div class="stats-grid">
         <div class="stat-block">
           <div class="stat-block-label">HP at Rank ${currentRank}${rd.approx?' <span title="Approximate — exact data not available" style="color:var(--dim);font-size:10px">≈</span>':''}</div>
@@ -1436,7 +1435,7 @@ function renderDetail(m){
           <div class="stat-block-val">${rd.energy}E</div>
         </div>
         <div class="stat-block">
-          <div class="stat-block-label">Max Energy (R6)</div>
+          <div class="stat-block-label">Max Energy (R7)</div>
           <div class="stat-block-val gold">${m.energy}E</div>
         </div>
       </div>
@@ -1465,10 +1464,6 @@ function renderDetail(m){
         </div>
       </div>
 
-      <div style="margin-top:14px">
-        <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:6px">BEST BUILDS</div>
-        <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${buildsHTML}</div>
-      </div>
     </div>`;
 }
 

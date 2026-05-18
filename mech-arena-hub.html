@@ -1656,6 +1656,7 @@ function switchCalcTab(id, btn) {
   document.querySelectorAll('.calc-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('calc-' + id).classList.add('active');
   btn.classList.add('active');
+  if(id==='dmg') dmgInitUI();
 }
 
 function getRarityColor(rar) {
@@ -3129,12 +3130,6 @@ function dmgRow(label,pct,val,color){
   </div>`;
 }
 
-// Init damage calc when tab opened
-const _origSwitchCalcTab=switchCalcTab;
-function switchCalcTab(id,btn){
-  _origSwitchCalcTab(id,btn);
-  if(id==='dmg') dmgInitUI();
-}
 </script>
 </body>
 </html>

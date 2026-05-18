@@ -326,6 +326,20 @@ select:focus{border-color:var(--acc);}
 #mg-draw-canvas.mode-draw{cursor:crosshair;}
 .mg-hint{text-align:center;font-size:11px;color:var(--dim);padding:8px 16px;letter-spacing:.5px;border-top:1px solid var(--brd);}
 
+/* ===== MECH SPOTLIGHT VIDEO ===== */
+.yt-section{margin-top:18px;padding-top:14px;border-top:1px solid var(--brd);}
+.yt-label{font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.yt-label::after{content:'';flex:1;height:1px;background:var(--brd);}
+.yt-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:4px;overflow:hidden;background:#000;cursor:pointer;border:1px solid var(--brd);}
+.yt-thumb{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s,filter .3s;}
+.yt-wrap:hover .yt-thumb{transform:scale(1.03);filter:brightness(.7);}
+.yt-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .2s;}
+.yt-wrap:hover .yt-play{opacity:1;}
+.yt-play-btn{width:68px;height:48px;background:rgba(255,0,0,.92);border-radius:10px;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s;box-shadow:0 4px 24px rgba(0,0,0,.5);}
+.yt-wrap:hover .yt-play-btn{transform:scale(1.1);background:#ff0000;}
+.yt-play-triangle{width:0;height:0;border-style:solid;border-width:11px 0 11px 20px;border-color:transparent transparent transparent #fff;margin-left:5px;}
+.yt-iframe{width:100%;height:100%;border:none;display:block;}
+
 /* ===== PROMO CODES ===== */
 .promo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .promo-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--acc);letter-spacing:3px;}
@@ -1353,6 +1367,15 @@ function getRankData(m, r){
   return {hp,energy,approx:true};
 }
 
+const MECH_VIDEOS={paragon:'cqmE_-bu22w',lancer:'cKxEt8woC0w',juggernaut:'EPAYO-4FBj0',md:'BeC3MuCvTJg',ares:'OtT9oD7vcKY',guardian:'fiPl4492rTU',shadow:'UCamhsPU1g0',killshot:'jjFs0HLdR7Y',zephyr:'5qiREoyXetQ',panther:'8xLvZ_xQHvQ',eclipse:'LZhw6-8Ol8I',hemlock:'4YQNDXYJPcM',surge:'6Mgy9NyJEgo',arachnos:'qef6beBO4is',stalker:'Q5xmymL8kcs',tengu:'_L0BnfBIaYU',aegis:'SqWm17EpgD4',orion:'EPHbeip6L-c',redeemer:'oMQ04GhqmXk',sentinel:'Y6_bvDfa85A',gatecrasher:'jMkV0VuQoSs',bastion:'38rnFVdCO_I',onyx:'tkp6HdF8-X8',nomad:'WVqyIJoxQUk',dreadnought:'_tDOEfRZuGQ',brickhouse:'BAztKEjigRw',salvor:'M8TLdpaGQdE',scorpius:'TUKtm54PnQE'};
+
+function loadYtVideo(vid){
+  const w=document.getElementById('yt-'+vid);
+  if(!w)return;
+  w.innerHTML=`<iframe class="yt-iframe" src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  w.style.cursor='default';
+}
+
 function renderDetail(m){
   const rd=getRankData(m,currentRank);
   const hpPct=Math.min(100,Math.round(rd.hp/HP_MAX*100));
@@ -1435,6 +1458,15 @@ function renderDetail(m){
           <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${consHTML}</div>
         </div>
       </div>
+
+      ${(()=>{const vid=MECH_VIDEOS[currentMech];return vid?`
+      <div class="yt-section">
+        <div class="yt-label">MECH SPOTLIGHT</div>
+        <div class="yt-wrap" id="yt-${vid}" onclick="loadYtVideo('${vid}')">
+          <img class="yt-thumb" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="${m.name} Spotlight">
+          <div class="yt-play"><div class="yt-play-btn"><div class="yt-play-triangle"></div></div></div>
+        </div>
+      </div>`:''})()}
 
     </div>`;
 }

@@ -27,6 +27,28 @@ header p{color:var(--dim);font-size:11px;margin-top:4px;letter-spacing:2px;text-
 .tab.active{color:var(--acc);border-color:var(--brd);background:var(--panel);border-bottom-color:var(--panel);}
 .pane{display:none;}.pane.active{display:block;}
 
+/* ===== HOME DASHBOARD ===== */
+.home-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+.home-nav-card{background:var(--panel);border:1px solid var(--brd);border-radius:6px;padding:22px 16px;text-align:center;cursor:pointer;transition:all .2s;color:var(--txt);display:block;width:100%;}
+.home-nav-card:hover{border-color:var(--acc);background:rgba(0,212,255,.06);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,212,255,.1);}
+.home-nav-icon{font-size:34px;margin-bottom:10px;line-height:1;}
+.home-nav-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);letter-spacing:2px;margin-bottom:7px;}
+.home-nav-desc{font-size:11px;color:var(--dim);line-height:1.6;}
+.home-section-hdr{font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--brd);}
+.home-stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px;}
+.home-stat-card{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:16px 10px;text-align:center;}
+.home-stat-num{font-family:'Orbitron',monospace;font-size:26px;font-weight:900;}
+.home-stat-lbl{font-size:10px;color:var(--dim);letter-spacing:1px;margin-top:4px;}
+.home-meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.home-meta-col{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;}
+.home-meta-col-hdr{padding:9px 12px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;border-bottom:1px solid var(--brd);}
+.home-mech-mini{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid rgba(26,58,92,.3);cursor:pointer;transition:background .15s;}
+.home-mech-mini:hover{background:rgba(0,212,255,.06);}
+.home-mech-mini:last-child{border-bottom:none;}
+.home-mech-mini-icon{font-size:20px;width:26px;text-align:center;flex-shrink:0;}
+.home-mech-mini-name{font-size:12px;font-weight:700;flex:1;}
+.home-mech-mini-rar{font-size:9px;font-weight:700;font-family:'Orbitron',monospace;opacity:.8;}
+
 /* ===== BUILD CALC ===== */
 .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .card{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:18px;}
@@ -333,7 +355,8 @@ select:focus{border-color:var(--acc);}
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('build',this)">BUILD CALC</button>
+  <button class="tab active" onclick="switchTab('home',this)">🏠 HOME</button>
+  <button class="tab" onclick="switchTab('build',this)">BUILD CALC</button>
   <button class="tab" onclick="switchTab('gear',this)">MECHS</button>
   <button class="tab" onclick="switchTab('cheat',this)">CHEATSHEETS</button>
   <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
@@ -342,8 +365,13 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('maps',this)">🗺️ MAP GUIDE</button>
 </div>
 
+<!-- ===== HOME ===== -->
+<div id="pane-home" class="pane active">
+  <div id="home-content"></div>
+</div>
+
 <!-- ===== BUILD CALC ===== -->
-<div id="pane-build" class="pane active">
+<div id="pane-build" class="pane">
 <div class="bgrid">
 <div class="card">
   <div class="ctitle">Select Mech &amp; Weapons</div>
@@ -1492,12 +1520,79 @@ function switchTab(n,b){
   if(n==='hangar') renderHangarTiles();
 }
 
+// ===== HOME DASHBOARD =====
+const HOME_ROLE_COLORS = {Attacker:'var(--acc2)',Scout:'var(--acc3)',Tank:'var(--acc)',Support:'#dd44ff'};
+const HOME_META = ['surge','eclipse','aegis','orion','hemlock','nomad','panther','killshot',
+  'dreadnought','silverthorn','volti','deathwalker','parasite','lacewing','blizzfrost'];
+
+function goToTab(name) {
+  const btn = [...document.querySelectorAll('.tab')].find(b => (b.getAttribute('onclick')||'').includes("'"+name+"'"));
+  if (btn) switchTab(name, btn);
+}
+
+function renderHome() {
+  const roles = ['Attacker','Scout','Tank','Support'];
+  const roleCounts = {};
+  roles.forEach(r => roleCounts[r] = 0);
+  Object.values(MECHS).forEach(m => { if (roleCounts[m.role] !== undefined) roleCounts[m.role]++; });
+
+  const metaByRole = {Attacker:[],Scout:[],Tank:[],Support:[]};
+  HOME_META.forEach(k => {
+    const m = MECHS[k];
+    if (m && metaByRole[m.role]) metaByRole[m.role].push({key:k,...m});
+  });
+
+  const navCards = [
+    {icon:'🤖', tab:'gear',    title:'MECHS',        desc:'All 45 mechs — stats, abilities & rank progression'},
+    {icon:'⚡', tab:'compare', title:'COMPARE',       desc:'Compare up to 3 mechs side by side'},
+    {icon:'🧮', tab:'calc',    title:'CALCULATOR',    desc:'Upgrade costs for mechs, weapons, pilots & mods'},
+    {icon:'🔧', tab:'build',   title:'BUILD CALC',    desc:'Plan weapon loadouts and check energy fit'},
+    {icon:'🏆', tab:'hangar',  title:'HANGAR RATE',   desc:'Rate your 5-mech hangar — role, rarity & meta score'},
+    {icon:'🗺️', tab:'maps',   title:'MAP GUIDE',     desc:'Callouts, beacon spots & strategies per map'},
+  ];
+
+  const navHTML = navCards.map(c=>`
+    <button class="home-nav-card" onclick="goToTab('${c.tab}')">
+      <div class="home-nav-icon">${c.icon}</div>
+      <div class="home-nav-title">${c.title}</div>
+      <div class="home-nav-desc">${c.desc}</div>
+    </button>`).join('');
+
+  const statsHTML = roles.map(r=>`
+    <div class="home-stat-card">
+      <div class="home-stat-num" style="color:${HOME_ROLE_COLORS[r]}">${roleCounts[r]}</div>
+      <div class="home-stat-lbl">${ROLE_ICON[r]} ${r}s</div>
+    </div>`).join('') + `
+    <div class="home-stat-card">
+      <div class="home-stat-num" style="color:var(--gold)">${Object.keys(MECHS).length}</div>
+      <div class="home-stat-lbl">Total Mechs</div>
+    </div>`;
+
+  const metaHTML = roles.map(r=>`
+    <div class="home-meta-col">
+      <div class="home-meta-col-hdr" style="color:${HOME_ROLE_COLORS[r]}">${ROLE_ICON[r]} ${r.toUpperCase()}</div>
+      ${metaByRole[r].map(m=>`
+        <div class="home-mech-mini" onclick="goToTab('gear');setTimeout(()=>selectMech('${m.key}'),80)">
+          <div class="home-mech-mini-icon">${m.icon}</div>
+          <div class="home-mech-mini-name">${m.name}</div>
+          <div class="home-mech-mini-rar" style="color:var(--${m.rarity.toLowerCase()})">${m.rarity.toUpperCase().slice(0,3)}</div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  document.getElementById('home-content').innerHTML = `
+    <div class="home-nav-grid">${navHTML}</div>
+    <div class="home-section-hdr">Roster Breakdown</div>
+    <div class="home-stats-row">${statsHTML}</div>
+    <div class="home-section-hdr">Meta Picks</div>
+    <div class="home-meta-grid">${metaHTML}</div>`;
+}
+
 // Init
 buildWeaponSelects();
 upd();
 buildMechList();
-// Select Paragon by default
 selectMech('paragon');
+renderHome();
 
 // ===== CALCULATOR =====
 let calcSelectedItem = null, calcFromStar = 1, calcFromLevel = 1;

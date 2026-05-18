@@ -49,26 +49,12 @@ header p{color:var(--dim);font-size:11px;margin-top:4px;letter-spacing:2px;text-
 .home-mech-mini-name{font-size:12px;font-weight:700;flex:1;}
 .home-mech-mini-rar{font-size:9px;font-weight:700;font-family:'Orbitron',monospace;opacity:.8;}
 
-/* ===== BUILD CALC ===== */
-.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .card{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:18px;}
 .ctitle{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;border-bottom:1px solid var(--brd);padding-bottom:9px;}
-lbl{display:block;color:var(--dim);font-size:10px;letter-spacing:1px;margin-bottom:3px;margin-top:10px;text-transform:uppercase;}
-select,lbl{display:block;}
 select{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 9px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;transition:border-color .2s;}
 select:focus{border-color:var(--acc);}
 .lbl{display:block;color:var(--dim);font-size:10px;letter-spacing:1px;margin-bottom:3px;margin-top:10px;text-transform:uppercase;}
 .lbl:first-of-type{margin-top:0;}
-.srow{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid rgba(26,58,92,.4);font-size:13px;gap:8px;}
-.srow:last-child{border-bottom:none;}
-.sl{color:var(--dim);flex-shrink:0;font-size:12px;}
-.sv{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--acc);text-align:right;}
-.sv.plain{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;}
-.sv.warn{color:var(--acc2);}.sv.good{color:var(--acc3);}.sv.red{color:var(--red);}
-.ebar-w{margin-top:12px;}.ebar-l{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px;}
-.ebar{height:7px;background:var(--bg);border:1px solid var(--brd);border-radius:2px;overflow:hidden;}
-.efill{height:100%;background:var(--acc);transition:width .4s,background .3s;}
-.efill.over{background:var(--red);}
 .tip{margin-top:12px;padding:10px 12px;background:rgba(0,212,255,.05);border-left:3px solid var(--acc);font-size:12px;line-height:1.6;}
 .tip.warn{border-color:var(--acc2);background:rgba(255,107,0,.05);}
 .tip.ok{border-color:var(--acc3);background:rgba(127,255,0,.04);}
@@ -356,7 +342,6 @@ select:focus{border-color:var(--acc);}
 
 <div class="tabs">
   <button class="tab active" onclick="switchTab('home',this)">🏠 HOME</button>
-  <button class="tab" onclick="switchTab('build',this)">BUILD CALC</button>
   <button class="tab" onclick="switchTab('gear',this)">MECHS</button>
   <button class="tab" onclick="switchTab('cheat',this)">CHEATSHEETS</button>
   <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
@@ -368,96 +353,6 @@ select:focus{border-color:var(--acc);}
 <!-- ===== HOME ===== -->
 <div id="pane-home" class="pane active">
   <div id="home-content"></div>
-</div>
-
-<!-- ===== BUILD CALC ===== -->
-<div id="pane-build" class="pane">
-<div class="bgrid">
-<div class="card">
-  <div class="ctitle">Select Mech &amp; Weapons</div>
-  <span class="lbl">Mech</span>
-  <select id="ms" onchange="upd()">
-    <optgroup label="─ COMMON ─">
-      <option value="paragon">Paragon — Attacker · Heavy · 32E</option>
-      <option value="lancer">Lancer — Scout · Light · 16E</option>
-      <option value="juggernaut">Juggernaut — Tank · Medium · 24E</option>
-      <option value="md">M.D. — Support · Light · 16E</option>
-    </optgroup>
-    <optgroup label="─ UNCOMMON ─">
-      <option value="puma">Puma — Scout · Light · 16E</option>
-      <option value="slingshot">Slingshot — Scout · Medium · 24E</option>
-    </optgroup>
-    <optgroup label="─ RARE ─">
-      <option value="panther">Panther — Attacker · Heavy · 32E</option>
-      <option value="killshot">Killshot — Scout · Medium · 24E</option>
-      <option value="ares">Ares — Tank · Medium · 24E</option>
-      <option value="shadow">Shadow — Scout · Light · 16E</option>
-      <option value="guardian">Guardian — Support · Heavy · 32E</option>
-      <option value="cheetah">Cheetah — Scout · Light · 16E</option>
-      <option value="zephyr">Zephyr — Support · Medium · 24E</option>
-      <option value="brickhouse">Brickhouse — Tank · Medium · 24E</option>
-      <option value="redox">Redox — Attacker · Heavy · 32E</option>
-    </optgroup>
-    <optgroup label="─ EPIC ─">
-      <option value="surge">Surge — Scout · Medium · 24E</option>
-      <option value="arachnos">Arachnos — Support · Heavy · 32E</option>
-      <option value="stalker">Stalker — Scout · Light · 16E</option>
-      <option value="tengu">Tengu — Tank · Light · 16E</option>
-      <option value="aegis">Aegis — Tank · Medium · 24E</option>
-      <option value="orion">Orion — Attacker · Medium · 24E</option>
-      <option value="redeemer">Redeemer — Scout · Medium · 24E</option>
-      <option value="sentinel">Sentinel — Tank · Medium · 24E</option>
-    </optgroup>
-    <optgroup label="─ LEGENDARY ─">
-      <option value="gatecrasher">Gatecrasher — Attacker · Heavy · 32E</option>
-      <option value="bastion">Bastion — Tank · Heavy · 32E</option>
-      <option value="onyx">Onyx — Attacker · Heavy · 32E</option>
-      <option value="eclipse">Eclipse — Scout · Medium · 24E</option>
-      <option value="nomad">Nomad — Scout · Medium · 24E</option>
-      <option value="hemlock">Hemlock — Attacker · Medium · 24E</option>
-      <option value="scorpius">Scorpius — Support · Heavy · 32E</option>
-      <option value="vortex">Vortex — Support · Medium · 24E</option>
-      <option value="seeker">Seeker — Scout · Medium · 24E</option>
-      <option value="mimicker">Mimicker — Scout · Heavy · 32E</option>
-      <option value="solis">Solis — Support · Heavy · 32E</option>
-      <option value="lacewing">Lacewing — Scout · Medium · 24E</option>
-      <option value="blockhorn">Blockhorn — Tank · Heavy · 32E</option>
-      <option value="deathwalker">Deathwalker — Scout · Medium · 24E</option>
-      <option value="outlaw">Outlaw — Support · Medium · 24E</option>
-      <option value="salvor">Salvor — Support · Heavy · 32E</option>
-      <option value="dreadnought">Dreadnought — Attacker · Heavy · 32E</option>
-      <option value="parasite">Parasite — Scout · Medium · 24E</option>
-      <option value="volti">Volti — Attacker · Medium · 24E</option>
-      <option value="silverthorn">Silverthorn — Attacker · Heavy · 32E</option>
-      <option value="blizzfrost">Blizzfrost — Support · Medium · 24E</option>
-      <option value="citadel">Citadel — Support · Medium · 24E</option>
-    </optgroup>
-  </select>
-  <span class="lbl" style="margin-top:12px">Weapon Slot 1</span>
-  <select id="w1" onchange="upd()"></select>
-  <span class="lbl" style="margin-top:10px">Weapon Slot 2</span>
-  <select id="w2" onchange="upd()"></select>
-</div>
-<div class="card">
-  <div class="ctitle">Build Stats</div>
-  <div class="srow"><span class="sl">Role</span><span class="sv" id="sr">—</span></div>
-  <div class="srow"><span class="sl">Rarity</span><span class="sv" id="srar">—</span></div>
-  <div class="srow"><span class="sl">Max Energy</span><span class="sv" id="sec">—</span></div>
-  <div class="srow"><span class="sl">Max Speed</span><span class="sv" id="sspd">—</span></div>
-  <div class="srow"><span class="sl">Ability</span><span class="sv plain" id="sabl" style="max-width:55%">—</span></div>
-  <div class="srow"><span class="sl">Energy Used</span><span class="sv" id="sused">—</span></div>
-  <div class="srow"><span class="sl">Energy Free</span><span class="sv" id="sfree">—</span></div>
-  <div class="srow"><span class="sl">W1</span><span class="sv plain" id="sw1n" style="max-width:55%;font-size:12px">—</span></div>
-  <div class="srow"><span class="sl" style="padding-left:10px;font-size:11px">↳ Max DMG</span><span class="sv" id="sw1dmg" style="font-size:11px">—</span></div>
-  <div class="srow"><span class="sl">W2</span><span class="sv plain" id="sw2n" style="max-width:55%;font-size:12px">—</span></div>
-  <div class="srow"><span class="sl" style="padding-left:10px;font-size:11px">↳ Max DMG</span><span class="sv" id="sw2dmg" style="font-size:11px">—</span></div>
-  <div class="ebar-w">
-    <div class="ebar-l"><span style="color:var(--dim)">ENERGY USAGE</span><span id="spct" style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc)">0%</span></div>
-    <div class="ebar"><div class="efill" id="efill" style="width:0%"></div></div>
-  </div>
-  <div id="stip" class="tip"></div>
-</div>
-</div>
 </div>
 
 <!-- ===== GEAR HUB ===== -->
@@ -1392,7 +1287,7 @@ function buildMechList(){
 function selectMech(key){
   currentMech=key;
   const m=MECHS[key];
-  currentRank=6; // always default to max rank
+  currentRank=1;
   renderDetail(m);
   buildMechList();
 }
@@ -1546,7 +1441,7 @@ function renderHome() {
     {icon:'🤖', tab:'gear',    title:'MECHS',        desc:'All 45 mechs — stats, abilities & rank progression'},
     {icon:'⚡', tab:'compare', title:'COMPARE',       desc:'Compare up to 3 mechs side by side'},
     {icon:'🧮', tab:'calc',    title:'CALCULATOR',    desc:'Upgrade costs for mechs, weapons, pilots & mods'},
-    {icon:'🔧', tab:'build',   title:'BUILD CALC',    desc:'Plan weapon loadouts and check energy fit'},
+    {icon:'📋', tab:'cheat',   title:'CHEATSHEETS',   desc:'Quick reference — ranges, effects and game mechanics'},
     {icon:'🏆', tab:'hangar',  title:'HANGAR RATE',   desc:'Rate your 5-mech hangar — role, rarity & meta score'},
     {icon:'🗺️', tab:'maps',   title:'MAP GUIDE',     desc:'Callouts, beacon spots & strategies per map'},
   ];
@@ -1588,8 +1483,6 @@ function renderHome() {
 }
 
 // Init
-buildWeaponSelects();
-upd();
 buildMechList();
 selectMech('paragon');
 renderHome();

@@ -2817,26 +2817,23 @@ renderMgGrid();
 })();
 
 // ===== PROMO CODES =====
-let promoCodes = null; // null = not loaded yet
-
-async function loadPromoCodes(force) {
-  if (promoCodes !== null && !force) return; // already loaded
+async function loadPromoCodes() {
   const grid = document.getElementById('promo-grid');
   const meta = document.getElementById('promo-meta');
   const btn  = document.getElementById('promo-refresh-btn');
 
-  if (force) {
-    btn.classList.add('spinning');
-    btn.textContent = '↻ LOADING…';
-    promoCodes = null;
-  }
+  btn.disabled    = true;
+  btn.textContent = '↻ LOADING…';
+  meta.textContent = 'Loading…';
+  grid.innerHTML  = `
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>`;
 
   try {
     const r    = await fetch('/api/codes');
     const data = await r.json();
-    const codes = data.codes || [];
-    promoCodes  = codes;
-    renderPromoCodes(codes, data.lastUpdated);
+    renderPromoCodes(data.codes || [], data.lastUpdated);
   } catch {
     meta.textContent = 'Could not load — check your connection.';
     grid.innerHTML   = `<div style="grid-column:1/-1" class="promo-empty">
@@ -2845,7 +2842,7 @@ async function loadPromoCodes(force) {
       <div class="promo-empty-sub">Could not fetch promo codes. Try refreshing.</div>
     </div>`;
   } finally {
-    btn.classList.remove('spinning');
+    btn.disabled    = false;
     btn.textContent = '↻ REFRESH';
   }
 }

@@ -1417,8 +1417,9 @@ function switchTab(n,b){
 
 // ===== HOME DASHBOARD =====
 const HOME_ROLE_COLORS = {Attacker:'var(--acc2)',Scout:'var(--acc3)',Tank:'var(--acc)',Support:'#dd44ff'};
-const HOME_META = ['surge','eclipse','aegis','orion','hemlock','nomad','panther','killshot',
-  'dreadnought','silverthorn','volti','deathwalker','parasite','lacewing','blizzfrost'];
+const HOME_META = ['surge','eclipse','orion','hemlock','nomad',
+  'dreadnought','volti','seeker','outlaw','deathwalker','parasite','blockhorn','vortex',
+  'lacewing','blizzfrost','citadel','salvor'];
 
 function goToTab(name) {
   const btn = [...document.querySelectorAll('.tab')].find(b => (b.getAttribute('onclick')||'').includes("'"+name+"'"));

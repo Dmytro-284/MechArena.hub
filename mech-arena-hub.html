@@ -1417,23 +1417,32 @@ function buildMechList(){
 function selectMech(key){
   currentMech=key;
   const m=MECHS[key];
-  // pick highest available rank
-  const ranks=Object.keys(m.ranks).map(Number).sort((a,b)=>a-b);
-  currentRank=ranks[ranks.length-1];
+  currentRank=6; // always default to max rank
   renderDetail(m);
   buildMechList();
 }
 
+function getRankData(m, r){
+  if(m.ranks[r]) return {...m.ranks[r], approx:false};
+  // Extrapolate from nearest known rank using ~1.272x growth per rank
+  const GROWTH=1.272;
+  const knownRanks=Object.keys(m.ranks).map(Number).sort((a,b)=>a-b);
+  const base=knownRanks[0];
+  const baseD=m.ranks[base];
+  const hp=Math.round(baseD.hp/Math.pow(GROWTH,base-r));
+  const energy=Math.max(4,baseD.energy+(r-base)*4);
+  return {hp,energy,approx:true};
+}
+
 function renderDetail(m){
-  const ranks=Object.keys(m.ranks).map(Number).sort((a,b)=>a-b);
-  const rd=m.ranks[currentRank];
+  const rd=getRankData(m,currentRank);
   const hpPct=Math.min(100,Math.round(rd.hp/HP_MAX*100));
   const spdPct=Math.round(m.speed/SPEED_MAX*100);
   const energyPips=Array.from({length:m.energy/2},(_,i)=>`<div class="pip${i*2<rd.energy?' filled':''}"></div>`).join('');
 
   const rankTabs=Array.from({length:6},(_,i)=>i+1).map(r=>{
-    const exists=ranks.includes(r);
-    return `<button class="rank-tab${r===currentRank?' active':''}${exists?'':' locked'}" ${exists?`onclick="setRank(${r})"`:''} title="${exists?'Rank '+r:'Not available — this mech starts at rank '+m.startRank}">${r}</button>`;
+    const approx=!m.ranks[r];
+    return `<button class="rank-tab${r===currentRank?' active':''}" onclick="setRank(${r})" title="Rank ${r}${approx?' (approximate)':''}">${r}</button>`;
   }).join('');
 
   const prosHTML=m.pros.map(p=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--acc3)">✓ ${p}</span>`).join('');
@@ -1469,8 +1478,8 @@ function renderDetail(m){
     <div class="stats-section" style="overflow-y:auto">
       <div class="stats-grid">
         <div class="stat-block">
-          <div class="stat-block-label">HP at Rank ${currentRank}</div>
-          <div class="stat-block-val">${rd.hp.toLocaleString()}</div>
+          <div class="stat-block-label">HP at Rank ${currentRank}${rd.approx?' <span title="Approximate — exact data not available" style="color:var(--dim);font-size:10px">≈</span>':''}</div>
+          <div class="stat-block-val">${rd.hp.toLocaleString()}${rd.approx?'<span style="color:var(--dim);font-size:12px"> ≈</span>':''}</div>
         </div>
         <div class="stat-block">
           <div class="stat-block-label">Speed</div>

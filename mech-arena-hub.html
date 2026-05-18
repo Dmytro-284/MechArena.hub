@@ -203,12 +203,6 @@ select:focus{border-color:var(--acc);}
 .calc-settings-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
 .calc-selected-badge{background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;margin-bottom:12px;}
 
-/* ===== GEAR HUB TYPE SWITCHER ===== */
-.gh-type-row{display:flex;gap:0;border-bottom:1px solid var(--brd);}
-.gh-type-btn{flex:1;padding:9px 6px;background:transparent;border:none;color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;border-right:1px solid var(--brd);}
-.gh-type-btn:last-child{border-right:none;}
-.gh-type-btn:hover{color:var(--acc);background:rgba(0,212,255,.04);}
-.gh-type-btn.active{color:var(--acc);background:rgba(0,212,255,.08);}
 .wep-group-label{padding:6px 10px 4px;font-family:'Orbitron',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;border-bottom:1px solid rgba(26,58,92,.3);}
 .wep-item{display:flex;align-items:center;gap:10px;padding:7px 10px;cursor:pointer;border:1px solid transparent;border-radius:3px;margin:2px 6px;transition:all .15s;}
 .wep-item:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.15);}
@@ -447,10 +441,6 @@ select:focus{border-color:var(--acc);}
 <div class="gh-layout">
   <!-- SIDEBAR -->
   <div class="gh-sidebar">
-    <div class="gh-type-row">
-      <button class="gh-type-btn active" id="gtype-mechs" onclick="setGearType('mechs')">⚙️ MECHS</button>
-      <button class="gh-type-btn" id="gtype-weapons" onclick="setGearType('weapons')">🔧 WEAPONS</button>
-    </div>
     <div id="gh-mech-controls">
       <div class="gh-search">
         <input type="text" id="mech-search" placeholder="🔍  Search mechs..." oninput="filterMechs()">
@@ -471,11 +461,6 @@ select:focus{border-color:var(--acc);}
         <button class="gf r-rare" data-ftype="rar" data-fval="Rare" onclick="toggleFilter(this)">RARE</button>
         <button class="gf r-epic" data-ftype="rar" data-fval="Epic" onclick="toggleFilter(this)">EPIC</button>
         <button class="gf r-legendary" data-ftype="rar" data-fval="Legendary" onclick="toggleFilter(this)">LEG</button>
-      </div>
-    </div>
-    <div id="gh-wep-search" style="display:none">
-      <div class="gh-search">
-        <input type="text" id="wep-search" placeholder="🔍  Search weapons..." oninput="filterWeapons()">
       </div>
     </div>
     <div class="gh-list" id="mech-list"></div>
@@ -1875,23 +1860,8 @@ renderCalcTiles();
 renderPilotList();
 renderModList();
 
-// ===== GEAR HUB — MECHS / WEAPONS SWITCHER =====
-let ghType = 'mechs';
-let currentWeapon = null; // {groupLabel, itemIdx}
-
-function setGearType(type) {
-  ghType = type;
-  document.getElementById('gtype-mechs').classList.toggle('active', type === 'mechs');
-  document.getElementById('gtype-weapons').classList.toggle('active', type === 'weapons');
-  document.getElementById('gh-mech-controls').style.display = type === 'mechs' ? '' : 'none';
-  document.getElementById('gh-wep-search').style.display = type === 'weapons' ? '' : 'none';
-  document.getElementById('gh-detail').innerHTML = '<div class="gh-empty">← Select ' + (type === 'mechs' ? 'a mech' : 'a weapon') + ' to view details</div>';
-  if (type === 'mechs') {
-    buildMechList();
-  } else {
-    buildWeaponList();
-  }
-}
+// ===== GEAR HUB =====
+let currentWeapon = null;
 
 function buildWeaponList() {
   const list = document.getElementById('mech-list');

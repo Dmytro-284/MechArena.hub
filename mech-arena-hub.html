@@ -773,54 +773,54 @@ select:focus{border-color:var(--acc);}
 
   <!-- ===== DAMAGE CALCULATOR ===== -->
   <div id="calc-dmg" class="calc-pane">
-    <div class="calc-layout">
+    <div style="display:grid;grid-template-columns:420px 1fr;gap:18px;align-items:start">
       <!-- LEFT: inputs -->
-      <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:12px">
 
         <!-- 1. WEAPON -->
-        <div class="card" style="padding:14px">
-          <div class="ctitle" style="margin-bottom:10px">1 · WEAPON</div>
-          <select id="dmg-wsel" onchange="dmgUpdate()" style="width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;margin-bottom:10px"></select>
-          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+        <div class="card" style="padding:16px">
+          <div class="ctitle" style="margin-bottom:12px">1 · WEAPON</div>
+          <select id="dmg-wsel" onchange="dmgUpdate()" style="width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;margin-bottom:12px"></select>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div>
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">RANK</div>
-              <div style="display:flex;gap:4px" id="dmg-wrank-btns"></div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap" id="dmg-wrank-btns"></div>
             </div>
             <div>
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">LEVEL</div>
-              <div style="display:flex;gap:4px" id="dmg-wlvl-btns"></div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap" id="dmg-wlvl-btns"></div>
             </div>
           </div>
         </div>
 
         <!-- 2. PILOT -->
-        <div class="card" style="padding:14px">
-          <div class="ctitle" style="margin-bottom:10px">2 · PILOT</div>
-          <div style="display:flex;gap:6px;margin-bottom:10px">
+        <div class="card" style="padding:16px">
+          <div class="ctitle" style="margin-bottom:12px">2 · PILOT</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
             <button class="ctype-btn" id="dmg-pilot-rare" onclick="dmgSetPilot('rare')" style="border-color:var(--rare);color:var(--rare)">RARE</button>
             <button class="ctype-btn active" id="dmg-pilot-epic" onclick="dmgSetPilot('epic')" style="background:var(--epic);border-color:var(--epic);color:var(--bg)">EPIC</button>
             <button class="ctype-btn" id="dmg-pilot-legendary" onclick="dmgSetPilot('legendary')" style="border-color:var(--legendary);color:var(--legendary)">LEGENDARY</button>
-            <button class="ctype-btn" id="dmg-pilot-none" onclick="dmgSetPilot('none')" style="color:var(--dim)">NONE</button>
+            <button class="ctype-btn" id="dmg-pilot-none" onclick="dmgSetPilot('none')" style="border-color:var(--dim);color:var(--dim)">NONE</button>
           </div>
-          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap" id="dmg-pilot-selectors">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="dmg-pilot-selectors">
             <div>
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">RANK</div>
-              <div style="display:flex;gap:4px" id="dmg-prank-btns"></div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap" id="dmg-prank-btns"></div>
             </div>
             <div>
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">LEVEL</div>
-              <div style="display:flex;gap:4px" id="dmg-plvl-btns"></div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap" id="dmg-plvl-btns"></div>
             </div>
           </div>
         </div>
 
         <!-- 3. IMPLANT -->
-        <div class="card" style="padding:14px">
-          <div class="ctitle" style="margin-bottom:10px">3 · DAMAGE IMPLANT</div>
+        <div class="card" style="padding:16px">
+          <div class="ctitle" style="margin-bottom:12px">3 · DAMAGE IMPLANT</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="dmg-imp-btns"></div>
-          <div id="dmg-imp-lvl-row" style="display:none">
+          <div id="dmg-imp-lvl-row" style="display:none;margin-top:10px">
             <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">IMPLANT LEVEL</div>
-            <div style="display:flex;gap:4px" id="dmg-ilvl-btns"></div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap" id="dmg-ilvl-btns"></div>
           </div>
         </div>
 
@@ -832,20 +832,16 @@ select:focus{border-color:var(--acc);}
           <div class="ctitle" style="margin-bottom:16px">DAMAGE BREAKDOWN</div>
           <div id="dmg-no-weapon" style="color:var(--dim);font-size:13px">← Select a weapon to calculate</div>
           <div id="dmg-result-body" style="display:none">
-            <!-- weapon info -->
             <div id="dmg-winfo" style="margin-bottom:16px;padding:10px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;font-size:12px"></div>
-            <!-- base damage -->
-            <div style="margin-bottom:10px">
+            <div style="margin-bottom:14px">
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:4px">BASE DAMAGE (weapon only)</div>
-              <div id="dmg-base" style="font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--acc)"></div>
+              <div id="dmg-base" style="font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:var(--acc)"></div>
               <div id="dmg-base-type" style="font-size:11px;color:var(--dim);margin-top:2px"></div>
             </div>
-            <!-- breakdown rows -->
             <div id="dmg-rows" style="border-top:1px solid var(--brd);padding-top:10px;display:flex;flex-direction:column;gap:6px"></div>
-            <!-- final total -->
-            <div style="border-top:1px solid var(--brd);margin-top:12px;padding-top:12px">
+            <div style="border-top:1px solid var(--brd);margin-top:14px;padding-top:14px">
               <div style="font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:4px">TOTAL DAMAGE</div>
-              <div id="dmg-total" style="font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:var(--acc)"></div>
+              <div id="dmg-total" style="font-family:'Orbitron',monospace;font-size:44px;font-weight:900;color:var(--acc)"></div>
               <div id="dmg-total-type" style="font-size:11px;color:var(--dim);margin-top:2px"></div>
             </div>
             <div style="margin-top:14px;padding:8px 12px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:3px;font-size:11px;color:var(--dim);line-height:1.6" id="dmg-note"></div>

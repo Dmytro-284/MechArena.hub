@@ -17,6 +17,14 @@ function checkAuth(req) {
   } catch { return false; }
 }
 
+async function touchMeta() {
+  await fetch(`${SB_URL()}/rest/v1/promo_meta?id=eq.true`, {
+    method:  'PATCH',
+    headers: sbHeaders(),
+    body:    JSON.stringify({ updated_at: new Date().toISOString() })
+  });
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
@@ -44,6 +52,7 @@ module.exports = async function handler(req, res) {
     });
     const rows = await r.json();
     if (!r.ok) return res.status(r.status).json(rows);
+    await touchMeta();
     return res.status(201).json(Array.isArray(rows) ? rows[0] : rows);
   }
 
@@ -60,6 +69,7 @@ module.exports = async function handler(req, res) {
     const r    = await fetch(`${base}?id=eq.${id}`, { method: 'PATCH', headers: sbHeaders(), body: JSON.stringify(row) });
     const rows = await r.json();
     if (!r.ok) return res.status(r.status).json(rows);
+    await touchMeta();
     return res.json(Array.isArray(rows) ? rows[0] : rows);
   }
 
@@ -69,6 +79,7 @@ module.exports = async function handler(req, res) {
 
     const r = await fetch(`${base}?id=eq.${id}`, { method: 'DELETE', headers: sbHeaders() });
     if (!r.ok) return res.status(r.status).json({ error: 'Delete failed' });
+    await touchMeta();
     return res.json({ success: true });
   }
 

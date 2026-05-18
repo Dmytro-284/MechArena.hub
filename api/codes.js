@@ -7,15 +7,24 @@ module.exports = async function handler(req, res) {
 
   const url  = SB_URL();
   const anon = SB_ANON();
-  if (!url || !anon) return res.json([]);
+  if (!url || !anon) return res.json({ codes: [], lastUpdated: null });
+
+  const headers = { apikey: anon, Authorization: `Bearer ${anon}` };
 
   try {
-    const r    = await fetch(`${url}/rest/v1/promo_codes?select=*&active=eq.true`, {
-      headers: { apikey: anon, Authorization: `Bearer ${anon}` }
+    const [codesRes, metaRes] = await Promise.all([
+      fetch(`${url}/rest/v1/promo_codes?select=*&active=eq.true`, { headers }),
+      fetch(`${url}/rest/v1/promo_meta?select=updated_at`,        { headers })
+    ]);
+
+    const rows = await codesRes.json();
+    const meta = await metaRes.json();
+
+    res.json({
+      codes:       Array.isArray(rows) ? rows : [],
+      lastUpdated: Array.isArray(meta) && meta[0] ? meta[0].updated_at : null
     });
-    const rows = await r.json();
-    res.json(Array.isArray(rows) ? rows : []);
   } catch {
-    res.json([]);
+    res.json({ codes: [], lastUpdated: null });
   }
 };

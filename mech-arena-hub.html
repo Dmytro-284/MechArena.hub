@@ -2832,10 +2832,11 @@ async function loadPromoCodes(force) {
   }
 
   try {
-    const r     = await fetch('/api/codes');
-    const codes = await r.json();
+    const r    = await fetch('/api/codes');
+    const data = await r.json();
+    const codes = data.codes || [];
     promoCodes  = codes;
-    renderPromoCodes(codes);
+    renderPromoCodes(codes, data.lastUpdated);
   } catch {
     meta.textContent = 'Could not load — check your connection.';
     grid.innerHTML   = `<div style="grid-column:1/-1" class="promo-empty">
@@ -2849,14 +2850,18 @@ async function loadPromoCodes(force) {
   }
 }
 
-function renderPromoCodes(codes) {
+function renderPromoCodes(codes, lastUpdated) {
   const grid = document.getElementById('promo-grid');
   const meta = document.getElementById('promo-meta');
   const now  = Date.now();
 
+  const updStr = lastUpdated
+    ? new Date(lastUpdated).toLocaleString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+    : '—';
+
   meta.textContent = codes.length
-    ? `${codes.length} active code${codes.length > 1 ? 's' : ''} — updated ${new Date().toLocaleTimeString()}`
-    : `No active codes right now — check back later.`;
+    ? `${codes.length} active code${codes.length > 1 ? 's' : ''} — last updated ${updStr}`
+    : `No active codes right now — last updated ${updStr}`;
 
   if (!codes.length) {
     grid.innerHTML = `<div style="grid-column:1/-1" class="promo-empty">

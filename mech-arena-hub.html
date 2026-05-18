@@ -325,6 +325,36 @@ select:focus{border-color:var(--acc);}
 #mg-draw-canvas{display:block;width:100%;cursor:default;}
 #mg-draw-canvas.mode-draw{cursor:crosshair;}
 .mg-hint{text-align:center;font-size:11px;color:var(--dim);padding:8px 16px;letter-spacing:.5px;border-top:1px solid var(--brd);}
+
+/* ===== PROMO CODES ===== */
+.promo-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.promo-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--acc);letter-spacing:3px;}
+.promo-meta{font-size:11px;color:var(--dim);margin-top:3px;letter-spacing:1px;}
+.promo-refresh{padding:7px 16px;background:transparent;border:1px solid var(--brd);color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:3px;transition:all .2s;}
+.promo-refresh:hover{border-color:var(--acc);color:var(--acc);}
+.promo-refresh.spinning{pointer-events:none;opacity:.6;}
+.promo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;}
+.promo-card{background:var(--panel);border:1px solid var(--brd);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s;position:relative;}
+.promo-card:hover{border-color:rgba(0,212,255,.4);box-shadow:0 4px 20px rgba(0,212,255,.08);}
+@keyframes cardGlow{0%{box-shadow:0 0 0 rgba(0,212,255,0)}40%{box-shadow:0 0 28px rgba(0,212,255,.55),inset 0 0 20px rgba(0,212,255,.08)}100%{box-shadow:0 0 0 rgba(0,212,255,0)}}
+.promo-card.copied-flash{animation:cardGlow .7s ease-out;}
+.promo-code-wrap{padding:18px 14px 10px;text-align:center;}
+.promo-code-text{font-family:'Orbitron',monospace;font-size:1.35rem;font-weight:900;color:var(--acc);letter-spacing:3px;text-shadow:0 0 18px rgba(0,212,255,.35);word-break:break-all;line-height:1.3;}
+.promo-reward{margin:0 14px 10px;padding:5px 10px;background:rgba(127,255,0,.06);border:1px solid rgba(127,255,0,.2);border-radius:3px;font-size:11px;font-weight:700;color:var(--acc3);text-align:center;font-family:'Orbitron',monospace;letter-spacing:.5px;}
+.promo-copy-btn{margin:auto 14px 14px;padding:11px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);color:var(--acc);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;border-radius:4px;transition:all .25s;width:calc(100% - 28px);}
+.promo-copy-btn:hover{background:rgba(0,212,255,.16);box-shadow:0 0 12px rgba(0,212,255,.2);}
+.promo-copy-btn.copied{background:rgba(127,255,0,.12);border-color:var(--acc3);color:var(--acc3);}
+@keyframes btnPop{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+.promo-copy-btn.copied{animation:btnPop .3s ease-out;}
+.promo-empty{padding:60px 20px;text-align:center;color:var(--dim);}
+.promo-empty-icon{font-size:48px;margin-bottom:12px;opacity:.4;}
+.promo-empty-title{font-family:'Orbitron',monospace;font-size:13px;letter-spacing:2px;margin-bottom:6px;color:var(--dim);}
+.promo-empty-sub{font-size:12px;line-height:1.6;}
+.promo-shimmer{background:linear-gradient(90deg,var(--panel) 0%,var(--p2) 50%,var(--panel) 100%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.promo-skel{background:var(--panel);border:1px solid var(--brd);border-radius:8px;height:210px;overflow:hidden;}
+.promo-skel-inner{height:100%;border-radius:8px;}
+.promo-note{margin-top:16px;padding:10px 14px;background:rgba(255,107,0,.05);border-left:3px solid var(--acc2);font-size:11px;color:var(--dim);line-height:1.6;}
 </style>
 <script src="calc-data-list.js"></script>
 <script src="calc-data-mech-costs.js"></script>
@@ -347,6 +377,7 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
   <button class="tab" onclick="switchTab('compare',this)">⚡ COMPARE</button>
   <button class="tab" onclick="switchTab('hangar',this)">🏆 HANGAR RATE</button>
+  <button class="tab" onclick="switchTab('promo',this)">🎁 PROMO</button>
   <button class="tab" onclick="switchTab('maps',this)">🗺️ MAP GUIDE</button>
 </div>
 
@@ -788,6 +819,23 @@ select:focus{border-color:var(--acc);}
     <div class="mg-hint" id="mg-hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
   </div>
+</div>
+
+<!-- ===== PROMO CODES ===== -->
+<div id="pane-promo" class="pane">
+  <div class="promo-header">
+    <div>
+      <div class="promo-title">🎁 ACTIVE PROMO CODES</div>
+      <div class="promo-meta" id="promo-meta">Loading…</div>
+    </div>
+    <button class="promo-refresh" id="promo-refresh-btn" onclick="loadPromoCodes(true)">↻ REFRESH</button>
+  </div>
+  <div id="promo-grid" class="promo-grid">
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+  </div>
+  <div class="promo-note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
 </div>
 
 <script>
@@ -1414,6 +1462,7 @@ function switchTab(n,b){
   b.classList.add('active');
   history.replaceState(null,'','#'+n);
   if(n==='hangar') renderHangarTiles();
+  if(n==='promo')  loadPromoCodes();
 }
 
 // ===== HOME DASHBOARD =====
@@ -2766,6 +2815,103 @@ renderMgGrid();
     if (idx >= 0) setTimeout(() => openMgModal(idx), 80);
   }
 })();
+
+// ===== PROMO CODES =====
+let promoCodes = null; // null = not loaded yet
+
+async function loadPromoCodes(force) {
+  if (promoCodes !== null && !force) return; // already loaded
+  const grid = document.getElementById('promo-grid');
+  const meta = document.getElementById('promo-meta');
+  const btn  = document.getElementById('promo-refresh-btn');
+
+  if (force) {
+    btn.classList.add('spinning');
+    btn.textContent = '↻ LOADING…';
+    promoCodes = null;
+  }
+
+  try {
+    const r     = await fetch('/api/codes');
+    const codes = await r.json();
+    promoCodes  = codes;
+    renderPromoCodes(codes);
+  } catch {
+    meta.textContent = 'Could not load — check your connection.';
+    grid.innerHTML   = `<div style="grid-column:1/-1" class="promo-empty">
+      <div class="promo-empty-icon">📡</div>
+      <div class="promo-empty-title">CONNECTION ERROR</div>
+      <div class="promo-empty-sub">Could not fetch promo codes. Try refreshing.</div>
+    </div>`;
+  } finally {
+    btn.classList.remove('spinning');
+    btn.textContent = '↻ REFRESH';
+  }
+}
+
+function renderPromoCodes(codes) {
+  const grid = document.getElementById('promo-grid');
+  const meta = document.getElementById('promo-meta');
+  const now  = Date.now();
+
+  meta.textContent = codes.length
+    ? `${codes.length} active code${codes.length > 1 ? 's' : ''} — updated ${new Date().toLocaleTimeString()}`
+    : `No active codes right now — check back later.`;
+
+  if (!codes.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1" class="promo-empty">
+      <div class="promo-empty-icon">🎁</div>
+      <div class="promo-empty-title">NO ACTIVE CODES</div>
+      <div class="promo-empty-sub">There are no active promo codes at the moment.<br>Check back soon — new codes are added regularly.</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = codes.map(c => {
+    const reward = c.reward ? `<div class="promo-reward">${escHtml(c.reward)}</div>` : '';
+    return `<div class="promo-card" id="card-${c.id}">
+      <div class="promo-code-wrap">
+        <div class="promo-code-text">${escHtml(c.code)}</div>
+      </div>
+      ${reward}
+      <button class="promo-copy-btn" id="copybtn-${c.id}" onclick="copyPromoCode('${escHtml(c.code)}','${c.id}')">
+        📋 COPY CODE
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function copyPromoCode(code, id) {
+  navigator.clipboard.writeText(code).then(() => {
+    const btn  = document.getElementById('copybtn-' + id);
+    const card = document.getElementById('card-' + id);
+    if (!btn || !card) return;
+
+    // Button state
+    btn.textContent = '✓ COPIED!';
+    btn.classList.add('copied');
+
+    // Card glow
+    card.classList.remove('copied-flash');
+    void card.offsetWidth; // reflow to restart animation
+    card.classList.add('copied-flash');
+
+    setTimeout(() => {
+      btn.textContent = '📋 COPY CODE';
+      btn.classList.remove('copied');
+      card.classList.remove('copied-flash');
+    }, 2200);
+  }).catch(() => {
+    // Fallback for browsers that block clipboard
+    const btn = document.getElementById('copybtn-' + id);
+    if (btn) { btn.textContent = '⚠️ COPY FAILED'; setTimeout(() => { btn.textContent = '📋 COPY CODE'; }, 2000); }
+  });
+}
+
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 // ===== CURSOR GLOW =====
 document.addEventListener('mousemove', e => {

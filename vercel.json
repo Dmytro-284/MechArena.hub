@@ -1,5 +1,9 @@
 {
+  "functions": {
+    "api/**/*.js": { "runtime": "nodejs18.x" }
+  },
   "rewrites": [
-    { "source": "/", "destination": "/mech-arena-hub.html" }
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/",      "destination": "/mech-arena-hub.html" }
   ]
 }

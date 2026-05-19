@@ -123,7 +123,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-add-item:hover{background:rgba(0,212,255,.1);}
 .btn-add-section{width:100%;padding:10px;background:rgba(0,212,255,.04);border:1px dashed rgba(0,212,255,.3);color:var(--acc);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:4px;transition:all .15s;margin-bottom:14px;}
 .btn-add-section:hover{background:rgba(0,212,255,.1);}
-.item-textarea{min-height:80px;max-height:400px;resize:vertical;line-height:1.6;field-sizing:content;}
+.item-textarea{resize:vertical;line-height:1.6;}
 .type-sel{background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:10px 12px;font-family:'Montserrat',sans-serif;font-size:14px;border-radius:4px;outline:none;width:100%;}
 .type-sel:focus{border-color:var(--acc);}
 
@@ -582,7 +582,7 @@ function renderPfSections() {
           <select class="dot-sel" style="margin-top:2px" onchange="pfSections[${si}].items[${ii}].dot=this.value">
             ${DOT_OPTS.map(o => `<option value="${o.v}"${o.v===it.dot?' selected':''}>${o.l}</option>`).join('')}
           </select>
-          <textarea class="finput item-textarea" placeholder="Change description (Enter for new paragraph)"
+          <textarea class="finput item-textarea" rows="4" placeholder="Change description (Enter for new paragraph)"
             oninput="pfSections[${si}].items[${ii}].text=this.value">${esc(it.text)}</textarea>
           <button class="btn-icon" style="margin-top:2px" onclick="pfRemoveItem(${si},${ii})" title="Remove item">✕</button>
         </div>`).join('')}

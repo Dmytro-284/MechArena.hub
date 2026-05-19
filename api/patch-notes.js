@@ -3,11 +3,11 @@
 //   DISCORD_BOT_TOKEN  — Bot token from discord.com/developers
 //   DISCORD_CHANNEL_ID — ID of the #patch-notes channel
 
-const LIMIT = 20; // how many messages to fetch
+const LIMIT = 20;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60'); // cache 5 min on CDN
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
 
   if (req.method !== 'GET') return res.status(405).end();
 
@@ -31,9 +31,14 @@ module.exports = async function handler(req, res) {
 
     const messages = await r.json();
 
-    // Filter out bot messages, pins, empty content; return newest first (Discord default)
+    // Add ?debug=1 to see raw messages for troubleshooting
+    if (req.query.debug === '1') {
+      return res.status(200).json({ raw: messages });
+    }
+
+    // Keep regular user messages (type 0) with any non-empty content
     const posts = messages
-      .filter(m => m.type === 0 && m.content && m.content.trim().length > 20)
+      .filter(m => m.type === 0 && m.content && m.content.trim().length > 0)
       .map(m => ({
         id:        m.id,
         content:   m.content,

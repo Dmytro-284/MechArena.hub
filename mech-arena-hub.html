@@ -1747,7 +1747,9 @@ function calculateUpgrade() {
     if (cost) { cr += cost.credits || 0; ac += cost.acoins || 0; bp += cost.blueprints || 0; }
   }
   const toLabel = toMax ? '6★ Lv7' : calcToStar + '★ Lv' + calcToLevel;
-  document.getElementById('calc-result-panel').style.display = 'block';
+  const crp = document.getElementById('calc-result-panel');
+  crp.style.display = 'block';
+  setTimeout(() => crp.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   document.getElementById('calc-result-item').textContent =
     calcSelectedItem.list + ' — ' + calcFromStar + '★ Lv' + calcFromLevel + ' → ' + toLabel;
   document.getElementById('calc-res').innerHTML =

@@ -235,7 +235,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <div class="add-form-box" id="patch-form-box">
           <div class="form-row-3" style="margin-bottom:16px">
             <div>
-              <label class="flbl">Version *</label>
+              <label class="flbl">Version</label>
               <input type="text" class="finput" id="pf-ver" placeholder="3.9 (optional)">
             </div>
             <div>
@@ -594,8 +594,10 @@ function renderPfSections() {
       <button class="btn-add-item" onclick="pfAddItem(${si})">＋ Add item</button>
     </div>`).join('');
   g('pf-sections').innerHTML = html;
-  // auto-resize all textareas with existing content
-  g('pf-sections').querySelectorAll('.item-textarea').forEach(autoResize);
+  // defer resize until browser has laid out the new elements
+  requestAnimationFrame(() => {
+    g('pf-sections').querySelectorAll('.item-textarea').forEach(autoResize);
+  });
 }
 
 async function submitPatch() {
@@ -603,11 +605,16 @@ async function submitPatch() {
   const release_date = g('pf-date').value.trim();
   const type         = g('pf-type').value;
   if (!release_date) { toast('Date is required', true); return; }
-  // read current DOM values into pfSections (oninput keeps them in sync, but be safe)
-  const sections = pfSections.map(s => ({
-    title: s.title,
-    items: s.items.filter(it => it.text.trim()).map(it => ({ dot: it.dot, text: it.text.trim() }))
-  })).filter(s => s.items.length || s.title);
+  // read values directly from DOM (more reliable than relying on oninput alone)
+  const sectionEls = g('pf-sections').querySelectorAll('.patch-section-block');
+  const sections = Array.from(sectionEls).map(sEl => {
+    const title = sEl.querySelector('input.finput')?.value.trim() || '';
+    const items = Array.from(sEl.querySelectorAll('.patch-item-row')).map(row => ({
+      dot:  row.querySelector('select')?.value || 'neutral',
+      text: row.querySelector('textarea')?.value.trim() || ''
+    })).filter(it => it.text);
+    return { title, items };
+  }).filter(s => s.items.length || s.title);
 
   try {
     if (patchEditId) {

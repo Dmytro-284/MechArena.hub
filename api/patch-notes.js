@@ -1,9 +1,6 @@
-// Fetches the latest messages from a Discord channel and returns them as patch notes.
-// Required env vars (set in Vercel dashboard):
-//   DISCORD_BOT_TOKEN  — Bot token from discord.com/developers
-//   DISCORD_CHANNEL_ID — ID of the #patch-notes channel
-
-const LIMIT = 20;
+// Public endpoint — reads patch notes from Supabase (no auth required)
+const SB_URL  = () => process.env.SUPABASE_URL;
+const SB_ANON = () => process.env.SUPABASE_ANON_KEY;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,43 +8,18 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'GET') return res.status(405).end();
 
-  const token     = process.env.DISCORD_BOT_TOKEN;
-  const channelId = process.env.DISCORD_CHANNEL_ID;
-
-  if (!token || !channelId) {
-    return res.status(200).json({ error: 'DISCORD_BOT_TOKEN or DISCORD_CHANNEL_ID not configured', posts: [] });
-  }
+  const url  = SB_URL();
+  const anon = SB_ANON();
+  if (!url || !anon) return res.status(200).json([]);
 
   try {
     const r = await fetch(
-      `https://discord.com/api/v10/channels/${channelId}/messages?limit=${LIMIT}`,
-      { headers: { Authorization: `Bot ${token}` } }
+      `${url}/rest/v1/patch_notes?select=*&order=created_at.desc`,
+      { headers: { apikey: anon, Authorization: `Bearer ${anon}` } }
     );
-
-    if (!r.ok) {
-      const body = await r.text();
-      return res.status(200).json({ error: `Discord API error ${r.status}: ${body}`, posts: [] });
-    }
-
-    const messages = await r.json();
-
-    // Add ?debug=1 to see raw messages for troubleshooting
-    if (req.query.debug === '1') {
-      return res.status(200).json({ raw: messages });
-    }
-
-    // Keep regular user messages (type 0) with any non-empty content
-    const posts = messages
-      .filter(m => m.type === 0 && m.content && m.content.trim().length > 0)
-      .map(m => ({
-        id:        m.id,
-        content:   m.content,
-        timestamp: m.timestamp,
-        author:    m.author?.username || null,
-      }));
-
-    return res.status(200).json(posts);
+    const rows = await r.json();
+    return res.status(200).json(Array.isArray(rows) ? rows : []);
   } catch (e) {
-    return res.status(200).json({ error: e.message, posts: [] });
+    return res.status(200).json([]);
   }
 };

@@ -3081,54 +3081,46 @@ async function renderPatchNotes() {
   try {
     const r = await fetch('/api/patch-notes');
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
-    const posts = Array.isArray(data) ? data : (data.posts || []);
-    if (data.error && !posts.length) throw new Error(data.error);
-    if (!posts.length) {
+    const patches = await r.json();
+    if (!Array.isArray(patches) || !patches.length) {
       el.innerHTML = `<div style="padding:32px;text-align:center;color:var(--dim);font-size:13px">
-        <div style="font-size:28px;margin-bottom:12px">📭</div>No patch notes found in the channel.</div>`;
+        <div style="font-size:28px;margin-bottom:12px">📭</div>No patch notes yet.</div>`;
       return;
     }
-    el.innerHTML = posts.map((post, i) => {
-      const date = new Date(post.timestamp).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
-      const body = discordMd(post.content);
+    el.innerHTML = patches.map((p, i) => {
+      const typeLabel = p.type === 'major' ? 'MAJOR UPDATE' : p.type === 'content' ? 'CONTENT UPDATE' : 'BALANCE';
+      const sectionsHtml = (p.sections || []).map(s => `
+        <div class="patch-section">
+          <div class="patch-section-title">${escHtml(s.title || '')}</div>
+          ${(s.items || []).map(it => `
+            <div class="patch-item">
+              <span class="patch-item-dot ${it.dot || 'neutral'}"></span>
+              <span>${escHtml(it.text || '')}</span>
+            </div>`).join('')}
+        </div>`).join('');
       return `
         <div class="patch-card${i===0?' open':''}">
           <div class="patch-card-header" onclick="togglePatch(this)">
-            <span class="patch-ver">#${posts.length - i}</span>
-            <span class="patch-date">${date}</span>
-            ${post.author ? `<span class="patch-badge balance">${escHtml(post.author)}</span>` : ''}
+            <span class="patch-ver">v${escHtml(p.version)}</span>
+            <span class="patch-date">${escHtml(p.release_date)}</span>
+            <span class="patch-badge ${escHtml(p.type)}">${typeLabel}</span>
             <span class="patch-toggle">▼</span>
           </div>
-          <div class="patch-body">${body}</div>
+          <div class="patch-body">${sectionsHtml}</div>
         </div>`;
     }).join('');
   } catch(e) {
-    _patchLoaded = false; // allow retry
+    _patchLoaded = false;
     el.innerHTML = `<div style="padding:32px;text-align:center;color:var(--dim);font-size:13px">
       <div style="font-size:28px;margin-bottom:12px">📡</div>
-      Could not load patch notes — check your connection.<br>
+      Could not load patch notes.<br>
       <button onclick="renderPatchNotes()" style="margin-top:14px;padding:8px 18px;background:rgba(0,212,255,.1);border:1px solid var(--acc);color:var(--acc);font-family:Orbitron,monospace;font-size:9px;cursor:pointer;border-radius:3px">↻ RETRY</button>
     </div>`;
   }
 }
 
-// Very light Discord markdown → HTML converter
-function discordMd(text) {
-  return text
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code style="background:rgba(0,212,255,.08);padding:1px 5px;border-radius:3px;font-size:11px">$1</code>')
-    .replace(/^#{1,3} (.+)$/gm,'<div style="font-family:Orbitron,monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--acc);margin:12px 0 6px">$1</div>')
-    .replace(/^[-•] (.+)$/gm,'<div class="patch-item"><span class="patch-item-dot neutral"></span><span>$1</span></div>')
-    .replace(/\n{2,}/g,'<br>')
-    .replace(/\n/g,'<br>');
-}
-
 function togglePatch(header) {
-  const card = header.closest('.patch-card');
-  card.classList.toggle('open');
+  header.closest('.patch-card').classList.toggle('open');
 }
 
 // ===== PWA =====

@@ -384,32 +384,6 @@ select:focus{border-color:var(--acc);}
 .promo-skel-inner{height:100%;border-radius:8px;}
 .promo-note{margin-top:16px;padding:10px 14px;background:rgba(255,107,0,.05);border-left:3px solid var(--acc2);font-size:11px;color:var(--dim);line-height:1.6;}
 
-/* ===== PATCH NOTES ===== */
-.patch-list{display:flex;flex-direction:column;gap:16px;}
-.patch-card{background:var(--panel);border:1px solid var(--brd);border-radius:6px;overflow:hidden;}
-.patch-card-header{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--brd);cursor:pointer;user-select:none;}
-.patch-card-header:hover{background:rgba(0,212,255,.04);}
-.patch-ver{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--acc);}
-.patch-date{font-size:11px;color:var(--dim);font-family:'Orbitron',monospace;}
-.patch-badge{font-size:9px;font-family:'Orbitron',monospace;padding:3px 8px;border-radius:2px;font-weight:700;letter-spacing:1px;}
-.patch-badge.major{background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);color:var(--acc2);}
-.patch-badge.balance{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--acc);}
-.patch-badge.content{background:rgba(127,255,0,.1);border:1px solid rgba(127,255,0,.3);color:var(--acc3);}
-.patch-toggle{margin-left:auto;font-size:16px;color:var(--dim);transition:transform .2s;}
-.patch-card.open .patch-toggle{transform:rotate(180deg);}
-.patch-body{display:none;padding:16px 18px;}
-.patch-card.open .patch-body{display:block;}
-.patch-section{margin-bottom:14px;}
-.patch-section:last-child{margin-bottom:0;}
-.patch-section-title{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--dim);margin-bottom:8px;}
-.patch-item{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;line-height:1.5;}
-.patch-item:last-child{border-bottom:none;}
-.patch-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.patch-item-dot.new{background:var(--acc3);}
-.patch-item-dot.buff{background:var(--acc);}
-.patch-item-dot.nerf{background:var(--red);}
-.patch-item-dot.fix{background:var(--acc2);}
-.patch-item-dot.neutral{background:var(--dim);}
 
 
 /* ===== PWA banner ===== */
@@ -478,7 +452,6 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('compare',this)">⚡ COMPARE</button>
   <button class="tab" onclick="switchTab('hangar',this)">🏆 HANGAR RATE</button>
   <button class="tab" onclick="switchTab('promo',this)">🎁 PROMO</button>
-  <button class="tab" onclick="switchTab('patch',this)">📋 PATCH NOTES</button>
   <button class="tab" onclick="switchTab('maps',this)">🗺️ MAP GUIDE</button>
 </div>
 
@@ -880,17 +853,6 @@ select:focus{border-color:var(--acc);}
     <button class="mg-mode-btn" id="mg-btn-5v5" onclick="setMgMode('5v5')">⚔️ 5v5 Deathmatch (36 maps)</button>
   </div>
   <div class="mg-grid" id="mg-grid"></div>
-</div>
-
-<!-- ===== PATCH NOTES ===== -->
-<div id="pane-patch" class="pane">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-    <div>
-      <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--acc);letter-spacing:3px">📋 PATCH NOTES</div>
-      <div style="font-size:11px;color:var(--dim);margin-top:3px">Official Mech Arena balance updates & new content</div>
-    </div>
-  </div>
-  <div class="patch-list" id="patch-list"></div>
 </div>
 
 <!-- ===== PROMO CODES ===== -->
@@ -1599,7 +1561,6 @@ function switchTab(n,b){
   history.replaceState(null,'','#'+n);
   if(n==='hangar') renderHangarTiles();
   if(n==='promo')  loadPromoCodes();
-  if(n==='patch')  renderPatchNotes();
 }
 
 // ===== HOME DASHBOARD =====
@@ -3067,64 +3028,6 @@ function escHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ===== PATCH NOTES =====
-let _patchLoaded = false;
-async function renderPatchNotes() {
-  if (_patchLoaded) return;
-  _patchLoaded = true;
-  const el = document.getElementById('patch-list');
-  if (!el) return;
-
-  el.innerHTML = `<div style="padding:32px;text-align:center;color:var(--dim);font-size:13px">
-    <div style="font-size:28px;margin-bottom:12px">⏳</div>Loading patch notes…</div>`;
-
-  try {
-    const r = await fetch('/api/patch-notes');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const posts = await r.json();
-    if (!Array.isArray(posts) || !posts.length) {
-      el.innerHTML = `<div style="padding:32px;text-align:center;color:var(--dim);font-size:13px">
-        <div style="font-size:28px;margin-bottom:12px">📭</div>No patch notes yet.</div>`;
-      return;
-    }
-    el.innerHTML = posts.map((post, i) => {
-      // Extract first heading line as version/title (e.g. "# v3.10 — 19 May 2026")
-      const firstLine = post.content.split('\n')[0].replace(/^#+\s*/, '').trim();
-      const ver = firstLine ? `<span class="patch-ver">${escHtml(firstLine)}</span>` : `<span class="patch-ver">#${posts.length - i}</span>`;
-      return `
-        <div class="patch-card${i===0?' open':''}">
-          <div class="patch-card-header" onclick="togglePatch(this)">
-            ${ver}
-            <span class="patch-toggle">▼</span>
-          </div>
-          <div class="patch-body">${discordMd(post.content)}</div>
-        </div>`;
-    }).join('');
-  } catch(e) {
-    _patchLoaded = false;
-    el.innerHTML = `<div style="padding:32px;text-align:center;color:var(--dim);font-size:13px">
-      <div style="font-size:28px;margin-bottom:12px">📡</div>
-      Could not load patch notes.<br>
-      <button onclick="renderPatchNotes()" style="margin-top:14px;padding:8px 18px;background:rgba(0,212,255,.1);border:1px solid var(--acc);color:var(--acc);font-family:Orbitron,monospace;font-size:9px;cursor:pointer;border-radius:3px">↻ RETRY</button>
-    </div>`;
-  }
-}
-
-function discordMd(text) {
-  return text
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code style="background:rgba(0,212,255,.08);padding:1px 5px;border-radius:3px;font-size:11px">$1</code>')
-    .replace(/^#{1,3} (.+)$/gm,'<div style="font-family:Orbitron,monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--acc);margin:12px 0 6px">$1</div>')
-    .replace(/^[-•] (.+)$/gm,'<div class="patch-item"><span class="patch-item-dot neutral"></span><span>$1</span></div>')
-    .replace(/\n{2,}/g,'</p><p style="margin-top:8px">')
-    .replace(/\n/g,'<br>');
-}
-
-function togglePatch(header) {
-  header.closest('.patch-card').classList.toggle('open');
-}
 
 // ===== PWA =====
 let _deferredPrompt = null;

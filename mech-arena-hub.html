@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#060c14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MA Hub">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <title>Mech Arena Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23060c14'/%3E%3Cpolygon points='32,6 56,18 56,46 32,58 8,46 8,18' fill='none' stroke='%2300d4ff' stroke-width='3'/%3E%3Cpolygon points='32,14 50,23 50,41 32,50 14,41 14,23' fill='%2300d4ff22'/%3E%3Crect x='26' y='20' width='12' height='10' rx='2' fill='%2300d4ff'/%3E%3Crect x='24' y='32' width='16' height='12' rx='2' fill='%2300d4ff'/%3E%3Crect x='20' y='26' width='6' height='6' rx='1' fill='%2300d4ff'/%3E%3Crect x='38' y='26' width='6' height='6' rx='1' fill='%2300d4ff'/%3E%3Ccircle cx='29' cy='25' r='2' fill='%23060c14'/%3E%3Ccircle cx='35' cy='25' r='2' fill='%23060c14'/%3E%3C/svg%3E">
@@ -376,6 +383,85 @@ select:focus{border-color:var(--acc);}
 .promo-skel{background:var(--panel);border:1px solid var(--brd);border-radius:8px;height:210px;overflow:hidden;}
 .promo-skel-inner{height:100%;border-radius:8px;}
 .promo-note{margin-top:16px;padding:10px 14px;background:rgba(255,107,0,.05);border-left:3px solid var(--acc2);font-size:11px;color:var(--dim);line-height:1.6;}
+
+/* ===== PATCH NOTES ===== */
+.patch-list{display:flex;flex-direction:column;gap:16px;}
+.patch-card{background:var(--panel);border:1px solid var(--brd);border-radius:6px;overflow:hidden;}
+.patch-card-header{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--brd);cursor:pointer;user-select:none;}
+.patch-card-header:hover{background:rgba(0,212,255,.04);}
+.patch-ver{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--acc);}
+.patch-date{font-size:11px;color:var(--dim);font-family:'Orbitron',monospace;}
+.patch-badge{font-size:9px;font-family:'Orbitron',monospace;padding:3px 8px;border-radius:2px;font-weight:700;letter-spacing:1px;}
+.patch-badge.major{background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);color:var(--acc2);}
+.patch-badge.balance{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--acc);}
+.patch-badge.content{background:rgba(127,255,0,.1);border:1px solid rgba(127,255,0,.3);color:var(--acc3);}
+.patch-toggle{margin-left:auto;font-size:16px;color:var(--dim);transition:transform .2s;}
+.patch-card.open .patch-toggle{transform:rotate(180deg);}
+.patch-body{display:none;padding:16px 18px;}
+.patch-card.open .patch-body{display:block;}
+.patch-section{margin-bottom:14px;}
+.patch-section:last-child{margin-bottom:0;}
+.patch-section-title{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--dim);margin-bottom:8px;}
+.patch-item{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;line-height:1.5;}
+.patch-item:last-child{border-bottom:none;}
+.patch-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.patch-item-dot.new{background:var(--acc3);}
+.patch-item-dot.buff{background:var(--acc);}
+.patch-item-dot.nerf{background:var(--red);}
+.patch-item-dot.fix{background:var(--acc2);}
+.patch-item-dot.neutral{background:var(--dim);}
+
+/* ===== COUNTERS ===== */
+.counters-section{padding:16px 24px;border-top:1px solid var(--brd);}
+.counters-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+.counter-box{background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:10px 12px;}
+.counter-box-title{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.counter-box.strong .counter-box-title{color:var(--acc3);}
+.counter-box.weak .counter-box-title{color:var(--red);}
+.counter-mech-list{display:flex;flex-wrap:wrap;gap:6px;}
+.counter-mech-chip{display:flex;align-items:center;gap:5px;background:var(--panel);border:1px solid var(--brd);border-radius:3px;padding:4px 8px;font-size:11px;cursor:pointer;transition:border-color .15s;}
+.counter-mech-chip:hover{border-color:var(--acc);}
+.counter-mech-chip img{width:22px;height:19px;object-fit:contain;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);}
+.counter-tip{margin-top:10px;font-size:11px;color:var(--dim);line-height:1.6;padding:8px 10px;background:rgba(0,212,255,.04);border-left:2px solid var(--acc);border-radius:0 3px 3px 0;}
+
+/* ===== PWA banner ===== */
+.pwa-banner{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid rgba(0,212,255,.3);border-radius:6px;padding:10px 16px;margin-bottom:14px;}
+.pwa-banner.show{display:flex;}
+.pwa-banner-text{flex:1;font-size:12px;color:var(--txt);}
+.pwa-banner-text strong{display:block;font-family:'Orbitron',monospace;font-size:10px;color:var(--acc);margin-bottom:2px;}
+.pwa-install-btn{padding:8px 16px;background:rgba(0,212,255,.12);border:1px solid var(--acc);color:var(--acc);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:3px;white-space:nowrap;}
+.pwa-install-btn:hover{background:rgba(0,212,255,.22);}
+.pwa-dismiss{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:0 4px;line-height:1;}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .app{padding:10px;}
+  header h1{font-size:1.1rem;}
+  header p{font-size:11px;}
+  .tabs{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:4px;}
+  .tab{padding:7px 9px;font-size:8px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
+  .gh-layout{grid-template-columns:1fr!important;}
+  .gh-sidebar{max-height:260px;border-right:none!important;border-bottom:1px solid var(--brd);}
+  .mech-header{flex-direction:column;align-items:center;text-align:center;gap:12px;}
+  .mech-avatar{width:110px;height:110px;}
+  .mech-title h2{font-size:1.1rem;}
+  .mech-badges{justify-content:center;}
+  .cmp-slots{grid-template-columns:1fr!important;}
+  .home-nav-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .home-meta-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .home-stat-row{grid-template-columns:repeat(2,1fr)!important;}
+  .counters-grid{grid-template-columns:1fr;}
+  [style*="grid-template-columns:1fr 340px"]{grid-template-columns:1fr!important;}
+  .cmp-mech-icon{width:60px;height:54px;}
+}
+@media(max-width:480px){
+  header h1{font-size:.9rem;}
+  .tab{padding:6px 7px;font-size:7.5px;}
+  .home-meta-grid{grid-template-columns:1fr!important;}
+  .mech-avatar{width:90px;height:90px;}
+  .calc-tiles{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));}
+  .promo-grid{grid-template-columns:1fr!important;}
+}
 </style>
 <script src="calc-data-list.js"></script>
 <script src="calc-data-mech-costs.js"></script>
@@ -386,6 +472,11 @@ select:focus{border-color:var(--acc);}
 </head>
 <body>
 <div class="app">
+<div class="pwa-banner" id="pwa-banner">
+  <div class="pwa-banner-text"><strong>⬡ INSTALL MECH ARENA HUB</strong>Install as an app — works offline, launches instantly</div>
+  <button class="pwa-install-btn" id="pwa-install-btn">INSTALL</button>
+  <button class="pwa-dismiss" id="pwa-dismiss">✕</button>
+</div>
 <header>
   <h1>⬡ MECH ARENA HUB</h1>
   <p>Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
@@ -399,6 +490,7 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('compare',this)">⚡ COMPARE</button>
   <button class="tab" onclick="switchTab('hangar',this)">🏆 HANGAR RATE</button>
   <button class="tab" onclick="switchTab('promo',this)">🎁 PROMO</button>
+  <button class="tab" onclick="switchTab('patch',this)">📋 PATCH NOTES</button>
   <button class="tab" onclick="switchTab('maps',this)">🗺️ MAP GUIDE</button>
 </div>
 
@@ -800,6 +892,17 @@ select:focus{border-color:var(--acc);}
     <button class="mg-mode-btn" id="mg-btn-5v5" onclick="setMgMode('5v5')">⚔️ 5v5 Deathmatch (36 maps)</button>
   </div>
   <div class="mg-grid" id="mg-grid"></div>
+</div>
+
+<!-- ===== PATCH NOTES ===== -->
+<div id="pane-patch" class="pane">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div>
+      <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;color:var(--acc);letter-spacing:3px">📋 PATCH NOTES</div>
+      <div style="font-size:11px;color:var(--dim);margin-top:3px">Official Mech Arena balance updates & new content</div>
+    </div>
+  </div>
+  <div class="patch-list" id="patch-list"></div>
 </div>
 
 <!-- ===== PROMO CODES ===== -->
@@ -1375,6 +1478,159 @@ function getRankData(m, r){
   return {hp,energy,approx:true};
 }
 
+// ===== COUNTERS =====
+const COUNTERS={
+  paragon:{beats:['juggernaut','md','guardian'],losesTo:['shadow','eclipse','hemlock'],tip:'Use heavy weapons like Rocket Mortar to punish slow tanks. Avoid stealth mechs — you have no detection.'},
+  lancer:{beats:['cheetah','bastion','blockhorn'],losesTo:['stalker','onyx','dreadnought'],tip:'Dominate the high ground — jump to rooftops and rain down Javelin Racks. Avoid close-range mechs that punish your low HP.'},
+  juggernaut:{beats:['lancer','puma','slingshot'],losesTo:['aegis','brickhouse','citadel'],tip:'Your shield is powerful but countered by Arc Torrents. Pair with corridor maps for maximum survivability.'},
+  md:{beats:['paragon','puma'],losesTo:['shadow','killshot','eclipse'],tip:'Stay behind your team. Your heal radius is small — don\'t overextend chasing allies.'},
+  shadow:{beats:['md','guardian','sentinel'],losesTo:['aegis','mimicker','vortex'],tip:'Use stealth to flank supports. Revoker and Arc Torrent can detect you — watch for glow effects.'},
+  guardian:{beats:['lancer','slingshot','md'],losesTo:['shadow','hemlock','eclipse'],tip:'System Crash disables abilities — use it on mechs that rely on them like Aegis or Tengu.'},
+  ares:{beats:['juggernaut','brickhouse','sentinel'],losesTo:['aegis','shadow','eclipse'],tip:'Wide shield blocks an entire lane. Perfect on capture points. Get flanked only from sides.'},
+  cheetah:{beats:['md','guardian','paragon'],losesTo:['lancer','vortex','tengu'],tip:'Mines are deadliest in narrow corridors. Lure enemies into chokepoints. Lancer can jump over your mines.'},
+  killshot:{beats:['md','guardian','aegis'],losesTo:['shadow','eclipse','vortex'],tip:'Melee Dash deals massive burst damage. Ideal for finishing low-HP targets. Avoid tanks with countering abilities.'},
+  puma:{beats:['md','paragon'],losesTo:['shadow','lancer','ares'],tip:'Shield Wall blocks projectiles — use it to hold angles on beacons. Best as a passive frontline mech.'},
+  slingshot:{beats:['juggernaut','brickhouse','sentinel'],losesTo:['aegis','shadow','onyx'],tip:'Force Dash provides excellent mobility — use it to escape 1v1s you\'re losing or to chase fleeing enemies.'},
+  panther:{beats:['lancer','md','paragon'],losesTo:['aegis','brickhouse','dreadnought'],tip:'Stasis Barrier blocks an entire corridor. Best on maps with long sightlines to deny sniper shots.'},
+  zephyr:{beats:['juggernaut','bastion','paragon'],losesTo:['shadow','eclipse','hemlock'],tip:'Shock Pulse is a disabling AoE — combo with fast weapons for quick kills. Avoid stealth mechs.'},
+  brickhouse:{beats:['lancer','paragon','slingshot'],losesTo:['aegis','shadow','vortex'],tip:'Overcharger doubles damage output. Pop it when you have shield cover or are about to die — it\'s a last stand.'},
+  redox:{beats:['md','guardian','stalker'],losesTo:['shadow','eclipse','hemlock'],tip:'Caustic Blast leaves a damage zone. Stack it on beacons to deny captures. Very strong in 5v5 objective modes.'},
+  surge:{beats:['md','guardian','lancer'],losesTo:['aegis','brickhouse','dreadnought'],tip:'Storm Dash AoE is devastating in groups. Avoid mechs with Dome Shields — your dash hits the shield, not them.'},
+  arachnos:{beats:['lancer','slingshot','md'],losesTo:['shadow','eclipse','hemlock'],tip:'Spider Turret provides passive area control. Place it on high ground or near beacons to force enemies to deal with it.'},
+  stalker:{beats:['md','guardian','paragon'],losesTo:['aegis','vortex','mimicker'],tip:'Predator Drive gives permanent stealth boost between shots. Play slow and methodical — don\'t charge.'},
+  tengu:{beats:['lancer','md','guardian'],losesTo:['aegis','shadow','eclipse'],tip:'Sky Strike hits above shields and behind cover. Ideal anti-Lancer tool. Combo with fast weapons for high burst.'},
+  aegis:{beats:['ares','surge','brickhouse'],losesTo:['stalker','eclipse','hemlock'],tip:'Dome Shield blocks projectiles from outside. Enemies inside your dome can still shoot you — don\'t let them in.'},
+  orion:{beats:['lancer','md','guardian'],losesTo:['aegis','shadow','eclipse'],tip:'Use your high energy pool for versatile weapon combos. Strong generalist — adapts to any situation.'},
+  redeemer:{beats:['lancer','puma','md'],losesTo:['shadow','eclipse','hemlock'],tip:'Backtrack rewinds position — use it as an escape tool after taking damage, not proactively.'},
+  sentinel:{beats:['lancer','slingshot','paragon'],losesTo:['shadow','eclipse','brickhouse'],tip:'Tall Shield blocks high-angle shots including Javelin Racks. Combo with snipers behind you.'},
+  gatecrasher:{beats:['md','guardian','stalker'],losesTo:['aegis','shadow','vortex'],tip:'Ion Pod provides persistent area denial. Drop it on beacons in CPC for strong objective control.'},
+  bastion:{beats:['md','paragon','guardian'],losesTo:['lancer','shadow','vortex'],tip:'Blast Shield absorbs damage. Time it to block burst from Rocket Mortar combos.'},
+  onyx:{beats:['lancer','slingshot','md'],losesTo:['aegis','brickhouse','dreadnought'],tip:'Quad Rocket is a high-damage AoE. Use it on grouped enemies. Weak in 1v1 due to slow reload.'},
+  eclipse:{beats:['aegis','shadow','hemlock'],losesTo:['mimicker','vortex','surge'],tip:'Phase Cloak provides tactical repositioning. Use to cap beacons undetected or escape bad fights.'},
+  nomad:{beats:['juggernaut','bastion','blockhorn'],losesTo:['shadow','eclipse','hemlock'],tip:'Chain Dash is a mobility chain — use it to reach beacons first or escape. High energy allows flexible builds.'},
+  hemlock:{beats:['aegis','guardian','sentinel'],losesTo:['shadow','eclipse','vortex'],tip:'ECM Shot disables the target\'s ability. Best used on high-ability mechs like Aegis just after they pop their dome.'},
+  scorpius:{beats:['md','guardian','stalker'],losesTo:['aegis','shadow','eclipse'],tip:'Javelin Array hits hard in a cone. Best at medium range — don\'t go too close or too far.'},
+  vortex:{beats:['shadow','eclipse','stalker'],losesTo:['aegis','brickhouse','dreadnought'],tip:'Nanobot Field regenerates HP passively. Stall fights and let your HP recover. Counters stealth with detection.'},
+  seeker:{beats:['lancer','slingshot','guardian'],losesTo:['aegis','shadow','eclipse'],tip:'Warp teleports you — use it offensively to flank or defensively to escape death. Always have a warp plan.'},
+  mimicker:{beats:['aegis','shadow','eclipse'],losesTo:['brickhouse','dreadnought','citadel'],tip:'Adaptation copies the enemy\'s ability. Best against mechs with strong passive abilities. Counters stealth.'},
+  solis:{beats:['lancer','slingshot','md'],losesTo:['shadow','eclipse','hemlock'],tip:'Optic Override gives vision through walls briefly. Use it to spot cloaked mechs and hidden snipers.'},
+  lacewing:{beats:['md','guardian','sentinel'],losesTo:['aegis','brickhouse','dreadnought'],tip:'Mine Jump provides vertical mobility. Place mines strategically — they can be detonated for burst damage.'},
+  blockhorn:{beats:['lancer','puma','slingshot'],losesTo:['shadow','eclipse','hemlock'],tip:'Barricade blocks movement and projectiles. Use it to split enemy teams or protect teammates.'},
+  deathwalker:{beats:['md','guardian','paragon'],losesTo:['aegis','shadow','vortex'],tip:'Reanimate revives you once per match. Play aggressively knowing you have a second life.'},
+  outlaw:{beats:['md','guardian','stalker'],losesTo:['aegis','shadow','eclipse'],tip:'Foul Play debuffs the target. Combo it with high DPS weapons for quick kills on debuffed targets.'},
+  salvor:{beats:['paragon','lancer','puma'],losesTo:['shadow','eclipse','hemlock'],tip:'Regen Shot heals allies at range. Prioritize healing tanks like Aegis or Brickhouse who are taking fire.'},
+  dreadnought:{beats:['brickhouse','surge','onyx'],losesTo:['aegis','eclipse','hemlock'],tip:'Wipe Out is a massive AoE nuke. Wait for enemies to group on beacons before triggering. Devastating in CPC.'},
+  parasite:{beats:['aegis','guardian','sentinel'],losesTo:['shadow','eclipse','vortex'],tip:'Redirection steals an enemy ability. Best used against mechs with powerful abilities — steal Aegis dome or Dreadnought\'s wipe.'},
+  volti:{beats:['md','guardian','lancer'],losesTo:['aegis','shadow','eclipse'],tip:'Thunderstorm creates a persistent AoE. Use it on chokepoints. Very strong in 5v5 for area denial.'},
+  silverthorn:{beats:['lancer','slingshot','puma'],losesTo:['aegis','shadow','eclipse'],tip:'Blade Burst deals high melee burst. Ideal assassin — use stealth to get close, burst, retreat.'},
+  blizzfrost:{beats:['surge','brickhouse','onyx'],losesTo:['aegis','hemlock','eclipse'],tip:'Icy Grip slows and freezes enemies. Combo with high-DPS weapons to lock down then burst frozen targets.'},
+  citadel:{beats:['juggernaut','brickhouse','dreadnought'],losesTo:['shadow','eclipse','hemlock'],tip:'Seismic Field creates an impassable zone. Drop it in corridors or on beacons — forces enemies to reroute.'}
+};
+
+// ===== PATCH NOTES DATA =====
+const PATCH_NOTES=[
+  {ver:'3.8',date:'Apr 2025',type:'major',sections:[
+    {title:'NEW CONTENT',items:[
+      {dot:'new',text:'New mech Citadel added — Tank class with Seismic Field ability'},
+      {dot:'new',text:'New weapon: Compound Beam series (6E–16E) — sustained beam with stacking damage'},
+      {dot:'new',text:'New weapon: Reaver series (6E–16E) — rapid-fire assault class'},
+      {dot:'new',text:'New weapon: Charge Rocket series (8E–16E) — charged missile with AoE'},
+      {dot:'new',text:'Season 14 Battle Pass launched — new skins for Aegis, Eclipse and Hemlock'},
+    ]},
+    {title:'BALANCE CHANGES',items:[
+      {dot:'nerf',text:'Dreadnought — Wipe Out cooldown increased from 16s → 20s'},
+      {dot:'buff',text:'Salvor — Regen Shot healing increased by 12%'},
+      {dot:'nerf',text:'Eclipse — Phase Cloak duration reduced from 4s → 3.5s'},
+      {dot:'buff',text:'Blizzfrost — Icy Grip freeze duration increased by 0.5s'},
+      {dot:'nerf',text:'Parasite — Redirection ability steal duration reduced by 1s'},
+      {dot:'buff',text:'Blockhorn — Barricade HP increased by 15%'},
+    ]},
+    {title:'WEAPONS',items:[
+      {dot:'nerf',text:'Railgun 16 — damage reduced by 5%'},
+      {dot:'buff',text:'Disc Launcher 12 — reload speed increased by 8%'},
+      {dot:'neutral',text:'Graviton Beam — projectile speed adjusted for consistency'},
+    ]},
+    {title:'BUG FIXES',items:[
+      {dot:'fix',text:'Fixed Mimicker not correctly copying certain passive abilities'},
+      {dot:'fix',text:'Fixed Volti Thunderstorm sometimes not triggering on sloped surfaces'},
+      {dot:'fix',text:'Fixed visual glitch with Silverthorn Blade Burst animation on low settings'},
+    ]}
+  ]},
+  {ver:'3.7',date:'Feb 2025',type:'balance',sections:[
+    {title:'NEW CONTENT',items:[
+      {dot:'new',text:'New mech Blizzfrost added — Support/Attacker with Icy Grip freeze ability'},
+      {dot:'new',text:'New mech Silverthorn added — Assassin class with Blade Burst'},
+      {dot:'new',text:'New map: Snowdrift Stage added to 5v5 Deathmatch rotation'},
+    ]},
+    {title:'BALANCE CHANGES',items:[
+      {dot:'nerf',text:'Aegis — Dome Shield HP reduced by 10%; cooldown increased 2s'},
+      {dot:'buff',text:'Vortex — Nanobot Field regen rate increased by 15%'},
+      {dot:'nerf',text:'Hemlock — ECM Shot disable duration reduced from 3s → 2.5s'},
+      {dot:'buff',text:'Deathwalker — Reanimate trigger threshold increased (activates at higher HP)'},
+      {dot:'buff',text:'Nomad — Chain Dash charge count increased from 2 → 3'},
+      {dot:'nerf',text:'Brickhouse — Overcharger damage multiplier reduced from 2.5× → 2.2×'},
+    ]},
+    {title:'WEAPONS',items:[
+      {dot:'buff',text:'Helix Rack 8 — damage increased by 7%'},
+      {dot:'nerf',text:'Arc Torrent 12 — DPS reduced by 6%'},
+      {dot:'buff',text:'Quasher 10 — charge time reduced by 0.2s'},
+    ]},
+    {title:'BUG FIXES',items:[
+      {dot:'fix',text:'Fixed Seeker Warp sometimes teleporting inside geometry'},
+      {dot:'fix',text:'Fixed Citadel Seismic Field not properly blocking mounts'},
+      {dot:'fix',text:'Fixed scoreboard showing incorrect kill attribution with Parasite ability'},
+    ]}
+  ]},
+  {ver:'3.6',date:'Dec 2024',type:'content',sections:[
+    {title:'NEW CONTENT',items:[
+      {dot:'new',text:'New mech Volti added — Support class with Thunderstorm AoE'},
+      {dot:'new',text:'New mech Parasite added — Unique Redirection ability steals enemy mech abilities'},
+      {dot:'new',text:'New weapon: Burrow Beam series — beam that pierces terrain for 1 second'},
+      {dot:'new',text:'Holiday event: Frostfall returns with limited skins and bonus A-Coins'},
+      {dot:'new',text:'New map: Frost Rink added to 5v5 rotation'},
+    ]},
+    {title:'BALANCE CHANGES',items:[
+      {dot:'buff',text:'Dreadnought — Wipe Out AoE radius increased by 10%'},
+      {dot:'nerf',text:'Shadow — Stealth activation delay increased by 0.3s'},
+      {dot:'buff',text:'Outlaw — Foul Play debuff effectiveness increased'},
+      {dot:'nerf',text:'Surge — Storm Dash damage per tick reduced by 8%'},
+    ]},
+    {title:'WEAPONS',items:[
+      {dot:'buff',text:'Revoker 10 ★ — named top meta pick; slight base damage increase'},
+      {dot:'nerf',text:'Rocket Mortar 12 ★ — splash radius reduced by 5%'},
+      {dot:'neutral',text:'Cryo Launcher — slow effect duration standardized across all tiers'},
+    ]},
+    {title:'BUG FIXES',items:[
+      {dot:'fix',text:'Fixed Shadow stealth not breaking on ability use in certain conditions'},
+      {dot:'fix',text:'Fixed Outlaw Foul Play sometimes applying to teammates'},
+      {dot:'fix',text:'Fixed map collision issues on Hanging Gardens'},
+    ]}
+  ]},
+  {ver:'3.5',date:'Oct 2024',type:'balance',sections:[
+    {title:'NEW CONTENT',items:[
+      {dot:'new',text:'New mech Dreadnought added — Tank with devastating Wipe Out nuke ability'},
+      {dot:'new',text:'New mech Salvor added — Support sniper with healing Regen Shot'},
+      {dot:'new',text:'Season 13 Battle Pass — new legendary skins for Vortex and Mimicker'},
+    ]},
+    {title:'BALANCE CHANGES',items:[
+      {dot:'nerf',text:'Mimicker — Adaptation ability cooldown increased by 3s'},
+      {dot:'buff',text:'Gatecrasher — Ion Pod duration increased by 2s'},
+      {dot:'buff',text:'Lacewing — Mine Jump jump height increased by 15%'},
+      {dot:'nerf',text:'Vortex — Nanobot Field initial burst heal removed'},
+      {dot:'buff',text:'Solis — Optic Override vision radius increased by 20%'},
+    ]},
+    {title:'WEAPONS',items:[
+      {dot:'buff',text:'Storm Rack 10 ★ — projectile speed increased for consistency'},
+      {dot:'nerf',text:'Quantum Gun 16 — damage reduced by 4%'},
+      {dot:'buff',text:'Fragment Gun 14 — pellet spread reduced (more accurate)'},
+    ]},
+    {title:'BUG FIXES',items:[
+      {dot:'fix',text:'Fixed Hemlock ECM Shot applying twice on direct hit'},
+      {dot:'fix',text:'Fixed Blockhorn Barricade persisting after mech death'},
+    ]}
+  ]}
+];
+
 const MECH_VIDEOS={paragon:'cqmE_-bu22w',lancer:'cKxEt8woC0w',juggernaut:'EPAYO-4FBj0',md:'BeC3MuCvTJg',puma:'ofF_yZd21Uc',slingshot:'uZ1kPlVwIec',panther:'8xLvZ_xQHvQ',killshot:'jjFs0HLdR7Y',ares:'OtT9oD7vcKY',shadow:'UCamhsPU1g0',guardian:'fiPl4492rTU',cheetah:'SpMyXjH8r5c',zephyr:'5qiREoyXetQ',brickhouse:'BAztKEjigRw',redox:'n5Xo3HeRCJI',surge:'6Mgy9NyJEgo',arachnos:'qef6beBO4is',stalker:'Q5xmymL8kcs',tengu:'_L0BnfBIaYU',aegis:'SqWm17EpgD4',orion:'EPHbeip6L-c',redeemer:'oMQ04GhqmXk',sentinel:'Y6_bvDfa85A',gatecrasher:'jMkV0VuQoSs',bastion:'38rnFVdCO_I',onyx:'tkp6HdF8-X8',eclipse:'LZhw6-8Ol8I',nomad:'WVqyIJoxQUk',hemlock:'4YQNDXYJPcM',scorpius:'TUKtm54PnQE',vortex:'7PV-ty1t8cI',seeker:'Pry-GyhjvYQ',mimicker:'BEN5iq8U3mk',solis:'tn-2fO9mFCY',lacewing:'_0AreMAtwGY',blockhorn:'Pj1QVmoCwFE',deathwalker:'FFUGyFKBQnY',outlaw:'rmDSXxNk0OU',salvor:'M8TLdpaGQdE',dreadnought:'_tDOEfRZuGQ',parasite:'QnRj327uXso',volti:'VTnP7PsKHhg',silverthorn:'y9ZKsC8_10g',blizzfrost:'_1wUdKobC8I',citadel:'CMRWjXGsgpk'};
 
 function loadYtVideo(vid){
@@ -1476,6 +1732,17 @@ function renderDetail(m){
         </div>
       </div>`:''})()}
 
+      ${(()=>{const c=COUNTERS[currentMech];if(!c)return '';
+        const makeChips=keys=>keys.map(k=>{const mx=MECHS[k];if(!mx)return '';const img=mx.name.replace(/[^a-zA-Z0-9]/g,'');return `<div class="counter-mech-chip" onclick="selectMech('${k}')"><img src="https://mecharena.infohubhq.in/mech_weapon_images/${img}.png" alt="${mx.name}">${mx.name}</div>`;}).join('');
+        return `<div class="counters-section">
+          <div style="font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--dim);margin-bottom:10px">MATCHUP GUIDE</div>
+          <div class="counters-grid">
+            <div class="counter-box strong"><div class="counter-box-title">✓ STRONG AGAINST</div><div class="counter-mech-list">${makeChips(c.beats)}</div></div>
+            <div class="counter-box weak"><div class="counter-box-title">✗ WEAK AGAINST</div><div class="counter-mech-list">${makeChips(c.losesTo)}</div></div>
+          </div>
+          ${c.tip?`<div class="counter-tip">💡 ${c.tip}</div>`:''}
+        </div>`;})()}
+
     </div>`;
 }
 
@@ -1503,6 +1770,7 @@ function switchTab(n,b){
   history.replaceState(null,'','#'+n);
   if(n==='hangar') renderHangarTiles();
   if(n==='promo')  loadPromoCodes();
+  if(n==='patch')  renderPatchNotes();
 }
 
 // ===== HOME DASHBOARD =====
@@ -2968,6 +3236,76 @@ function copyPromoCode(code, id) {
 
 function escHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== PATCH NOTES =====
+let _patchRendered = false;
+function renderPatchNotes() {
+  if (_patchRendered) return;
+  _patchRendered = true;
+  const el = document.getElementById('patch-list');
+  if (!el) return;
+  el.innerHTML = PATCH_NOTES.map((p, pi) => {
+    const open = pi === 0;
+    const sectionsHtml = p.sections.map(s => `
+      <div class="patch-section">
+        <div class="patch-section-title">${s.title}</div>
+        ${s.items.map(it => `
+          <div class="patch-item">
+            <span class="patch-item-dot ${it.dot}"></span>
+            <span>${it.text}</span>
+          </div>`).join('')}
+      </div>`).join('');
+    return `
+      <div class="patch-card${open?' open':''}">
+        <div class="patch-card-header" onclick="togglePatch(this)">
+          <span class="patch-ver">v${p.ver}</span>
+          <span class="patch-date">${p.date}</span>
+          <span class="patch-badge ${p.type}">${p.type==='major'?'MAJOR UPDATE':p.type==='balance'?'BALANCE':'CONTENT UPDATE'}</span>
+          <span class="patch-toggle">▼</span>
+        </div>
+        <div class="patch-body">${sectionsHtml}</div>
+      </div>`;
+  }).join('');
+}
+
+function togglePatch(header) {
+  const card = header.closest('.patch-card');
+  card.classList.toggle('open');
+}
+
+// ===== PWA =====
+let _deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredPrompt = e;
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.style.display = 'flex';
+});
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.style.display = 'none';
+  _deferredPrompt = null;
+});
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!_deferredPrompt) return;
+  _deferredPrompt.prompt();
+  const { outcome } = await _deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    const banner = document.getElementById('pwa-banner');
+    if (banner) banner.style.display = 'none';
+  }
+  _deferredPrompt = null;
+});
+document.getElementById('pwa-dismiss')?.addEventListener('click', () => {
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.style.display = 'none';
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
 }
 
 // ===== CURSOR GLOW =====

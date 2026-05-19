@@ -582,7 +582,7 @@ function renderPfSections() {
           <select class="dot-sel" style="margin-top:2px" onchange="pfSections[${si}].items[${ii}].dot=this.value">
             ${DOT_OPTS.map(o => `<option value="${o.v}"${o.v===it.dot?' selected':''}>${o.l}</option>`).join('')}
           </select>
-          <textarea class="finput item-textarea" rows="4" placeholder="Change description (Enter for new paragraph)"
+          <textarea class="finput item-textarea" rows="4" style="height:120px;min-height:120px;resize:vertical" placeholder="Change description (Enter for new paragraph)"
             oninput="pfSections[${si}].items[${ii}].text=this.value">${esc(it.text)}</textarea>
           <button class="btn-icon" style="margin-top:2px" onclick="pfRemoveItem(${si},${ii})" title="Remove item">✕</button>
         </div>`).join('')}

@@ -207,7 +207,8 @@ select:focus{border-color:var(--acc);}
 .calc-tile{display:flex;flex-direction:column;align-items:center;padding:12px 6px 10px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;cursor:pointer;transition:all .15s;text-align:center;}
 .calc-tile:hover{border-color:var(--acc);background:rgba(0,212,255,.06);transform:translateY(-1px);}
 .calc-tile.selected{border-color:var(--acc)!important;background:rgba(0,212,255,.12);box-shadow:0 0 10px rgba(0,212,255,.15);}
-.calc-tile-icon{font-size:26px;margin-bottom:5px;line-height:1;}
+.calc-tile-icon{width:52px;height:46px;margin:0 auto 5px;}
+.calc-tile-icon img{width:100%;height:100%;object-fit:contain;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);filter:drop-shadow(0 0 3px rgba(0,212,255,.35));}
 .calc-tile-name{font-size:9px;font-weight:700;font-family:'Orbitron',monospace;letter-spacing:.3px;color:var(--txt);word-break:break-word;line-height:1.3;}
 .calc-tile-energy{font-size:9px;color:var(--acc);font-family:'Orbitron',monospace;margin-top:2px;}
 .calc-settings-below{background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:16px;display:none;}
@@ -545,7 +546,7 @@ select:focus{border-color:var(--acc);}
     </div>
     <div class="calc-settings-below" id="calc-settings-below">
       <div class="calc-selected-badge" id="calc-selected-badge">
-        <div style="font-size:32px;line-height:1" id="badge-icon">⚙️</div>
+        <div style="width:70px;height:62px;margin:0 auto" id="badge-icon"></div>
         <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="badge-name">—</div>
         <div style="font-size:11px;color:var(--dim);margin-top:2px" id="badge-sub">Select a mech or weapon above</div>
       </div>
@@ -1624,6 +1625,10 @@ function getMechIcon(name) {
   }
   return '🤖';
 }
+function getMechImgHtml(name) {
+  const clean = name.replace(/[^a-zA-Z0-9]/g,'');
+  return `<img src="https://mecharena.infohubhq.in/mech_weapon_images/${clean}.png" alt="${name}" style="width:100%;height:100%;object-fit:contain;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);filter:drop-shadow(0 0 4px rgba(0,212,255,.4))">`;
+}
 
 function getWeaponIcon(name) {
   return '';
@@ -1660,11 +1665,11 @@ function renderCalcTiles() {
   }
   tilesEl.innerHTML = filtered.map(item => {
     const sel = calcSelectedItem && calcSelectedItem.list === item.list ? ' selected' : '';
-    const icon = calcCurrentType === 'mech' ? getMechIcon(item.list) : '';
+    const iconHtml = calcCurrentType === 'mech' ? '<div class="calc-tile-icon">' + getMechImgHtml(item.list) + '</div>' : '';
     const rc = getRarityColor(item.rarity);
     const enc = encodeURIComponent(item.list);
     return '<div class="calc-tile' + sel + '" onclick="selectCalcTile(\'' + enc + '\')" style="border-bottom:2px solid ' + rc + '">'
-      + (icon ? '<div class="calc-tile-icon">' + icon + '</div>' : '')
+      + iconHtml
       + '<div class="calc-tile-name">' + item.list + '</div>'
       + (item.energy ? '<div class="calc-tile-energy">' + item.energy + 'E</div>' : '')
       + '</div>';
@@ -1676,9 +1681,14 @@ function selectCalcTile(enc) {
   calcSelectedItem = CALC_LIST.find(i => i.list === name) || null;
   if (!calcSelectedItem) return;
   renderCalcTiles();
-  const icon = calcSelectedItem.type === 'mech' ? getMechIcon(name) : getWeaponIcon(name);
   const rc = getRarityColor(calcSelectedItem.rarity);
-  document.getElementById('badge-icon').textContent = icon;
+  const badgeEl = document.getElementById('badge-icon');
+  if (calcSelectedItem.type === 'mech') {
+    badgeEl.innerHTML = getMechImgHtml(name);
+  } else {
+    badgeEl.textContent = getWeaponIcon(name);
+    badgeEl.style.cssText = 'font-size:32px;line-height:1;width:auto;height:auto;margin:0 auto';
+  }
   document.getElementById('badge-name').textContent = name;
   const sub = calcSelectedItem.type === 'mech'
     ? calcSelectedItem.energy + 'E Mech'

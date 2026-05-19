@@ -123,7 +123,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-add-item:hover{background:rgba(0,212,255,.1);}
 .btn-add-section{width:100%;padding:10px;background:rgba(0,212,255,.04);border:1px dashed rgba(0,212,255,.3);color:var(--acc);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:4px;transition:all .15s;margin-bottom:14px;}
 .btn-add-section:hover{background:rgba(0,212,255,.1);}
-.item-textarea{resize:none;min-height:60px;line-height:1.6;overflow:hidden;}
+.item-textarea{min-height:80px;max-height:400px;resize:vertical;line-height:1.6;field-sizing:content;}
 .type-sel{background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:10px 12px;font-family:'Montserrat',sans-serif;font-size:14px;border-radius:4px;outline:none;width:100%;}
 .type-sel:focus{border-color:var(--acc);}
 
@@ -561,10 +561,6 @@ function pfRemoveItem(si, ii) {
   renderPfSections();
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
-}
 
 function renderPfSections() {
   const DOT_OPTS = [
@@ -587,17 +583,12 @@ function renderPfSections() {
             ${DOT_OPTS.map(o => `<option value="${o.v}"${o.v===it.dot?' selected':''}>${o.l}</option>`).join('')}
           </select>
           <textarea class="finput item-textarea" placeholder="Change description (Enter for new paragraph)"
-            oninput="pfSections[${si}].items[${ii}].text=this.value;autoResize(this)"
-            onmouseup="autoResize(this)">${esc(it.text)}</textarea>
+            oninput="pfSections[${si}].items[${ii}].text=this.value">${esc(it.text)}</textarea>
           <button class="btn-icon" style="margin-top:2px" onclick="pfRemoveItem(${si},${ii})" title="Remove item">✕</button>
         </div>`).join('')}
       <button class="btn-add-item" onclick="pfAddItem(${si})">＋ Add item</button>
     </div>`).join('');
   g('pf-sections').innerHTML = html;
-  // defer resize until browser has laid out the new elements
-  requestAnimationFrame(() => {
-    g('pf-sections').querySelectorAll('.item-textarea').forEach(autoResize);
-  });
 }
 
 async function submitPatch() {

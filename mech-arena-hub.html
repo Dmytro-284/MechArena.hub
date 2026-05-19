@@ -1633,6 +1633,10 @@ function getMechImgHtml(name) {
 function getWeaponIcon(name) {
   return '';
 }
+function getWeaponImgHtml(name) {
+  const enc = encodeURIComponent(name);
+  return `<img src="https://mecharena.infohubhq.in/mech_weapon_images/${enc}.png" alt="${name}" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:contain;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);filter:drop-shadow(0 0 4px rgba(0,212,255,.4))">`;
+}
 
 function setCalcType(type) {
   calcCurrentType = type;
@@ -1665,7 +1669,7 @@ function renderCalcTiles() {
   }
   tilesEl.innerHTML = filtered.map(item => {
     const sel = calcSelectedItem && calcSelectedItem.list === item.list ? ' selected' : '';
-    const iconHtml = calcCurrentType === 'mech' ? '<div class="calc-tile-icon">' + getMechImgHtml(item.list) + '</div>' : '';
+    const iconHtml = '<div class="calc-tile-icon">' + (calcCurrentType === 'mech' ? getMechImgHtml(item.list) : getWeaponImgHtml(item.list)) + '</div>';
     const rc = getRarityColor(item.rarity);
     const enc = encodeURIComponent(item.list);
     return '<div class="calc-tile' + sel + '" onclick="selectCalcTile(\'' + enc + '\')" style="border-bottom:2px solid ' + rc + '">'
@@ -1686,9 +1690,9 @@ function selectCalcTile(enc) {
   if (calcSelectedItem.type === 'mech') {
     badgeEl.innerHTML = getMechImgHtml(name);
   } else {
-    badgeEl.textContent = getWeaponIcon(name);
-    badgeEl.style.cssText = 'font-size:32px;line-height:1;width:auto;height:auto;margin:0 auto';
+    badgeEl.innerHTML = getWeaponImgHtml(name);
   }
+  badgeEl.style.cssText = 'width:70px;height:62px;margin:0 auto';
   document.getElementById('badge-name').textContent = name;
   const sub = calcSelectedItem.type === 'mech'
     ? calcSelectedItem.energy + 'E Mech'

@@ -801,7 +801,25 @@ select:focus{border-color:var(--acc);}
   </div>
   <div class="mg-grid" id="mg-grid"></div>
 </div>
+
+<!-- ===== PROMO CODES ===== -->
+<div id="pane-promo" class="pane">
+  <div class="promo-header">
+    <div>
+      <div class="promo-title">🎁 ACTIVE PROMO CODES</div>
+      <div class="promo-meta" id="promo-meta">Loading…</div>
+    </div>
+    <button class="promo-refresh" id="promo-refresh-btn" onclick="loadPromoCodes(true)">↻ REFRESH</button>
+  </div>
+  <div id="promo-grid" class="promo-grid">
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
+  </div>
+  <div class="promo-note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
 </div>
+
+</div><!-- /.app -->
 
 
 
@@ -840,23 +858,6 @@ select:focus{border-color:var(--acc);}
     <div class="mg-hint" id="mg-hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
   </div>
-</div>
-
-<!-- ===== PROMO CODES ===== -->
-<div id="pane-promo" class="pane">
-  <div class="promo-header">
-    <div>
-      <div class="promo-title">🎁 ACTIVE PROMO CODES</div>
-      <div class="promo-meta" id="promo-meta">Loading…</div>
-    </div>
-    <button class="promo-refresh" id="promo-refresh-btn" onclick="loadPromoCodes(true)">↻ REFRESH</button>
-  </div>
-  <div id="promo-grid" class="promo-grid">
-    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
-    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
-    <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
-  </div>
-  <div class="promo-note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
 </div>
 
 <script>

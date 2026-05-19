@@ -35,7 +35,7 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'POST') {
     const { version, release_date, type, sections } = req.body || {};
-    if (!version || !release_date) return res.status(400).json({ error: 'version and release_date are required' });
+    if (!release_date) return res.status(400).json({ error: 'release_date is required' });
     const r    = await fetch(base, {
       method:  'POST',
       headers: sbHeaders(),

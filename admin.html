@@ -235,7 +235,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <div class="form-row-3" style="margin-bottom:16px">
             <div>
               <label class="flbl">Version *</label>
-              <input type="text" class="finput" id="pf-ver" placeholder="3.9">
+              <input type="text" class="finput" id="pf-ver" placeholder="3.9 (optional)">
             </div>
             <div>
               <label class="flbl">Date *</label>
@@ -592,7 +592,7 @@ async function submitPatch() {
   const version      = g('pf-ver').value.trim();
   const release_date = g('pf-date').value.trim();
   const type         = g('pf-type').value;
-  if (!version || !release_date) { toast('Version and date are required', true); return; }
+  if (!release_date) { toast('Date is required', true); return; }
   // read current DOM values into pfSections (oninput keeps them in sync, but be safe)
   const sections = pfSections.map(s => ({
     title: s.title,

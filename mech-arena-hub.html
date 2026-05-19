@@ -3101,7 +3101,7 @@ async function renderPatchNotes() {
       return `
         <div class="patch-card${i===0?' open':''}">
           <div class="patch-card-header" onclick="togglePatch(this)">
-            <span class="patch-ver">v${escHtml(p.version)}</span>
+            ${p.version ? `<span class="patch-ver">v${escHtml(p.version)}</span>` : ''}
             <span class="patch-date">${escHtml(p.release_date)}</span>
             <span class="patch-badge ${escHtml(p.type)}">${typeLabel}</span>
             <span class="patch-toggle">▼</span>

@@ -3095,7 +3095,7 @@ async function renderPatchNotes() {
           ${(s.items || []).map(it => `
             <div class="patch-item">
               <span class="patch-item-dot ${it.dot || 'neutral'}"></span>
-              <span>${escHtml(it.text || '')}</span>
+              <span>${escHtml(it.text || '').replace(/\n/g,'<br>')}</span>
             </div>`).join('')}
         </div>`).join('');
       return `

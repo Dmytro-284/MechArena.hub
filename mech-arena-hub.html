@@ -125,6 +125,9 @@ select:focus{border-color:var(--acc);}
 .rank-tab:hover{border-color:var(--acc);color:var(--acc);}
 .rank-tab.active{background:var(--acc);color:var(--bg);border-color:var(--acc);}
 .rank-tab.locked{opacity:.25;cursor:not-allowed;pointer-events:none;border-style:dashed;}
+.ab-stat{background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:6px 8px;}
+.ab-stat-lbl{font-size:9px;color:var(--dim);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;}
+.ab-stat-val{font-size:13px;font-weight:700;color:var(--acc2);}
 
 /* Stats grid */
 .stats-section{padding:20px 24px;flex:1;overflow-y:auto;min-height:0;}
@@ -1479,6 +1482,56 @@ const MECHS_UA = {
   },
 };
 
+// Ability scaling stats per rank (R1–R7)
+// Format: [label, unit_suffix, [r1,r2,r3,r4,r5,r6,r7]]
+const MECH_ABILITY_RANKS={
+  paragon:    [['Cooldown','s',[9,9,9,9,9,9,9]],['Duration','s',[6,6,6,6,6,6,6]]],
+  lancer:     [['Cooldown','s',[5,5,5,5,5,5,5]],['Jump Distance','m',[10,10,10,10,10,10,10]]],
+  puma:       [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[10,10,10,10,10,10,10]],['Shield HP','',[7100,12400,19200,27800,38700,52400,67800]]],
+  slingshot:  [['Cooldown','s',[6,6,6,6,6,6,6]],['Damage','',[2400,3700,6400,9900,12900,16600,22600]],['AOE Radius','m',[12,12,12,12,12,12,12]]],
+  juggernaut: [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[12,12,12,12,12,12,12]],['Shield HP','',[3300,5100,9000,13800,18100,23300,31600]]],
+  md:         [['Cooldown','s',[12,12,12,12,12,12,12]],['Duration','s',[10,10,10,10,10,10,10]],['Mech Heal/s','',[430,740,1150,1670,2320,3140,4060]],['Team Heal/s','',[860,1490,2300,3340,4640,6280,8130]]],
+  guardian:   [['Cooldown','s',[15,15,15,15,15,15,15]],['Crash Width','m',[60,60,60,60,60,60,60]],['Crash Range','m',[30,30,30,30,30,30,30]]],
+  shadow:     [['Cooldown','s',[8,8,8,8,8,8,8]],['Duration','s',[12,12,12,12,12,12,12]]],
+  ares:       [['Cooldown','s',[12,12,12,12,12,12,12]],['Shield HP','',[4600,7100,12400,19200,25100,32300,43900]]],
+  stalker:    [['Cooldown','s',[9,9,9,9,9,9,9]],['Duration','s',[9,9,9,9,9,9,9]],['Mech Dmg Boost','',['+50%','+50%','+50%','+50%','+50%','+50%','+50%']],['Heal on Kill','',[' 10%',' 10%',' 10%',' 10%',' 10%',' 10%',' 10%']]],
+  tengu:      [['Cooldown','s',[7,7,7,7,7,7,7]],['Damage','',[5700,9800,15200,22000,30700,41500,53600]],['Stasis Duration','s',[5,5,5,5,5,5,5]],['Stealth Duration','s',[4,4,4,4,4,4,4]]],
+  arachnos:   [['Cooldown','s',[22,22,22,22,22,22,22]],['Turret Damage','',[37,64,100,146,201,272,351]],['Turret Lifetime','s',[10,10,10,10,10,10,10]],['Range','m',[30,30,30,30,30,30,30]]],
+  redeemer:   [['Cooldown','s',[14,14,14,14,14,14,14]],['Backtrack Timer','s',[10,10,10,10,10,10,10]]],
+  aegis:      [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[10,10,10,10,10,10,10]],['Dome HP','',[79000,122200,212500,328600,428700,552400,750000]],['Dome Radius','m',[10,10,10,10,10,10,10]]],
+  zephyr:     [['Cooldown','s',[8,8,8,8,8,8,8]],['Duration','s',[3,3,3,3,3,3,3]],['Radius','m',[30,30,30,30,30,30,30]]],
+  cheetah:    [['Cooldown','s',[6,6,6,6,6,6,6]],['Mine Damage','',[4000,6200,10800,16600,21700,28000,38000]],['Mine Radius','m',[12,12,12,12,12,12,12]]],
+  panther:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[10,10,10,10,10,10,10]],['Stasis Time','s',[4,4,4,4,4,4,4]]],
+  killshot:   [['Cooldown','s',[6,6,6,6,6,6,6]],['Damage','',[7100,10900,19000,29300,38300,49300,66900]],['Dash Distance','m',[40,40,40,40,40,40,40]]],
+  sentinel:   [['Cooldown','s',[12,12,12,12,12,12,12]],['Shield HP','',[6100,9400,16300,25200,32800,42300,57400]]],
+  orion:      [['Cooldown','s',[12,12,12,12,12,12,12]],['Dmg Boost','',['+150%','+150%','+150%','+150%','+150%','+150%','+150%']],['Shield Pierce','',['+88%','+88%','+88%','+88%','+88%','+88%','+88%']],['Transfer Range','m',[20,20,20,20,20,25,30]]],
+  redox:      [['Cooldown','s',[8,8,8,8,8,8,8]],['Duration','s',[6,6,6,6,6,6,6]],['Damage','',[4800,8300,12900,18700,26000,35200,45500]],['Radius','m',[30,30,30,30,30,30,30]]],
+  scorpius:   [['Cooldown','s',[7,7,7,7,7,7,7]],['Damage/Mag','',[960,3588,6804,11412,17808,26556,41076]]],
+  surge:      [['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[3,3,3,3,3,3,3]],['Dash Distance','m',[40,40,40,40,40,40,40]],['EMP Radius','m',[15,15,15,15,15,15,15]]],
+  eclipse:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[8,8,8,8,8,8,8]]],
+  brickhouse: [['Cooldown','s',[12,12,12,12,12,12,12]],['Duration','s',[10,10,10,10,10,10,10]],['Mech Dmg Boost','',['+50%','+50%','+50%','+50%','+50%','+50%','+50%']],['Team Dmg Boost','',['+100%','+100%','+100%','+100%','+100%','+100%','+100%']]],
+  gatecrasher:[['Cooldown','s',[10,10,10,10,10,10,10]],['Beam Duration','s',[7,7,7,7,7,7,7]],['Blast Damage','',[6300,11000,17000,24600,34300,46400,60000]],['Beam Damage','',[9500,16500,25500,36900,51400,69500,89900]]],
+  onyx:       [['Cooldown','s',[10,10,10,10,10,10,10]],['Damage/Mag','',[1628,6102,11582,19404,30288,45162,69933]]],
+  nomad:      [['Cooldown','s',[8,8,8,8,8,8,8]],['Chain Dash Time','s',[3,3,3,3,3,3,3]],['Damage','',[7400,11400,19900,30800,40200,51700,70200]],['Dash Distance','m',[45,45,45,45,45,45,45]],['Dmg Reduction','',['-60%','-60%','-60%','-60%','-60%','-60%','-60%']]],
+  lacewing:   [['Cooldown','s',[7,7,7,7,7,7,7]],['Mine Damage','',[4000,6200,10800,16600,21700,28000,38000]],['Mine Radius','m',[12,12,12,12,12,12,12]],['Jump Charges','',[2,2,2,2,2,2,2]]],
+  bastion:    [['Cooldown','s',[16,16,16,16,16,16,16]],['Shield HP','',[6300,9800,17000,26300,34300,44200,60000]],['Blast Damage','',[2400,3700,6400,10000,13000,16800,22700]],['EMP Duration','s',[1,1,1,1,2,3,3]]],
+  vortex:     [['Cooldown','s',[10.4,10.4,10.4,10.4,10.4,10.4,10.4]],['Duration','s',[8,8,8,8,8,8,8]],['Field Damage/s','',[500,800,1300,2100,2700,3500,4700]],['Field Radius','m',[12,12,12,12,12,12,12]]],
+  hemlock:    [['Cooldown','s',[16,16,16,16,16,16,16]],['Daze Delay','s',[1.5,1.5,1.5,1.5,1.5,1.5,1.5]],['Daze Duration','s',[6,6,6,6,6,6,6]],['EMP Duration','s',[2,2,2,2,2,2,2]]],
+  solis:      [['Cooldown','s',[8,8,8,8,8,8,8]],['Blind Duration','s',[3,3,3,3,3,3,3]],['Radius','m',[15,15,15,15,15,15,15]],['Orb Count','',[2,2,2,2,2,2,2]]],
+  seeker:     [['Cooldown','s',[8,8,8,8,8,8,8]],['Duration','s',[7,7,7,7,7,7,7]],['Shield HP','',[3600,5600,9700,15000,19500,25200,34200]],['Warp Range','m',[100,100,100,100,100,100,100]]],
+  outlaw:     [['Cooldown','s',[15,15,15,15,15,15,15]],['Range','m',[100,100,100,100,100,100,100]],['Radius','m',[5,5,5,5,5,5,5]]],
+  dreadnought:[['Cooldown','s',[9,9,9,9,9,9,9]],['EMP Duration','s',[2,2,2,2,2,2,2]],['Damage','',[12202,25982,32868,41296,51578,64085,74319]]],
+  volti:      [['Cooldown','s',[13,13,13,13,13,13,13]],['Duration','s',[6,6,6,6,6,6,6]],['Damage/tick','',[1100,1900,3000,4300,6000,8100,10400]],['Radius','m',[6,6,6,6,6,6,6]]],
+  blizzfrost: [['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[5,5,5,5,5,5,5]],['Damage','',[5300,8100,14200,21900,28600,36800,50000]],['Radius','m',[30,30,30,30,30,30,30]]],
+  mimicker:   [['Cooldown','s',[9,9,9,9,9,9,9]],['Shield HP','',[9500,16500,25500,36900,51400,69500,89900]],['Mech Heal/s','',[2110,3660,5660,8210,11420,15450,19980]]],
+  parasite:   [['Cooldown','s',[11,11,11,11,11,11,11]],['Duration','s',[12,12,12,12,12,12,12]],['Dmg Received','',[' 10%',' 10%',' 10%',' 10%',' 10%',' 10%',' 10%']],['Dmg Redirected','',[' 35%',' 35%',' 35%',' 35%',' 35%',' 35%',' 35%']]],
+  blockhorn:  [['Cooldown','s',[9,9,9,9,9,9,9]],['Duration','s',[7,7,7,7,7,7,7]],['Barricade HP','',[53000,92200,142600,206700,287600,389100,503100]]],
+  deathwalker:[['Cooldown','s',[15,15,15,15,15,15,15]],['Duration','s',[15,15,15,15,15,15,15]],['Invulnerability','s',[3,3,3,3,3,3,3]],['Speed Boost','',['+60%','+60%','+60%','+60%','+60%','+60%','+60%']]],
+  citadel:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[9.6,9.6,9.6,9.6,9.6,9.6,9.6]],['Shield HP','',[13000,20100,35000,54100,70500,90900,123400]],['Bonus Shield HP','',[5000,7700,13400,20800,27100,35000,47500]]],
+  salvor:     [['Cooldown','s',[12,12,12,12,12,12,12]],['HP Healed (Ally)','',[6330,11020,17040,24700,34370,46500,60130]],['HP Healed (Self)','',[3190,5540,8570,12420,17280,23380,30230]],['Range','m',[100,100,100,100,100,100,100]]],
+  silverthorn:[['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[3.5,3.5,3.5,3.5,3.5,3.5,3.5]],['Blade Count','',[5,5,5,5,5,5,5]],['Spd Reduction','',['-40%','-40%','-40%','-40%','-40%','-40%','-40%']]],
+};
+
 // Role icons for list
 const ROLE_ICON={Attacker:'⚔️',Scout:'🏃',Tank:'🛡️',Support:'💚'};
 const RARITY_COLOR={Common:'#aaaaaa',Uncommon:'#88cc88',Rare:'#00d4ff',Epic:'#c44dff',Legendary:'#ffd700'};
@@ -1701,6 +1754,13 @@ function renderDetail(m){
   const prosHTML=pros.map(p=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--acc3)">✓ ${p}</span>`).join('');
   const consHTML=cons.map(c=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--red)">✗ ${c}</span>`).join('');
 
+  const ar=MECH_ABILITY_RANKS[key];
+  const abilityStatsHTML=ar?ar.map(([lbl,unit,vals])=>{
+    const v=vals[currentRank-1];
+    const disp=(typeof v==='number'&&v>=1000)?v.toLocaleString():v;
+    return `<div class="ab-stat"><div class="ab-stat-lbl">${lbl}</div><div class="ab-stat-val">${disp}${unit}</div></div>`;
+  }).join(''):'';
+
   document.getElementById('gh-detail').innerHTML=`
     <div class="mech-header">
       <div class="mech-avatar" style="border-color:${m.color}66">
@@ -1759,6 +1819,11 @@ function renderDetail(m){
         <div style="font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">ENERGY PIPS AT RANK ${currentRank} (${rd.energy}E / ${m.energy}E max)</div>
         <div class="energy-pips">${energyPips}</div>
       </div>
+
+      ${abilityStatsHTML?`<div style="margin-top:14px">
+        <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc2);letter-spacing:1px;margin-bottom:8px">ABILITY STATS — RANK ${currentRank}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px">${abilityStatsHTML}</div>
+      </div>`:''}
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px">
         <div>

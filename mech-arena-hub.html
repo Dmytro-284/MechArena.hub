@@ -925,7 +925,7 @@ function setLang(l) {
   LANG = l;
   localStorage.setItem('ma_lang', l);
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
-  if (currentMech) selectMech(currentMech);
+  if (currentMech) renderDetail(MECHS[currentMech]);
 }
 
 // ============================================================
@@ -1028,7 +1028,7 @@ const MECHS = {
 
   brickhouse:{name:'Brickhouse',role:'Support',rarity:'Legendary',energy:24,speed:14,icon:'🏠',color:'#aa6622',gearTier:7,startRank:3,
     ability:{name:'Overcharger',desc:'Amplify your weapon systems. Works even better on nearby allies.'},
-    pros:['HIGHEST HP in the entire game','Double Damage ability — burst threat unlike any tank','Strong solo-carry potential'],
+    pros:['241,500 HP — among the highest HP tanks in the game','Double Damage ability — burst threat unlike any tank','Strong solo-carry potential'],
     cons:['14 km/h — extremely slow even for a tank','Skip recommendation in Gear Hub — costs too many A-coins','Outclassed defensively by Aegis late-game'],
     bestBuilds:['2× Storm Rack 10 (double damage)','2× Disc Launcher 12','Revoker 10 + Graviton Beam 10'],
     ranks:{1:{hp:12800,energy:6},2:{hp:39300,energy:8},3:{hp:68400,energy:12},4:{hp:105800,energy:16},5:{hp:138000,energy:18},6:{hp:177800,energy:20},7:{hp:241500,energy:24}}},
@@ -1077,7 +1077,7 @@ const MECHS = {
 
   orion:{name:'Orion',role:'Support',rarity:'Epic',energy:24,speed:23,icon:'🌟',color:'#aaaa22',gearTier:5,startRank:4,
     ability:{name:"Hunter's Mark",desc:"Fire a tracking flare at an enemy Mech. If you hit, will apply a Marked Effect and a brief Stasis Effect. All Weapon attacks against Marked Mechs count as back hits, and also deal bonus Damage."},
-    pros:["Hunter's Mark is one of the best damage-amplifying abilities in the game","24E — meta weapons","23 km/h — fast for an attacker","Excellent in 1v1 and team fights"],
+    pros:["Hunter's Mark is one of the best damage-amplifying abilities in the game","24E — meta weapons","23 km/h — fast for a support","Excellent in 1v1 and team fights"],
     cons:["Flare has travel time — fast mechs can dodge it","Cloaked mechs (Eclipse, Shadow) cannot be targeted","Less effective solo without teammates to capitalize the mark"],
     bestBuilds:['2× Storm Rack 10 (mark + barrage)','2× EM Rifle 16 (long-range mark kills)','Storm Rack 10 + Overdriver 10'],
     ranks:{1:{hp:9800,energy:6},2:{hp:25300,energy:8},3:{hp:44000,energy:12},4:{hp:68000,energy:16},5:{hp:88800,energy:18},6:{hp:114400,energy:20},7:{hp:155300,energy:24}}},
@@ -1098,14 +1098,14 @@ const MECHS = {
 
   gatecrasher:{name:'Gatecrasher',role:'Attacker',rarity:'Legendary',energy:32,speed:21,icon:'💣',color:'#cc7700',gearTier:10,startRank:5,
     ability:{name:'Ion Pod',desc:'Fires a Pod that sticks and causes an Ion Blast. When sticking to objects, it releases an Ion Beam that deals damage over time to enemies on the opposite side. When sticking to Mechs, there is no Beam.'},
-    pros:['221,600 HP — highest of any attacker by far','32E — heaviest loadout','21 km/h — surprisingly fast for this bulk','Ion Pod enables unique wall-penetration plays'],
+    pros:['221,600 HP — 2nd highest among attackers (after Dreadnought)','32E — heaviest loadout','21 km/h — surprisingly fast for this bulk','Ion Pod enables unique wall-penetration plays'],
     cons:['Largest hitbox in game — vulnerable to AOE','Ion Pod is hard to aim and requires map knowledge','Skip per F2P guide — inefficient A-coin spend'],
     bestBuilds:['2× Rail Gun 16 (pod finisher)','2× EM Rifle 16','Disc Launcher 12 + Rail Gun 16'],
     ranks:{1:{hp:11700,energy:8},2:{hp:40600,energy:12},3:{hp:62800,energy:16},4:{hp:91000,energy:20},5:{hp:126700,energy:24},6:{hp:171400,energy:28},7:{hp:221600,energy:32}}},
 
   bastion:{name:'Bastion',role:'Tank',rarity:'Legendary',energy:24,speed:14,icon:'🏯',color:'#557755',gearTier:9,startRank:5,
     ability:{name:'Blast Shield',desc:'Activates a ring shield around the Mech to absorb damage. When the shield HP hits zero, it releases a spherical explosion that deals damage and applies an EMP debuff to enemy Mechs within its radius.'},
-    pros:['32E — strongest tank loadout','Good HP pool','Blast Shield explodes when broken — EMP punishes attackers'],
+    pros:['32E — strongest tank loadout','340,920 HP — HIGHEST HP in the entire game','Blast Shield explodes when broken — EMP punishes attackers'],
     cons:['14 km/h — slowest even by tank standards','F2P guide: skip — inefficient A-coin spend','Aegis outclasses it defensively'],
     bestBuilds:['2× Disc Launcher 12','2× Rocket Mortar 12','Storm Rack 10 + Pod Gun 10'],
     ranks:{1:{hp:18000,energy:6},2:{hp:55560,energy:8},3:{hp:96600,energy:12},4:{hp:149400,energy:16},5:{hp:194880,energy:18},6:{hp:251040,energy:20},7:{hp:340920,energy:24}}},
@@ -1133,7 +1133,7 @@ const MECHS = {
 
   hemlock:{name:'Hemlock',role:'Support',rarity:'Legendary',energy:24,speed:20,icon:'☠️',color:'#22aa44',gearTier:8,startRank:5,
     ability:{name:'ECM Shot',desc:'Applies the Daze effect, disabling its target after a short delay. If the target is damaged, Daze is replaced by a short EMP effect. The total duration never exceeds the Daze Duration stat.'},
-    pros:['S-tier attacker','ECM Shot counters ability-heavy mechs (Guardian, Aegis)','24E — meta weapon combos','Strong solo carry'],
+    pros:['S-tier support','ECM Shot counters ability-heavy mechs (Guardian, Aegis)','24E — meta weapon combos','Strong solo carry'],
     cons:['Requires landing ECM + follow-up damage for full EMP — skill-based'],
     bestBuilds:['Storm Rack 10 + Revoker 10','2× Storm Rack 10','Storm Rack 10 + Disc Launcher 12'],
     ranks:{1:{hp:10800,energy:6},2:{hp:33300,energy:8},3:{hp:58000,energy:12},4:{hp:89600,energy:16},5:{hp:116900,energy:18},6:{hp:150600,energy:20},7:{hp:204500,energy:24}}},
@@ -1204,7 +1204,7 @@ const MECHS = {
   salvor:{name:'Salvor',role:'Support',rarity:'Legendary',energy:32,speed:24,icon:'🚑',color:'#22aa77',gearTier:8,startRank:5,
     ability:{name:'Regen Shot',desc:'Locks onto any allied Mech and fires a projectile that heals a portion of their HP and partially heals Salvor. Ability has 3 charges. Hold the Ability button to fire all projectiles quickly at a single target.'},
     pros:['Best dedicated healer — fires 3 missiles that heal 60k+ HP if all land','32E — can carry meaningful weapons while healing','24 km/h — fastest support class','A-tier support'],
-    cons:['161,900 HP — moderate for a legendary','Relies on teammates being within range'],
+    cons:['227,300 HP — high HP for a support class','Relies on teammates being within range'],
     bestBuilds:['Helix Rack 8 + Disc Launcher 12','2× Helix Rack 8','Disc Launcher 12 + Storm Rack 8'],
     ranks:{1:{hp:12000,energy:8},2:{hp:41600,energy:12},3:{hp:64400,energy:16},4:{hp:93300,energy:20},5:{hp:129900,energy:24},6:{hp:175800,energy:28},7:{hp:227300,energy:32}}},
 
@@ -1319,7 +1319,7 @@ const MECHS_UA = {
   },
   brickhouse: {
     ability_desc: 'Підсилює системи зброї. Ще краще працює на союзників поруч.',
-    pros: ['НАЙВИЩИЙ HP у всій грі', 'Overcharger подвоює шкоду — унікальна ударна загроза для танка', 'Сильний соло-кері потенціал'],
+    pros: ['241 500 HP — один із найвищих серед танків у грі', 'Overcharger подвоює шкоду — унікальна ударна загроза для танка', 'Сильний соло-кері потенціал'],
     cons: ['14 км/г — надзвичайно повільний', 'Пропустити в Gear Hub — занадто багато A-монет', 'Поступається Aegis в обороні'],
   },
   redox: {
@@ -1354,7 +1354,7 @@ const MECHS_UA = {
   },
   orion: {
     ability_desc: 'Випускає ракету-маяк. При влучанні застосовує ефект Позначки та короткий Stasis. Всі атаки по позначеному цілі рахуються як удар у спину.',
-    pros: ['Hunter\'s Mark — одна з найкращих здатностей для підсилення шкоди', '24E — метазброя', '23 км/г — швидкий для атакуючого', 'Відмінний у 1v1 та командних боях'],
+    pros: ['Hunter\'s Mark — одна з найкращих здатностей для підсилення шкоди', '24E — метазброя', '23 км/г — швидкий для підтримки', 'Відмінний у 1v1 та командних боях'],
     cons: ['Ракета летить — швидкі мехи можуть ухилитися', 'Мехи у маскуванні (Eclipse, Shadow) не стають ціллю', 'Менш ефективний поодинці'],
   },
   redeemer: {
@@ -1369,12 +1369,12 @@ const MECHS_UA = {
   },
   gatecrasher: {
     ability_desc: 'Випускає капсулу, що прилипає та викликає іонний вибух. При прилипанні до об\'єктів — іонний промінь крізь стіну. При прилипанні до мехів — промінь відсутній.',
-    pros: ['221 600 HP — найвищий серед атакуючих', '32E — найважчий набір', '21 км/г — несподівано швидкий для таких розмірів', 'Ion Pod дає унікальні атаки крізь стіни'],
+    pros: ['221 600 HP — 2-й найвищий серед атакуючих (після Dreadnought)', '32E — найважчий набір', '21 км/г — несподівано швидкий для таких розмірів', 'Ion Pod дає унікальні атаки крізь стіни'],
     cons: ['Найбільший hitbox у грі — вразливий до AOE', 'Ion Pod важко прицілити — потрібне знання карти', 'Пропустити за гайдом F2P'],
   },
   bastion: {
     ability_desc: 'Активує кільцевий щит навколо меха для поглинання шкоди. При 0 HP щита — сферичний вибух із EMP дебаффом для ворогів у радіусі.',
-    pros: ['32E — найсильніший набір танка', 'Непоганий запас HP', 'Blast Shield вибухає при руйнуванні — EMP карає атакуючих'],
+    pros: ['32E — найсильніший набір танка', '340 920 HP — НАЙВИЩИЙ HP у всій грі', 'Blast Shield вибухає при руйнуванні — EMP карає атакуючих'],
     cons: ['14 км/г — найповільніший навіть серед танків', 'Пропустити за гайдом F2P', 'Aegis перевершує в обороні'],
   },
   onyx: {
@@ -1394,7 +1394,7 @@ const MECHS_UA = {
   },
   hemlock: {
     ability_desc: 'Застосовує ефект Daze, вимикаючи ціль після короткої затримки. При завданні шкоди — Daze замінюється коротким EMP.',
-    pros: ['S-рівень атакуючий', 'ECM Shot контрить мехів із сильними здатностями (Guardian, Aegis)', '24E — метакомбінації зброї', 'Сильний соло-кері'],
+    pros: ['S-рівень підтримка', 'ECM Shot контрить мехів із сильними здатностями (Guardian, Aegis)', '24E — метакомбінації зброї', 'Сильний соло-кері'],
     cons: ['Потрібно влучити ECM + завдати шкоди для повного EMP — вимагає навичок'],
   },
   scorpius: {
@@ -1445,7 +1445,7 @@ const MECHS_UA = {
   salvor: {
     ability_desc: 'Наводиться на союзного меха та випускає снаряд, що лікує частину їх HP і частково лікує Salvor. 3 заряди. Утримання кнопки — всі снаряди в одну ціль.',
     pros: ['Найкращий хілер — 3 ракети лікують 60k+ HP якщо всі влучають', '32E — може нести серйозну зброю під час лікування', '24 км/г — найшвидший клас підтримки', 'A-рівень підтримка'],
-    cons: ['161 900 HP — помірний для легендарного', 'Потрібно щоб союзники були в зоні досяжності'],
+    cons: ['227 300 HP — високий HP для підтримки', 'Потрібно щоб союзники були в зоні досяжності'],
   },
   dreadnought: {
     ability_desc: 'Обстрілює ракетами перед Dreadnought, пошкоджуючи ворогів у зоні та застосовуючи EMP. Вбивство скидає кулдаун та збільшує швидкість.',

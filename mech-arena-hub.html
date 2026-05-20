@@ -445,7 +445,7 @@ select:focus{border-color:var(--acc);}
 </div>
 <header>
   <h1>⬡ MECH ARENA HUB</h1>
-  <p>Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
+  <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
 </header>
 
 <div style="display:flex;justify-content:flex-end;padding:4px 0 2px;gap:6px">
@@ -453,14 +453,14 @@ select:focus{border-color:var(--acc);}
   <button class="lang-btn" data-lang="ua" onclick="setLang('ua')" style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px 10px;border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);cursor:pointer;border-radius:2px;letter-spacing:1px">UA</button>
 </div>
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('home',this)">🏠 HOME</button>
-  <button class="tab" onclick="switchTab('gear',this)">MECHS</button>
-  <button class="tab" onclick="switchTab('cheat',this)">CHEATSHEETS</button>
-  <button class="tab" onclick="switchTab('calc',this)">CALCULATOR</button>
-  <button class="tab" onclick="switchTab('compare',this)">⚡ COMPARE</button>
-  <button class="tab" onclick="switchTab('hangar',this)">🏆 HANGAR RATE</button>
-  <button class="tab" onclick="switchTab('promo',this)">🎁 PROMO</button>
-  <button class="tab" onclick="switchTab('maps',this)">🗺️ MAP GUIDE</button>
+  <button class="tab active" onclick="switchTab('home',this)" data-i18n="tab_home">🏠 HOME</button>
+  <button class="tab" onclick="switchTab('gear',this)" data-i18n="tab_mechs">MECHS</button>
+  <button class="tab" onclick="switchTab('cheat',this)" data-i18n="tab_cheat">CHEATSHEETS</button>
+  <button class="tab" onclick="switchTab('calc',this)" data-i18n="tab_calc">CALCULATOR</button>
+  <button class="tab" onclick="switchTab('compare',this)" data-i18n="tab_compare">⚡ COMPARE</button>
+  <button class="tab" onclick="switchTab('hangar',this)" data-i18n="tab_hangar">🏆 HANGAR RATE</button>
+  <button class="tab" onclick="switchTab('promo',this)" data-i18n="tab_promo">🎁 PROMO</button>
+  <button class="tab" onclick="switchTab('maps',this)" data-i18n="tab_maps">🗺️ MAP GUIDE</button>
 </div>
 
 <!-- ===== HOME ===== -->
@@ -475,10 +475,10 @@ select:focus{border-color:var(--acc);}
   <div class="gh-sidebar">
     <div id="gh-mech-controls">
       <div class="gh-search">
-        <input type="text" id="mech-search" placeholder="🔍  Search mechs..." oninput="filterMechs()">
+        <input type="text" id="mech-search" data-i18n-placeholder="search_mechs" placeholder="🔍  Search mechs..." oninput="filterMechs()">
       </div>
       <div class="gh-filters">
-        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">ROLE:</span>
+        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px" data-i18n="label_role">ROLE:</span>
         <button class="gf on" data-ftype="role" data-fval="all" onclick="toggleFilter(this)">ALL</button>
         <button class="gf" data-ftype="role" data-fval="Attacker" onclick="toggleFilter(this)">ATK</button>
         <button class="gf" data-ftype="role" data-fval="Scout" onclick="toggleFilter(this)">SCT</button>
@@ -486,7 +486,7 @@ select:focus{border-color:var(--acc);}
         <button class="gf" data-ftype="role" data-fval="Support" onclick="toggleFilter(this)">SUP</button>
       </div>
       <div class="gh-filters" style="border-top:none;padding-top:0">
-        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px">RARITY:</span>
+        <span style="font-size:10px;color:var(--dim);align-self:center;margin-right:2px" data-i18n="label_rarity">RARITY:</span>
         <button class="gf r-common on" data-ftype="rar" data-fval="all" onclick="toggleFilter(this)">ALL</button>
         <button class="gf r-common" data-ftype="rar" data-fval="Common" onclick="toggleFilter(this)">CMN</button>
         <button class="gf r-uncommon" data-ftype="rar" data-fval="Uncommon" onclick="toggleFilter(this)">UNC</button>
@@ -500,89 +500,22 @@ select:focus{border-color:var(--acc);}
 
   <!-- DETAIL -->
   <div class="gh-detail" id="gh-detail">
-    <div class="gh-empty">← Select a mech to view details</div>
+    <div class="gh-empty" data-i18n="empty_mech">← Select a mech to view details</div>
   </div>
 </div>
 </div>
 
 <!-- ===== CHEATSHEETS ===== -->
 <div id="pane-cheat" class="pane">
-<div class="qref">
-  <div class="qc"><div class="qn">45</div><div class="ql">Total Mechs</div></div>
-  <div class="qc"><div class="qn">241+</div><div class="ql">Total Weapons</div></div>
-  <div class="qc"><div class="qn">10</div><div class="ql">Gear Hub Tiers</div></div>
-  <div class="qc"><div class="qn">5</div><div class="ql">Max Squad Size</div></div>
-  <div class="qc"><div class="qn">800/160</div><div class="ql">XP Win / Loss</div></div>
-  <div class="qc"><div class="qn">9</div><div class="ql">Weapon Categories</div></div>
-</div>
-<div class="ccols">
-  <div>
-    <div class="stitle">Best F2P Builds (2026 meta)</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Surge (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Eclipse (24E)</span><span class="cv">2× Minigun 10 (20E) or Pod Gun 10 + Minigun 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Aegis (24E)</span><span class="cv">2× Pod Gun 8 (16E) or Graviton Beam 10 + Pod Gun 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Orion (24E)</span><span class="cv">2× Storm Rack 10 (20E) or Storm Rack 10 + Overdriver 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Panther (32E)</span><span class="cv">2× Graviton Beam 10 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Hemlock (24E)</span><span class="cv">Storm Rack 10 + Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Killshot (24E)</span><span class="cv">Disc Launcher 12 + Missile Rack 8 (20E) or 2× Revoker 8 (16E)</span></div>
-      <div class="cr"><span class="ck">Gatecrasher (32E)</span><span class="cv">2× Rail Gun 16 (32E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Dreadnought (32E)</span><span class="cv">2× Rocket Mortar 12 (24E) or Storm Rack 16 + Rocket Mortar 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Salvor (32E)</span><span class="cv">Helix Rack 8 + Disc Launcher 12 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Nomad (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Best endgame hanger</span><span class="cv">Surge · Eclipse · Aegis · Orion/Panther · Hemlock/Nomad</span></div>
-    </div>
-
-    <div class="stitle">Gear Hub F2P Strategy</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Tier 1–2</span><span class="cv">Paragon, Lancer, Juggernaut — stars only, don't invest</span></div>
-      <div class="cr"><span class="ck">Tier 3–4</span><span class="cv">Ares ✓ · Guardian (free promo) · avoid Shadow</span></div>
-      <div class="cr"><span class="ck">Tier 5</span><span class="cv">Orion ✓ · Panther ✓ · Killshot ✓ · skip Sentinel</span></div>
-      <div class="cr"><span class="ck">Tier 6</span><span class="cv">Aegis ✓ + Pod Gun 8 · save A-Coins from here</span></div>
-      <div class="cr"><span class="ck">Tier 7</span><span class="cv">Surge ✓ · Eclipse ✓ (A-coins) · avoid Scorpius</span></div>
-      <div class="cr"><span class="ck">Tier 8–10</span><span class="cv">Hemlock ✓ · Nomad ✓ · skip Bastion, Gatecrasher, Onyx</span></div>
-      <div class="cr"><span class="ck">Best weapons</span><span class="cv">Storm Rack · Revoker · Pod Gun · Graviton Beam · Overdriver</span></div>
-      <div class="cr"><span class="ck">Avoid</span><span class="cv">Particle Beam · Chain Gun · Gauss Rifle · F-tier starters</span></div>
-    </div>
-  </div>
-  <div>
-    <div class="stitle">Weapon Categories (all 9)</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Assault</span><span class="cv">Minigun, Pod Gun, Carbine, Overdriver, Repeater, Suppressor, Reaver</span></div>
-      <div class="cr"><span class="ck">Missile</span><span class="cv">Missile Rack, Blast RPG, Disruptor, Hornet, Fuse Mortar, Cryo Launcher, Charge Rocket</span></div>
-      <div class="cr"><span class="ck">Beam</span><span class="cv">Arc Torrent, Graviton Beam, Particle Beam, Burrow Beam, Stasis Beam, Thermal Lance</span></div>
-      <div class="cr"><span class="ck">Close Quarters</span><span class="cv">Ember Gun, Fragment Gun, Shotgun, Revoker, Howler, Quasher, Fusion Cannon</span></div>
-      <div class="cr"><span class="ck">Sniper</span><span class="cv">Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum, Dreadshot, Savant, Quantum Gun, Oracle, Viper, Gauss Rifle</span></div>
-      <div class="cr"><span class="ck">Guided</span><span class="cv">Disc Launcher, Strike Rocket, Gemini</span></div>
-      <div class="cr"><span class="ck">Artillery</span><span class="cv">Javelin Rack, Helix Rack, Rocket Mortar, Nade Launcher, Cryo Javelin</span></div>
-      <div class="cr"><span class="ck">Heavy Duty</span><span class="cv">Chain Gun, Voltaic RPG, Berserker</span></div>
-      <div class="cr"><span class="ck">Barrage</span><span class="cv">Storm Rack, Hellfire</span></div>
-    </div>
-    <div class="stitle">Weapon Rules</div>
-
-    <div class="cc">
-      <div class="cr"><span class="ck">2 copies auto</span><span class="cv">All weapons 8E and below</span></div>
-      <div class="cr"><span class="ck">2nd copy (10E+)</span><span class="cv">Must reach Rank 6 first</span></div>
-      <div class="cr"><span class="ck">Energy levels</span><span class="cv">2 / 4 / 6 / 8 / 10 / 12 / 14 / 16</span></div>
-    </div>
-    <div class="stitle">Pilot System</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Rare pilots</span><span class="cv">2 implant slots</span></div>
-      <div class="cr"><span class="ck">Epic pilots</span><span class="cv">3 implant slots</span></div>
-      <div class="cr"><span class="ck">Legendary pilots</span><span class="cv">4 implant slots</span></div>
-      <div class="cr"><span class="ck">XP win / loss</span><span class="cv">800 / 160 (skip with A-coins)</span></div>
-      <div class="cr"><span class="ck">All pilots give</span><span class="cv">% HP + % Damage + weapon-type skill bonus</span></div>
-    </div>
-  </div>
-</div>
+<div id="pane-cheat-content"></div>
 </div>
 
 <!-- ===== CALCULATOR ===== -->
 <div id="pane-calc" class="pane">
   <div class="calc-subtabs">
-    <button class="calc-tab active" onclick="switchCalcTab('upgrade',this)">⚙️ CALCULATOR</button>
-    <button class="calc-tab" onclick="switchCalcTab('pilot',this)">👤 PILOT CALCULATOR</button>
-    <button class="calc-tab" onclick="switchCalcTab('mod',this)">🧩 MOD CALCULATOR</button>
+    <button class="calc-tab active" onclick="switchCalcTab('upgrade',this)" data-i18n="calc_tab_upgrade">⚙️ CALCULATOR</button>
+    <button class="calc-tab" onclick="switchCalcTab('pilot',this)" data-i18n="calc_tab_pilot">👤 PILOT CALCULATOR</button>
+    <button class="calc-tab" onclick="switchCalcTab('mod',this)" data-i18n="calc_tab_mod">🧩 MOD CALCULATOR</button>
   </div>
 
   <!-- Upgrade Calculator -->
@@ -591,14 +524,14 @@ select:focus{border-color:var(--acc);}
       <button class="ctype-btn active" id="ctype-mech" onclick="setCalcType('mech')">⚙️ MECHS</button>
       <button class="ctype-btn" id="ctype-weapon" onclick="setCalcType('weapon')">🔧 WEAPONS</button>
       <select id="calc-rarity" onchange="renderCalcTiles()" style="max-width:140px;margin-left:6px">
-        <option value="all">All Rarities</option>
+        <option value="all" data-i18n="all_rarities">All Rarities</option>
         <option value="common">Common</option>
         <option value="uncommon">Uncommon</option>
         <option value="rare">Rare</option>
         <option value="epic">Epic</option>
         <option value="legendary">Legendary</option>
       </select>
-      <input type="text" id="calc-search" class="calc-search-input" placeholder="🔍 Search..." oninput="renderCalcTiles()" style="flex:1;margin:0;min-width:90px">
+      <input type="text" id="calc-search" class="calc-search-input" data-i18n-placeholder="search_generic" placeholder="🔍 Search..." oninput="renderCalcTiles()" style="flex:1;margin:0;min-width:90px">
     </div>
     <div class="calc-tile-wrap">
       <div class="calc-tiles" id="calc-tiles">
@@ -609,11 +542,11 @@ select:focus{border-color:var(--acc);}
       <div class="calc-selected-badge" id="calc-selected-badge">
         <div style="width:70px;height:62px;margin:0 auto" id="badge-icon"></div>
         <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="badge-name">—</div>
-        <div style="font-size:11px;color:var(--dim);margin-top:2px" id="badge-sub">Select a mech or weapon above</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:2px" id="badge-sub" data-i18n="lbl_select_item">Select a mech or weapon above</div>
       </div>
       <div class="calc-settings-grid2">
         <div>
-          <span class="lbl">Current Star Level</span>
+          <span class="lbl" data-i18n="lbl_curr_star">Current Star Level</span>
           <div class="star-row" id="calc-star-btns">
             <button class="star-btn active" onclick="setCalcStar(1)">1★</button>
             <button class="star-btn" onclick="setCalcStar(2)">2★</button>
@@ -622,7 +555,7 @@ select:focus{border-color:var(--acc);}
             <button class="star-btn" onclick="setCalcStar(5)">5★</button>
             <button class="star-btn" onclick="setCalcStar(6)">6★</button>
           </div>
-          <span class="lbl">Current Level</span>
+          <span class="lbl" data-i18n="lbl_curr_lvl">Current Level</span>
           <div class="level-row" id="calc-level-btns">
             <button class="lvl-btn active" onclick="setCalcLevel(1)">1</button>
             <button class="lvl-btn" onclick="setCalcLevel(2)">2</button>
@@ -635,7 +568,7 @@ select:focus{border-color:var(--acc);}
         </div>
         <div>
           <div id="calc-target-section">
-            <span class="lbl">Target Star Level</span>
+            <span class="lbl" data-i18n="lbl_tgt_star">Target Star Level</span>
             <div class="star-row" id="calc-tostar-btns">
               <button class="star-btn" onclick="setCalcToStar(1)">1★</button>
               <button class="star-btn" onclick="setCalcToStar(2)">2★</button>
@@ -644,7 +577,7 @@ select:focus{border-color:var(--acc);}
               <button class="star-btn" onclick="setCalcToStar(5)">5★</button>
               <button class="star-btn active" onclick="setCalcToStar(6)">6★</button>
             </div>
-            <span class="lbl">Target Level</span>
+            <span class="lbl" data-i18n="lbl_tgt_lvl">Target Level</span>
             <div class="level-row" id="calc-tolevel-btns">
               <button class="lvl-btn" onclick="setCalcToLevel(1)">1</button>
               <button class="lvl-btn" onclick="setCalcToLevel(2)">2</button>
@@ -658,11 +591,11 @@ select:focus{border-color:var(--acc);}
         </div>
       </div>
       <div style="margin-top:16px;text-align:center">
-        <label class="calc-check-row" style="justify-content:center;margin-bottom:10px"><input type="checkbox" id="calc-tomax" onchange="toggleCalcToMax(this)"> Upgrade to Max (6★ Lv7)</label>
-        <button class="calc-btn" onclick="calculateUpgrade()">⚙️ CALCULATE UPGRADE COST</button>
+        <label class="calc-check-row" style="justify-content:center;margin-bottom:10px"><input type="checkbox" id="calc-tomax" onchange="toggleCalcToMax(this)"> <span data-i18n="lbl_to_max">Upgrade to Max (6★ Lv7)</span></label>
+        <button class="calc-btn" onclick="calculateUpgrade()" data-i18n="btn_calc_upgrade">⚙️ CALCULATE UPGRADE COST</button>
       </div>
       <div class="card" id="calc-result-panel" style="display:none;margin-top:14px">
-        <div class="ctitle">Upgrade Cost</div>
+        <div class="ctitle" data-i18n="lbl_upgrade_cost">Upgrade Cost</div>
         <div id="calc-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
         <div class="calc-res" id="calc-res"></div>
         <div id="calc-info" class="calc-info" style="margin-top:12px"></div>
@@ -680,12 +613,12 @@ select:focus{border-color:var(--acc);}
     <div class="calc-settings-below visible" id="pilot-settings">
       <div class="calc-selected-badge">
         <div style="font-size:32px;line-height:1" id="pilot-badge-icon">👤</div>
-        <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="pilot-badge-name">EPIC PILOT</div>
-        <div style="font-size:11px;color:var(--epic);margin-top:2px" id="pilot-badge-sub">All epic pilots share the same upgrade cost</div>
+        <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-top:4px" id="pilot-badge-name" data-i18n="pilot_badge_epic">EPIC PILOT</div>
+        <div style="font-size:11px;color:var(--epic);margin-top:2px" id="pilot-badge-sub"></div>
       </div>
       <div class="calc-settings-grid2">
         <div>
-          <span class="lbl">Current Star Level</span>
+          <span class="lbl" data-i18n="lbl_curr_star">Current Star Level</span>
           <div class="star-row" id="pilot-star-btns">
             <button class="star-btn active" onclick="setPilotStar(1)">1★</button>
             <button class="star-btn" onclick="setPilotStar(2)">2★</button>
@@ -694,7 +627,7 @@ select:focus{border-color:var(--acc);}
             <button class="star-btn" onclick="setPilotStar(5)">5★</button>
             <button class="star-btn" onclick="setPilotStar(6)">6★</button>
           </div>
-          <span class="lbl">Current Level</span>
+          <span class="lbl" data-i18n="lbl_curr_lvl">Current Level</span>
           <div class="level-row" id="pilot-level-btns">
             <button class="lvl-btn active" onclick="setPilotLevel(1)">1</button>
             <button class="lvl-btn" onclick="setPilotLevel(2)">2</button>
@@ -707,7 +640,7 @@ select:focus{border-color:var(--acc);}
         </div>
         <div>
           <div id="pilot-target-section" style="display:none">
-            <span class="lbl">Target Star Level</span>
+            <span class="lbl" data-i18n="lbl_tgt_star">Target Star Level</span>
             <div class="star-row" id="pilot-tostar-btns">
               <button class="star-btn" onclick="setPilotToStar(1)">1★</button>
               <button class="star-btn" onclick="setPilotToStar(2)">2★</button>
@@ -716,7 +649,7 @@ select:focus{border-color:var(--acc);}
               <button class="star-btn" onclick="setPilotToStar(5)">5★</button>
               <button class="star-btn active" onclick="setPilotToStar(6)">6★</button>
             </div>
-            <span class="lbl">Target Level</span>
+            <span class="lbl" data-i18n="lbl_tgt_lvl">Target Level</span>
             <div class="level-row" id="pilot-tolevel-btns">
               <button class="lvl-btn" onclick="setPilotToLevel(1)">1</button>
               <button class="lvl-btn" onclick="setPilotToLevel(2)">2</button>
@@ -727,12 +660,12 @@ select:focus{border-color:var(--acc);}
               <button class="lvl-btn" onclick="setPilotToLevel(7)">7</button>
             </div>
           </div>
-          <label class="calc-check-row" style="margin-top:12px"><input type="checkbox" id="pilot-tomax" checked onchange="togglePilotToMax(this)"> Upgrade to Max (6★ Lv7)</label>
-          <button class="calc-btn" onclick="calculatePilot()">👤 CALCULATE PILOT COST</button>
+          <label class="calc-check-row" style="margin-top:12px"><input type="checkbox" id="pilot-tomax" checked onchange="togglePilotToMax(this)"> <span data-i18n="lbl_to_max">Upgrade to Max (6★ Lv7)</span></label>
+          <button class="calc-btn" onclick="calculatePilot()" data-i18n="btn_calc_pilot">👤 CALCULATE PILOT COST</button>
         </div>
       </div>
       <div class="card" id="pilot-result-panel" style="display:none;margin-top:14px">
-        <div class="ctitle">Upgrade Cost</div>
+        <div class="ctitle" data-i18n="lbl_upgrade_cost">Upgrade Cost</div>
         <div id="pilot-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
         <div class="calc-res" id="pilot-res"></div>
         <div id="pilot-info" class="calc-info" style="margin-top:12px"></div>
@@ -744,22 +677,22 @@ select:focus{border-color:var(--acc);}
   <div id="calc-mod" class="calc-pane">
     <div class="calc-layout">
       <div class="calc-left">
-        <div class="ctitle">Select Mod</div>
+        <div class="ctitle" data-i18n="lbl_select_mod">Select Mod</div>
         <div class="calc-filter-row">
-          <span class="lbl" style="margin:0;white-space:nowrap">Rarity</span>
+          <span class="lbl" style="margin:0;white-space:nowrap" data-i18n="lbl_mod_rarity">Rarity</span>
           <select id="mod-rarity" onchange="renderModList()">
             <option value="all">All</option>
             <option value="epic">Epic</option>
             <option value="legendary">Legendary</option>
           </select>
         </div>
-        <input type="text" id="mod-search" class="calc-search-input" placeholder="🔍 Search mods..." oninput="renderModList()">
+        <input type="text" id="mod-search" class="calc-search-input" data-i18n-placeholder="search_mods" placeholder="🔍 Search mods..." oninput="renderModList()">
         <div class="ci-list" id="mod-item-list"><div style="padding:20px;text-align:center;color:var(--dim);font-size:12px">Loading data...</div></div>
       </div>
       <div class="calc-right">
         <div class="card">
-          <div class="ctitle">Upgrade Settings</div>
-          <span class="lbl">Current Level</span>
+          <div class="ctitle" data-i18n="lbl_upgrade_settings">Upgrade Settings</div>
+          <span class="lbl" data-i18n="lbl_curr_lvl">Current Level</span>
           <div class="mod-level-row" id="mod-from-btns">
             <button class="mod-lvl-btn active" onclick="setModFrom(1)">L1</button>
             <button class="mod-lvl-btn" onclick="setModFrom(2)">L2</button>
@@ -767,7 +700,7 @@ select:focus{border-color:var(--acc);}
             <button class="mod-lvl-btn" onclick="setModFrom(4)">L4</button>
             <button class="mod-lvl-btn" onclick="setModFrom(5)">L5</button>
           </div>
-          <span class="lbl">Target Level</span>
+          <span class="lbl" data-i18n="lbl_tgt_lvl">Target Level</span>
           <div class="mod-level-row" id="mod-to-btns">
             <button class="mod-lvl-btn" onclick="setModTo(2)">L2</button>
             <button class="mod-lvl-btn" onclick="setModTo(3)">L3</button>
@@ -775,10 +708,10 @@ select:focus{border-color:var(--acc);}
             <button class="mod-lvl-btn" onclick="setModTo(5)">L5</button>
             <button class="mod-lvl-btn active" onclick="setModTo(6)">L6</button>
           </div>
-          <button class="calc-btn" onclick="calculateMod()">🧩 CALCULATE MOD COST</button>
+          <button class="calc-btn" onclick="calculateMod()" data-i18n="btn_calc_mod">🧩 CALCULATE MOD COST</button>
         </div>
         <div class="card" id="mod-result-panel" style="display:none">
-          <div class="ctitle">Upgrade Cost</div>
+          <div class="ctitle" data-i18n="lbl_upgrade_cost">Upgrade Cost</div>
           <div id="mod-result-item" style="font-size:12px;color:var(--dim);margin-bottom:10px"></div>
           <div class="calc-res" id="mod-res" style="grid-template-columns:1fr 1fr"></div>
           <div id="mod-info" class="calc-info" style="margin-top:12px"></div>
@@ -792,27 +725,27 @@ select:focus{border-color:var(--acc);}
 <div id="pane-compare" class="pane">
   <!-- Mechs section -->
   <div id="cmp-mechs-section">
-    <div class="ctitle" style="margin-bottom:16px">Select up to 3 mechs to compare side by side</div>
+    <div class="ctitle" style="margin-bottom:16px" data-i18n="cmp_title">Select up to 3 mechs to compare side by side</div>
     <div class="cmp-slots">
       <div class="cmp-slot" id="cmp-slot-0">
-        <div class="cmp-slot-num">SLOT 1</div>
-        <div class="cmp-slot-empty">Click to pick a mech</div>
+        <div class="cmp-slot-num" data-i18n="cmp_slot1">SLOT 1</div>
+        <div class="cmp-slot-empty" data-i18n="cmp_pick">Click to pick a mech</div>
         <select onchange="setCmpSlot(0,this.value)">
-          <option value="">— Choose Mech —</option>
+          <option value="" data-i18n="cmp_choose">— Choose Mech —</option>
         </select>
       </div>
       <div class="cmp-slot" id="cmp-slot-1">
-        <div class="cmp-slot-num">SLOT 2</div>
-        <div class="cmp-slot-empty">Click to pick a mech</div>
+        <div class="cmp-slot-num" data-i18n="cmp_slot2">SLOT 2</div>
+        <div class="cmp-slot-empty" data-i18n="cmp_pick">Click to pick a mech</div>
         <select onchange="setCmpSlot(1,this.value)">
-          <option value="">— Choose Mech —</option>
+          <option value="" data-i18n="cmp_choose">— Choose Mech —</option>
         </select>
       </div>
       <div class="cmp-slot" id="cmp-slot-2">
-        <div class="cmp-slot-num">SLOT 3</div>
-        <div class="cmp-slot-empty">Click to pick a mech</div>
+        <div class="cmp-slot-num" data-i18n="cmp_slot3">SLOT 3</div>
+        <div class="cmp-slot-empty" data-i18n="cmp_pick">Click to pick a mech</div>
         <select onchange="setCmpSlot(2,this.value)">
-          <option value="">— Choose Mech —</option>
+          <option value="" data-i18n="cmp_choose">— Choose Mech —</option>
         </select>
       </div>
     </div>
@@ -826,14 +759,14 @@ select:focus{border-color:var(--acc);}
   <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;align-items:start">
     <!-- Left: mech picker -->
     <div>
-      <div class="ctitle" style="margin-bottom:12px">Pick Your Hangar (up to 5 mechs)</div>
+      <div class="ctitle" style="margin-bottom:12px" data-i18n="hr_title">Pick Your Hangar (up to 5 mechs)</div>
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <input type="text" id="hr-search" placeholder="🔍 Search mechs..." oninput="hrSearchChange(this.value)"
+        <input type="text" id="hr-search" data-i18n-placeholder="search_mechs" placeholder="🔍 Search mechs..." oninput="hrSearchChange(this.value)"
           style="flex:1;background:var(--bg);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;font-family:'Montserrat',sans-serif;font-size:13px;border-radius:2px;outline:none;">
         <span id="hr-count" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--acc);white-space:nowrap">0/5</span>
       </div>
       <div id="hr-warn" style="display:none;margin-bottom:8px;padding:8px 12px;background:rgba(255,107,0,.08);border-left:3px solid var(--acc2);font-size:12px;color:var(--acc2)">
-        Hangar is full — remove a mech first.
+        <span data-i18n="hr_full">Hangar is full — remove a mech first.</span>
       </div>
       <div style="background:var(--panel);border:1px solid var(--brd);border-radius:4px;padding:10px;max-height:520px;overflow-y:auto;">
         <div class="hr-grid" id="hr-tile-wrap"></div>
@@ -841,13 +774,13 @@ select:focus{border-color:var(--acc);}
     </div>
     <!-- Right: selected + result -->
     <div>
-      <div class="ctitle" style="margin-bottom:10px">Selected Mechs</div>
+      <div class="ctitle" style="margin-bottom:10px" data-i18n="hr_selected">Selected Mechs</div>
       <div class="hr-selected-bar" id="hr-selected-bar">
-        <span style="color:var(--dim);font-size:12px">No mechs selected yet — pick up to 5</span>
+        <span style="color:var(--dim);font-size:12px" data-i18n="hr_empty">No mechs selected yet — pick up to 5</span>
       </div>
       <button onclick="rateHangar()" style="width:100%;padding:11px;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05));border:1px solid var(--acc);color:var(--acc);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:2px;transition:all .2s;margin-bottom:16px;"
         onmouseover="this.style.background='rgba(0,212,255,.2)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05))'">
-        🏆 RATE MY HANGAR
+        <span data-i18n="btn_rate">🏆 RATE MY HANGAR</span>
       </button>
       <div id="hr-result" style="display:none"></div>
     </div>
@@ -857,8 +790,8 @@ select:focus{border-color:var(--acc);}
 <!-- ===== MAP GUIDE ===== -->
 <div id="pane-maps" class="pane">
   <div class="mg-mode-row">
-    <button class="mg-mode-btn active" id="mg-btn-cpc" onclick="setMgMode('cpc')">📍 CPC — Control Point Capture (13 maps)</button>
-    <button class="mg-mode-btn" id="mg-btn-5v5" onclick="setMgMode('5v5')">⚔️ 5v5 Deathmatch (36 maps)</button>
+    <button class="mg-mode-btn active" id="mg-btn-cpc" onclick="setMgMode('cpc')" data-i18n="map_cpc">📍 CPC — Control Point Capture (13 maps)</button>
+    <button class="mg-mode-btn" id="mg-btn-5v5" onclick="setMgMode('5v5')" data-i18n="map_5v5">⚔️ 5v5 Deathmatch (36 maps)</button>
   </div>
   <div class="mg-grid" id="mg-grid"></div>
 </div>
@@ -867,17 +800,17 @@ select:focus{border-color:var(--acc);}
 <div id="pane-promo" class="pane">
   <div class="promo-header">
     <div>
-      <div class="promo-title">🎁 ACTIVE PROMO CODES</div>
+      <div class="promo-title" data-i18n="promo_title">🎁 ACTIVE PROMO CODES</div>
       <div class="promo-meta" id="promo-meta">Loading…</div>
     </div>
-    <button class="promo-refresh" id="promo-refresh-btn" onclick="loadPromoCodes(true)">↻ REFRESH</button>
+    <button class="promo-refresh" id="promo-refresh-btn" onclick="loadPromoCodes(true)" data-i18n="promo_refresh">↻ REFRESH</button>
   </div>
   <div id="promo-grid" class="promo-grid">
     <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
     <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
     <div class="promo-skel"><div class="promo-skel-inner promo-shimmer"></div></div>
   </div>
-  <div class="promo-note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
+  <div class="promo-note" data-i18n="promo_note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
 </div>
 
 </div><!-- /.app -->
@@ -896,19 +829,19 @@ select:focus{border-color:var(--acc);}
     </div>
     <!-- Arrow toolbar -->
     <div class="mg-toolbar">
-      <button class="mg-tbtn add" id="mg-add-btn" onclick="mgAddArrow()">+ Add Arrow (0/10)</button>
-      <button class="mg-tbtn del" id="mg-del-btn" onclick="mgDeleteSelected()" disabled>🗑 Delete</button>
-      <button class="mg-tbtn sec" id="mg-reset-btn" onclick="mgReset()" disabled>↺ Reset</button>
+      <button class="mg-tbtn add" id="mg-add-btn" onclick="mgAddArrow()" data-i18n="btn_add_arrow">+ Add Arrow</button>
+      <button class="mg-tbtn del" id="mg-del-btn" onclick="mgDeleteSelected()" disabled data-i18n="btn_delete">🗑 Delete</button>
+      <button class="mg-tbtn sec" id="mg-reset-btn" onclick="mgReset()" disabled data-i18n="btn_reset">↺ Reset</button>
       <button class="mg-tbtn ico" id="mg-undo-btn" onclick="mgUndo()" disabled title="Undo (Ctrl+Z)">↩</button>
       <button class="mg-tbtn ico" id="mg-redo-btn" onclick="mgRedo()" disabled title="Redo (Ctrl+Y)">↪</button>
       <div style="display:flex;align-items:center;gap:5px;margin-left:2px">
-        <span style="font-size:9px;color:var(--dim);font-family:'Orbitron',monospace;letter-spacing:1px">COLOR</span>
+        <span style="font-size:9px;color:var(--dim);font-family:'Orbitron',monospace;letter-spacing:1px" data-i18n="map_color">COLOR</span>
         <input type="color" id="mg-color-pick" value="#ff4444" oninput="mgColorChange(this.value)"
           style="width:32px;height:32px;cursor:pointer;background:none;border:1px solid var(--brd);border-radius:2px;padding:1px;">
       </div>
       <div style="margin-left:auto;display:flex;gap:5px">
-        <button class="mg-tbtn grn" id="mg-copy-btn" onclick="mgCopyClipboard()" title="Copy to clipboard">📋 Copy</button>
-        <button class="mg-tbtn sec" onclick="mgDownload()" title="Download PNG">💾 Save</button>
+        <button class="mg-tbtn grn" id="mg-copy-btn" onclick="mgCopyClipboard()" title="Copy to clipboard" data-i18n="map_copy">📋 Copy</button>
+        <button class="mg-tbtn sec" onclick="mgDownload()" title="Download PNG" data-i18n="map_save">💾 Save</button>
       </div>
     </div>
     <!-- Canvas -->
@@ -916,7 +849,7 @@ select:focus{border-color:var(--acc);}
       <img id="mg-bg-img" alt="" style="display:block;width:100%;opacity:1" onerror="this.style.opacity='.3'">
       <canvas id="mg-draw-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
     </div>
-    <div class="mg-hint" id="mg-hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
+    <div class="mg-hint" id="mg-hint" data-i18n="map_hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
   </div>
 </div>
@@ -924,11 +857,204 @@ select:focus{border-color:var(--acc);}
 <script>
 // ===== LANGUAGE =====
 let LANG = localStorage.getItem('ma_lang') || 'en';
+
+const UI_TEXT = {
+en:{
+  tab_home:'🏠 HOME', tab_mechs:'MECHS', tab_cheat:'CHEATSHEETS',
+  tab_calc:'CALCULATOR', tab_compare:'⚡ COMPARE', tab_hangar:'🏆 HANGAR RATE',
+  tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE',
+  header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal',
+  search_mechs:'🔍  Search mechs...', label_role:'ROLE:', label_rarity:'RARITY:',
+  empty_mech:'← Select a mech to view details',
+  lbl_ability:'ABILITY', lbl_select_rank:'SELECT RANK',
+  lbl_ability_stats:'ABILITY STATS — RANK', lbl_hp_rank:'HP at Rank',
+  lbl_speed:'Speed', lbl_energy_rank:'Energy at Rank', lbl_max_energy:'Max Energy (R7)',
+  lbl_of_max_game:'% of max in game', lbl_of_max:'% of max',
+  lbl_energy_pips:'ENERGY PIPS AT RANK', lbl_pros:'PROS', lbl_cons:'CONS',
+  lbl_spotlight:'MECH SPOTLIGHT', lbl_gear_tier:'Gear Hub Tier',
+  lbl_approx:'Approximate — exact data not available',
+  nav_mechs_title:'MECHS', nav_compare_title:'COMPARE', nav_calc_title:'CALCULATOR',
+  nav_cheat_title:'CHEATSHEETS', nav_hangar_title:'HANGAR RATE', nav_maps_title:'MAP GUIDE',
+  nav_mechs_desc:'All 45 mechs — stats, abilities & rank progression',
+  nav_compare_desc:'Compare up to 3 mechs side by side',
+  nav_calc_desc:'Upgrade costs for mechs, weapons, pilots & mods',
+  nav_cheat_desc:'Quick reference — ranges, effects and game mechanics',
+  nav_hangar_desc:'Rate your 5-mech hangar — role, rarity & meta score',
+  nav_maps_desc:'Callouts, beacon spots & strategies per map',
+  home_roster:'Roster Breakdown', home_meta:'Meta Picks', home_total:'Total Mechs',
+  role_attacker:'Attacker', role_scout:'Scout', role_tank:'Tank', role_support:'Support',
+  calc_tab_upgrade:'⚙️ CALCULATOR', calc_tab_pilot:'👤 PILOT CALCULATOR', calc_tab_mod:'🧩 MOD CALCULATOR',
+  lbl_curr_star:'Current Star Level', lbl_curr_lvl:'Current Level',
+  lbl_tgt_star:'Target Star Level', lbl_tgt_lvl:'Target Level',
+  lbl_to_max:'Upgrade to Max (6★ Lv7)',
+  btn_calc_upgrade:'⚙️ CALCULATE UPGRADE COST', btn_calc_pilot:'👤 CALCULATE PILOT COST', btn_calc_mod:'🧩 CALCULATE MOD COST',
+  lbl_upgrade_cost:'Upgrade Cost', lbl_select_item:'Select a mech or weapon above',
+  lbl_mod_rarity:'Rarity', lbl_upgrade_settings:'Upgrade Settings', lbl_select_mod:'Select Mod',
+  search_generic:'🔍 Search...', search_mods:'🔍 Search mods...',
+  all_rarities:'All Rarities',
+  cmp_title:'Select up to 3 mechs to compare side by side',
+  cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
+  cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
+  hr_title:'Pick Your Hangar (up to 5 mechs)', hr_selected:'Selected Mechs',
+  hr_empty:'No mechs selected yet — pick up to 5', hr_full:'Hangar is full — remove a mech first.',
+  btn_rate:'🏆 RATE MY HANGAR',
+  map_cpc:'📍 CPC — Control Point Capture (13 maps)', map_5v5:'⚔️ 5v5 Deathmatch (36 maps)',
+  map_hint:'Click "+ Add Arrow" then click and drag on the map to draw an arrow.',
+  map_color:'COLOR', map_copy:'📋 Copy', map_save:'💾 Save',
+  btn_add_arrow:'+ Add Arrow', btn_delete:'🗑 Delete', btn_reset:'↺ Reset',
+  promo_title:'🎁 ACTIVE PROMO CODES', promo_refresh:'↻ REFRESH',
+  promo_note:'⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.',
+  cheat_f2p_builds:'Best F2P Builds (2026 meta)', cheat_gearhub_strat:'Gear Hub F2P Strategy',
+  cheat_weapon_cats:'Weapon Categories (all 9)', cheat_weapon_rules:'Weapon Rules',
+  cheat_pilot_sys:'Pilot System',
+  cheat_total_mechs:'Total Mechs', cheat_total_weapons:'Total Weapons',
+  cheat_gearhub_tiers:'Gear Hub Tiers', cheat_squad:'Max Squad Size',
+  cheat_xp:'XP Win / Loss', cheat_wcats:'Weapon Categories',
+  cheat_best_hanger:'Best endgame hangar', cheat_stars_only:"stars only, don't invest",
+  cheat_save_acoins:'save A-Coins from here', cheat_best_weapons:'Best weapons', cheat_avoid:'Avoid',
+  cheat_copies_auto:'2 copies auto', cheat_2nd_copy:'2nd copy (10E+)',
+  cheat_energy_lvls:'Energy levels', cheat_rare_pilots:'Rare pilots',
+  cheat_epic_pilots:'Epic pilots', cheat_leg_pilots:'Legendary pilots',
+  cheat_xp_wl:'XP win / loss', cheat_all_pilots:'All pilots give',
+  cheat_assault:'Assault', cheat_missile:'Missile', cheat_beam:'Beam',
+  cheat_cqc:'Close Quarters', cheat_sniper:'Sniper', cheat_guided:'Guided',
+  cheat_artillery:'Artillery', cheat_heavy:'Heavy Duty', cheat_barrage:'Barrage',
+  cheat_implants_rare:'2 implant slots', cheat_implants_epic:'3 implant slots',
+  cheat_implants_leg:'4 implant slots', cheat_skip_after:'skip with A-coins',
+  cheat_hp_dmg:'% HP + % Damage + weapon-type skill bonus',
+  pilot_badge_rare:'RARE PILOT', pilot_badge_epic:'EPIC PILOT', pilot_badge_legendary:'LEGENDARY PILOT',
+  pilot_share:'pilots share the same upgrade cost',
+  lbl_loading:'Loading data...',
+},
+ua:{
+  tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'ШПАРГАЛКИ',
+  tab_calc:'КАЛЬКУЛЯТОР', tab_compare:'⚡ ПОРІВНЯННЯ', tab_hangar:'🏆 РЕЙТИНГ АНГАРА',
+  tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ',
+  header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 45 мехів · Повний арсенал',
+  search_mechs:'🔍  Пошук мехів...', label_role:'РОЛЬ:', label_rarity:'РІДКІСТЬ:',
+  empty_mech:'← Оберіть меха для перегляду деталей',
+  lbl_ability:'НАВИЧКА', lbl_select_rank:'ОБРАТИ РАНГ',
+  lbl_ability_stats:'ПАРАМЕТРИ НАВИЧКИ — РАНГ', lbl_hp_rank:'HP на ранзі',
+  lbl_speed:'Швидкість', lbl_energy_rank:'Енергія на ранзі', lbl_max_energy:'Макс. енергія (R7)',
+  lbl_of_max_game:'% від макс. у грі', lbl_of_max:'% від макс.',
+  lbl_energy_pips:'ЕНЕРГІЯ НА РАНЗІ', lbl_pros:'ПЛЮСИ', lbl_cons:'МІНУСИ',
+  lbl_spotlight:'ОГЛЯД МЕХА', lbl_gear_tier:'Рівень Gear Hub',
+  lbl_approx:'Наближено — точні дані відсутні',
+  nav_mechs_title:'МЕХИ', nav_compare_title:'ПОРІВНЯННЯ', nav_calc_title:'КАЛЬКУЛЯТОР',
+  nav_cheat_title:'ШПАРГАЛКИ', nav_hangar_title:'РЕЙТИНГ АНГАРА', nav_maps_title:'ПУТІВНИК',
+  nav_mechs_desc:'Всі 45 мехів — характеристики, навички та прокачка',
+  nav_compare_desc:'Порівняйте до 3 мехів поруч',
+  nav_calc_desc:'Витрати на апгрейд мехів, зброї, пілотів і модів',
+  nav_cheat_desc:'Швидка довідка — дальності, ефекти та механіки гри',
+  nav_hangar_desc:'Оцініть свій ангар з 5 мехів — роль, рідкість і мета',
+  nav_maps_desc:'Позивні, позиції на маяках та стратегії по картах',
+  home_roster:'Розподіл за ролями', home_meta:'Мета-вибір', home_total:'Всього мехів',
+  role_attacker:'Атакуючий', role_scout:'Розвідник', role_tank:'Танк', role_support:'Підтримка',
+  calc_tab_upgrade:'⚙️ КАЛЬКУЛЯТОР', calc_tab_pilot:'👤 КАЛЬКУЛЯТОР ПІЛОТА', calc_tab_mod:'🧩 КАЛЬКУЛЯТОР МОДІВ',
+  lbl_curr_star:'Поточний рівень зірок', lbl_curr_lvl:'Поточний рівень',
+  lbl_tgt_star:'Цільовий рівень зірок', lbl_tgt_lvl:'Цільовий рівень',
+  lbl_to_max:'Покращити до максимуму (6★ Рв7)',
+  btn_calc_upgrade:'⚙️ РОЗРАХУВАТИ ВАРТІСТЬ АПГРЕЙДУ', btn_calc_pilot:'👤 РОЗРАХУВАТИ ВАРТІСТЬ ПІЛОТА', btn_calc_mod:'🧩 РОЗРАХУВАТИ ВАРТІСТЬ МОДА',
+  lbl_upgrade_cost:'Вартість апгрейду', lbl_select_item:'Оберіть меха або зброю вище',
+  lbl_mod_rarity:'Рідкість', lbl_upgrade_settings:'Параметри апгрейду', lbl_select_mod:'Обрати мод',
+  search_generic:'🔍 Пошук...', search_mods:'🔍 Пошук модів...',
+  all_rarities:'Всі рідкості',
+  cmp_title:'Оберіть до 3 мехів для порівняння поруч',
+  cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
+  cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
+  hr_title:'Оберіть ваш ангар (до 5 мехів)', hr_selected:'Обрані мехи',
+  hr_empty:'Мехів не обрано — оберіть до 5', hr_full:'Ангар повний — спочатку видаліть меха.',
+  btn_rate:'🏆 ОЦІНИТИ МІЙ АНГАР',
+  map_cpc:'📍 CPC — Захоплення контрольних точок (13 карт)', map_5v5:'⚔️ 5v5 Дезматч (36 карт)',
+  map_hint:'Натисніть "+ Додати стрілку", потім намалюйте на карті.',
+  map_color:'КОЛІР', map_copy:'📋 Копіювати', map_save:'💾 Зберегти',
+  btn_add_arrow:'+ Додати стрілку', btn_delete:'🗑 Видалити', btn_reset:'↺ Скинути',
+  promo_title:'🎁 АКТИВНІ ПРОМО КОДИ', promo_refresh:'↻ ОНОВИТИ',
+  promo_note:'⚠️ Промо-коди мають термін дії — активуйте якомога швидше. Коди зібрані та перевірені спільнотою.',
+  cheat_f2p_builds:'Кращі F2P білди (мета 2026)', cheat_gearhub_strat:'Стратегія F2P у Gear Hub',
+  cheat_weapon_cats:'Категорії зброї (всього 9)', cheat_weapon_rules:'Правила зброї',
+  cheat_pilot_sys:'Система пілотів',
+  cheat_total_mechs:'Всього мехів', cheat_total_weapons:'Всього зброї',
+  cheat_gearhub_tiers:'Рівні Gear Hub', cheat_squad:'Макс. загін',
+  cheat_xp:'XP Перемога / Поразка', cheat_wcats:'Категорії зброї',
+  cheat_best_hanger:'Кращий ангар ендгейму', cheat_stars_only:'лише зірки, не інвестуй',
+  cheat_save_acoins:'зберігай A-Монети звідси', cheat_best_weapons:'Краща зброя', cheat_avoid:'Уникати',
+  cheat_copies_auto:'2 копії авто', cheat_2nd_copy:'2-га копія (10E+)',
+  cheat_energy_lvls:'Рівні енергії', cheat_rare_pilots:'Рідкісні пілоти',
+  cheat_epic_pilots:'Епічні пілоти', cheat_leg_pilots:'Легендарні пілоти',
+  cheat_xp_wl:'XP перемога / поразка', cheat_all_pilots:'Всі пілоти дають',
+  cheat_assault:'Штурм', cheat_missile:'Ракетна', cheat_beam:'Промінь',
+  cheat_cqc:'Ближній бій', cheat_sniper:'Снайперська', cheat_guided:'Керована',
+  cheat_artillery:'Артилерія', cheat_heavy:'Важке', cheat_barrage:'Заграджувальний вогонь',
+  cheat_implants_rare:'2 слоти імплантів', cheat_implants_epic:'3 слоти імплантів',
+  cheat_implants_leg:'4 слоти імплантів', cheat_skip_after:'пропустити за A-монети',
+  cheat_hp_dmg:'% HP + % Шкода + бонус навичок зброї',
+  pilot_badge_rare:'РІДКІСНИЙ ПІЛОТ', pilot_badge_epic:'ЕПІЧНИЙ ПІЛОТ', pilot_badge_legendary:'ЛЕГЕНДАРНИЙ ПІЛОТ',
+  pilot_share:'пілоти мають однакову вартість апгрейду',
+  lbl_loading:'Завантаження...',
+}};
+function t(k){return(UI_TEXT[LANG]||UI_TEXT.en)[k]||UI_TEXT.en[k]||k;}
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{el.innerHTML=t(el.dataset.i18nHtml);});
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder);});
+}
+
+const STAT_LABELS={
+en:{'Cooldown':'Cooldown','Duration':'Duration','Damage':'Damage','Shield HP':'Shield HP',
+  'Jump Distance':'Jump Distance','Mech Heal/s':'Mech Heal/s','Team Heal/s':'Team Heal/s',
+  'Crash Width':'Crash Width','Crash Range':'Crash Range','Mech Dmg Boost':'Mech Dmg Boost',
+  'Heal on Kill':'Heal on Kill','Stasis Duration':'Stasis Duration','Stealth Duration':'Stealth Duration',
+  'Turret Damage':'Turret Damage','Turret Lifetime':'Turret Lifetime','Range':'Range',
+  'Backtrack Timer':'Backtrack Timer','Dome HP':'Dome HP','Dome Radius':'Dome Radius',
+  'Mine Damage':'Mine Damage','Mine Radius':'Mine Radius','Stasis Time':'Stasis Time',
+  'Dmg Boost':'Dmg Boost','Shield Pierce':'Shield Pierce','Transfer Range':'Transfer Range',
+  'Radius':'Radius','AOE Radius':'AOE Radius','Dash Distance':'Dash Distance',
+  'EMP Radius':'EMP Radius','Team Dmg Boost':'Team Dmg Boost','Beam Duration':'Beam Duration',
+  'Blast Damage':'Blast Damage','Beam Damage':'Beam Damage','Chain Dash Time':'Chain Dash Time',
+  'Dmg Reduction':'Dmg Reduction','Jump Charges':'Jump Charges','Barricade HP':'Barricade HP',
+  'Invulnerability':'Invulnerability','Speed Boost':'Speed Boost','Bonus Shield HP':'Bonus Shield HP',
+  'HP Healed (Ally)':'HP Healed (Ally)','HP Healed (Self)':'HP Healed (Self)',
+  'Blade Count':'Blade Count','Spd Reduction':'Spd Reduction','EMP Duration':'EMP Duration',
+  'Daze Delay':'Daze Delay','Daze Duration':'Daze Duration','Blind Duration':'Blind Duration',
+  'Orb Count':'Orb Count','Warp Range':'Warp Range','Field Damage/s':'Field Damage/s',
+  'Field Radius':'Field Radius','Dmg Received':'Dmg Received','Dmg Redirected':'Dmg Redirected',
+  'Damage/Mag':'Damage/Mag','Damage/tick':'Damage/tick','HP Restoration':'HP Restoration',
+  'Mech Heal/s':'Mech Heal/s',
+},
+ua:{'Cooldown':'Перезарядка','Duration':'Тривалість','Damage':'Шкода','Shield HP':'HP щита',
+  'Jump Distance':'Дистанція стрибка','Mech Heal/s':'Лікування меха/с','Team Heal/s':'Лікування команди/с',
+  'Crash Width':'Ширина удару','Crash Range':'Дальність удару','Mech Dmg Boost':'Бонус шкоди меха',
+  'Heal on Kill':'Лікування за вбивство','Stasis Duration':'Тривалість стазису',
+  'Stealth Duration':'Тривалість маскування','Turret Damage':'Шкода турелі',
+  'Turret Lifetime':'Час турелі','Range':'Дальність','Backtrack Timer':'Таймер відкату',
+  'Dome HP':'HP куполу','Dome Radius':'Радіус куполу','Mine Damage':'Шкода міни',
+  'Mine Radius':'Радіус міни','Stasis Time':'Час стазису','Dmg Boost':'Бонус шкоди',
+  'Shield Pierce':'Пробиття щита','Transfer Range':'Дальність передачі',
+  'Radius':'Радіус','AOE Radius':'Радіус AOE','Dash Distance':'Дистанція ривку',
+  'EMP Radius':'Радіус EMP','Team Dmg Boost':'Бонус шкоди команди','Beam Duration':'Тривалість променя',
+  'Blast Damage':'Шкода вибуху','Beam Damage':'Шкода променя','Chain Dash Time':'Час ривка по ланцюгу',
+  'Dmg Reduction':'Зниження шкоди','Jump Charges':'Заряди стрибка','Barricade HP':'HP барикади',
+  'Invulnerability':'Невразливість','Speed Boost':'Прискорення','Bonus Shield HP':'Бонус HP щита',
+  'HP Healed (Ally)':'Лікування (союзник)','HP Healed (Self)':'Лікування (себе)',
+  'Blade Count':'Кількість лез','Spd Reduction':'Сповільнення','EMP Duration':'Тривалість EMP',
+  'Daze Delay':'Затримка оглушення','Daze Duration':'Тривалість оглушення',
+  'Blind Duration':'Тривалість сліпоти','Orb Count':'Кількість сфер','Warp Range':'Дальність телепортації',
+  'Field Damage/s':'Шкода поля/с','Field Radius':'Радіус поля','Dmg Received':'Отримана шкода',
+  'Dmg Redirected':'Перенаправлена шкода','Damage/Mag':'Шкода/магазин','Damage/tick':'Шкода/тік',
+  'HP Restoration':'Відновлення HP',
+}};
+function tStat(k){return(STAT_LABELS[LANG]||STAT_LABELS.en)[k]||k;}
+
 function setLang(l) {
   LANG = l;
   localStorage.setItem('ma_lang', l);
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  applyI18n();
+  renderHome();
+  renderCheatsheet();
   if (currentMech) renderDetail(MECHS[currentMech]);
+  if (typeof pilotRarity !== 'undefined') setPilotRarity(pilotRarity);
 }
 
 // ============================================================
@@ -1758,7 +1884,7 @@ function renderDetail(m){
   const abilityStatsHTML=ar?ar.map(([lbl,unit,vals])=>{
     const v=vals[currentRank-1];
     const disp=(typeof v==='number'&&v>=1000)?v.toLocaleString():v;
-    return `<div class="ab-stat"><div class="ab-stat-lbl">${lbl}</div><div class="ab-stat-val">${disp}${unit}</div></div>`;
+    return `<div class="ab-stat"><div class="ab-stat-lbl">${tStat(lbl)}</div><div class="ab-stat-val">${disp}${unit}</div></div>`;
   }).join(''):'';
 
   document.getElementById('gh-detail').innerHTML=`
@@ -1770,12 +1896,12 @@ function renderDetail(m){
       <div class="mech-title" style="flex:1">
         <h2 style="color:${m.color}">${m.name}</h2>
         <div class="mech-badges">
-          <span class="badge badge-role">${ROLE_ICON[m.role]} ${m.role}</span>
+          <span class="badge badge-role">${ROLE_ICON[m.role]} ${t('role_'+m.role.toLowerCase())}</span>
           <span class="badge badge-rarity-${m.rarity.toLowerCase()}">${m.rarity}</span>
-          <span class="badge" style="background:rgba(0,212,255,.1);color:var(--acc);border:1px solid rgba(0,212,255,.2)">Gear Hub Tier ${m.gearTier}</span>
+          <span class="badge" style="background:rgba(0,212,255,.1);color:var(--acc);border:1px solid rgba(0,212,255,.2)">${t('lbl_gear_tier')} ${m.gearTier}</span>
         </div>
         <div class="ability-box">
-          <div class="ability-label">ABILITY</div>
+          <div class="ability-label">${t('lbl_ability')}</div>
           <strong style="color:var(--acc2)">${m.ability.name}</strong><br>
           <span style="font-size:12px;color:var(--txt)">${abilityDesc}</span>
         </div>
@@ -1783,62 +1909,62 @@ function renderDetail(m){
     </div>
 
     <div class="rank-section">
-      <div class="rank-label">SELECT RANK</div>
+      <div class="rank-label">${t('lbl_select_rank')}</div>
       <div class="rank-tabs">${rankTabs}</div>
     </div>
 
     <div class="stats-section">
       <div class="stats-grid">
         <div class="stat-block">
-          <div class="stat-block-label">HP at Rank ${currentRank}${rd.approx?' <span title="Approximate — exact data not available" style="color:var(--dim);font-size:10px">≈</span>':''}</div>
+          <div class="stat-block-label">${t('lbl_hp_rank')} ${currentRank}${rd.approx?' <span title="'+t('lbl_approx')+'" style="color:var(--dim);font-size:10px">≈</span>':''}</div>
           <div class="stat-block-val">${rd.hp.toLocaleString()}${rd.approx?'<span style="color:var(--dim);font-size:12px"> ≈</span>':''}</div>
         </div>
         <div class="stat-block">
-          <div class="stat-block-label">Speed</div>
+          <div class="stat-block-label">${t('lbl_speed')}</div>
           <div class="stat-block-val green">${m.speed} km/h</div>
         </div>
         <div class="stat-block">
-          <div class="stat-block-label">Energy at Rank ${currentRank}</div>
+          <div class="stat-block-label">${t('lbl_energy_rank')} ${currentRank}</div>
           <div class="stat-block-val">${rd.energy}E</div>
         </div>
         <div class="stat-block">
-          <div class="stat-block-label">Max Energy (R7)</div>
+          <div class="stat-block-label">${t('lbl_max_energy')}</div>
           <div class="stat-block-val gold">${m.energy}E</div>
         </div>
       </div>
 
       <div class="hp-bar-wrap">
-        <div class="hp-bar-label"><span>HP — ${rd.hp.toLocaleString()}</span><span>${Math.round(hpPct)}% of max in game</span></div>
+        <div class="hp-bar-label"><span>HP — ${rd.hp.toLocaleString()}</span><span>${Math.round(hpPct)}${t('lbl_of_max_game')}</span></div>
         <div class="hp-bar"><div class="hp-fill" style="width:${hpPct}%;background:${hpPct>70?'var(--acc3)':hpPct>40?'var(--acc)':'var(--red)'}"></div></div>
       </div>
       <div class="speed-bar-wrap">
-        <div class="speed-bar-label"><span>Speed — ${m.speed} km/h</span><span>${spdPct}% of max</span></div>
+        <div class="speed-bar-label"><span>${t('lbl_speed')} — ${m.speed} km/h</span><span>${spdPct}${t('lbl_of_max')}</span></div>
         <div class="speed-bar"><div class="speed-fill" style="width:${spdPct}%"></div></div>
       </div>
       <div style="margin-top:12px">
-        <div style="font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">ENERGY PIPS AT RANK ${currentRank} (${rd.energy}E / ${m.energy}E max)</div>
+        <div style="font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:6px">${t('lbl_energy_pips')} ${currentRank} (${rd.energy}E / ${m.energy}E max)</div>
         <div class="energy-pips">${energyPips}</div>
       </div>
 
       ${abilityStatsHTML?`<div style="margin-top:14px">
-        <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc2);letter-spacing:1px;margin-bottom:8px">ABILITY STATS — RANK ${currentRank}</div>
+        <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc2);letter-spacing:1px;margin-bottom:8px">${t('lbl_ability_stats')} ${currentRank}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px">${abilityStatsHTML}</div>
       </div>`:''}
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px">
         <div>
-          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc3);letter-spacing:1px;margin-bottom:6px">PROS</div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc3);letter-spacing:1px;margin-bottom:6px">${t('lbl_pros')}</div>
           <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${prosHTML}</div>
         </div>
         <div>
-          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:6px">CONS</div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:6px">${t('lbl_cons')}</div>
           <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${consHTML}</div>
         </div>
       </div>
 
       ${(()=>{const vid=MECH_VIDEOS[currentMech];return vid?`
       <div class="yt-section">
-        <div class="yt-label">MECH SPOTLIGHT</div>
+        <div class="yt-label">${t('lbl_spotlight')}</div>
         <div class="yt-wrap" id="yt-${vid}" onclick="loadYtVideo('${vid}')">
           <img class="yt-thumb" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="${m.name} Spotlight">
           <div class="yt-play"><div class="yt-play-btn"><div class="yt-play-triangle"></div></div></div>
@@ -1899,12 +2025,12 @@ function renderHome() {
   });
 
   const navCards = [
-    {icon:'🤖', tab:'gear',    title:'MECHS',        desc:'All 45 mechs — stats, abilities & rank progression'},
-    {icon:'⚡', tab:'compare', title:'COMPARE',       desc:'Compare up to 3 mechs side by side'},
-    {icon:'🧮', tab:'calc',    title:'CALCULATOR',    desc:'Upgrade costs for mechs, weapons, pilots & mods'},
-    {icon:'📋', tab:'cheat',   title:'CHEATSHEETS',   desc:'Quick reference — ranges, effects and game mechanics'},
-    {icon:'🏆', tab:'hangar',  title:'HANGAR RATE',   desc:'Rate your 5-mech hangar — role, rarity & meta score'},
-    {icon:'🗺️', tab:'maps',   title:'MAP GUIDE',     desc:'Callouts, beacon spots & strategies per map'},
+    {icon:'🤖', tab:'gear',    title:t('nav_mechs_title'),   desc:t('nav_mechs_desc')},
+    {icon:'⚡', tab:'compare', title:t('nav_compare_title'), desc:t('nav_compare_desc')},
+    {icon:'🧮', tab:'calc',    title:t('nav_calc_title'),    desc:t('nav_calc_desc')},
+    {icon:'📋', tab:'cheat',   title:t('nav_cheat_title'),   desc:t('nav_cheat_desc')},
+    {icon:'🏆', tab:'hangar',  title:t('nav_hangar_title'),  desc:t('nav_hangar_desc')},
+    {icon:'🗺️', tab:'maps',   title:t('nav_maps_title'),    desc:t('nav_maps_desc')},
   ];
 
   const navHTML = navCards.map(c=>`
@@ -1917,11 +2043,11 @@ function renderHome() {
   const statsHTML = roles.map(r=>`
     <div class="home-stat-card">
       <div class="home-stat-num" style="color:${HOME_ROLE_COLORS[r]}">${roleCounts[r]}</div>
-      <div class="home-stat-lbl">${ROLE_ICON[r]} ${r}s</div>
+      <div class="home-stat-lbl">${ROLE_ICON[r]} ${t('role_'+r.toLowerCase())}s</div>
     </div>`).join('') + `
     <div class="home-stat-card">
       <div class="home-stat-num" style="color:var(--gold)">${Object.keys(MECHS).length}</div>
-      <div class="home-stat-lbl">Total Mechs</div>
+      <div class="home-stat-lbl">${t('home_total')}</div>
     </div>`;
 
   const metaHTML = roles.map(r=>`
@@ -1937,16 +2063,90 @@ function renderHome() {
 
   document.getElementById('home-content').innerHTML = `
     <div class="home-nav-grid">${navHTML}</div>
-    <div class="home-section-hdr">Roster Breakdown</div>
+    <div class="home-section-hdr">${t('home_roster')}</div>
     <div class="home-stats-row">${statsHTML}</div>
-    <div class="home-section-hdr">Meta Picks</div>
+    <div class="home-section-hdr">${t('home_meta')}</div>
     <div class="home-meta-grid">${metaHTML}</div>`;
+}
+
+function renderCheatsheet(){
+  const el=document.getElementById('pane-cheat-content');
+  if(!el)return;
+  el.innerHTML=`
+<div class="qref">
+  <div class="qc"><div class="qn">45</div><div class="ql">${t('cheat_total_mechs')}</div></div>
+  <div class="qc"><div class="qn">241+</div><div class="ql">${t('cheat_total_weapons')}</div></div>
+  <div class="qc"><div class="qn">10</div><div class="ql">${t('cheat_gearhub_tiers')}</div></div>
+  <div class="qc"><div class="qn">5</div><div class="ql">${t('cheat_squad')}</div></div>
+  <div class="qc"><div class="qn">800/160</div><div class="ql">${t('cheat_xp')}</div></div>
+  <div class="qc"><div class="qn">9</div><div class="ql">${t('cheat_wcats')}</div></div>
+</div>
+<div class="ccols">
+  <div>
+    <div class="stitle">${t('cheat_f2p_builds')}</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Surge (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Eclipse (24E)</span><span class="cv">2× Minigun 10 (20E) or Pod Gun 10 + Minigun 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Aegis (24E)</span><span class="cv">2× Pod Gun 8 (16E) or Graviton Beam 10 + Pod Gun 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Orion (24E)</span><span class="cv">2× Storm Rack 10 (20E) or Storm Rack 10 + Overdriver 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Panther (32E)</span><span class="cv">2× Graviton Beam 10 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Hemlock (24E)</span><span class="cv">Storm Rack 10 + Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">Killshot (24E)</span><span class="cv">Disc Launcher 12 + Missile Rack 8 (20E) or 2× Revoker 8 (16E)</span></div>
+      <div class="cr"><span class="ck">Gatecrasher (32E)</span><span class="cv">2× Rail Gun 16 (32E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Dreadnought (32E)</span><span class="cv">2× Rocket Mortar 12 (24E) or Storm Rack 16 + Rocket Mortar 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Salvor (32E)</span><span class="cv">Helix Rack 8 + Disc Launcher 12 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
+      <div class="cr"><span class="ck">Nomad (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
+      <div class="cr"><span class="ck">${t('cheat_best_hanger')}</span><span class="cv">Surge · Eclipse · Aegis · Orion/Panther · Hemlock/Nomad</span></div>
+    </div>
+    <div class="stitle">${t('cheat_gearhub_strat')}</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">Tier 1–2</span><span class="cv">Paragon, Lancer, Juggernaut — ${t('cheat_stars_only')}</span></div>
+      <div class="cr"><span class="ck">Tier 3–4</span><span class="cv">Ares ✓ · Guardian (free promo) · avoid Shadow</span></div>
+      <div class="cr"><span class="ck">Tier 5</span><span class="cv">Orion ✓ · Panther ✓ · Killshot ✓ · skip Sentinel</span></div>
+      <div class="cr"><span class="ck">Tier 6</span><span class="cv">Aegis ✓ + Pod Gun 8 · ${t('cheat_save_acoins')}</span></div>
+      <div class="cr"><span class="ck">Tier 7</span><span class="cv">Surge ✓ · Eclipse ✓ (A-coins) · avoid Scorpius</span></div>
+      <div class="cr"><span class="ck">Tier 8–10</span><span class="cv">Hemlock ✓ · Nomad ✓ · skip Bastion, Gatecrasher, Onyx</span></div>
+      <div class="cr"><span class="ck">${t('cheat_best_weapons')}</span><span class="cv">Storm Rack · Revoker · Pod Gun · Graviton Beam · Overdriver</span></div>
+      <div class="cr"><span class="ck">${t('cheat_avoid')}</span><span class="cv">Particle Beam · Chain Gun · Gauss Rifle · F-tier starters</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="stitle">${t('cheat_weapon_cats')}</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">${t('cheat_assault')}</span><span class="cv">Minigun, Pod Gun, Carbine, Overdriver, Repeater, Suppressor, Reaver</span></div>
+      <div class="cr"><span class="ck">${t('cheat_missile')}</span><span class="cv">Missile Rack, Blast RPG, Disruptor, Hornet, Fuse Mortar, Cryo Launcher, Charge Rocket</span></div>
+      <div class="cr"><span class="ck">${t('cheat_beam')}</span><span class="cv">Arc Torrent, Graviton Beam, Particle Beam, Burrow Beam, Stasis Beam, Thermal Lance</span></div>
+      <div class="cr"><span class="ck">${t('cheat_cqc')}</span><span class="cv">Ember Gun, Fragment Gun, Shotgun, Revoker, Howler, Quasher, Fusion Cannon</span></div>
+      <div class="cr"><span class="ck">${t('cheat_sniper')}</span><span class="cv">Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum, Dreadshot, Savant, Quantum Gun, Oracle, Viper, Gauss Rifle</span></div>
+      <div class="cr"><span class="ck">${t('cheat_guided')}</span><span class="cv">Disc Launcher, Strike Rocket, Gemini</span></div>
+      <div class="cr"><span class="ck">${t('cheat_artillery')}</span><span class="cv">Javelin Rack, Helix Rack, Rocket Mortar, Nade Launcher, Cryo Javelin</span></div>
+      <div class="cr"><span class="ck">${t('cheat_heavy')}</span><span class="cv">Chain Gun, Voltaic RPG, Berserker</span></div>
+      <div class="cr"><span class="ck">${t('cheat_barrage')}</span><span class="cv">Storm Rack, Hellfire</span></div>
+    </div>
+    <div class="stitle">${t('cheat_weapon_rules')}</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">${t('cheat_copies_auto')}</span><span class="cv">All weapons 8E and below</span></div>
+      <div class="cr"><span class="ck">${t('cheat_2nd_copy')}</span><span class="cv">Must reach Rank 6 first</span></div>
+      <div class="cr"><span class="ck">${t('cheat_energy_lvls')}</span><span class="cv">2 / 4 / 6 / 8 / 10 / 12 / 14 / 16</span></div>
+    </div>
+    <div class="stitle">${t('cheat_pilot_sys')}</div>
+    <div class="cc">
+      <div class="cr"><span class="ck">${t('cheat_rare_pilots')}</span><span class="cv">${t('cheat_implants_rare')}</span></div>
+      <div class="cr"><span class="ck">${t('cheat_epic_pilots')}</span><span class="cv">${t('cheat_implants_epic')}</span></div>
+      <div class="cr"><span class="ck">${t('cheat_leg_pilots')}</span><span class="cv">${t('cheat_implants_leg')}</span></div>
+      <div class="cr"><span class="ck">${t('cheat_xp_wl')}</span><span class="cv">800 / 160 (${t('cheat_skip_after')})</span></div>
+      <div class="cr"><span class="ck">${t('cheat_all_pilots')}</span><span class="cv">${t('cheat_hp_dmg')}</span></div>
+    </div>
+  </div>
+</div>`;
 }
 
 // Init
 buildMechList();
 selectMech('paragon');
 renderHome();
+renderCheatsheet();
+applyI18n();
 
 // ===== CALCULATOR =====
 let calcSelectedItem = null, calcFromStar = 1, calcFromLevel = 1;
@@ -2158,9 +2358,9 @@ function setPilotRarity(rar) {
     }
   });
   document.getElementById('pilot-badge-icon').textContent = PILOT_ICONS[rar];
-  document.getElementById('pilot-badge-name').textContent = rar.toUpperCase() + ' PILOT';
+  document.getElementById('pilot-badge-name').textContent = t('pilot_badge_' + rar);
   document.getElementById('pilot-badge-sub').style.color = PILOT_COLORS[rar];
-  document.getElementById('pilot-badge-sub').textContent = 'All ' + rar + ' pilots share the same upgrade cost';
+  document.getElementById('pilot-badge-sub').textContent = (rar.charAt(0).toUpperCase() + rar.slice(1)) + ' ' + t('pilot_share');
 }
 
 function renderPilotList() { /* replaced by rarity buttons */ }
@@ -2279,6 +2479,7 @@ function calculateMod() {
 // Init all calculator lists on page load
 renderCalcTiles();
 renderPilotList();
+setPilotRarity('epic');
 renderModList();
 
 // ===== GEAR HUB =====

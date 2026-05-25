@@ -37,6 +37,173 @@ function lnk(t, url)  { return { text: t, url }; }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmt(n) { return Number(n).toLocaleString('en-US'); }
 
+// ─── LANGUAGE STORAGE ────────────────────────────────────
+const LANG_STORE = {};
+function getLang(cid) { return LANG_STORE[String(cid)] || 'ua'; }
+function setLang(cid, l) { LANG_STORE[String(cid)] = l; }
+
+// ─── TRANSLATIONS ────────────────────────────────────────
+const T = {
+  ua: {
+    lang_pick:       '🌐 Обери мову / Choose language:',
+    btn_ua:          'Українська 🇺🇦',
+    btn_en:          'English 🇺🇸',
+    menu_greeting:   'Привіт, командире! Обери розділ:',
+    btn_mechs:       '🤖 Мехи',
+    btn_compare:     '⚡ Порівняння',
+    btn_calc:        '🧮 Калькулятор',
+    btn_hangar:      '🏆 Рейтинг ангара',
+    btn_promo:       '🎁 Промо',
+    btn_menu:        '🏠 Меню',
+    btn_back:        '◀ Назад',
+    btn_next:        'Далі ▶',
+    btn_clear:       '🗑 Очистити',
+    btn_rate:        '⭐ Оцінити',
+    btn_rate_hangar: '⭐ Оцінити ангар',
+    btn_refresh:     '↻ Оновити',
+    btn_all:         'Всі',
+    btn_open_site:   '🌐 Відкрити на сайті',
+    page:            (p,t) => `Сторінка ${p}/${t}`,
+    mechs_hdr:       (lbl,n) => `🤖 <b>МЕХИ</b> — ${lbl} (${n})\n\n`,
+    mechs_all:       'Всі мехи',
+    role_sfx:        's',
+    calc_hdr:        '🧮 <b>КАЛЬКУЛЯТОР</b>\n\nОбери що розраховувати:',
+    btn_c_mechs:     '⚙️ Мехи',
+    btn_c_weapons:   '🔧 Зброя',
+    btn_c_pilots:    '👤 Пілоти',
+    btn_c_mods:      '🧩 Моди',
+    calc_items_hdr:  (lbl,n,p,pt) => `🧮 <b>${lbl}</b> — (${n})\nСторінка ${p}/${pt}`,
+    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nВибери початкову зірку:`,
+    calc_res_hdr:    '🧮 <b>РЕЗУЛЬТАТ</b>',
+    calc_credits:    '💰 Кредити',
+    calc_blueprints: '📘 Схеми',
+    calc_acoins:     '🟡 A-Монети',
+    calc_no_data:    'ℹ️ Дані про вартість відсутні для цього рівня.',
+    calc_err:        (m) => `⚠️ Помилка розрахунку: ${m}`,
+    pilot_hdr:       (rar,c) => `👤 <b>КАЛЬКУЛЯТОР ПІЛОТІВ</b>\n\n${c} ${rar.charAt(0).toUpperCase()+rar.slice(1)} Пілот\nВсі пілоти однакової рідкості мають однакову вартість.\n\nОбери початкову зірку:`,
+    pilot_res_hdr:   (rar) => `👤 <b>РЕЗУЛЬТАТ — ${rar.toUpperCase()} ПІЛОТ</b>`,
+    pilot_wins:      (n) => ` (~${n} перемог)`,
+    pilot_nodata:    'ℹ️ Дані відсутні.',
+    mod_hdr:         (n,p,pt) => `🧩 <b>МОДИ</b> — Обери мод (${n})\nСторінка ${p}/${pt}`,
+    mod_from_hdr:    (lbl,rar) => `🧩 <b>${esc(lbl)}</b> (${esc(rar)})\n\nОбери поточний рівень:`,
+    mod_res_hdr:     '🧩 <b>РЕЗУЛЬТАТ — МОД</b>',
+    mod_basic:       '🔩 Basic Mod Parts',
+    mod_elite:       '💎 Elite Mod Parts',
+    mod_nodata:      'ℹ️ Дані відсутні.',
+    cmp_hdr_empty:   '⚡ <b>ПОРІВНЯННЯ</b>\n\nОбери до 3 мехів для порівняння:',
+    cmp_hdr_keys:    (s) => `⚡ <b>ПОРІВНЯННЯ</b> (${s})`,
+    cmp_not_found:   '⚡ <b>ПОРІВНЯННЯ</b>\n\nМехи не знайдено.',
+    cmp_ability:     'НАВИЧКИ',
+    hr_hdr_empty:    '🏆 <b>РЕЙТИНГ АНГАРА</b>\n\nОбери до 5 мехів свого ангара:',
+    hr_hdr_sel:      (n) => `🏆 <b>РЕЙТИНГ АНГАРА</b>\n\nОбрано (${n}/5):`,
+    hr_hint:         '\n\nДодай мехів або натисни "Оцінити":',
+    hr_res_hdr:      '🏆 <b>ОЦІНКА АНГАРА</b>',
+    hr_score:        (s,g,e) => `<b>Рахунок: ${s}/100</b>  ${e} <b>Оцінка: ${g}</b>`,
+    hr_details:      'Деталі',
+    hr_rarity:       (s) => `• Рідкість: ${s}/30`,
+    hr_diversity:    (s,r) => `• Різноманіття ролей: ${s}/25 (${r}/4 ролей)`,
+    hr_tier:         (s) => `• Прогресія Gear Hub: ${s}/25`,
+    hr_meta:         (s) => `• Мета-мехи: ${s}/20`,
+    hr_hangar:       'Ваш ангар',
+    hr_recs:         (roles) => `\n💡 <b>Рекомендації:</b> додай ${roles}`,
+    promo_empty:     '🎁 <b>ПРОМО КОДИ</b>\n\n❌ Зараз немає активних кодів.\nПеревір пізніше!',
+    promo_hdr:       (n) => `🎁 <b>АКТИВНІ ПРОМО КОДИ</b> (${n})\n\n`,
+    promo_warn:      '⚠️ Коди мають термін дії — активуй якомога швидше!',
+    promo_err:       `🎁 <b>ПРОМО КОДИ</b>\n\n⚠️ Не вдалося завантажити коди.\n`,
+    promo_open:      (url) => `<a href="${url}/#promo">Відкрий сайт</a> для перегляду кодів.`,
+    mech_rank:       (r) => `📊 РАНГ ${r}`,
+    mech_hp:         '❤️ HP',
+    mech_energy:     '⚡ Енергія',
+    mech_ability_hdr:'⚡ НАВИЧКА',
+    mech_ability_stats:(r) => `📈 ПАРАМЕТРИ НАВИЧКИ (Ранг ${r})`,
+    mech_pros:       '✅ ПЛЮСИ',
+    mech_cons:       '❌ МІНУСИ',
+    mech_not_found:  'Меха не знайдено.',
+    mech_page:       (p,t) => `\nСторінка ${p}/${t}`,
+  },
+  en: {
+    lang_pick:       '🌐 Обери мову / Choose language:',
+    btn_ua:          'Українська 🇺🇦',
+    btn_en:          'English 🇺🇸',
+    menu_greeting:   'Hello, Commander! Choose a section:',
+    btn_mechs:       '🤖 Mechs',
+    btn_compare:     '⚡ Compare',
+    btn_calc:        '🧮 Calculator',
+    btn_hangar:      '🏆 Hangar Rating',
+    btn_promo:       '🎁 Promo',
+    btn_menu:        '🏠 Menu',
+    btn_back:        '◀ Back',
+    btn_next:        'Next ▶',
+    btn_clear:       '🗑 Clear',
+    btn_rate:        '⭐ Rate',
+    btn_rate_hangar: '⭐ Rate Hangar',
+    btn_refresh:     '↻ Refresh',
+    btn_all:         'All',
+    btn_open_site:   '🌐 Open on site',
+    page:            (p,t) => `Page ${p}/${t}`,
+    mechs_hdr:       (lbl,n) => `🤖 <b>MECHS</b> — ${lbl} (${n})\n\n`,
+    mechs_all:       'All mechs',
+    role_sfx:        's',
+    calc_hdr:        '🧮 <b>CALCULATOR</b>\n\nChoose what to calculate:',
+    btn_c_mechs:     '⚙️ Mechs',
+    btn_c_weapons:   '🔧 Weapons',
+    btn_c_pilots:    '👤 Pilots',
+    btn_c_mods:      '🧩 Mods',
+    calc_items_hdr:  (lbl,n,p,pt) => `🧮 <b>${lbl}</b> — (${n})\nPage ${p}/${pt}`,
+    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nSelect starting star:`,
+    calc_res_hdr:    '🧮 <b>RESULT</b>',
+    calc_credits:    '💰 Credits',
+    calc_blueprints: '📘 Blueprints',
+    calc_acoins:     '🟡 A-Coins',
+    calc_no_data:    'ℹ️ No cost data available for this level.',
+    calc_err:        (m) => `⚠️ Calculation error: ${m}`,
+    pilot_hdr:       (rar,c) => `👤 <b>PILOT CALCULATOR</b>\n\n${c} ${rar.charAt(0).toUpperCase()+rar.slice(1)} Pilot\nAll pilots of the same rarity share the same upgrade cost.\n\nSelect starting star:`,
+    pilot_res_hdr:   (rar) => `👤 <b>RESULT — ${rar.toUpperCase()} PILOT</b>`,
+    pilot_wins:      (n) => ` (~${n} wins)`,
+    pilot_nodata:    'ℹ️ No data available.',
+    mod_hdr:         (n,p,pt) => `🧩 <b>MODS</b> — Choose mod (${n})\nPage ${p}/${pt}`,
+    mod_from_hdr:    (lbl,rar) => `🧩 <b>${esc(lbl)}</b> (${esc(rar)})\n\nSelect current level:`,
+    mod_res_hdr:     '🧩 <b>RESULT — MOD</b>',
+    mod_basic:       '🔩 Basic Mod Parts',
+    mod_elite:       '💎 Elite Mod Parts',
+    mod_nodata:      'ℹ️ No data available.',
+    cmp_hdr_empty:   '⚡ <b>COMPARE</b>\n\nSelect up to 3 mechs to compare:',
+    cmp_hdr_keys:    (s) => `⚡ <b>COMPARE</b> (${s})`,
+    cmp_not_found:   '⚡ <b>COMPARE</b>\n\nMechs not found.',
+    cmp_ability:     'ABILITIES',
+    hr_hdr_empty:    '🏆 <b>HANGAR RATING</b>\n\nSelect up to 5 mechs from your hangar:',
+    hr_hdr_sel:      (n) => `🏆 <b>HANGAR RATING</b>\n\nSelected (${n}/5):`,
+    hr_hint:         '\n\nAdd more mechs or tap "Rate":',
+    hr_res_hdr:      '🏆 <b>HANGAR SCORE</b>',
+    hr_score:        (s,g,e) => `<b>Score: ${s}/100</b>  ${e} <b>Grade: ${g}</b>`,
+    hr_details:      'Details',
+    hr_rarity:       (s) => `• Rarity: ${s}/30`,
+    hr_diversity:    (s,r) => `• Role diversity: ${s}/25 (${r}/4 roles)`,
+    hr_tier:         (s) => `• Gear Hub progression: ${s}/25`,
+    hr_meta:         (s) => `• Meta mechs: ${s}/20`,
+    hr_hangar:       'Your hangar',
+    hr_recs:         (roles) => `\n💡 <b>Recommendations:</b> add ${roles}`,
+    promo_empty:     '🎁 <b>PROMO CODES</b>\n\n❌ No active codes right now.\nCheck back later!',
+    promo_hdr:       (n) => `🎁 <b>ACTIVE PROMO CODES</b> (${n})\n\n`,
+    promo_warn:      '⚠️ Codes expire — redeem as soon as possible!',
+    promo_err:       `🎁 <b>PROMO CODES</b>\n\n⚠️ Failed to load codes.\n`,
+    promo_open:      (url) => `<a href="${url}/#promo">Open the site</a> to view codes.`,
+    mech_rank:       (r) => `📊 RANK ${r}`,
+    mech_hp:         '❤️ HP',
+    mech_energy:     '⚡ Energy',
+    mech_ability_hdr:'⚡ ABILITY',
+    mech_ability_stats:(r) => `📈 ABILITY STATS (Rank ${r})`,
+    mech_pros:       '✅ PROS',
+    mech_cons:       '❌ CONS',
+    mech_not_found:  'Mech not found.',
+    mech_page:       (p,t) => `\nPage ${p}/${t}`,
+  }
+};
+function tr(lang, key, ...args) {
+  const val = (T[lang] || T.ua)[key] ?? T.ua[key];
+  return typeof val === 'function' ? val(...args) : (val ?? key);
+}
+
 // ─── DATA FILE LOADER ────────────────────────────────────
 function loadFile(fname, vname) {
   const code = fs.readFileSync(path.join(__dirname, '..', fname), 'utf8');
@@ -353,38 +520,45 @@ const RAR_TIER_SCORE = { Common:1, Uncommon:2, Rare:3, Epic:4, Legendary:5 };
 
 // ─── SCREEN BUILDERS ─────────────────────────────────────
 
-function menuText() {
-  return `⬡ <b>MECH ARENA HUB</b>
-
-Привіт, командире! Обери розділ:${FOOTER}`;
+function langPickText() {
+  return `⬡ <b>MECH ARENA HUB</b>\n\n${T.ua.lang_pick}${FOOTER}`;
+}
+function langPickKbd() {
+  return kbd(
+    [btn(T.ua.btn_ua, 'lang:ua'), btn(T.ua.btn_en, 'lang:en')],
+  );
 }
 
-function menuKbd() {
+function menuText(lang) {
+  return `⬡ <b>MECH ARENA HUB</b>\n\n${tr(lang,'menu_greeting')}${FOOTER}`;
+}
+
+function menuKbd(lang) {
   return kbd(
-    [btn('🤖 Мехи',   'mechs:all:0'),   btn('⚡ Порівняння', 'cmp:')],
-    [btn('🧮 Калькулятор', 'calc'),     btn('🏆 Рейтинг ангара', 'hr:')],
-    [btn('🎁 Промо',  'promo'),         btn('🗺️ Карти',  'maps:cpc:0')],
+    [btn(tr(lang,'btn_mechs'), 'mechs:all:0'),   btn(tr(lang,'btn_compare'), 'cmp:')],
+    [btn(tr(lang,'btn_calc'),  'calc'),           btn(tr(lang,'btn_hangar'),  'hr:')],
+    [btn(tr(lang,'btn_promo'), 'promo')],
   );
 }
 
 // ─ Mechs list ─
-function mechsText(role, page) {
+function mechsText(role, page, lang) {
   const all = Object.keys(MECHS);
   const filtered = role === 'all' ? all : all.filter(k => MECHS[k].role === role);
   const total = filtered.length;
   const pages = Math.ceil(total / MECHS_PER_PAGE);
   const slice = filtered.slice(page * MECHS_PER_PAGE, (page+1) * MECHS_PER_PAGE);
-  const roleLabel = role === 'all' ? 'Всі мехи' : role + 's';
-  let txt = `🤖 <b>МЕХИ</b> — ${esc(roleLabel)} (${total})\n\n`;
+  const roleLabel = role === 'all' ? tr(lang,'mechs_all') : role + tr(lang,'role_sfx');
+  let txt = tr(lang,'mechs_hdr',roleLabel,total);
   slice.forEach(k => {
     const m = MECHS[k];
     txt += `${R_ICON[m.role] || ''}${RAR_ICON[m.rar] || ''} <b>${esc(m.n)}</b> — ⚡${m.e}E · 💨${m.spd}km/h · ❤️${fmt(m.rk[7].h)} HP\n`;
   });
-  txt += `\nСторінка ${page+1}/${pages}${FOOTER}`;
+  txt += tr(lang,'mech_page',page+1,pages) + FOOTER;
   return txt;
 }
 
-function mechsKbd(role, page) {
+function mechsKbd(role, page, lang) {
   const all = Object.keys(MECHS);
   const filtered = role === 'all' ? all : all.filter(k => MECHS[k].role === role);
   const total = filtered.length;
@@ -398,39 +572,39 @@ function mechsKbd(role, page) {
     mechRows.push(row);
   }
   const nav = [];
-  if (page > 0) nav.push(btn('◀ Назад', `mechs:${role}:${page-1}`));
-  if (page < pages-1) nav.push(btn('Далі ▶', `mechs:${role}:${page+1}`));
+  if (page > 0) nav.push(btn(tr(lang,'btn_back'), `mechs:${role}:${page-1}`));
+  if (page < pages-1) nav.push(btn(tr(lang,'btn_next'), `mechs:${role}:${page+1}`));
 
   return kbd(
-    [btn(role==='all'?'✅ Всі':'Всі','mechs:all:0'),
-     btn(role==='Attacker'?(role==='Attacker'?'✅ ⚔️ ATK':'⚔️ ATK'):'⚔️ ATK','mechs:Attacker:0'),
+    [btn(role==='all'?'✅ '+tr(lang,'btn_all'):tr(lang,'btn_all'),'mechs:all:0'),
+     btn(role==='Attacker'?'✅ ⚔️ ATK':'⚔️ ATK','mechs:Attacker:0'),
      btn(role==='Scout'?'✅ 🏃 SCT':'🏃 SCT','mechs:Scout:0'),
      btn(role==='Tank'?'✅ 🛡️ TNK':'🛡️ TNK','mechs:Tank:0'),
      btn(role==='Support'?'✅ 💚 SUP':'💚 SUP','mechs:Support:0')],
     ...mechRows,
     nav.length ? nav : [],
-    [btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Single mech detail ─
-function mechText(key, rank) {
+function mechText(key, rank, lang) {
   const m = MECHS[key];
-  if (!m) return 'Меха не знайдено.';
+  if (!m) return tr(lang,'mech_not_found');
   rank = Math.min(7, Math.max(1, +rank || 1));
   const rd = m.rk[rank] || m.rk[7];
   const ar = MAR[key] || [];
 
   let txt = `${R_ICON[m.role]}${RAR_ICON[m.rar]} <b>${esc(m.n)}</b>\n`;
   txt += `<i>${esc(m.role)} · ${esc(m.rar)} · ⚡${m.e}E · 💨${m.spd} km/h · Tier ${m.g}</i>\n\n`;
-  txt += `<b>📊 РАНГ ${rank}</b>\n`;
-  txt += `❤️ HP: <b>${fmt(rd.h)}</b>\n`;
-  txt += `⚡ Енергія: <b>${rd.e}E</b> / ${m.e}E макс\n\n`;
-  txt += `<b>⚡ НАВИЧКА: ${esc(m.a.n)}</b>\n`;
+  txt += `<b>${tr(lang,'mech_rank',rank)}</b>\n`;
+  txt += `${tr(lang,'mech_hp')}: <b>${fmt(rd.h)}</b>\n`;
+  txt += `${tr(lang,'mech_energy')}: <b>${rd.e}E</b> / ${m.e}E max\n\n`;
+  txt += `<b>${tr(lang,'mech_ability_hdr')}: ${esc(m.a.n)}</b>\n`;
   txt += `<i>${esc(m.a.d)}</i>\n`;
 
   if (ar.length) {
-    txt += `\n<b>📈 ПАРАМЕТРИ НАВИЧКИ (Ранг ${rank}):</b>\n`;
+    txt += `\n<b>${tr(lang,'mech_ability_stats',rank)}:</b>\n`;
     ar.forEach(([lbl, unit, vals]) => {
       const v = vals[rank-1];
       const disp = (typeof v === 'number' && v >= 1000) ? fmt(v) : v;
@@ -439,51 +613,50 @@ function mechText(key, rank) {
   }
 
   if (m.p && m.p.length) {
-    txt += `\n✅ <b>ПЛЮСИ:</b>\n`;
+    txt += `\n<b>${tr(lang,'mech_pros')}:</b>\n`;
     m.p.forEach(p => txt += `• ${esc(p)}\n`);
   }
   if (m.c && m.c.length) {
-    txt += `\n❌ <b>МІНУСИ:</b>\n`;
+    txt += `\n<b>${tr(lang,'mech_cons')}:</b>\n`;
     m.c.forEach(c => txt += `• ${esc(c)}\n`);
   }
   txt += FOOTER;
   return txt;
 }
 
-function mechKbd(key, rank) {
-  const m = MECHS[key];
+function mechKbd(key, rank, lang) {
   const rankBtns = [1,2,3,4,5,6,7].map(r => {
     const active = r === +rank;
     return btn(active ? `[${r}]` : `${r}`, `mech:${key}:${r}`);
   });
   return kbd(
     rankBtns,
-    [btn('◀ До списку', 'mechs:all:0'), btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_back'), 'mechs:all:0'), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Calculator ─
-function calcText() {
-  return `🧮 <b>КАЛЬКУЛЯТОР</b>\n\nОбери що розраховувати:${FOOTER}`;
+function calcText(lang) {
+  return tr(lang,'calc_hdr') + FOOTER;
 }
-function calcKbd() {
+function calcKbd(lang) {
   return kbd(
-    [btn('⚙️ Мехи', 'calc_t:mech'), btn('🔧 Зброя', 'calc_t:weapon')],
-    [btn('👤 Пілоти', 'calc_pt:epic'), btn('🧩 Моди', 'calc_mod')],
-    [btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_c_mechs'), 'calc_t:mech'), btn(tr(lang,'btn_c_weapons'), 'calc_t:weapon')],
+    [btn(tr(lang,'btn_c_pilots'), 'calc_pt:epic'), btn(tr(lang,'btn_c_mods'), 'calc_mod')],
+    [btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Mech/Weapon calc item list ─
-function calcItemsText(type, page) {
+function calcItemsText(type, page, lang) {
   const items = calcList().filter(i => i.type === type);
   const total = items.length;
   const pages = Math.ceil(total / ITEMS_PER_PAGE);
-  const lbl = type === 'mech' ? 'Мех' : 'Зброя';
-  return `🧮 <b>${lbl.toUpperCase()}И</b> — обери (${total})\nСторінка ${page+1}/${pages}${FOOTER}`;
+  const lbl = type === 'mech' ? tr(lang,'btn_c_mechs') : tr(lang,'btn_c_weapons');
+  return tr(lang,'calc_items_hdr',lbl,total,page+1,pages) + FOOTER;
 }
 
-function calcItemsKbd(type, page) {
+function calcItemsKbd(type, page, lang) {
   const items = calcList().filter(i => i.type === type);
   const total = items.length;
   const pages = Math.ceil(total / ITEMS_PER_PAGE);
@@ -496,34 +669,34 @@ function calcItemsKbd(type, page) {
     itemRows.push(row);
   }
   const nav = [];
-  if (page > 0) nav.push(btn('◀ Назад', `calc_t:${type}:${page-1}`));
-  if (page < pages-1) nav.push(btn('Далі ▶', `calc_t:${type}:${page+1}`));
+  if (page > 0) nav.push(btn(tr(lang,'btn_back'), `calc_t:${type}:${page-1}`));
+  if (page < pages-1) nav.push(btn(tr(lang,'btn_next'), `calc_t:${type}:${page+1}`));
 
   return kbd(
     ...itemRows,
     nav.length ? nav : [],
-    [btn('◀ Назад', 'calc'), btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_back'), 'calc'), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Calc from star selection ─
-function calcFromText(type, name) {
-  return `🧮 <b>${esc(name)}</b>\n\nВибери початкову зірку (до максимуму 6★ Lv7):${FOOTER}`;
+function calcFromText(type, name, lang) {
+  return tr(lang,'calc_from_hdr',name) + FOOTER;
 }
-function calcFromKbd(type, name) {
+function calcFromKbd(type, name, lang) {
   const rows = [1,2,3,4,5,6].map(s => btn(`${s}★`, `calc_x:${type}:${name}:${s}:1:6:7`));
   return kbd(
     rows.slice(0,3), rows.slice(3,6),
-    [btn('◀ Назад', `calc_t:${type}:0`), btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_back'), `calc_t:${type}:0`), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Calc result ─
-function calcResultText(type, name, fs, fl, ts, tl) {
+function calcResultText(type, name, fs, fl, ts, tl, lang) {
   try {
     const cl = calcList();
     const item = cl.find(i => i.list === name && i.type === type);
-    if (!item) return `⚠️ Предмет не знайдено: ${esc(name)}`;
+    if (!item) return `⚠️ Item not found: ${esc(name)}`;
 
     const key = type === 'mech'
       ? item.rarity + '_mech'
@@ -539,41 +712,41 @@ function calcResultText(type, name, fs, fl, ts, tl) {
       if (c) { cr += c.credits || 0; ac += c.acoins || 0; bp += c.blueprints || 0; }
     }
 
-    let txt = `🧮 <b>РЕЗУЛЬТАТ</b>\n\n`;
+    let txt = tr(lang,'calc_res_hdr') + '\n\n';
     txt += `<b>${esc(name)}</b>\n`;
     txt += `${fs}★ Lv${fl} → ${ts}★ Lv${tl}\n\n`;
-    if (cr)  txt += `💰 Кредити: <b>${fmt(cr)}</b>\n`;
-    if (bp)  txt += `📘 Схеми: <b>${fmt(bp)}</b>\n`;
-    if (ac)  txt += `🟡 A-Монети: <b>${fmt(ac)}</b>\n`;
-    if (!cr && !bp && !ac) txt += `ℹ️ Дані про вартість відсутні для цього рівня.`;
+    if (cr)  txt += `${tr(lang,'calc_credits')}: <b>${fmt(cr)}</b>\n`;
+    if (bp)  txt += `${tr(lang,'calc_blueprints')}: <b>${fmt(bp)}</b>\n`;
+    if (ac)  txt += `${tr(lang,'calc_acoins')}: <b>${fmt(ac)}</b>\n`;
+    if (!cr && !bp && !ac) txt += tr(lang,'calc_no_data');
     txt += FOOTER;
     return txt;
   } catch(e) {
-    return `⚠️ Помилка розрахунку: ${esc(e.message)}`;
+    return tr(lang,'calc_err',esc(e.message));
   }
 }
 
-function calcResultKbd(type, name) {
+function calcResultKbd(type, name, lang) {
   return kbd(
-    [btn('◀ Назад', `calc_i:${type}:${name}`), btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_back'), `calc_i:${type}:${name}`), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 // ─ Pilot calc ─
-function pilotText(rar) {
+function pilotText(rar, lang) {
   const COLORS = { rare:'🔵', epic:'🟣', legendary:'🟡' };
-  return `👤 <b>КАЛЬКУЛЯТОР ПІЛОТІВ</b>\n\n${COLORS[rar]||''} ${rar.charAt(0).toUpperCase()+rar.slice(1)} Пілот\nВсі пілоти однакової рідкості мають однакову вартість.\n\nОбери початкову зірку (до 6★ Lv7):${FOOTER}`;
+  return tr(lang,'pilot_hdr',rar,COLORS[rar]||'') + FOOTER;
 }
-function pilotKbd(rar) {
+function pilotKbd(rar, lang) {
   const stars = [1,2,3,4,5,6].map(s => btn(`${s}★`, `calc_px:${rar}:${s}:1:6:7`));
   return kbd(
     [btn('🔵 Rare', `calc_pt:rare`), btn('🟣 Epic', `calc_pt:epic`), btn('🟡 Legendary', `calc_pt:legendary`)],
     stars.slice(0,3), stars.slice(3,6),
-    [btn('◀ Назад', 'calc'), btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_back'), 'calc'), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
-function pilotResultText(rar, fs, fl, ts, tl) {
+function pilotResultText(rar, fs, fl, ts, tl, lang) {
   try {
     const costs = pilotCosts();
     const fromIdx = (+fs-1)*7 + (+fl-1);
@@ -583,27 +756,27 @@ function pilotResultText(rar, fs, fl, ts, tl) {
       const c = costs[i] && costs[i][rar];
       if (c) { ac += c.acoins||0; marks += c.marks||0; xp += c.xp||0; }
     }
-    const wins = xp > 0 ? ` (~${fmt(Math.ceil(xp/800))} перемог)` : '';
-    let txt = `👤 <b>РЕЗУЛЬТАТ — ${esc(rar.toUpperCase())} ПІЛОТ</b>\n\n`;
+    const wins = xp > 0 ? tr(lang,'pilot_wins',fmt(Math.ceil(xp/800))) : '';
+    let txt = tr(lang,'pilot_res_hdr',rar) + '\n\n';
     txt += `${fs}★ Lv${fl} → ${ts}★ Lv${tl}\n\n`;
-    if (ac)    txt += `🟡 A-Монети: <b>${fmt(ac)}</b>\n`;
+    if (ac)    txt += `🟡 A-Coins: <b>${fmt(ac)}</b>\n`;
     if (marks) txt += `🎖️ Marks: <b>${fmt(marks)}</b>\n`;
     if (xp)    txt += `⭐ XP: <b>${fmt(xp)}</b>${wins}\n`;
-    if (!ac && !marks && !xp) txt += 'ℹ️ Дані відсутні.';
+    if (!ac && !marks && !xp) txt += tr(lang,'pilot_nodata');
     txt += FOOTER;
     return txt;
   } catch(e) {
-    return `⚠️ Помилка: ${esc(e.message)}`;
+    return `⚠️ Error: ${esc(e.message)}`;
   }
 }
 
 // ─ Mod calc ─
-function modCalcText(page) {
+function modCalcText(page, lang) {
   const mods = modsList();
   const pages = Math.ceil(mods.length / ITEMS_PER_PAGE);
-  return `🧩 <b>МОДИ</b> — Обери мод (${mods.length})\nСторінка ${page+1}/${pages}${FOOTER}`;
+  return tr(lang,'mod_hdr',mods.length,page+1,pages) + FOOTER;
 }
-function modCalcKbd(page) {
+function modCalcKbd(page, lang) {
   const mods = modsList();
   const pages = Math.ceil(mods.length / ITEMS_PER_PAGE);
   const slice = mods.slice(page * ITEMS_PER_PAGE, (page+1)*ITEMS_PER_PAGE);
@@ -616,21 +789,21 @@ function modCalcKbd(page) {
   const nav = [];
   if (page>0) nav.push(btn('◀', `calc_mod:${page-1}`));
   if (page<pages-1) nav.push(btn('▶', `calc_mod:${page+1}`));
-  return kbd(...modRows, nav.length?nav:[], [btn('◀ Назад','calc'),btn('🏠 Меню','menu')]);
+  return kbd(...modRows, nav.length?nav:[], [btn(tr(lang,'btn_back'),'calc'),btn(tr(lang,'btn_menu'),'menu')]);
 }
 
-function modFromText(rar, name) {
+function modFromText(rar, name, lang) {
   const mods = modsList();
   const mod = mods.find(m => m.mod_name === name && m.rarity === rar);
   const lbl = mod ? mod.mod_label.trim() : name;
-  return `🧩 <b>${esc(lbl)}</b> (${esc(rar)})\n\nОбери поточний рівень (до L6):${FOOTER}`;
+  return tr(lang,'mod_from_hdr',lbl,rar) + FOOTER;
 }
-function modFromKbd(rar, name) {
+function modFromKbd(rar, name, lang) {
   const lvls = [1,2,3,4,5].map(l => btn(`L${l}`, `mod_x:${rar}:${name}:${l}:6`));
-  return kbd(lvls, [btn('◀ Назад',`calc_mod:0`),btn('🏠 Меню','menu')]);
+  return kbd(lvls, [btn(tr(lang,'btn_back'),`calc_mod:0`),btn(tr(lang,'btn_menu'),'menu')]);
 }
 
-function modResultText(rar, name, fl, tl) {
+function modResultText(rar, name, fl, tl, lang) {
   try {
     const mods = modsList();
     const mod = mods.find(m => m.mod_name === name && m.rarity === rar);
@@ -644,28 +817,28 @@ function modResultText(rar, name, fl, tl) {
         if (c) { basic += c.basic_mod_parts||0; elite += c.elite_mod_parts||0; }
       }
     });
-    let txt = `🧩 <b>РЕЗУЛЬТАТ — МОД</b>\n\n`;
+    let txt = tr(lang,'mod_res_hdr') + '\n\n';
     txt += `<b>${esc(lbl)}</b> (${esc(rar)})\n`;
     txt += `L${fl} → L${tl}\n\n`;
-    if (basic) txt += `🔩 Basic Mod Parts: <b>${fmt(basic)}</b>\n`;
-    if (elite) txt += `💎 Elite Mod Parts: <b>${fmt(elite)}</b>\n`;
-    if (!basic && !elite) txt += 'ℹ️ Дані відсутні.';
+    if (basic) txt += `${tr(lang,'mod_basic')}: <b>${fmt(basic)}</b>\n`;
+    if (elite) txt += `${tr(lang,'mod_elite')}: <b>${fmt(elite)}</b>\n`;
+    if (!basic && !elite) txt += tr(lang,'mod_nodata');
     txt += FOOTER;
     return txt;
   } catch(e) {
-    return `⚠️ Помилка: ${esc(e.message)}`;
+    return `⚠️ Error: ${esc(e.message)}`;
   }
 }
 
 // ─ Compare ─
-function cmpText(keys) {
+function cmpText(keys, lang) {
   if (!keys.length) {
-    return `⚡ <b>ПОРІВНЯННЯ</b>\n\nОбери до 3 мехів для порівняння:${FOOTER}`;
+    return tr(lang,'cmp_hdr_empty') + FOOTER;
   }
   const mechs = keys.map(k => MECHS[k]).filter(Boolean);
-  if (!mechs.length) return `⚡ <b>ПОРІВНЯННЯ</b>\n\nМехи не знайдено.${FOOTER}`;
+  if (!mechs.length) return tr(lang,'cmp_not_found') + FOOTER;
 
-  let txt = `⚡ <b>ПОРІВНЯННЯ</b> (${keys.join(', ')})\n\n`;
+  let txt = tr(lang,'cmp_hdr_keys',keys.join(', ')) + '\n\n';
   const stats = [
     ['HP (R7)', m => fmt(m.rk[7].h)],
     ['Energy', m => `${m.e}E`],
@@ -675,18 +848,13 @@ function cmpText(keys) {
     ['Gear Tier', m => `T${m.g}`],
   ];
 
-  // Find best HP and speed
-  const maxHP  = Math.max(...mechs.map(m => m.rk[7].h));
-  const maxSpd = Math.max(...mechs.map(m => m.spd));
-
   txt += `<b>${mechs.map(m => esc(m.n)).join(' | ')}</b>\n`;
   txt += '─'.repeat(28) + '\n';
   stats.forEach(([lbl, fn]) => {
-    const vals = mechs.map(fn);
-    txt += `${lbl}: ${vals.join(' | ')}\n`;
+    txt += `${lbl}: ${mechs.map(fn).join(' | ')}\n`;
   });
 
-  txt += '\n<b>НАВИЧКИ:</b>\n';
+  txt += `\n<b>${tr(lang,'cmp_ability')}:</b>\n`;
   mechs.forEach(m => {
     txt += `${R_ICON[m.role]} <b>${esc(m.n)}</b>: ${esc(m.a.n)}\n`;
   });
@@ -695,30 +863,28 @@ function cmpText(keys) {
   return txt;
 }
 
-function cmpKbd(keys) {
+function cmpKbd(keys, lang) {
   const csv = encMechs(keys);
   const allKeys = Object.keys(MECHS);
 
   if (keys.length >= 3) {
-    // Show result + clear
     return kbd(
-      [btn('🗑 Очистити', 'cmp:')],
-      [btn('🏠 Меню', 'menu')],
+      [btn(tr(lang,'btn_clear'), 'cmp:')],
+      [btn(tr(lang,'btn_menu'), 'menu')],
     );
   }
 
-  // Show mech picker (first page only for simplicity, with filter)
   const available = allKeys.filter(k => !keys.includes(k));
   const rows = [];
   for (let i = 0; i < Math.min(available.length, 12); i += 3) {
     rows.push(available.slice(i, i+3).map(k => btn(MECHS[k].n, `cmp_a:${sk(k)}:${csv}`)));
   }
 
-  const actions = keys.length ? [btn('🗑 Очистити', 'cmp:')] : [];
+  const actions = keys.length ? [btn(tr(lang,'btn_clear'), 'cmp:')] : [];
   return kbd(
     ...rows,
     actions.length ? actions : [],
-    [btn('🏠 Меню', 'menu')],
+    [btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
@@ -752,49 +918,46 @@ function rateHangar(keys) {
   return { total, grade, rarScore, diversityScore, tierScore, metaScore, roles, mechs };
 }
 
-function hrText(keys) {
+function hrText(keys, lang) {
   if (!keys.length) {
-    return `🏆 <b>РЕЙТИНГ АНГАРА</b>\n\nОбери до 5 мехів свого ангара:${FOOTER}`;
+    return tr(lang,'hr_hdr_empty') + FOOTER;
   }
   const mechs = keys.map(k => MECHS[k]).filter(Boolean);
   const selected = mechs.map(m => `${R_ICON[m.role]} ${m.n}`).join('\n');
-  return `🏆 <b>РЕЙТИНГ АНГАРА</b>\n\nОбрано (${mechs.length}/5):\n${selected}\n\nДодай мехів або натисни "Оцінити":${FOOTER}`;
+  return tr(lang,'hr_hdr_sel',mechs.length) + '\n' + selected + tr(lang,'hr_hint') + FOOTER;
 }
 
-function hrResultText(keys) {
+function hrResultText(keys, lang) {
   const r = rateHangar(keys);
-  if (!r) return `⚠️ Оберіть мехів для оцінки.`;
+  if (!r) return `⚠️ Select mechs to rate.`;
 
   const gradeColors = { S:'🌟', A:'🔥', B:'✅', C:'⚠️', D:'❌' };
-  let txt = `🏆 <b>ОЦІНКА АНГАРА</b>\n\n`;
-  txt += `<b>Рахунок: ${r.total}/100</b>  ${gradeColors[r.grade]||''} <b>Оцінка: ${r.grade}</b>\n\n`;
-  txt += `<b>Деталі:</b>\n`;
-  txt += `• Рідкість: ${r.rarScore}/30\n`;
-  txt += `• Різноманіття ролей: ${r.diversityScore}/25 (${r.roles}/4 ролей)\n`;
-  txt += `• Прогресія Gear Hub: ${r.tierScore}/25\n`;
-  txt += `• Мета-мехи: ${r.metaScore}/20\n`;
-  txt += `\n<b>Ваш ангар:</b>\n`;
+  let txt = tr(lang,'hr_res_hdr') + '\n\n';
+  txt += tr(lang,'hr_score',r.total,r.grade,gradeColors[r.grade]||'') + '\n\n';
+  txt += `<b>${tr(lang,'hr_details')}:</b>\n`;
+  txt += tr(lang,'hr_rarity',r.rarScore) + '\n';
+  txt += tr(lang,'hr_diversity',r.diversityScore,r.roles) + '\n';
+  txt += tr(lang,'hr_tier',r.tierScore) + '\n';
+  txt += tr(lang,'hr_meta',r.metaScore) + '\n';
+  txt += `\n<b>${tr(lang,'hr_hangar')}:</b>\n`;
   r.mechs.forEach(m => {
     txt += `${R_ICON[m.role]}${RAR_ICON[m.rar]} ${esc(m.n)} — T${m.g} · ${m.e}E\n`;
   });
 
-  // Recommendations
   const roleCounts = {};
   r.mechs.forEach(m => roleCounts[m.role] = (roleCounts[m.role]||0)+1);
-  const missing = ['Attacker','Scout','Tank','Support'].filter(r => !roleCounts[r]);
-  if (missing.length) {
-    txt += `\n💡 <b>Рекомендації:</b> додай ${missing.join(', ')}\n`;
-  }
+  const missing = ['Attacker','Scout','Tank','Support'].filter(ro => !roleCounts[ro]);
+  if (missing.length) txt += tr(lang,'hr_recs',missing.join(', ')) + '\n';
 
   txt += FOOTER;
   return txt;
 }
 
-function hrKbd(keys, showResult = false) {
+function hrKbd(keys, lang, showResult = false) {
   const csv = encMechs(keys);
   if (showResult) {
     return kbd(
-      [btn('🗑 Очистити', 'hr:'), btn('🏠 Меню', 'menu')],
+      [btn(tr(lang,'btn_clear'), 'hr:'), btn(tr(lang,'btn_menu'), 'menu')],
     );
   }
 
@@ -803,8 +966,8 @@ function hrKbd(keys, showResult = false) {
 
   if (keys.length >= 5) {
     return kbd(
-      [btn('⭐ Оцінити ангар', `hr_r:${csv}`)],
-      [btn('🗑 Очистити', 'hr:'), btn('🏠 Меню', 'menu')],
+      [btn(tr(lang,'btn_rate_hangar'), `hr_r:${csv}`)],
+      [btn(tr(lang,'btn_clear'), 'hr:'), btn(tr(lang,'btn_menu'), 'menu')],
     );
   }
 
@@ -813,38 +976,34 @@ function hrKbd(keys, showResult = false) {
     rows.push(available.slice(i,i+3).map(k => btn(MECHS[k].n, `hr_a:${sk(k)}:${csv}`)));
   }
 
-  const actions = [btn('🏠 Меню', 'menu')];
-  if (keys.length >= 1) actions.unshift(btn('⭐ Оцінити', `hr_r:${csv}`));
-  if (keys.length >= 1) actions.unshift(btn('🗑 Очистити', 'hr:'));
+  const actions = [btn(tr(lang,'btn_menu'), 'menu')];
+  if (keys.length >= 1) actions.unshift(btn(tr(lang,'btn_rate'), `hr_r:${csv}`));
+  if (keys.length >= 1) actions.unshift(btn(tr(lang,'btn_clear'), 'hr:'));
 
-  return kbd(
-    ...rows,
-    actions,
-  );
+  return kbd(...rows, actions);
 }
 
 // ─ Promo ─
-async function promoText() {
+async function promoText(lang) {
   try {
     const r = await fetch(`${SITE_URL}/api/codes`);
     const data = await r.json();
     const codes = data.codes || [];
 
     if (!codes.length) {
-      return `🎁 <b>ПРОМО КОДИ</b>\n\n❌ Зараз немає активних кодів.\nПеревір пізніше!${FOOTER}`;
+      return tr(lang,'promo_empty') + FOOTER;
     }
 
-    let txt = `🎁 <b>АКТИВНІ ПРОМО КОДИ</b> (${codes.length})\n\n`;
+    let txt = tr(lang,'promo_hdr',codes.length);
     codes.forEach((c, i) => {
       txt += `${i+1}. <code>${esc(c.code)}</code>`;
       if (c.reward) txt += `\n   🎁 ${esc(c.reward)}`;
       txt += '\n\n';
     });
-    txt += `⚠️ Коди мають термін дії — активуй якомога швидше!`;
-    txt += FOOTER;
+    txt += tr(lang,'promo_warn') + FOOTER;
     return txt;
   } catch (e) {
-    return `🎁 <b>ПРОМО КОДИ</b>\n\n⚠️ Не вдалося завантажити коди.\n<a href="${SITE_URL}/#promo">Відкрий сайт</a> для перегляду кодів.${FOOTER}`;
+    return tr(lang,'promo_err') + tr(lang,'promo_open',SITE_URL) + FOOTER;
   }
 }
 
@@ -882,163 +1041,163 @@ async function handleCallbackQuery(cbq) {
   const cid = cbq.message.chat.id;
   const mid = cbq.message.message_id;
   const d   = cbq.data || '';
+  const lang = getLang(cid);
 
   await answerCbq(cbq.id);
 
-  // ─ Helpers
   const upd = (text, keys) => edit(cid, mid, text, { reply_markup: keys });
 
-  // ─ Routing ─
+  // ─ Language selection ─
+  if (d.startsWith('lang:')) {
+    const l = d.split(':')[1];
+    setLang(cid, l);
+    return upd(menuText(l), menuKbd(l));
+  }
+
+  // ─ Menu ─
   if (d === 'menu') {
-    return upd(menuText(), menuKbd());
+    return upd(menuText(lang), menuKbd(lang));
   }
 
   // Mechs list
   if (d.startsWith('mechs:')) {
     const [, role, page] = d.split(':');
-    return upd(mechsText(role, +page), mechsKbd(role, +page));
+    return upd(mechsText(role, +page, lang), mechsKbd(role, +page, lang));
   }
 
   // Single mech
   if (d.startsWith('mech:')) {
     const [, key, rank] = d.split(':');
-    return upd(mechText(key, +rank), mechKbd(key, +rank));
+    return upd(mechText(key, +rank, lang), mechKbd(key, +rank, lang));
   }
 
   // Calculator main
   if (d === 'calc') {
-    return upd(calcText(), calcKbd());
+    return upd(calcText(lang), calcKbd(lang));
   }
 
-  // Calc type selector (mech or weapon, with optional page)
+  // Calc type selector
   if (d.startsWith('calc_t:')) {
     const parts = d.split(':');
     const type = parts[1];
     const page = +(parts[2] || 0);
-    return upd(calcItemsText(type, page), calcItemsKbd(type, page));
+    return upd(calcItemsText(type, page, lang), calcItemsKbd(type, page, lang));
   }
 
   // Calc item selected
   if (d.startsWith('calc_i:')) {
     const [, type, ...rest] = d.split(':');
     const name = rest.join(':');
-    return upd(calcFromText(type, name), calcFromKbd(type, name));
+    return upd(calcFromText(type, name, lang), calcFromKbd(type, name, lang));
   }
 
-  // Calc execute (from:star:level to:star:level)
+  // Calc execute
   if (d.startsWith('calc_x:')) {
     const [, type, ...rest] = d.split(':');
-    // rest = name parts + :fs:fl:ts:tl
-    // last 4 are fs,fl,ts,tl
     const nums = rest.splice(-4);
     const name = rest.join(':');
     const [fs,fl,ts,tl] = nums;
-    return upd(calcResultText(type, name, +fs, +fl, +ts, +tl), calcResultKbd(type, name));
+    return upd(calcResultText(type, name, +fs, +fl, +ts, +tl, lang), calcResultKbd(type, name, lang));
   }
 
   // Pilot calc
   if (d.startsWith('calc_pt:')) {
     const rar = d.split(':')[1];
-    return upd(pilotText(rar), pilotKbd(rar));
+    return upd(pilotText(rar, lang), pilotKbd(rar, lang));
   }
   if (d.startsWith('calc_px:')) {
     const [, rar, fs, fl, ts, tl] = d.split(':');
-    return upd(pilotResultText(rar, +fs, +fl, +ts, +tl), kbd([btn('◀ Назад',`calc_pt:${rar}`),btn('🏠 Меню','menu')]));
+    return upd(pilotResultText(rar, +fs, +fl, +ts, +tl, lang),
+      kbd([btn(tr(lang,'btn_back'),`calc_pt:${rar}`), btn(tr(lang,'btn_menu'),'menu')]));
   }
 
   // Mod calc
   if (d === 'calc_mod' || d.startsWith('calc_mod:')) {
     const page = +(d.split(':')[1] || 0);
-    return upd(modCalcText(page), modCalcKbd(page));
+    return upd(modCalcText(page, lang), modCalcKbd(page, lang));
   }
   if (d.startsWith('mod_i:')) {
     const [, rar, name] = d.split(':');
-    return upd(modFromText(rar, name), modFromKbd(rar, name));
+    return upd(modFromText(rar, name, lang), modFromKbd(rar, name, lang));
   }
   if (d.startsWith('mod_x:')) {
     const [, rar, name, fl, tl] = d.split(':');
-    return upd(modResultText(rar, name, +fl, +tl), kbd([btn('◀ Назад',`mod_i:${rar}:${name}`),btn('🏠 Меню','menu')]));
+    return upd(modResultText(rar, name, +fl, +tl, lang),
+      kbd([btn(tr(lang,'btn_back'),`mod_i:${rar}:${name}`), btn(tr(lang,'btn_menu'),'menu')]));
   }
 
   // Compare
   if (d === 'cmp:' || d === 'cmp') {
-    return upd(cmpText([]), cmpKbd([]));
+    return upd(cmpText([], lang), cmpKbd([], lang));
   }
   if (d.startsWith('cmp:') && d.length > 4) {
-    const csv = d.slice(4);
-    const keys = decMechs(csv);
-    return upd(cmpText(keys), cmpKbd(keys));
+    const keys = decMechs(d.slice(4));
+    return upd(cmpText(keys, lang), cmpKbd(keys, lang));
   }
   if (d.startsWith('cmp_a:')) {
     const parts = d.slice(6).split(':');
     const newMech = lk(parts[0]);
-    const currentKeys = decMechs(parts.slice(1).join(':'));
-    const keys = [...new Set([...currentKeys, newMech])].slice(0,3);
-    const txt  = cmpText(keys);
-    const keyboard = cmpKbd(keys);
-    return upd(txt, keyboard);
+    const keys = [...new Set([...decMechs(parts.slice(1).join(':')), newMech])].slice(0,3);
+    return upd(cmpText(keys, lang), cmpKbd(keys, lang));
   }
 
   // Hangar rate
   if (d === 'hr:' || d === 'hr') {
-    return upd(hrText([]), hrKbd([]));
+    return upd(hrText([], lang), hrKbd([], lang));
   }
   if (d.startsWith('hr:') && d.length > 3) {
-    const csv = d.slice(3);
-    const keys = decMechs(csv);
-    return upd(hrText(keys), hrKbd(keys));
+    const keys = decMechs(d.slice(3));
+    return upd(hrText(keys, lang), hrKbd(keys, lang));
   }
   if (d.startsWith('hr_a:')) {
     const parts = d.slice(5).split(':');
     const newMech = lk(parts[0]);
-    const currentKeys = decMechs(parts.slice(1).join(':'));
-    const keys = [...new Set([...currentKeys, newMech])].slice(0,5);
-    return upd(hrText(keys), hrKbd(keys));
+    const keys = [...new Set([...decMechs(parts.slice(1).join(':')), newMech])].slice(0,5);
+    return upd(hrText(keys, lang), hrKbd(keys, lang));
   }
   if (d.startsWith('hr_r:')) {
-    const csv = d.slice(5);
-    const keys = decMechs(csv);
-    return upd(hrResultText(keys), hrKbd(keys, true));
+    const keys = decMechs(d.slice(5));
+    return upd(hrResultText(keys, lang), hrKbd(keys, lang, true));
   }
 
   // Promo
   if (d === 'promo') {
-    const text = await promoText();
-    return upd(text, kbd([btn('↻ Оновити', 'promo'), btn('🏠 Меню', 'menu')]));
-  }
-
-  // Maps
-  if (d.startsWith('maps:')) {
-    const [, mode, page] = d.split(':');
-    return upd(mapsText(mode, +page), mapsKbd(mode, +page));
+    const text = await promoText(lang);
+    return upd(text, kbd([btn(tr(lang,'btn_refresh'), 'promo'), btn(tr(lang,'btn_menu'), 'menu')]));
   }
 }
 
 // ─── MESSAGE HANDLER ─────────────────────────────────────
 async function handleMessage(msg) {
   if (!msg || !msg.text) return;
-  const cid = msg.chat.id;
-  const txt = msg.text.toLowerCase().trim();
+  const cid  = msg.chat.id;
+  const txt  = msg.text.toLowerCase().trim();
+  const lang = getLang(cid);
 
-  const welcome = () => send(cid, menuText(), { reply_markup: menuKbd() });
+  const menu    = () => send(cid, menuText(lang),   { reply_markup: menuKbd(lang)   });
+  const langPick = () => send(cid, langPickText(),  { reply_markup: langPickKbd()   });
 
-  if (['/start','/menu','/help'].includes(txt)) return welcome();
-  if (['/mechs','/мехи'].includes(txt))     return send(cid, mechsText('all',0), { reply_markup: mechsKbd('all',0) });
-  if (['/calc','/калькулятор'].includes(txt)) return send(cid, calcText(), { reply_markup: calcKbd() });
-  if (['/compare','/порівняння'].includes(txt)) return send(cid, cmpText([]), { reply_markup: cmpKbd([]) });
-  if (['/hangar','/ангар'].includes(txt))   return send(cid, hrText([]), { reply_markup: hrKbd([]) });
+  if (txt === '/start') return langPick();
+  if (['/menu','/help'].includes(txt)) return menu();
+  if (['/mechs','/мехи'].includes(txt))
+    return send(cid, mechsText('all',0,lang), { reply_markup: mechsKbd('all',0,lang) });
+  if (['/calc','/калькулятор'].includes(txt))
+    return send(cid, calcText(lang), { reply_markup: calcKbd(lang) });
+  if (['/compare','/порівняння'].includes(txt))
+    return send(cid, cmpText([],lang), { reply_markup: cmpKbd([],lang) });
+  if (['/hangar','/ангар'].includes(txt))
+    return send(cid, hrText([],lang), { reply_markup: hrKbd([],lang) });
   if (['/promo','/промо'].includes(txt)) {
-    const promoTxt = await promoText();
-    return send(cid, promoTxt, { reply_markup: kbd([btn('↻ Оновити','promo'),btn('🏠 Меню','menu')]) });
+    const promoTxt = await promoText(lang);
+    return send(cid, promoTxt, { reply_markup: kbd([btn(tr(lang,'btn_refresh'),'promo'),btn(tr(lang,'btn_menu'),'menu')]) });
   }
-  if (['/maps','/карти'].includes(txt))     return send(cid, mapsText('cpc',0), { reply_markup: mapsKbd('cpc',0) });
 
   // search mech by name
   const key = Object.keys(MECHS).find(k => MECHS[k].n.toLowerCase() === txt);
-  if (key) return send(cid, mechText(key,1), { reply_markup: mechKbd(key,1) });
+  if (key) return send(cid, mechText(key,1,lang), { reply_markup: mechKbd(key,1,lang) });
 
-  // default
-  return welcome();
+  // default — show menu
+  return menu();
 }
 
 // ─── MAIN EXPORT ─────────────────────────────────────────

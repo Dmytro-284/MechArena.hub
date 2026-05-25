@@ -1,25 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- outer glow -->
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- inner fill glow -->
+    <radialGradient id="fillGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#00d4ff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
   <!-- Background -->
   <rect width="512" height="512" rx="72" fill="#060c14"/>
-  <!-- Flat-top hexagon (points left/right, flat edges top/bottom) -->
-  <!-- circumradius 210, center 256,256 -->
-  <!-- R=210: v1=(466,256), v2=(361,74), v3=(151,74), v4=(46,256), v5=(151,438), v6=(361,438) -->
+
+  <!-- Inner glow fill -->
   <polygon
-    points="466,256 361,74 151,74 46,256 151,438 361,438"
+    points="446,256 351,92 161,92 66,256 161,420 351,420"
+    fill="url(#fillGrad)"
+  />
+
+  <!-- Hexagon with glow -->
+  <polygon
+    points="446,256 351,92 161,92 66,256 161,420 351,420"
     fill="none"
     stroke="#00d4ff"
-    stroke-width="34"
+    stroke-width="28"
     stroke-linejoin="round"
+    filter="url(#glow)"
   />
-  <!-- MA text -->
-  <text
-    x="256" y="300"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    font-family="'Arial Black','Arial Bold',Arial,sans-serif"
-    font-weight="900"
-    font-size="152"
-    letter-spacing="-4"
-    fill="#00d4ff"
-  >MA</text>
 </svg>

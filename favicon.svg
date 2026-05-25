@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="72" fill="#060c14"/>
+  <!-- Flat-top hexagon (points left/right, flat edges top/bottom) -->
+  <!-- circumradius 210, center 256,256 -->
+  <!-- R=210: v1=(466,256), v2=(361,74), v3=(151,74), v4=(46,256), v5=(151,438), v6=(361,438) -->
+  <polygon
+    points="466,256 361,74 151,74 46,256 151,438 361,438"
+    fill="none"
+    stroke="#00d4ff"
+    stroke-width="34"
+    stroke-linejoin="round"
+  />
+  <!-- MA text -->
+  <text
+    x="256" y="300"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Arial Black','Arial Bold',Arial,sans-serif"
+    font-weight="900"
+    font-size="152"
+    letter-spacing="-4"
+    fill="#00d4ff"
+  >MA</text>
+</svg>

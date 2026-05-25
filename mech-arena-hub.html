@@ -813,6 +813,19 @@ select:focus{border-color:var(--acc);}
   <div class="promo-note" data-i18n="promo_note">⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.</div>
 </div>
 
+<!-- Telegram button -->
+<div style="text-align:center;padding:24px 0 32px">
+  <a id="tg-bot-btn" href="https://t.me/YOUR_BOT_USERNAME" target="_blank" rel="noopener"
+     style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0088cc,#006aaa);color:#fff;text-decoration:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:1.5px;padding:13px 28px;border-radius:8px;border:1px solid rgba(0,136,204,.5);box-shadow:0 0 18px rgba(0,136,204,.35),0 2px 8px rgba(0,0,0,.4);transition:box-shadow .2s,transform .15s"
+     onmouseover="this.style.boxShadow='0 0 32px rgba(0,136,204,.6),0 4px 16px rgba(0,0,0,.5)';this.style.transform='translateY(-2px)'"
+     onmouseout="this.style.boxShadow='0 0 18px rgba(0,136,204,.35),0 2px 8px rgba(0,0,0,.4)';this.style.transform='translateY(0)'">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.93 7.13l-1.685 7.94c-.127.56-.456.697-.924.433l-2.552-1.88-1.232 1.185c-.136.136-.25.25-.512.25l.183-2.594 4.718-4.26c.205-.183-.045-.283-.317-.1L7.39 14.6l-2.503-.78c-.544-.17-.554-.544.114-.805l9.757-3.762c.453-.163.85.11.702.875z" fill="white"/>
+    </svg>
+    <span data-i18n="tg_btn">OPEN IN TELEGRAM</span>
+  </a>
+</div>
+
 </div><!-- /.app -->
 
 
@@ -925,6 +938,7 @@ en:{
   pilot_badge_rare:'RARE PILOT', pilot_badge_epic:'EPIC PILOT', pilot_badge_legendary:'LEGENDARY PILOT',
   pilot_share:'pilots share the same upgrade cost',
   lbl_loading:'Loading data...',
+  tg_btn:'OPEN IN TELEGRAM',
 },
 ua:{
   tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'ШПАРГАЛКИ',
@@ -992,6 +1006,7 @@ ua:{
   pilot_badge_rare:'РІДКІСНИЙ ПІЛОТ', pilot_badge_epic:'ЕПІЧНИЙ ПІЛОТ', pilot_badge_legendary:'ЛЕГЕНДАРНИЙ ПІЛОТ',
   pilot_share:'пілоти мають однакову вартість апгрейду',
   lbl_loading:'Завантаження...',
+  tg_btn:'ВІДКРИТИ В TELEGRAM',
 }};
 function t(k){return(UI_TEXT[LANG]||UI_TEXT.en)[k]||UI_TEXT.en[k]||k;}
 function applyI18n(){

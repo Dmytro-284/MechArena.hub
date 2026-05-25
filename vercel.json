@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/telegram.js": {
+      "includeFiles": "calc-data-*.js"
+    }
+  },
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/",      "destination": "/mech-arena-hub.html" }

@@ -73,7 +73,14 @@ const T = {
     btn_c_pilots:    '👤 Пілоти',
     btn_c_mods:      '🧩 Моди',
     calc_items_hdr:  (lbl,n,p,pt) => `🧮 <b>${lbl}</b> — (${n})\nСторінка ${p}/${pt}`,
-    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nВибери початкову зірку:`,
+    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nКрок 1 з 4 — Початкова зірка:`,
+    calc_fromlv_hdr: (name,fs) => `🧮 <b>${esc(name)}</b>\n${fs}★ → Крок 2 з 4 — Початковий рівень:`,
+    calc_tostar_hdr: (name,fs,fl) => `🧮 <b>${esc(name)}</b>\n${fs}★ Lv${fl} → Крок 3 з 4 — Кінцева зірка:`,
+    calc_tolv_hdr:   (name,fs,fl,ts) => `🧮 <b>${esc(name)}</b>\n${fs}★ Lv${fl} → ${ts}★ — Крок 4 з 4 — Кінцевий рівень:`,
+    pilot_from_hdr:  (rar,c) => `👤 <b>${rar.toUpperCase()} ПІЛОТ</b> ${c}\n\nКрок 1 з 4 — Початкова зірка:`,
+    pilot_fromlv_hdr:(fs) => `👤 ${fs}★ → Крок 2 з 4 — Початковий рівень:`,
+    pilot_tostar_hdr:(fs,fl) => `👤 ${fs}★ Lv${fl} → Крок 3 з 4 — Кінцева зірка:`,
+    pilot_tolv_hdr:  (fs,fl,ts) => `👤 ${fs}★ Lv${fl} → ${ts}★ — Крок 4 з 4 — Кінцевий рівень:`,
     calc_res_hdr:    '🧮 <b>РЕЗУЛЬТАТ</b>',
     calc_credits:    '💰 Кредити',
     calc_blueprints: '📘 Схеми',
@@ -150,7 +157,14 @@ const T = {
     btn_c_pilots:    '👤 Pilots',
     btn_c_mods:      '🧩 Mods',
     calc_items_hdr:  (lbl,n,p,pt) => `🧮 <b>${lbl}</b> — (${n})\nPage ${p}/${pt}`,
-    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nSelect starting star:`,
+    calc_from_hdr:   (name) => `🧮 <b>${esc(name)}</b>\n\nStep 1 of 4 — From star:`,
+    calc_fromlv_hdr: (name,fs) => `🧮 <b>${esc(name)}</b>\n${fs}★ → Step 2 of 4 — From level:`,
+    calc_tostar_hdr: (name,fs,fl) => `🧮 <b>${esc(name)}</b>\n${fs}★ Lv${fl} → Step 3 of 4 — To star:`,
+    calc_tolv_hdr:   (name,fs,fl,ts) => `🧮 <b>${esc(name)}</b>\n${fs}★ Lv${fl} → ${ts}★ — Step 4 of 4 — To level:`,
+    pilot_from_hdr:  (rar,c) => `👤 <b>${rar.toUpperCase()} PILOT</b> ${c}\n\nStep 1 of 4 — From star:`,
+    pilot_fromlv_hdr:(fs) => `👤 ${fs}★ → Step 2 of 4 — From level:`,
+    pilot_tostar_hdr:(fs,fl) => `👤 ${fs}★ Lv${fl} → Step 3 of 4 — To star:`,
+    pilot_tolv_hdr:  (fs,fl,ts) => `👤 ${fs}★ Lv${fl} → ${ts}★ — Step 4 of 4 — To level:`,
     calc_res_hdr:    '🧮 <b>RESULT</b>',
     calc_credits:    '💰 Credits',
     calc_blueprints: '📘 Blueprints',
@@ -679,15 +693,60 @@ function calcItemsKbd(type, page, lang) {
   );
 }
 
-// ─ Calc from star selection ─
+// ─ Calc step 1: from star ─
 function calcFromText(type, name, lang) {
   return tr(lang,'calc_from_hdr',name) + FOOTER;
 }
 function calcFromKbd(type, name, lang) {
-  const rows = [1,2,3,4,5,6].map(s => btn(`${s}★`, `calc_x:${type}:${name}:${s}:1:6:7`));
+  const rows = [1,2,3,4,5,6].map(s => btn(`${s}★`, `cfl:${type}:${name}:${s}`));
   return kbd(
     rows.slice(0,3), rows.slice(3,6),
     [btn(tr(lang,'btn_back'), `calc_t:${type}:0`), btn(tr(lang,'btn_menu'), 'menu')],
+  );
+}
+
+// ─ Calc step 2: from level ─
+function calcFromLvlText(type, name, fs, lang) {
+  return tr(lang,'calc_fromlv_hdr',name,fs) + FOOTER;
+}
+function calcFromLvlKbd(type, name, fs, lang) {
+  const rows = [1,2,3,4,5,6,7].map(l => btn(`Lv${l}`, `cts:${type}:${name}:${fs}:${l}`));
+  return kbd(
+    rows.slice(0,4), rows.slice(4,7),
+    [btn(tr(lang,'btn_back'), `calc_i:${type}:${name}`), btn(tr(lang,'btn_menu'), 'menu')],
+  );
+}
+
+// ─ Calc step 3: to star ─
+function calcToStarText(type, name, fs, fl, lang) {
+  return tr(lang,'calc_tostar_hdr',name,fs,fl) + FOOTER;
+}
+function calcToStarKbd(type, name, fs, fl, lang) {
+  // can only go to same or higher star
+  const rows = [1,2,3,4,5,6].filter(s => s >= +fs).map(s => btn(`${s}★`, `ctl:${type}:${name}:${fs}:${fl}:${s}`));
+  const r1 = rows.slice(0, Math.ceil(rows.length/2));
+  const r2 = rows.slice(Math.ceil(rows.length/2));
+  return kbd(
+    r1, r2.length ? r2 : [],
+    [btn(tr(lang,'btn_back'), `cfl:${type}:${name}:${fs}`), btn(tr(lang,'btn_menu'), 'menu')],
+  );
+}
+
+// ─ Calc step 4: to level ─
+function calcToLvlText(type, name, fs, fl, ts, lang) {
+  return tr(lang,'calc_tolv_hdr',name,fs,fl,ts) + FOOTER;
+}
+function calcToLvlKbd(type, name, fs, fl, ts, lang) {
+  // if same star, level must be higher; otherwise any level 1-7
+  const minLv = +ts === +fs ? +fl + 1 : 1;
+  const rows = [1,2,3,4,5,6,7].filter(l => l >= minLv).map(l =>
+    btn(`Lv${l}`, `calc_x:${type}:${name}:${fs}:${fl}:${ts}:${l}`)
+  );
+  const r1 = rows.slice(0, Math.ceil(rows.length/2));
+  const r2 = rows.slice(Math.ceil(rows.length/2));
+  return kbd(
+    r1, r2.length ? r2 : [],
+    [btn(tr(lang,'btn_back'), `cts:${type}:${name}:${fs}:${fl}`), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
@@ -738,12 +797,35 @@ function pilotText(rar, lang) {
   return tr(lang,'pilot_hdr',rar,COLORS[rar]||'') + FOOTER;
 }
 function pilotKbd(rar, lang) {
-  const stars = [1,2,3,4,5,6].map(s => btn(`${s}★`, `calc_px:${rar}:${s}:1:6:7`));
+  const COLORS = { rare:'🔵', epic:'🟣', legendary:'🟡' };
+  const stars = [1,2,3,4,5,6].map(s => btn(`${s}★`, `pfl:${rar}:${s}`));
   return kbd(
     [btn('🔵 Rare', `calc_pt:rare`), btn('🟣 Epic', `calc_pt:epic`), btn('🟡 Legendary', `calc_pt:legendary`)],
     stars.slice(0,3), stars.slice(3,6),
     [btn(tr(lang,'btn_back'), 'calc'), btn(tr(lang,'btn_menu'), 'menu')],
   );
+}
+function pilotFromLvlKbd(rar, fs, lang) {
+  const rows = [1,2,3,4,5,6,7].map(l => btn(`Lv${l}`, `pts:${rar}:${fs}:${l}`));
+  return kbd(rows.slice(0,4), rows.slice(4,7),
+    [btn(tr(lang,'btn_back'), `calc_pt:${rar}`), btn(tr(lang,'btn_menu'), 'menu')]);
+}
+function pilotToStarKbd(rar, fs, fl, lang) {
+  const rows = [1,2,3,4,5,6].filter(s => s >= +fs).map(s => btn(`${s}★`, `ptl:${rar}:${fs}:${fl}:${s}`));
+  const r1 = rows.slice(0, Math.ceil(rows.length/2));
+  const r2 = rows.slice(Math.ceil(rows.length/2));
+  return kbd(r1, r2.length ? r2 : [],
+    [btn(tr(lang,'btn_back'), `pfl:${rar}:${fs}`), btn(tr(lang,'btn_menu'), 'menu')]);
+}
+function pilotToLvlKbd(rar, fs, fl, ts, lang) {
+  const minLv = +ts === +fs ? +fl + 1 : 1;
+  const rows = [1,2,3,4,5,6,7].filter(l => l >= minLv).map(l =>
+    btn(`Lv${l}`, `calc_px:${rar}:${fs}:${fl}:${ts}:${l}`)
+  );
+  const r1 = rows.slice(0, Math.ceil(rows.length/2));
+  const r2 = rows.slice(Math.ceil(rows.length/2));
+  return kbd(r1, r2.length ? r2 : [],
+    [btn(tr(lang,'btn_back'), `pts:${rar}:${fs}:${fl}`), btn(tr(lang,'btn_menu'), 'menu')]);
 }
 
 function pilotResultText(rar, fs, fl, ts, tl, lang) {
@@ -1084,14 +1166,41 @@ async function handleCallbackQuery(cbq) {
     return upd(calcItemsText(type, page, lang), calcItemsKbd(type, page, lang));
   }
 
-  // Calc item selected
+  // Calc item selected → step 1: from star
   if (d.startsWith('calc_i:')) {
     const [, type, ...rest] = d.split(':');
     const name = rest.join(':');
     return upd(calcFromText(type, name, lang), calcFromKbd(type, name, lang));
   }
 
-  // Calc execute
+  // Step 2: from level
+  if (d.startsWith('cfl:')) {
+    const [, type, ...rest] = d.split(':');
+    const fs = rest.pop();
+    const name = rest.join(':');
+    return upd(calcFromLvlText(type, name, fs, lang), calcFromLvlKbd(type, name, fs, lang));
+  }
+
+  // Step 3: to star
+  if (d.startsWith('cts:')) {
+    const [, type, ...rest] = d.split(':');
+    const fl = rest.pop();
+    const fs = rest.pop();
+    const name = rest.join(':');
+    return upd(calcToStarText(type, name, fs, fl, lang), calcToStarKbd(type, name, fs, fl, lang));
+  }
+
+  // Step 4: to level
+  if (d.startsWith('ctl:')) {
+    const [, type, ...rest] = d.split(':');
+    const ts = rest.pop();
+    const fl = rest.pop();
+    const fs = rest.pop();
+    const name = rest.join(':');
+    return upd(calcToLvlText(type, name, fs, fl, ts, lang), calcToLvlKbd(type, name, fs, fl, ts, lang));
+  }
+
+  // Calc execute → result
   if (d.startsWith('calc_x:')) {
     const [, type, ...rest] = d.split(':');
     const nums = rest.splice(-4);
@@ -1100,15 +1209,35 @@ async function handleCallbackQuery(cbq) {
     return upd(calcResultText(type, name, +fs, +fl, +ts, +tl, lang), calcResultKbd(type, name, lang));
   }
 
-  // Pilot calc
+  // Pilot calc — step 1: rarity + from star
   if (d.startsWith('calc_pt:')) {
     const rar = d.split(':')[1];
     return upd(pilotText(rar, lang), pilotKbd(rar, lang));
   }
+  // Pilot step 2: from level
+  if (d.startsWith('pfl:')) {
+    const [, rar, fs] = d.split(':');
+    const COLORS = { rare:'🔵', epic:'🟣', legendary:'🟡' };
+    const txt = tr(lang,'pilot_fromlv_hdr',fs) + FOOTER;
+    return upd(txt, pilotFromLvlKbd(rar, fs, lang));
+  }
+  // Pilot step 3: to star
+  if (d.startsWith('pts:')) {
+    const [, rar, fs, fl] = d.split(':');
+    const txt = tr(lang,'pilot_tostar_hdr',fs,fl) + FOOTER;
+    return upd(txt, pilotToStarKbd(rar, fs, fl, lang));
+  }
+  // Pilot step 4: to level
+  if (d.startsWith('ptl:')) {
+    const [, rar, fs, fl, ts] = d.split(':');
+    const txt = tr(lang,'pilot_tolv_hdr',fs,fl,ts) + FOOTER;
+    return upd(txt, pilotToLvlKbd(rar, fs, fl, ts, lang));
+  }
+  // Pilot result
   if (d.startsWith('calc_px:')) {
     const [, rar, fs, fl, ts, tl] = d.split(':');
     return upd(pilotResultText(rar, +fs, +fl, +ts, +tl, lang),
-      kbd([btn(tr(lang,'btn_back'),`calc_pt:${rar}`), btn(tr(lang,'btn_menu'),'menu')]));
+      kbd([btn(tr(lang,'btn_back'),`ptl:${rar}:${fs}:${fl}:${ts}`), btn(tr(lang,'btn_menu'),'menu')]));
   }
 
   // Mod calc

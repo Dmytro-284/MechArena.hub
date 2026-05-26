@@ -524,7 +524,7 @@ const MAR = {
 };
 
 // ─── MAP DATA ─────────────────────────────────────────────
-const MAP_CPC = ['Biogear Lab','Campaings Forge','Elon Station Gray','Forbidden City','Imperial Temple','Mech Arena','Mesa Verde Annex','Paradise Plaza','Patterson Station','Scarlet Atrium','Site 313','Skyship 11','Smokestacks'];
+const MAP_CPC = ['Biogear Lab','Campaigns Forge','Elon Station Gray','Forbidden City','Imperial Temple','Mech Arena','Mesa Verde Annex','Paradise Plaza','Patterson Station','Scarlet Atrium','Site 313','Skyship 11','Smokestacks'];
 const MAP_5V5 = ['Acropolis','Agora','Artifact X','Backalley','Beatdown Club','Central Station','Colonnade','Constant','Container City','Crane Yard','Crimson Works','Dockyard','EQuilibrium','Fortune Towers','Freight Depot','Frost Rink','Ground Zero','Hanging Gardens','High Bridge','Hope Launchpad','Imperial Temple','Nebula Square','Neon Central','Paradise Plaza','Powder Parkway','Shevchenko Park','Singularity','Skyship 11','Snowdrift Stage','The Stacks','Tunnel of Fate','Two Arches','VMD Lab','ZC Cargo Dock','ZC Control','ZC Shop Floor'];
 
 // ─── ROLE / RARITY ICONS ─────────────────────────────────

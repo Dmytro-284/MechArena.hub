@@ -387,6 +387,60 @@ select:focus{border-color:var(--acc);}
 .promo-skel-inner{height:100%;border-radius:8px;}
 .promo-note{margin-top:16px;padding:10px 14px;background:rgba(255,107,0,.05);border-left:3px solid var(--acc2);font-size:11px;color:var(--dim);line-height:1.6;}
 
+/* ===== QUALITY OF LIFE ===== */
+body.comfort{
+  --bg:#101722;--panel:#172230;--p2:#1d2b3b;--brd:#35506a;
+  --acc:#59d9f5;--txt:#e0e9f1;--dim:#94aabd;
+}
+body.comfort::before{opacity:.25;}
+body.comfort::after{opacity:.4;}
+.top-tools{display:flex;justify-content:flex-end;align-items:center;padding:4px 0 8px;gap:6px;}
+.tool-btn,.mobile-menu-btn,.action-btn{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:7px 12px;border:1px solid var(--brd);background:rgba(0,212,255,.06);color:var(--dim);cursor:pointer;border-radius:3px;letter-spacing:1px;transition:all .2s;}
+.tool-btn:hover,.mobile-menu-btn:hover,.action-btn:hover{border-color:var(--acc);color:var(--acc);}
+.mobile-menu-btn{display:none;margin-right:auto;}
+.action-row{display:flex;justify-content:flex-end;gap:8px;margin:0 0 14px;flex-wrap:wrap;}
+.action-btn{color:var(--acc);background:rgba(0,212,255,.08);}
+.share-msg{font-size:11px;color:var(--acc3);min-height:14px;text-align:right;margin-top:-8px;margin-bottom:10px;}
+.resource-panel{margin:14px auto 0;max-width:720px;padding:14px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;text-align:left;}
+.resource-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.resource-field label{display:block;font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
+.resource-field input{width:100%;padding:8px;background:var(--panel);border:1px solid var(--brd);border-radius:3px;color:var(--txt);font:600 13px 'Montserrat',sans-serif;}
+.resource-result{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.resource-state{padding:10px;border:1px solid var(--brd);border-radius:3px;font-size:11px;line-height:1.55;}
+.resource-state.ok{border-color:rgba(127,255,0,.35);background:rgba(127,255,0,.05);}
+.resource-state.missing{border-color:rgba(255,107,0,.45);background:rgba(255,107,0,.06);}
+.resource-state strong{display:block;color:var(--txt);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;margin-bottom:4px;}
+.skin-controls{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
+.skin-controls input{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--brd);padding:10px;color:var(--txt);border-radius:3px;}
+.skin-controls select{max-width:220px;}
+.skin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+.skin-grid.list{grid-template-columns:1fr;}
+.skin-card{background:var(--panel);border:1px solid var(--brd);border-radius:5px;overflow:hidden;}
+.skin-grid.list .skin-card{display:grid;grid-template-columns:150px 1fr;}
+.skin-img{width:100%;aspect-ratio:1/1;background:var(--bg);object-fit:cover;}
+.skin-body{padding:11px 12px;}
+.skin-name{font-family:'Orbitron',monospace;color:var(--acc);font-size:11px;font-weight:700;margin-bottom:6px;}
+.skin-meta{font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:10px;}
+.skin-intro{padding:14px 16px;margin-bottom:16px;background:rgba(0,212,255,.05);border-left:3px solid var(--acc);font-size:12px;color:var(--txt);line-height:1.6;}
+.skin-submit{display:inline-block;margin-top:10px;padding:7px 12px;border:1px solid var(--acc);border-radius:3px;color:var(--acc);text-decoration:none;font:700 9px 'Orbitron',monospace;letter-spacing:1px;}
+.skin-submit:hover{background:rgba(0,212,255,.1);}
+.map-tools{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.map-tools input{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--brd);padding:9px 12px;color:var(--txt);border-radius:3px;}
+.mg-tactics{margin-top:12px;padding:12px;background:rgba(0,212,255,.04);border:1px solid var(--brd);border-radius:3px;}
+.mg-tactics-title{font:700 10px 'Orbitron',monospace;letter-spacing:1px;color:var(--acc);margin-bottom:8px;}
+.mg-tactics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.mg-tactic{background:var(--bg);border:1px solid var(--brd);padding:8px;border-radius:3px;font-size:11px;line-height:1.5;color:var(--txt);}
+.site-footer{margin-top:24px;padding:20px 0 30px;border-top:1px solid var(--brd);display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;font-size:12px;color:var(--dim);line-height:1.65;}
+.footer-title{font:700 10px 'Orbitron',monospace;color:var(--acc);letter-spacing:1.5px;margin-bottom:7px;}
+.site-footer a{display:block;color:var(--txt);text-decoration:none;margin:3px 0;}
+.site-footer a:hover{color:var(--acc);}
+.legal-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);z-index:1100;padding:18px;}
+.legal-modal.open{display:flex;}
+.legal-box{max-width:640px;width:100%;background:var(--panel);border:1px solid var(--brd);padding:20px;border-radius:5px;max-height:80vh;overflow:auto;}
+.legal-box h2{font:700 15px 'Orbitron',monospace;color:var(--acc);margin-bottom:14px;}
+.legal-box p{margin:0 0 12px;line-height:1.7;color:var(--txt);font-size:13px;}
+.legal-close{float:right;}
+
 
 
 /* ===== PWA banner ===== */
@@ -403,8 +457,11 @@ select:focus{border-color:var(--acc);}
   .app{padding:10px;}
   header h1{font-size:1.1rem;}
   header p{font-size:11px;}
-  .tabs{gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;padding-bottom:4px;}
-  .tab{padding:7px 9px;font-size:8px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
+  .top-tools{padding-bottom:10px;}
+  .mobile-menu-btn{display:block;}
+  .tabs{display:none;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px;padding:8px;background:var(--panel);border:1px solid var(--brd);border-radius:4px;}
+  .tabs.open{display:grid;}
+  .tab{padding:11px 6px;font-size:8px;letter-spacing:.5px;white-space:normal;bottom:0;border:1px solid var(--brd);border-radius:3px;}
   .gh-layout{grid-template-columns:1fr!important;}
   .gh-sidebar{max-height:260px;border-right:none!important;border-bottom:1px solid var(--brd);}
   .mech-header{flex-direction:column;align-items:center;text-align:center;gap:12px;}
@@ -418,6 +475,8 @@ select:focus{border-color:var(--acc);}
   .counters-grid{grid-template-columns:1fr;}
   [style*="grid-template-columns:1fr 340px"]{grid-template-columns:1fr!important;}
   .cmp-mech-icon{width:60px;height:54px;}
+  .resource-fields,.resource-result,.mg-tactics-grid,.site-footer{grid-template-columns:1fr;}
+  .skin-grid.list .skin-card{grid-template-columns:110px 1fr;}
 }
 @media(max-width:480px){
   header h1{font-size:.9rem;}
@@ -448,11 +507,13 @@ select:focus{border-color:var(--acc);}
   <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
 </header>
 
-<div style="display:flex;justify-content:flex-end;padding:4px 0 2px;gap:6px">
+<div class="top-tools">
+  <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-expanded="false" data-i18n="menu_btn">MENU</button>
+  <button class="tool-btn" id="theme-btn" onclick="toggleTheme()" data-i18n="theme_comfort">COMFORT MODE</button>
   <button class="lang-btn active" data-lang="en" onclick="setLang('en')" style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px 10px;border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);cursor:pointer;border-radius:2px;letter-spacing:1px">EN</button>
   <button class="lang-btn" data-lang="ua" onclick="setLang('ua')" style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px 10px;border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);cursor:pointer;border-radius:2px;letter-spacing:1px">UA</button>
 </div>
-<div class="tabs">
+<div class="tabs" id="main-tabs">
   <button class="tab active" onclick="switchTab('home',this)" data-i18n="tab_home">🏠 HOME</button>
   <button class="tab" onclick="switchTab('gear',this)" data-i18n="tab_mechs">MECHS</button>
   <button class="tab" onclick="switchTab('cheat',this)" data-i18n="tab_cheat">CHEATSHEETS</button>
@@ -461,6 +522,7 @@ select:focus{border-color:var(--acc);}
   <button class="tab" onclick="switchTab('hangar',this)" data-i18n="tab_hangar">🏆 HANGAR RATE</button>
   <button class="tab" onclick="switchTab('promo',this)" data-i18n="tab_promo">🎁 PROMO</button>
   <button class="tab" onclick="switchTab('maps',this)" data-i18n="tab_maps">🗺️ MAP GUIDE</button>
+  <button class="tab" onclick="switchTab('skins',this)" data-i18n="tab_skins">⭐ SKINS</button>
 </div>
 
 <!-- ===== HOME ===== -->
@@ -592,6 +654,16 @@ select:focus{border-color:var(--acc);}
       </div>
       <div style="margin-top:16px;text-align:center">
         <label class="calc-check-row" style="justify-content:center;margin-bottom:10px"><input type="checkbox" id="calc-tomax" onchange="toggleCalcToMax(this)"> <span data-i18n="lbl_to_max">Upgrade to Max (6★ Lv7)</span></label>
+        <label class="calc-check-row" style="justify-content:center;margin-bottom:10px"><input type="checkbox" id="calc-resources-toggle" onchange="toggleMyResources(this)"> <span data-i18n="lbl_my_resources">My Resources</span></label>
+        <div class="resource-panel" id="calc-resource-panel" style="display:none">
+          <div class="ctitle" style="margin-bottom:8px" data-i18n="lbl_my_resources">My Resources</div>
+          <div class="resource-fields">
+            <div class="resource-field"><label>Credits</label><input id="my-credits" type="number" min="0" value="0" oninput="updateResourceResult()"></div>
+            <div class="resource-field"><label>Blueprints</label><input id="my-blueprints" type="number" min="0" value="0" oninput="updateResourceResult()"></div>
+            <div class="resource-field"><label>A-Coins</label><input id="my-acoins" type="number" min="0" value="0" oninput="updateResourceResult()"></div>
+          </div>
+          <div class="resource-result" id="resource-result"></div>
+        </div>
         <button class="calc-btn" onclick="calculateUpgrade()" data-i18n="btn_calc_upgrade">⚙️ CALCULATE UPGRADE COST</button>
       </div>
       <div class="card" id="calc-result-panel" style="display:none;margin-top:14px">
@@ -726,6 +798,8 @@ select:focus{border-color:var(--acc);}
   <!-- Mechs section -->
   <div id="cmp-mechs-section">
     <div class="ctitle" style="margin-bottom:16px" data-i18n="cmp_title">Select up to 3 mechs to compare side by side</div>
+    <div class="action-row"><button class="action-btn" onclick="shareCompare(this)" data-i18n="share_compare">SHARE COMPARISON</button></div>
+    <div class="share-msg" id="compare-share-msg"></div>
     <div class="cmp-slots">
       <div class="cmp-slot" id="cmp-slot-0">
         <div class="cmp-slot-num" data-i18n="cmp_slot1">SLOT 1</div>
@@ -782,6 +856,8 @@ select:focus{border-color:var(--acc);}
         onmouseover="this.style.background='rgba(0,212,255,.2)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.05))'">
         <span data-i18n="btn_rate">🏆 RATE MY HANGAR</span>
       </button>
+      <button class="action-btn" style="width:100%;margin-bottom:10px" onclick="shareHangar(this)" data-i18n="share_hangar">SHARE HANGAR</button>
+      <div class="share-msg" id="hangar-share-msg"></div>
       <div id="hr-result" style="display:none"></div>
     </div>
   </div>
@@ -793,7 +869,30 @@ select:focus{border-color:var(--acc);}
     <button class="mg-mode-btn active" id="mg-btn-cpc" onclick="setMgMode('cpc')" data-i18n="map_cpc">📍 CPC — Control Point Capture (13 maps)</button>
     <button class="mg-mode-btn" id="mg-btn-5v5" onclick="setMgMode('5v5')" data-i18n="map_5v5">⚔️ 5v5 Deathmatch (36 maps)</button>
   </div>
+  <div class="map-tools">
+    <input type="text" id="map-search" oninput="renderMgGrid()" data-i18n-placeholder="map_search" placeholder="Search maps...">
+    <span id="map-count" style="font-family:'Orbitron',monospace;color:var(--dim);font-size:10px"></span>
+  </div>
   <div class="mg-grid" id="mg-grid"></div>
+</div>
+
+<!-- ===== LEGENDARY SKINS ===== -->
+<div id="pane-skins" class="pane">
+  <div class="skin-intro">
+    <strong data-i18n="skins_title">LEGENDARY SKINS</strong><br>
+    <span data-i18n="skins_intro">Browse community-favorite legendary skins. Missing one? Send it through feedback and it can be added to the collection.</span>
+    <br><a class="skin-submit" href="https://discord.com/users/1237808141765443644" target="_blank" rel="noopener" data-i18n="skin_submit">SUBMIT A SKIN</a>
+  </div>
+  <div class="skin-controls">
+    <input type="text" id="skin-search" oninput="renderSkins()" data-i18n-placeholder="skin_search" placeholder="Search by skin or mech name...">
+    <select id="skin-sort" onchange="renderSkins()">
+      <option value="likes" data-i18n="skin_sort_likes">Likes: High to Low</option>
+      <option value="skin" data-i18n="skin_sort_skin">Skin Name: A-Z</option>
+      <option value="mech" data-i18n="skin_sort_mech">Mech Name: A-Z</option>
+    </select>
+    <button class="action-btn" onclick="toggleSkinView()" id="skin-view-btn" data-i18n="skin_list_view">LIST VIEW</button>
+  </div>
+  <div class="skin-grid" id="skin-grid"></div>
 </div>
 
 <!-- ===== PROMO CODES ===== -->
@@ -837,6 +936,22 @@ select:focus{border-color:var(--acc);}
   </a>
 </div>
 <div style="padding-bottom:32px"></div>
+<footer class="site-footer">
+  <div>
+    <div class="footer-title">MECH ARENA HUB</div>
+    <div data-i18n="footer_disclaimer">Fan-made companion tool for Mech Arena. Not affiliated with Plarium Global Ltd.</div>
+  </div>
+  <div>
+    <div class="footer-title" data-i18n="footer_legal">LEGAL</div>
+    <a href="#" onclick="openLegal('privacy');return false" data-i18n="footer_privacy">Privacy Policy</a>
+    <a href="#" onclick="openLegal('terms');return false" data-i18n="footer_terms">Terms of Use</a>
+  </div>
+  <div>
+    <div class="footer-title" data-i18n="footer_contact">CONTACT</div>
+    <a href="https://discord.com/users/1237808141765443644" target="_blank" rel="noopener">Discord Feedback</a>
+    <a href="https://t.me/MechArenaHubBot" target="_blank" rel="noopener">Telegram Bot</a>
+  </div>
+</footer>
 
 </div><!-- /.app -->
 
@@ -867,6 +982,7 @@ select:focus{border-color:var(--acc);}
       <div style="margin-left:auto;display:flex;gap:5px">
         <button class="mg-tbtn grn" id="mg-copy-btn" onclick="mgCopyClipboard()" title="Copy to clipboard" data-i18n="map_copy">📋 Copy</button>
         <button class="mg-tbtn sec" onclick="mgDownload()" title="Download PNG" data-i18n="map_save">💾 Save</button>
+        <button class="mg-tbtn sec" onclick="shareCurrentMap(this)" data-i18n="map_share">LINK</button>
       </div>
     </div>
     <!-- Canvas -->
@@ -875,7 +991,15 @@ select:focus{border-color:var(--acc);}
       <canvas id="mg-draw-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
     </div>
     <div class="mg-hint" id="mg-hint" data-i18n="map_hint">Click "+ Add Arrow" then click and drag on the map to draw an arrow.</div>
+    <div class="share-msg" id="map-share-msg" style="padding:0 18px"></div>
     <div class="mg-modal-info" id="mg-modal-info"></div>
+  </div>
+</div>
+
+<div class="legal-modal" id="legal-modal" onclick="if(event.target===this)closeLegal()">
+  <div class="legal-box">
+    <button class="tool-btn legal-close" onclick="closeLegal()">CLOSE</button>
+    <div id="legal-content"></div>
   </div>
 </div>
 
@@ -887,7 +1011,8 @@ const UI_TEXT = {
 en:{
   tab_home:'🏠 HOME', tab_mechs:'MECHS', tab_cheat:'CHEATSHEETS',
   tab_calc:'CALCULATOR', tab_compare:'⚡ COMPARE', tab_hangar:'🏆 HANGAR RATE',
-  tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE',
+  tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE', tab_skins:'⭐ SKINS',
+  menu_btn:'MENU', theme_comfort:'COMFORT MODE', theme_neon:'NEON MODE',
   header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal',
   search_mechs:'🔍  Search mechs...', label_role:'ROLE:', label_rarity:'RARITY:',
   empty_mech:'← Select a mech to view details',
@@ -912,12 +1037,14 @@ en:{
   lbl_curr_star:'Current Star Level', lbl_curr_lvl:'Current Level',
   lbl_tgt_star:'Target Star Level', lbl_tgt_lvl:'Target Level',
   lbl_to_max:'Upgrade to Max (6★ Lv7)',
+  lbl_my_resources:'My Resources',
   btn_calc_upgrade:'⚙️ CALCULATE UPGRADE COST', btn_calc_pilot:'👤 CALCULATE PILOT COST', btn_calc_mod:'🧩 CALCULATE MOD COST',
   lbl_upgrade_cost:'Upgrade Cost', lbl_select_item:'Select a mech or weapon above',
   lbl_mod_rarity:'Rarity', lbl_upgrade_settings:'Upgrade Settings', lbl_select_mod:'Select Mod',
   search_generic:'🔍 Search...', search_mods:'🔍 Search mods...',
   all_rarities:'All Rarities',
   cmp_title:'Select up to 3 mechs to compare side by side',
+  share_compare:'SHARE COMPARISON', share_hangar:'SHARE HANGAR',
   cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
   cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
   hr_title:'Pick Your Hangar (up to 5 mechs)', hr_selected:'Selected Mechs',
@@ -926,9 +1053,17 @@ en:{
   map_cpc:'📍 CPC — Control Point Capture (13 maps)', map_5v5:'⚔️ 5v5 Deathmatch (36 maps)',
   map_hint:'Click "+ Add Arrow" then click and drag on the map to draw an arrow.',
   map_color:'COLOR', map_copy:'📋 Copy', map_save:'💾 Save',
+  map_share:'LINK', map_search:'Search maps...',
   btn_add_arrow:'+ Add Arrow', btn_delete:'🗑 Delete', btn_reset:'↺ Reset',
   promo_title:'🎁 ACTIVE PROMO CODES', promo_refresh:'↻ REFRESH',
   promo_note:'⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.',
+  skins_title:'LEGENDARY SKINS',
+  skins_intro:'Browse community-favorite legendary skins. Missing one? Send it through feedback and it can be added to the collection.',
+  skin_search:'Search by skin or mech name...',
+  skin_sort_likes:'Likes: High to Low', skin_sort_skin:'Skin Name: A-Z', skin_sort_mech:'Mech Name: A-Z',
+  skin_list_view:'LIST VIEW', skin_grid_view:'GRID VIEW', skin_submit:'SUBMIT A SKIN',
+  footer_disclaimer:'Fan-made companion tool for Mech Arena. Not affiliated with Plarium Global Ltd.',
+  footer_legal:'LEGAL', footer_privacy:'Privacy Policy', footer_terms:'Terms of Use', footer_contact:'CONTACT',
   cheat_f2p_builds:'Best F2P Builds (2026 meta)', cheat_gearhub_strat:'Gear Hub F2P Strategy',
   cheat_weapon_cats:'Weapon Categories (all 9)', cheat_weapon_rules:'Weapon Rules',
   cheat_pilot_sys:'Pilot System',
@@ -955,7 +1090,8 @@ en:{
 ua:{
   tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'ШПАРГАЛКИ',
   tab_calc:'КАЛЬКУЛЯТОР', tab_compare:'⚡ ПОРІВНЯННЯ', tab_hangar:'🏆 РЕЙТИНГ АНГАРА',
-  tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ',
+  tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ', tab_skins:'⭐ СКІНИ',
+  menu_btn:'МЕНЮ', theme_comfort:'СПОКІЙНА ТЕМА', theme_neon:'НЕОНОВА ТЕМА',
   header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 45 мехів · Повний арсенал',
   search_mechs:'🔍  Пошук мехів...', label_role:'РОЛЬ:', label_rarity:'РІДКІСТЬ:',
   empty_mech:'← Оберіть меха для перегляду деталей',
@@ -980,12 +1116,14 @@ ua:{
   lbl_curr_star:'Поточний рівень зірок', lbl_curr_lvl:'Поточний рівень',
   lbl_tgt_star:'Цільовий рівень зірок', lbl_tgt_lvl:'Цільовий рівень',
   lbl_to_max:'Покращити до максимуму (6★ Рв7)',
+  lbl_my_resources:'Мої ресурси',
   btn_calc_upgrade:'⚙️ РОЗРАХУВАТИ ВАРТІСТЬ АПГРЕЙДУ', btn_calc_pilot:'👤 РОЗРАХУВАТИ ВАРТІСТЬ ПІЛОТА', btn_calc_mod:'🧩 РОЗРАХУВАТИ ВАРТІСТЬ МОДА',
   lbl_upgrade_cost:'Вартість апгрейду', lbl_select_item:'Оберіть меха або зброю вище',
   lbl_mod_rarity:'Рідкість', lbl_upgrade_settings:'Параметри апгрейду', lbl_select_mod:'Обрати мод',
   search_generic:'🔍 Пошук...', search_mods:'🔍 Пошук модів...',
   all_rarities:'Всі рідкості',
   cmp_title:'Оберіть до 3 мехів для порівняння поруч',
+  share_compare:'ПОДІЛИТИСЯ ПОРІВНЯННЯМ', share_hangar:'ПОДІЛИТИСЯ АНГАРОМ',
   cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
   cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
   hr_title:'Оберіть ваш ангар (до 5 мехів)', hr_selected:'Обрані мехи',
@@ -994,9 +1132,17 @@ ua:{
   map_cpc:'📍 CPC — Захоплення контрольних точок (13 карт)', map_5v5:'⚔️ 5v5 Дезматч (36 карт)',
   map_hint:'Натисніть "+ Додати стрілку", потім намалюйте на карті.',
   map_color:'КОЛІР', map_copy:'📋 Копіювати', map_save:'💾 Зберегти',
+  map_share:'ПОСИЛАННЯ', map_search:'Пошук карт...',
   btn_add_arrow:'+ Додати стрілку', btn_delete:'🗑 Видалити', btn_reset:'↺ Скинути',
   promo_title:'🎁 АКТИВНІ ПРОМО КОДИ', promo_refresh:'↻ ОНОВИТИ',
   promo_note:'⚠️ Промо-коди мають термін дії — активуйте якомога швидше. Коди зібрані та перевірені спільнотою.',
+  skins_title:'ЛЕГЕНДАРНІ СКІНИ',
+  skins_intro:'Переглядайте популярні легендарні скіни спільноти. Не вистачає скіна? Надішліть його через зворотний зв’язок.',
+  skin_search:'Пошук за скіном або мехом...',
+  skin_sort_likes:'Вподобання: спершу популярні', skin_sort_skin:'Назва скіна: А-Я', skin_sort_mech:'Назва меха: А-Я',
+  skin_list_view:'СПИСОК', skin_grid_view:'СІТКА', skin_submit:'НАДІСЛАТИ СКІН',
+  footer_disclaimer:'Фанатський помічник для Mech Arena. Не пов’язаний із Plarium Global Ltd.',
+  footer_legal:'ПРАВОВІ УМОВИ', footer_privacy:'Конфіденційність', footer_terms:'Умови використання', footer_contact:'КОНТАКТ',
   cheat_f2p_builds:'Кращі F2P білди (мета 2026)', cheat_gearhub_strat:'Стратегія F2P у Gear Hub',
   cheat_weapon_cats:'Категорії зброї (всього 9)', cheat_weapon_rules:'Правила зброї',
   cheat_pilot_sys:'Система пілотів',
@@ -1025,6 +1171,44 @@ function applyI18n(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
   document.querySelectorAll('[data-i18n-html]').forEach(el=>{el.innerHTML=t(el.dataset.i18nHtml);});
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder);});
+  updateThemeButton();
+}
+
+function toggleMobileMenu() {
+  const tabs = document.getElementById('main-tabs');
+  const btn = document.getElementById('mobile-menu-btn');
+  const open = tabs.classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(open));
+}
+
+function updateThemeButton() {
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = document.body.classList.contains('comfort') ? t('theme_neon') : t('theme_comfort');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('comfort');
+  localStorage.setItem('ma_theme', document.body.classList.contains('comfort') ? 'comfort' : 'neon');
+  updateThemeButton();
+}
+
+if (localStorage.getItem('ma_theme') === 'comfort') document.body.classList.add('comfort');
+
+function openLegal(type) {
+  const content = document.getElementById('legal-content');
+  const ua = LANG === 'ua';
+  content.innerHTML = type === 'privacy'
+    ? `<h2>${ua ? 'КОНФІДЕНЦІЙНІСТЬ' : 'PRIVACY POLICY'}</h2>
+       <p>${ua ? 'Mech Arena Hub не вимагає облікового запису. Налаштування мови й теми зберігаються лише у вашому браузері. Ресурси, введені в калькулятор, залишаються на поточній сторінці й не надсилаються цією функцією.' : 'Mech Arena Hub does not require an account. Language and theme preferences are stored only in your browser. Resources entered in the calculator stay on the current page and are not sent by this feature.'}</p>
+       <p>${ua ? 'Промо-коди та зовнішні інтеграції завантажуються з підключених сервісів. Переходячи до Telegram або Discord, ви користуєтесь їхніми правилами.' : 'Promo codes and external integrations load from connected services. Telegram and Discord links are governed by their own policies.'}</p>`
+    : `<h2>${ua ? 'УМОВИ ВИКОРИСТАННЯ' : 'TERMS OF USE'}</h2>
+       <p>${ua ? 'Це фанатський інформаційний інструмент. Дані про ціни, мапи, рекомендації та розрахунки можуть змінюватися у грі.' : 'This is a fan-made informational tool. Prices, maps, recommendations, and calculations may change in the game.'}</p>
+       <p>${ua ? 'Mech Arena та пов’язані матеріали належать їхнім відповідним власникам. Сайт не пов’язаний із Plarium Global Ltd.' : 'Mech Arena and related materials belong to their respective owners. This site is not affiliated with Plarium Global Ltd.'}</p>`;
+  document.getElementById('legal-modal').classList.add('open');
+}
+
+function closeLegal() {
+  document.getElementById('legal-modal').classList.remove('open');
 }
 
 const STAT_LABELS={
@@ -1082,6 +1266,7 @@ function setLang(l) {
   renderCheatsheet();
   if (currentMech) renderDetail(MECHS[currentMech]);
   if (typeof pilotRarity !== 'undefined') setPilotRarity(pilotRarity);
+  if (typeof LEGENDARY_SKINS !== 'undefined') renderSkins();
 }
 
 // ============================================================
@@ -2026,6 +2211,9 @@ function switchTab(n,b){
   history.replaceState(null,'','#'+n);
   if(n==='hangar') renderHangarTiles();
   if(n==='promo')  loadPromoCodes();
+  if(n==='skins')  renderSkins();
+  document.getElementById('main-tabs').classList.remove('open');
+  document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', 'false');
 }
 
 // ===== HOME DASHBOARD =====
@@ -2058,6 +2246,7 @@ function renderHome() {
     {icon:'📋', tab:'cheat',   title:t('nav_cheat_title'),   desc:t('nav_cheat_desc')},
     {icon:'🏆', tab:'hangar',  title:t('nav_hangar_title'),  desc:t('nav_hangar_desc')},
     {icon:'🗺️', tab:'maps',   title:t('nav_maps_title'),    desc:t('nav_maps_desc')},
+    {icon:'⭐', tab:'skins',   title:t('skins_title'),        desc:t('skins_intro')},
   ];
 
   const navHTML = navCards.map(c=>`
@@ -2178,6 +2367,7 @@ applyI18n();
 // ===== CALCULATOR =====
 let calcSelectedItem = null, calcFromStar = 1, calcFromLevel = 1;
 let calcCurrentType = 'mech';
+let calcLastCost = null;
 let _wIconMap = null;
 let pilotSelectedItem = { rarity: 'epic' }, pilotFromStar = 1, pilotFromLevel = 1;
 let modSelectedItem = null, modFromLevel = 1, modToLevel = 6;
@@ -2239,6 +2429,7 @@ function getWeaponImgHtml(name) {
 function setCalcType(type) {
   calcCurrentType = type;
   calcSelectedItem = null;
+  calcLastCost = null;
   document.getElementById('ctype-mech').classList.toggle('active', type === 'mech');
   document.getElementById('ctype-weapon').classList.toggle('active', type === 'weapon');
   const sb = document.getElementById('calc-settings-below');
@@ -2282,6 +2473,7 @@ function selectCalcTile(enc) {
   const name = decodeURIComponent(enc);
   calcSelectedItem = CALC_LIST.find(i => i.list === name) || null;
   if (!calcSelectedItem) return;
+  calcLastCost = null;
   renderCalcTiles();
   const rc = getRarityColor(calcSelectedItem.rarity);
   const badgeEl = document.getElementById('badge-icon');
@@ -2328,6 +2520,34 @@ function toggleCalcToMax(cb) {
   document.getElementById('calc-target-section').style.display = cb.checked ? 'none' : 'block';
 }
 
+function toggleMyResources(cb) {
+  document.getElementById('calc-resource-panel').style.display = cb.checked ? 'block' : 'none';
+  updateResourceResult();
+}
+
+function updateResourceResult() {
+  const wrap = document.getElementById('resource-result');
+  if (!wrap || !document.getElementById('calc-resources-toggle').checked) return;
+  if (!calcLastCost) {
+    wrap.innerHTML = `<div class="calc-info" style="grid-column:1/-1">${LANG === 'ua' ? 'Розрахуйте апгрейд, щоб порівняти його з вашими ресурсами.' : 'Calculate an upgrade to compare it with your resources.'}</div>`;
+    return;
+  }
+  const available = {
+    Credits: Number(document.getElementById('my-credits').value) || 0,
+    Blueprints: Number(document.getElementById('my-blueprints').value) || 0,
+    'A-Coins': Number(document.getElementById('my-acoins').value) || 0
+  };
+  const costs = { Credits: calcLastCost.cr, Blueprints: calcLastCost.bp, 'A-Coins': calcLastCost.ac };
+  wrap.innerHTML = Object.keys(costs).map(label => {
+    const diff = available[label] - costs[label];
+    const enough = diff >= 0;
+    const result = enough
+      ? `${LANG === 'ua' ? 'Залишиться' : 'Remaining'}: ${diff.toLocaleString()}`
+      : `${LANG === 'ua' ? 'Бракує' : 'Missing'}: ${Math.abs(diff).toLocaleString()}`;
+    return `<div class="resource-state ${enough ? 'ok' : 'missing'}"><strong>${label}</strong>${result}</div>`;
+  }).join('');
+}
+
 function calculateUpgrade() {
   if (!calcSelectedItem) { alert('Please select a mech or weapon first!'); return; }
   const toMax = document.getElementById('calc-tomax').checked;
@@ -2354,6 +2574,8 @@ function calculateUpgrade() {
     '<div class="calc-res-block"><div class="calc-res-lbl">Credits</div><div class="calc-res-val">' + cr.toLocaleString() + '</div></div>'
     + '<div class="calc-res-block"><div class="calc-res-lbl">Blueprints</div><div class="calc-res-val green">' + bp.toLocaleString() + '</div></div>'
     + '<div class="calc-res-block"><div class="calc-res-lbl">A-Coins</div><div class="calc-res-val gold">' + ac.toLocaleString() + '</div></div>';
+  calcLastCost = { cr, bp, ac };
+  updateResourceResult();
   const info = document.getElementById('calc-info');
   if (cr > 0 || bp > 0 || ac > 0) {
     info.className = 'calc-info';
@@ -2619,6 +2841,31 @@ function selectWeapon(groupLabel, id, name, energyArr) {
 
 // ===== COMPARE =====
 let compareSlots = [null, null, null];
+
+async function shareLink(hash, msgId) {
+  const url = location.origin + location.pathname + hash;
+  const msg = document.getElementById(msgId);
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: 'Mech Arena Hub', url });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+    if (msg) msg.textContent = LANG === 'ua' ? 'Посилання готове для поширення.' : 'Link ready to share.';
+  } catch (e) {
+    if (msg) msg.textContent = LANG === 'ua' ? 'Не вдалося скопіювати посилання.' : 'Could not copy the link.';
+  }
+  if (msg) setTimeout(() => { msg.textContent = ''; }, 2500);
+}
+
+function shareCompare() {
+  const chosen = compareSlots.filter(Boolean);
+  if (chosen.length < 2) {
+    document.getElementById('compare-share-msg').textContent = LANG === 'ua' ? 'Спершу оберіть щонайменше 2 мехи.' : 'Pick at least 2 mechs first.';
+    return;
+  }
+  shareLink('#compare/' + chosen.join(','), 'compare-share-msg');
+}
 
 function buildCmpSelects() {
   const opts = '<option value="">— Choose Mech —</option>' +
@@ -2930,6 +3177,14 @@ function renderCmpWepTable() {
 // ===== HANGAR RATE =====
 let hangarSlots = [];
 
+function shareHangar() {
+  if (!hangarSlots.length) {
+    document.getElementById('hangar-share-msg').textContent = LANG === 'ua' ? 'Спершу оберіть мехів.' : 'Pick some mechs first.';
+    return;
+  }
+  shareLink('#hangar/' + hangarSlots.join(','), 'hangar-share-msg');
+}
+
 function hrSearchChange(q) {
   renderHangarTiles(q.toLowerCase());
 }
@@ -3064,10 +3319,50 @@ function rateHangar() {
     </div>`;
 }
 
+// ===== LEGENDARY SKINS =====
+const LEGENDARY_SKINS = [
+  { name:'Phoenix rush', mech:'Nomad', likes:162, image:'https://mecharena.infohubhq.in/Legendary%20skins/Phoenix%20rush.png' },
+  { name:'Dark Matter', mech:'Nomad', likes:100, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Dark%20Matter.webp' },
+  { name:'Black Widow', mech:'Blockhorn', likes:83, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Black%20Widow.webp' },
+  { name:'Quicksilver', mech:'Eclipse', likes:83, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Quicksilver.webp' },
+  { name:'Team mascot', mech:'Volti', likes:45, image:'https://mecharena.infohubhq.in/Legendary%20skins/Team%20mascot.png' }
+];
+let skinListView = false;
+
+function renderSkins() {
+  const grid = document.getElementById('skin-grid');
+  if (!grid) return;
+  const query = (document.getElementById('skin-search')?.value || '').toLowerCase();
+  const sort = document.getElementById('skin-sort')?.value || 'likes';
+  const list = LEGENDARY_SKINS.filter(s =>
+    !query || s.name.toLowerCase().includes(query) || s.mech.toLowerCase().includes(query)
+  ).sort((a, b) => {
+    if (sort === 'skin') return a.name.localeCompare(b.name);
+    if (sort === 'mech') return a.mech.localeCompare(b.mech) || a.name.localeCompare(b.name);
+    return b.likes - a.likes;
+  });
+  grid.classList.toggle('list', skinListView);
+  grid.innerHTML = list.length ? list.map(s => `
+    <article class="skin-card">
+      <img class="skin-img" src="${s.image}" alt="${s.name}" loading="lazy">
+      <div class="skin-body">
+        <div class="skin-name">${s.name}</div>
+        <div class="skin-meta"><span>${s.mech}</span><span>♥ ${s.likes}</span></div>
+      </div>
+    </article>`).join('') :
+    `<div class="calc-info" style="grid-column:1/-1">${LANG === 'ua' ? 'Скінів за таким запитом не знайдено.' : 'No skins match your search.'}</div>`;
+}
+
+function toggleSkinView() {
+  skinListView = !skinListView;
+  document.getElementById('skin-view-btn').textContent = skinListView ? t('skin_grid_view') : t('skin_list_view');
+  renderSkins();
+}
+
 // ===== MAP GUIDE =====
 const MAP_CPC = [
   { name: 'Biogear Lab',       file: 'Biogear lab.png',        slug: 'biogear-lab' },
-  { name: 'Campaings Forge',   file: 'Campaings forge.png',    slug: 'campaings-forge' },
+  { name: 'Campaigns Forge',   file: 'Campaings forge.png',    slug: 'campaigns-forge', legacySlug: 'campaings-forge' },
   { name: 'Elon Station Gray', file: 'Elon station gray.png',  slug: 'elon-station-gray' },
   { name: 'Forbidden City',    file: 'Forbidden city.png',     slug: 'forbidden-city' },
   { name: 'Imperial Temple',   file: 'Imperial temple.png',    slug: 'imperial-temple' },
@@ -3137,7 +3432,11 @@ function setMgMode(mode) {
 
 function renderMgGrid() {
   const maps = mgMode === 'cpc' ? MAP_CPC : MAP_5V5;
-  document.getElementById('mg-grid').innerHTML = maps.map((m, i) => {
+  const query = (document.getElementById('map-search')?.value || '').toLowerCase();
+  const filtered = maps.map((m, i) => ({ m, i })).filter(({m}) => !query || m.name.toLowerCase().includes(query));
+  const count = document.getElementById('map-count');
+  if (count) count.textContent = filtered.length + ' / ' + maps.length;
+  document.getElementById('mg-grid').innerHTML = filtered.map(({m, i}) => {
     const src = mgImgUrl(mgMode, m.file);
     return `<div class="mg-card" onclick="openMgModal(${i})">
       <div class="mg-card-img">
@@ -3185,8 +3484,10 @@ function openMgModal(idx) {
   }
   document.getElementById('mg-modal-info').innerHTML = mgMode === 'cpc'
     ? `<strong style="color:var(--acc)">CPC — Control Point Capture</strong> &nbsp;Capture and hold control points to accumulate score. First team to the threshold wins.
-       <div class="mg-cp-row">${['A','B','C','D','E'].map(p => `<span class="mg-cp">${p}</span>`).join('')}</div>`
-    : `<strong style="color:var(--acc2)">5v5 Deathmatch</strong> &nbsp;Eliminate enemy mechs to score kills. First team to the kill threshold wins.`;
+       <div class="mg-cp-row">${['A','B','C','D','E'].map(p => `<span class="mg-cp">${p}</span>`).join('')}</div>
+       ${mgTactics('cpc')}`
+    : `<strong style="color:var(--acc2)">5v5 Deathmatch</strong> &nbsp;Eliminate enemy mechs to score kills. First team to the kill threshold wins.
+       ${mgTactics('5v5')}`;
 
   document.getElementById('mg-color-pick').value = mgArrowColor;
   document.getElementById('mg-modal').classList.add('open');
@@ -3226,6 +3527,25 @@ function openMgModal(idx) {
     };
     mgUpdateBtns();
   });
+}
+
+function mgTactics(mode) {
+  if (mode === 'cpc') {
+    return `<div class="mg-tactics"><div class="mg-tactics-title">${LANG === 'ua' ? 'ПОРАДИ ДЛЯ СКЛАДУ' : 'SQUAD TIPS'}</div>
+      <div class="mg-tactics-grid">
+        <div class="mg-tactic"><strong>${LANG === 'ua' ? 'Мобільність' : 'Mobility'}</strong><br>${LANG === 'ua' ? 'Scout допомагає швидко забирати нейтральні маяки й повертати контроль.' : 'A Scout helps secure neutral beacons and recover control quickly.'}</div>
+        <div class="mg-tactic"><strong>${LANG === 'ua' ? 'Утримання' : 'Holding'}</strong><br>${LANG === 'ua' ? 'Tank або Support корисні для оборони центральної точки під тиском.' : 'A Tank or Support is useful for defending the central point under pressure.'}</div>
+      </div></div>`;
+  }
+  return `<div class="mg-tactics"><div class="mg-tactics-title">${LANG === 'ua' ? 'ПОРАДИ ДЛЯ СКЛАДУ' : 'SQUAD TIPS'}</div>
+    <div class="mg-tactics-grid">
+      <div class="mg-tactic"><strong>${LANG === 'ua' ? 'Дистанція' : 'Range'}</strong><br>${LANG === 'ua' ? 'Підбирайте зброю під відкритість карти: далекобійна на просторах, burst у вузьких зонах.' : 'Match weapon range to the arena: long range in open lanes, burst in tight areas.'}</div>
+      <div class="mg-tactic"><strong>${LANG === 'ua' ? 'Виживання' : 'Survival'}</strong><br>${LANG === 'ua' ? 'Не віддавайте легкі фраги: щит або лікування підвищують стабільність команди.' : 'Avoid easy eliminations: shielding or healing increases team consistency.'}</div>
+    </div></div>`;
+}
+
+function shareCurrentMap() {
+  shareLink(location.hash || '#maps', 'map-share-msg');
 }
 
 function closeMgModal() {
@@ -3447,6 +3767,7 @@ document.addEventListener('keydown', e => {
 // Init hangar tiles and map grid on load
 renderHangarTiles();
 renderMgGrid();
+renderSkins();
 
 // ===== URL HASH ROUTING =====
 (function initFromHash() {
@@ -3459,12 +3780,28 @@ renderMgGrid();
     return oc.includes("'" + tabName + "'");
   });
   if (tabBtn) switchTab(tabName, tabBtn);
+  if (tabName === 'compare' && parts[1]) {
+    const keys = parts[1].split(',').filter(k => MECHS[k]).slice(0, 3);
+    keys.forEach((key, idx) => {
+      compareSlots[idx] = key;
+      const select = document.querySelector(`#cmp-slot-${idx} select`);
+      if (select) select.value = key;
+      renderCmpSlot(idx);
+    });
+    renderCmpTable();
+  }
+  if (tabName === 'hangar' && parts[1]) {
+    hangarSlots = parts[1].split(',').filter(k => MECHS[k]).slice(0, 5);
+    renderHangarTiles();
+    renderHangarSelected();
+    if (hangarSlots.length) rateHangar();
+  }
   if (tabName === 'maps' && parts[1] && parts[2]) {
     const mode = parts[1], slug = parts[2];
     if (mode !== mgMode) setMgMode(mode);
     else renderMgGrid();
     const maps = mode === 'cpc' ? MAP_CPC : MAP_5V5;
-    const idx = maps.findIndex(m => m.slug === slug);
+    const idx = maps.findIndex(m => m.slug === slug || m.legacySlug === slug);
     if (idx >= 0) setTimeout(() => openMgModal(idx), 80);
   }
 })();

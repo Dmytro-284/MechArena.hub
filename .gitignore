@@ -1,0 +1,4 @@
+# Local assistant and browser-session artifacts
+.claude/
+.playwright-mcp/
+

@@ -388,12 +388,16 @@ select:focus{border-color:var(--acc);}
 .promo-note{margin-top:16px;padding:10px 14px;background:rgba(255,107,0,.05);border-left:3px solid var(--acc2);font-size:11px;color:var(--dim);line-height:1.6;}
 
 /* ===== QUALITY OF LIFE ===== */
-body.comfort{
-  --bg:#101722;--panel:#172230;--p2:#1d2b3b;--brd:#35506a;
-  --acc:#59d9f5;--txt:#e0e9f1;--dim:#94aabd;
+body.light{
+  --bg:#f3f7fb;--panel:#ffffff;--p2:#eaf1f8;--brd:#c7d8e8;
+  --acc:#007ea8;--acc2:#de5900;--acc3:#408b16;
+  --txt:#162b3e;--dim:#60788f;--red:#d32f2f;--gold:#a87800;
 }
-body.comfort::before{opacity:.25;}
-body.comfort::after{opacity:.4;}
+body.light::before{background-image:linear-gradient(rgba(0,126,168,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,126,168,.05) 1px,transparent 1px);}
+body.light::after{opacity:.22;}
+body.light header h1{text-shadow:none;}
+body.light .mg-modal-overlay{background:rgba(17,32,48,.62);}
+body.light .mg-toolbar{background:rgba(255,255,255,.96);}
 .top-tools{display:flex;justify-content:flex-end;align-items:center;padding:4px 0 8px;gap:6px;}
 .tool-btn,.mobile-menu-btn,.action-btn{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:7px 12px;border:1px solid var(--brd);background:rgba(0,212,255,.06);color:var(--dim);cursor:pointer;border-radius:3px;letter-spacing:1px;transition:all .2s;}
 .tool-btn:hover,.mobile-menu-btn:hover,.action-btn:hover{border-color:var(--acc);color:var(--acc);}
@@ -509,7 +513,7 @@ body.comfort::after{opacity:.4;}
 
 <div class="top-tools">
   <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-expanded="false" data-i18n="menu_btn">MENU</button>
-  <button class="tool-btn" id="theme-btn" onclick="toggleTheme()" data-i18n="theme_comfort">COMFORT MODE</button>
+  <button class="tool-btn" id="theme-btn" onclick="toggleTheme()" data-i18n="theme_light">LIGHT THEME</button>
   <button class="lang-btn active" data-lang="en" onclick="setLang('en')" style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px 10px;border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);cursor:pointer;border-radius:2px;letter-spacing:1px">EN</button>
   <button class="lang-btn" data-lang="ua" onclick="setLang('ua')" style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px 10px;border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);cursor:pointer;border-radius:2px;letter-spacing:1px">UA</button>
 </div>
@@ -1012,7 +1016,7 @@ en:{
   tab_home:'🏠 HOME', tab_mechs:'MECHS', tab_cheat:'CHEATSHEETS',
   tab_calc:'CALCULATOR', tab_compare:'⚡ COMPARE', tab_hangar:'🏆 HANGAR RATE',
   tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE', tab_skins:'⭐ SKINS',
-  menu_btn:'MENU', theme_comfort:'COMFORT MODE', theme_neon:'NEON MODE',
+  menu_btn:'MENU', theme_light:'LIGHT THEME', theme_dark:'DARK THEME',
   header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal',
   search_mechs:'🔍  Search mechs...', label_role:'ROLE:', label_rarity:'RARITY:',
   empty_mech:'← Select a mech to view details',
@@ -1091,7 +1095,7 @@ ua:{
   tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'ШПАРГАЛКИ',
   tab_calc:'КАЛЬКУЛЯТОР', tab_compare:'⚡ ПОРІВНЯННЯ', tab_hangar:'🏆 РЕЙТИНГ АНГАРА',
   tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ', tab_skins:'⭐ СКІНИ',
-  menu_btn:'МЕНЮ', theme_comfort:'СПОКІЙНА ТЕМА', theme_neon:'НЕОНОВА ТЕМА',
+  menu_btn:'МЕНЮ', theme_light:'СВІТЛА ТЕМА', theme_dark:'ТЕМНА ТЕМА',
   header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 45 мехів · Повний арсенал',
   search_mechs:'🔍  Пошук мехів...', label_role:'РОЛЬ:', label_rarity:'РІДКІСТЬ:',
   empty_mech:'← Оберіть меха для перегляду деталей',
@@ -1183,16 +1187,16 @@ function toggleMobileMenu() {
 
 function updateThemeButton() {
   const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = document.body.classList.contains('comfort') ? t('theme_neon') : t('theme_comfort');
+  if (btn) btn.textContent = document.body.classList.contains('light') ? t('theme_dark') : t('theme_light');
 }
 
 function toggleTheme() {
-  document.body.classList.toggle('comfort');
-  localStorage.setItem('ma_theme', document.body.classList.contains('comfort') ? 'comfort' : 'neon');
+  document.body.classList.toggle('light');
+  localStorage.setItem('ma_theme', document.body.classList.contains('light') ? 'light' : 'dark');
   updateThemeButton();
 }
 
-if (localStorage.getItem('ma_theme') === 'comfort') document.body.classList.add('comfort');
+if (localStorage.getItem('ma_theme') === 'light') document.body.classList.add('light');
 
 function openLegal(type) {
   const content = document.getElementById('legal-content');

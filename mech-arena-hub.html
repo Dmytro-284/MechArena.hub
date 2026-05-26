@@ -417,17 +417,27 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
 .skin-controls{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap;}
 .skin-controls input{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--brd);padding:10px;color:var(--txt);border-radius:3px;}
 .skin-controls select{max-width:220px;}
+.skin-count{font-family:'Orbitron',monospace;color:var(--dim);font-size:10px;white-space:nowrap;}
 .skin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
 .skin-grid.list{grid-template-columns:1fr;}
-.skin-card{background:var(--panel);border:1px solid var(--brd);border-radius:5px;overflow:hidden;}
+.skin-card{display:block;width:100%;padding:0;background:var(--panel);border:1px solid var(--brd);border-radius:5px;overflow:hidden;color:var(--txt);text-align:left;cursor:pointer;transition:border-color .18s,transform .18s,box-shadow .18s;}
+.skin-card:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.18);}
 .skin-grid.list .skin-card{display:grid;grid-template-columns:150px 1fr;}
-.skin-img{width:100%;aspect-ratio:1/1;background:var(--bg);object-fit:cover;}
+.skin-img{width:100%;aspect-ratio:1/1;background:var(--bg);object-fit:contain;padding:7px;}
 .skin-body{padding:11px 12px;}
 .skin-name{font-family:'Orbitron',monospace;color:var(--acc);font-size:11px;font-weight:700;margin-bottom:6px;}
-.skin-meta{font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:10px;}
+.skin-meta{font-size:12px;color:var(--dim);}
 .skin-intro{padding:14px 16px;margin-bottom:16px;background:rgba(0,212,255,.05);border-left:3px solid var(--acc);font-size:12px;color:var(--txt);line-height:1.6;}
 .skin-submit{display:inline-block;margin-top:10px;padding:7px 12px;border:1px solid var(--acc);border-radius:3px;color:var(--acc);text-decoration:none;font:700 9px 'Orbitron',monospace;letter-spacing:1px;}
 .skin-submit:hover{background:rgba(0,212,255,.1);}
+.skin-modal-overlay{display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.76);padding:22px;align-items:center;justify-content:center;}
+.skin-modal-overlay.open{display:flex;}
+.skin-modal{width:min(720px,100%);max-height:94vh;overflow:auto;background:var(--panel);border:1px solid var(--brd);border-radius:7px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.45);}
+.skin-modal-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:14px;}
+.skin-modal-head .skin-name{font-size:16px;margin-bottom:7px;}
+.skin-modal-image{display:block;width:100%;height:min(64vh,590px);object-fit:contain;background:var(--bg);border:1px solid var(--brd);border-radius:5px;}
+.skin-modal-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;}
+.skin-modal-position{font-family:'Orbitron',monospace;font-size:11px;color:var(--dim);}
 .map-tools{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
 .map-tools input{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--brd);padding:9px 12px;color:var(--txt);border-radius:3px;}
 .mg-tactics{margin-top:12px;padding:12px;background:rgba(0,212,255,.04);border:1px solid var(--brd);border-radius:3px;}
@@ -890,13 +900,30 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   <div class="skin-controls">
     <input type="text" id="skin-search" oninput="renderSkins()" data-i18n-placeholder="skin_search" placeholder="Search by skin or mech name...">
     <select id="skin-sort" onchange="renderSkins()">
-      <option value="likes" data-i18n="skin_sort_likes">Likes: High to Low</option>
-      <option value="skin" data-i18n="skin_sort_skin">Skin Name: A-Z</option>
+      <option value="skin" data-i18n="skin_sort_skin" selected>Skin Name: A-Z</option>
       <option value="mech" data-i18n="skin_sort_mech">Mech Name: A-Z</option>
     </select>
     <button class="action-btn" onclick="toggleSkinView()" id="skin-view-btn" data-i18n="skin_list_view">LIST VIEW</button>
+    <span class="skin-count" id="skin-count"></span>
   </div>
   <div class="skin-grid" id="skin-grid"></div>
+  <div class="skin-modal-overlay" id="skin-modal" onclick="if(event.target===this) closeSkinModal()">
+    <section class="skin-modal" role="dialog" aria-modal="true" aria-labelledby="skin-modal-name">
+      <div class="skin-modal-head">
+        <div>
+          <div class="skin-name" id="skin-modal-name"></div>
+          <div class="skin-meta" id="skin-modal-meta"></div>
+        </div>
+        <button class="tool-btn" type="button" onclick="closeSkinModal()" data-i18n="skin_close">CLOSE</button>
+      </div>
+      <img class="skin-modal-image" id="skin-modal-image" alt="">
+      <div class="skin-modal-nav">
+        <button class="action-btn" type="button" onclick="changeSkinModal(-1)" data-i18n="skin_prev">PREVIOUS</button>
+        <span class="skin-modal-position" id="skin-modal-position"></span>
+        <button class="action-btn" type="button" onclick="changeSkinModal(1)" data-i18n="skin_next">NEXT</button>
+      </div>
+    </section>
+  </div>
 </div>
 
 <!-- ===== PROMO CODES ===== -->
@@ -1062,10 +1089,11 @@ en:{
   promo_title:'🎁 ACTIVE PROMO CODES', promo_refresh:'↻ REFRESH',
   promo_note:'⚠️ Promo codes expire — redeem as soon as possible. Codes are community-sourced and verified.',
   skins_title:'LEGENDARY SKINS',
-  skins_intro:'Browse community-favorite legendary skins. Missing one? Send it through feedback and it can be added to the collection.',
+  skins_intro:'Browse the complete legendary skins gallery. Select a skin to view its full card.',
   skin_search:'Search by skin or mech name...',
-  skin_sort_likes:'Likes: High to Low', skin_sort_skin:'Skin Name: A-Z', skin_sort_mech:'Mech Name: A-Z',
+  skin_sort_skin:'Skin Name: A-Z', skin_sort_mech:'Mech Name: A-Z',
   skin_list_view:'LIST VIEW', skin_grid_view:'GRID VIEW', skin_submit:'SUBMIT A SKIN',
+  skin_close:'CLOSE', skin_prev:'PREVIOUS', skin_next:'NEXT',
   footer_disclaimer:'Fan-made companion tool for Mech Arena. Not affiliated with Plarium Global Ltd.',
   footer_legal:'LEGAL', footer_privacy:'Privacy Policy', footer_terms:'Terms of Use', footer_contact:'CONTACT',
   cheat_f2p_builds:'Best F2P Builds (2026 meta)', cheat_gearhub_strat:'Gear Hub F2P Strategy',
@@ -1141,10 +1169,11 @@ ua:{
   promo_title:'🎁 АКТИВНІ ПРОМО КОДИ', promo_refresh:'↻ ОНОВИТИ',
   promo_note:'⚠️ Промо-коди мають термін дії — активуйте якомога швидше. Коди зібрані та перевірені спільнотою.',
   skins_title:'ЛЕГЕНДАРНІ СКІНИ',
-  skins_intro:'Переглядайте популярні легендарні скіни спільноти. Не вистачає скіна? Надішліть його через зворотний зв’язок.',
+  skins_intro:'Переглядайте повну галерею легендарних скінів. Натисніть на скін, щоб відкрити його карточку.',
   skin_search:'Пошук за скіном або мехом...',
-  skin_sort_likes:'Вподобання: спершу популярні', skin_sort_skin:'Назва скіна: А-Я', skin_sort_mech:'Назва меха: А-Я',
+  skin_sort_skin:'Назва скіна: А-Я', skin_sort_mech:'Назва меха: А-Я',
   skin_list_view:'СПИСОК', skin_grid_view:'СІТКА', skin_submit:'НАДІСЛАТИ СКІН',
+  skin_close:'ЗАКРИТИ', skin_prev:'ПОПЕРЕДНІЙ', skin_next:'НАСТУПНИЙ',
   footer_disclaimer:'Фанатський помічник для Mech Arena. Не пов’язаний із Plarium Global Ltd.',
   footer_legal:'ПРАВОВІ УМОВИ', footer_privacy:'Конфіденційність', footer_terms:'Умови використання', footer_contact:'КОНТАКТ',
   cheat_f2p_builds:'Кращі F2P білди (мета 2026)', cheat_gearhub_strat:'Стратегія F2P у Gear Hub',
@@ -3325,35 +3354,227 @@ function rateHangar() {
 
 // ===== LEGENDARY SKINS =====
 const LEGENDARY_SKINS = [
-  { name:'Phoenix rush', mech:'Nomad', likes:162, image:'https://mecharena.infohubhq.in/Legendary%20skins/Phoenix%20rush.png' },
-  { name:'Dark Matter', mech:'Nomad', likes:100, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Dark%20Matter.webp' },
-  { name:'Black Widow', mech:'Blockhorn', likes:83, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Black%20Widow.webp' },
-  { name:'Quicksilver', mech:'Eclipse', likes:83, image:'https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/Quicksilver.webp' },
-  { name:'Team mascot', mech:'Volti', likes:45, image:'https://mecharena.infohubhq.in/Legendary%20skins/Team%20mascot.png' }
-];
+  ['Phoenix rush','Nomad'],
+  ['Dark Matter','Nomad'],
+  ['Black Widow','Blockhorn'],
+  ['Quicksilver','Eclipse'],
+  ['Deathless one','Deathwalker'],
+  ["Hunter's maw",'Silverthorn'],
+  ['Moderator mark','Parasite'],
+  ['Dragon heart','Vortex'],
+  ['Ocean predator','Deathwalker'],
+  ['Hellstomper','Solis'],
+  ['Blessed Knight','Deathwalker'],
+  ['Turbocharger','Deathwalker'],
+  ['Chromacore','Surge'],
+  ['Battle Chicken','Lancer'],
+  ['Mine crawler','Outlaw'],
+  ['Vampire knight','Vortex'],
+  ['Vetrix','Panther'],
+  ['Celestial Guard','Dreadnought'],
+  ['Deathless','Tengu'],
+  ['Spy on the wall','Lacewing'],
+  ['Centurion','Lacewing'],
+  ['Master of death','Killshot'],
+  ['Team mascot','Volti'],
+  ['Lightwielder','Seeker'],
+  ['Star slayer','Hemlock'],
+  ["Kraken's fury",'Orion'],
+  ['Beast Trapper','Volti'],
+  ['Celestial Cyborg','Solis'],
+  ['Bounty Bandit','Dreadnought'],
+  ['Cyber Cyclops','Nomad'],
+  ['Mechlodon','Surge'],
+  ['Observer','Redeemer'],
+  ['Sawblade','Surge'],
+  ['Swashbuckler','Tengu'],
+  ['The contentinator','Killshot'],
+  ['Ski season','Blizzfrost'],
+  ['Living fossil','Lacewing'],
+  ['Earthshaker','Citadel'],
+  ['Polar athlete','Dreadnought'],
+  ['Rapid response','Mimicker'],
+  ['Rebellion','Eclipse'],
+  ['Crimson Assassin','Silverthorn'],
+  ['Sin bin','Aegis'],
+  ['Showpiece','Ares'],
+  ['Overlord','Scorpius'],
+  ['Saving grace','Salvor'],
+  ['Infiltrator','Eclipse'],
+  ['Mantis','Tengu'],
+  ['Technosaurus','Blockhorn'],
+  ['Astronomic','Seeker'],
+  ['Hanbok','Panther'],
+  ['Unearthed power','Parasite'],
+  ['Crowd Control','Blockhorn'],
+  ['Imposter','Mimicker'],
+  ['Mecha revival','Bastion'],
+  ['Purple power','Guardian'],
+  ['Royalist','Lancer'],
+  ['Sea monster','Dreadnought'],
+  ['Dream Eater','Hemlock'],
+  ['Dawnburst','Salvor'],
+  ['Steel Jaws','Vortex'],
+  ['Arbitrator','Volti'],
+  ['Emperor','Redox'],
+  ['Lionguard','Aegis'],
+  ['Speed demon','Killshot'],
+  ['Watchtower','Scorpius'],
+  ['Antlion','Parasite'],
+  ['Mobile suit','Ares'],
+  ['Rust punk','Seeker'],
+  ['Rust ravager','Stalker'],
+  ['Urban exile','Nomad'],
+  ['Lightrider','Killshot'],
+  ['Mechsarehere','Paragon'],
+  ['Wendigo','Juggernaut'],
+  ['Automaton','Eclipse'],
+  ['Carapace','Guardian'],
+  ['Junkyard brawler','Sentinel'],
+  ['Milspec','Paragon'],
+  ['Polar blue','Surge'],
+  ['Slick profile','Panther'],
+  ['Honor Guard','Arachnos'],
+  ['Doomscream','Killshot'],
+  ['Enforcer','Panther'],
+  ['Lucky charm','Slingshot'],
+  ['Night terror','Hemlock'],
+  ['Kensei','Killshot'],
+  ['Malachite','Brickhouse'],
+  ['Hawankund','Onyx'],
+  ['Dust Devil','Shadow'],
+  ['Party Suit','Lancer'],
+  ['Scraprat','Zephyr'],
+  ['Courtly Conduct','Redeemer'],
+  ['Killer clown','Panther'],
+  ['Scrapyard devil','Tengu'],
+  ['Primal Instinct','Onyx'],
+  ['Skullface','Shadow'],
+  ['Steel Lancer','Lancer'],
+  ['Arctic Ambusher','Onyx'],
+  ['Shaka zulu','Panther'],
+  ['Solar explorer','Solis'],
+  ['Spoiler alert','Ares'],
+  ['Wrecker','Killshot'],
+  ['Cyber Samurai','Zephyr'],
+  ['Gladiator','Seeker'],
+  ['Lucky Dragon','Md'],
+  ['Aerodynamo','Panther'],
+  ['Muv-er mech','Guardian'],
+  ['Orbit velocity','Killshot'],
+  ['Sting operation','Scorpius'],
+  ['Torch Dragon','Stalker'],
+  ['Apex','Shadow'],
+  ['Halcyon days','Scorpius'],
+  ['Inferno','Gatecrasher'],
+  ['Prost','Aegis'],
+  ['Raptor','Zephyr'],
+  ['Slalom','Bastion'],
+  ['Squad captain','Parasite'],
+  ['Beholder','Panther'],
+  ['Falcon04a','Panther'],
+  ['Hazard Zone','Ares'],
+  ['Power Player','Paragon'],
+  ['Rush Formula','Killshot'],
+  ['First gen','Lancer'],
+  ['Sage advice','Onyx'],
+  ['Slay ride','Killshot'],
+  ['Spymaster','Seeker'],
+  ['Tomino','Orion'],
+  ['Huntertron 5000','Orion'],
+  ['True grit','Bastion'],
+  ['Confectionist','Panther'],
+  ['Crewmate','Md'],
+  ['Steel Reaper','Juggernaut'],
+  ['Teeheehee','Paragon'],
+  ['Offroader','Zephyr'],
+  ['Renegade','Lancer'],
+  ['Trinity','Paragon'],
+  ['Gingerbreaker','Stalker'],
+  ['Ion Alpha','Cheetah'],
+  ['Xolotl','Bastion'],
+  ['Dead zone','Gatecrasher'],
+  ['Depth charge','Brickhouse'],
+  ['Gobblemaw','Juggernaut'],
+  ['Hotrod','Paragon'],
+  ['Liberty','Onyx'],
+  ['Nekobot','Juggernaut'],
+  ['Military Grade','Ares'],
+  ['Underbite','Ares'],
+  ['Cruiser','Shadow'],
+  ['Iron geisha','Aegis'],
+  ['Triskelion','Guardian'],
+  ['Bunker Buddy','Md'],
+  ['Get Juked','Lancer'],
+  ['Pit Stop','Md'],
+  ['Parasite host','Juggernaut'],
+  ['Touchdown','Cheetah'],
+  ['Autodoc','Md'],
+  ['Chrome','Guardian'],
+  ['Evil Jack','Ares'],
+  ['Falcon','Guardian'],
+  ['Repairdolph','Md'],
+  ['Squad Goals','paragon'],
+  ['Torque','Killshot'],
+  ['Valentine','Juggernaut'],
+  ['Lifeguard','Md'],
+  ['Lady of shadows','Arachnos'],
+  ['V8 custom','Killshot'],
+  ['Adorabot','Juggernaut'],
+  ['Distillery','Paragon'],
+  ['Hard Evidence','Juggernaut'],
+  ['Mega Marine','Brickhouse'],
+  ['Pots O Gold','Guardian'],
+  ['So Many Cups','Lancer'],
+  ['Dustblight','Scorpius'],
+  ["Santa's slayer",'Guardian'],
+  ['Cupidicus','Paragon'],
+  ['Invader','Redox'],
+  ['No Quarter','Paragon'],
+  ['Web Spitter','Juggernaut'],
+  ['Machine mummy','Cheetah'],
+  ['Vintage spirit','Brickhouse'],
+  ['Bubblegum','Arachnos'],
+  ['Warsong','Juggernaut'],
+  ['Elfinator','Arachnos'],
+  ['Whole Hog','Juggernaut']
+].map(([name, mech]) => ({ name, mech }));
 let skinListView = false;
+let skinModalIndex = -1;
+
+function skinThumb(skin) {
+  return `https://mecharena.infohubhq.in/Legendary%20skins/thumbnails/${encodeURIComponent(skin.name)}.webp`;
+}
+
+function skinFullImage(skin) {
+  return `https://mecharena.infohubhq.in/Legendary%20skins/${encodeURIComponent(skin.name)}.png`;
+}
 
 function renderSkins() {
   const grid = document.getElementById('skin-grid');
   if (!grid) return;
   const query = (document.getElementById('skin-search')?.value || '').toLowerCase();
-  const sort = document.getElementById('skin-sort')?.value || 'likes';
+  const sort = document.getElementById('skin-sort')?.value || 'skin';
   const list = LEGENDARY_SKINS.filter(s =>
     !query || s.name.toLowerCase().includes(query) || s.mech.toLowerCase().includes(query)
   ).sort((a, b) => {
     if (sort === 'skin') return a.name.localeCompare(b.name);
-    if (sort === 'mech') return a.mech.localeCompare(b.mech) || a.name.localeCompare(b.name);
-    return b.likes - a.likes;
+    return a.mech.localeCompare(b.mech) || a.name.localeCompare(b.name);
   });
+  const count = document.getElementById('skin-count');
+  if (count) count.textContent = `${list.length} / ${LEGENDARY_SKINS.length}`;
   grid.classList.toggle('list', skinListView);
-  grid.innerHTML = list.length ? list.map(s => `
-    <article class="skin-card">
-      <img class="skin-img" src="${s.image}" alt="${s.name}" loading="lazy">
+  grid.innerHTML = list.length ? list.map(s => {
+    const index = LEGENDARY_SKINS.indexOf(s);
+    return `
+    <button class="skin-card" type="button" onclick="openSkinModal(${index})">
+      <img class="skin-img" src="${skinThumb(s)}" alt="${escHtml(s.name)}" loading="lazy" onerror="this.onerror=null;this.src=skinFullImage(LEGENDARY_SKINS[${index}])">
       <div class="skin-body">
-        <div class="skin-name">${s.name}</div>
-        <div class="skin-meta"><span>${s.mech}</span><span>♥ ${s.likes}</span></div>
+        <div class="skin-name">${escHtml(s.name)}</div>
+        <div class="skin-meta">${escHtml(s.mech)}</div>
       </div>
-    </article>`).join('') :
+    </button>`;
+  }).join('') :
     `<div class="calc-info" style="grid-column:1/-1">${LANG === 'ua' ? 'Скінів за таким запитом не знайдено.' : 'No skins match your search.'}</div>`;
 }
 
@@ -3362,6 +3583,45 @@ function toggleSkinView() {
   document.getElementById('skin-view-btn').textContent = skinListView ? t('skin_grid_view') : t('skin_list_view');
   renderSkins();
 }
+
+function openSkinModal(index) {
+  skinModalIndex = index;
+  updateSkinModal();
+  document.getElementById('skin-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateSkinModal() {
+  const skin = LEGENDARY_SKINS[skinModalIndex];
+  if (!skin) return;
+  document.getElementById('skin-modal-name').textContent = skin.name;
+  document.getElementById('skin-modal-meta').textContent = `${LANG === 'ua' ? 'Мех' : 'Mech'}: ${skin.mech}`;
+  document.getElementById('skin-modal-position').textContent = `${skinModalIndex + 1} / ${LEGENDARY_SKINS.length}`;
+  const image = document.getElementById('skin-modal-image');
+  image.alt = skin.name;
+  image.onerror = () => {
+    image.onerror = null;
+    image.src = skinThumb(skin);
+  };
+  image.src = skinFullImage(skin);
+}
+
+function changeSkinModal(step) {
+  skinModalIndex = (skinModalIndex + step + LEGENDARY_SKINS.length) % LEGENDARY_SKINS.length;
+  updateSkinModal();
+}
+
+function closeSkinModal() {
+  document.getElementById('skin-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', event => {
+  if (!document.getElementById('skin-modal')?.classList.contains('open')) return;
+  if (event.key === 'Escape') closeSkinModal();
+  if (event.key === 'ArrowLeft') changeSkinModal(-1);
+  if (event.key === 'ArrowRight') changeSkinModal(1);
+});
 
 // ===== MAP GUIDE =====
 const MAP_CPC = [

@@ -405,6 +405,13 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
 .action-row{display:flex;justify-content:flex-end;gap:8px;margin:0 0 14px;flex-wrap:wrap;}
 .action-btn{color:var(--acc);background:rgba(0,212,255,.08);}
 .share-msg{font-size:11px;color:var(--acc3);min-height:14px;text-align:right;margin-top:-8px;margin-bottom:10px;}
+.share-modal-overlay{display:none;position:fixed;inset:0;z-index:1150;background:rgba(0,0,0,.78);padding:20px;align-items:center;justify-content:center;}
+.share-modal-overlay.open{display:flex;}
+.share-modal{width:min(460px,100%);background:var(--panel);border:1px solid var(--brd);border-radius:7px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.42);}
+.share-modal-title{font:700 13px 'Orbitron',monospace;color:var(--acc);letter-spacing:1px;margin-bottom:8px;}
+.share-modal-url{font-size:11px;color:var(--dim);word-break:break-all;background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:9px;margin:12px 0;}
+.share-modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.share-modal-close{display:block;margin-left:auto;margin-top:12px;}
 .resource-panel{margin:14px auto 0;max-width:720px;padding:14px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;text-align:left;}
 .resource-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
 .resource-field label{display:block;font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
@@ -1034,6 +1041,19 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   </div>
 </div>
 
+<div class="share-modal-overlay" id="share-modal" onclick="if(event.target===this)closeShareChoice()">
+  <section class="share-modal" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="share-modal-title" id="share-modal-title" data-i18n="share_choice_title">SHARE LINK</div>
+    <div class="share-modal-url" id="share-modal-url"></div>
+    <div class="share-modal-actions">
+      <button class="action-btn" type="button" onclick="copyShareChoice()" data-i18n="share_copy_link">COPY LINK</button>
+      <button class="action-btn" type="button" onclick="sendShareTelegram()" data-i18n="share_send_tg">SEND TO TELEGRAM</button>
+    </div>
+    <button class="tool-btn share-modal-close" type="button" onclick="closeShareChoice()" data-i18n="share_cancel">CANCEL</button>
+    <div class="share-msg" id="share-choice-msg" style="text-align:left;margin:10px 0 0"></div>
+  </section>
+</div>
+
 <script>
 // ===== LANGUAGE =====
 let LANG = localStorage.getItem('ma_lang') || 'en';
@@ -1076,6 +1096,7 @@ en:{
   all_rarities:'All Rarities',
   cmp_title:'Select up to 3 mechs to compare side by side',
   share_compare:'SHARE COMPARISON', share_hangar:'SHARE HANGAR',
+  share_choice_title:'SHARE LINK', share_copy_link:'COPY LINK', share_send_tg:'SEND TO TELEGRAM', share_cancel:'CANCEL',
   cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
   cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
   hr_title:'Pick Your Hangar (up to 5 mechs)', hr_selected:'Selected Mechs',
@@ -1156,6 +1177,7 @@ ua:{
   all_rarities:'Всі рідкості',
   cmp_title:'Оберіть до 3 мехів для порівняння поруч',
   share_compare:'ПОДІЛИТИСЯ ПОРІВНЯННЯМ', share_hangar:'ПОДІЛИТИСЯ АНГАРОМ',
+  share_choice_title:'ПОДІЛИТИСЯ ПОСИЛАННЯМ', share_copy_link:'СКОПІЮВАТИ', share_send_tg:'НАДІСЛАТИ В TELEGRAM', share_cancel:'СКАСУВАТИ',
   cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
   cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
   hr_title:'Оберіть ваш ангар (до 5 мехів)', hr_selected:'Обрані мехи',
@@ -2874,6 +2896,43 @@ function selectWeapon(groupLabel, id, name, energyArr) {
 
 // ===== COMPARE =====
 let compareSlots = [null, null, null];
+let pendingShareUrl = '';
+let pendingShareMsgId = '';
+
+function openShareChoice(hash, msgId) {
+  pendingShareUrl = location.origin + location.pathname + hash;
+  pendingShareMsgId = msgId;
+  const msg = document.getElementById('share-choice-msg');
+  const urlBox = document.getElementById('share-modal-url');
+  if (msg) msg.textContent = '';
+  if (urlBox) urlBox.textContent = pendingShareUrl;
+  document.getElementById('share-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShareChoice() {
+  document.getElementById('share-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function copyShareChoice() {
+  const msg = document.getElementById('share-choice-msg');
+  try {
+    await navigator.clipboard.writeText(pendingShareUrl);
+    if (msg) msg.textContent = LANG === 'ua' ? 'Посилання скопійовано.' : 'Link copied.';
+    const sourceMsg = document.getElementById(pendingShareMsgId);
+    if (sourceMsg) sourceMsg.textContent = LANG === 'ua' ? 'Посилання скопійовано.' : 'Link copied.';
+    setTimeout(closeShareChoice, 650);
+  } catch (e) {
+    if (msg) msg.textContent = LANG === 'ua' ? 'Не вдалося скопіювати посилання.' : 'Could not copy the link.';
+  }
+}
+
+function sendShareTelegram() {
+  const text = LANG === 'ua' ? 'Мій Mech Arena Hub лінк' : 'My Mech Arena Hub link';
+  const tgUrl = `https://t.me/share/url?url=${encodeURIComponent(pendingShareUrl)}&text=${encodeURIComponent(text)}`;
+  location.href = tgUrl;
+}
 
 async function shareLink(hash, msgId) {
   const url = location.origin + location.pathname + hash;
@@ -2897,7 +2956,7 @@ function shareCompare() {
     document.getElementById('compare-share-msg').textContent = LANG === 'ua' ? 'Спершу оберіть щонайменше 2 мехи.' : 'Pick at least 2 mechs first.';
     return;
   }
-  shareLink('#compare/' + chosen.join(','), 'compare-share-msg');
+  openShareChoice('#compare/' + chosen.join(','), 'compare-share-msg');
 }
 
 function buildCmpSelects() {
@@ -3215,7 +3274,7 @@ function shareHangar() {
     document.getElementById('hangar-share-msg').textContent = LANG === 'ua' ? 'Спершу оберіть мехів.' : 'Pick some mechs first.';
     return;
   }
-  shareLink('#hangar/' + hangarSlots.join(','), 'hangar-share-msg');
+  openShareChoice('#hangar/' + hangarSlots.join(','), 'hangar-share-msg');
 }
 
 function hrSearchChange(q) {
@@ -3617,6 +3676,10 @@ function closeSkinModal() {
 }
 
 document.addEventListener('keydown', event => {
+  if (document.getElementById('share-modal')?.classList.contains('open')) {
+    if (event.key === 'Escape') closeShareChoice();
+    return;
+  }
   if (!document.getElementById('skin-modal')?.classList.contains('open')) return;
   if (event.key === 'Escape') closeSkinModal();
   if (event.key === 'ArrowLeft') changeSkinModal(-1);

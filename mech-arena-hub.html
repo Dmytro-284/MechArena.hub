@@ -445,8 +445,9 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .d300-widget.min .d300-title,.d300-widget.min .d300-controls,.d300-widget.min .d300-body{display:none;}
 .d300-tour-shade{display:none;position:fixed;inset:0;z-index:1165;background:rgba(0,0,0,.72);pointer-events:none;}
 .d300-tour-shade.open{display:block;}
-.d300-spotlight{display:none;position:fixed;z-index:1168;border:2px solid var(--acc);border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 28px rgba(0,212,255,.65),inset 0 0 0 1px rgba(255,255,255,.14);pointer-events:none;transition:left .2s,top .2s,width .2s,height .2s;}
+.d300-spotlight{display:none;position:fixed;z-index:1168;border:2px solid var(--acc);border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 28px rgba(0,212,255,.65),inset 0 0 0 1px rgba(255,255,255,.14);pointer-events:none;transition:left .2s,top .2s,width .2s,height .2s;overflow:hidden;background:var(--bg);}
 .d300-spotlight.open{display:block;}
+.d300-spotlight-clone{position:absolute;left:0;top:0;transform-origin:top left;pointer-events:none;}
 .d300-pop{position:fixed;z-index:1175;max-width:340px;background:var(--panel);border:1px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 16px 45px rgba(0,0,0,.45);font-size:12px;line-height:1.5;color:var(--txt);}
 .d300-pop-title{font:800 11px 'Orbitron',monospace;color:var(--acc);letter-spacing:1px;margin-bottom:6px;}
 @media(max-width:700px){.d300-widget{right:10px;bottom:10px}.d300-pop{left:10px!important;right:10px!important;bottom:86px!important;top:auto!important;max-width:none}.d300-actions{grid-template-columns:1fr}}
@@ -2524,7 +2525,7 @@ function d300MoveSpotlight(target) {
   const spot = document.getElementById('d300-spotlight');
   if (!spot || !target) return;
   const rect = target.getBoundingClientRect();
-  const pad = 3;
+  const pad = 2;
   const left = Math.max(6, rect.left - pad);
   const top = Math.max(6, rect.top - pad);
   const right = Math.min(window.innerWidth - 6, rect.right + pad);
@@ -2533,7 +2534,27 @@ function d300MoveSpotlight(target) {
   spot.style.top = top + 'px';
   spot.style.width = Math.max(24, right - left) + 'px';
   spot.style.height = Math.max(24, bottom - top) + 'px';
+  d300CloneSpotlightTarget(target, spot, rect, pad);
   spot.classList.add('open');
+}
+
+function d300CloneSpotlightTarget(target, spot, rect, pad) {
+  spot.innerHTML = '';
+  const clone = target.cloneNode(true);
+  clone.classList.add('d300-spotlight-clone');
+  clone.removeAttribute('id');
+  clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  clone.querySelectorAll('script,style').forEach(el => el.remove());
+  clone.querySelectorAll('button,a,input,select,textarea').forEach(el => {
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-hidden', 'true');
+  });
+  clone.style.width = rect.width + 'px';
+  clone.style.height = rect.height + 'px';
+  clone.style.left = pad + 'px';
+  clone.style.top = pad + 'px';
+  clone.style.margin = '0';
+  spot.appendChild(clone);
 }
 
 function d300PositionPop(target, step) {
@@ -2609,7 +2630,11 @@ function d300PrevTour() {
 }
 
 function d300ClearHighlight() {
-  document.getElementById('d300-spotlight')?.classList.remove('open');
+  const spot = document.getElementById('d300-spotlight');
+  if (spot) {
+    spot.classList.remove('open');
+    spot.innerHTML = '';
+  }
   d300CurrentTarget = null;
 }
 

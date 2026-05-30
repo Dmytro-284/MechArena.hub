@@ -1122,7 +1122,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
       </div>
       <div class="d300-controls">
         <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300SayRandom()" id="d300-joke-btn">PING</button>
-        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300Minimize()">_</button>
+        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300Minimize()">&times;</button>
       </div>
     </div>
     <div class="d300-body">
@@ -2662,11 +2662,13 @@ function d300SayRandom() {
 function d300Minimize() {
   document.getElementById('d300-widget')?.classList.add('min');
   localStorage.setItem('d300_min', '1');
+  requestAnimationFrame(d300ReturnHome);
 }
 
 function d300Expand() {
   document.getElementById('d300-widget')?.classList.remove('min');
   localStorage.setItem('d300_min', '0');
+  requestAnimationFrame(d300ReturnHome);
 }
 
 function d300Init() {

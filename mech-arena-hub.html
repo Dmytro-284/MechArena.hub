@@ -447,7 +447,6 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .d300-tour-shade.open{display:block;}
 .d300-spotlight{display:none;position:fixed;z-index:1168;border:2px solid var(--acc);border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 28px rgba(0,212,255,.65),inset 0 0 0 1px rgba(255,255,255,.14);pointer-events:none;transition:left .2s,top .2s,width .2s,height .2s;}
 .d300-spotlight.open{display:block;}
-.d300-highlight{position:relative!important;z-index:1170!important;outline:2px solid var(--acc)!important;box-shadow:0 0 24px rgba(0,212,255,.55)!important;border-radius:8px!important;}
 .d300-pop{position:fixed;z-index:1175;max-width:340px;background:var(--panel);border:1px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 16px 45px rgba(0,0,0,.45);font-size:12px;line-height:1.5;color:var(--txt);}
 .d300-pop-title{font:800 11px 'Orbitron',monospace;color:var(--acc);letter-spacing:1px;margin-bottom:6px;}
 @media(max-width:700px){.d300-widget{right:10px;bottom:10px}.d300-drone.docked{right:14px!important;bottom:86px!important}.d300-pop{left:10px!important;right:10px!important;bottom:86px!important;top:auto!important;max-width:none}.d300-actions{grid-template-columns:1fr}}
@@ -2507,7 +2506,6 @@ function d300RenderTourStep() {
     if (!target) target = document.querySelector(`[onclick*="'${step.tab}'"]`) || document.querySelector('header');
     target?.scrollIntoView({ behavior:'smooth', block:'center' });
     d300CurrentTarget = target;
-    target?.classList.add('d300-highlight');
     d300MoveSpotlight(target);
     d300FlyToTarget(target);
     d300PositionPop(target, step);
@@ -2585,7 +2583,6 @@ function d300PrevTour() {
 }
 
 function d300ClearHighlight() {
-  document.querySelectorAll('.d300-highlight').forEach(el => el.classList.remove('d300-highlight'));
   document.getElementById('d300-spotlight')?.classList.remove('open');
   d300CurrentTarget = null;
 }

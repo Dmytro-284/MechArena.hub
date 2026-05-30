@@ -414,6 +414,34 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
 .share-modal-close{display:block;margin-left:auto;margin-top:12px;}
 .developers-block{text-align:center;padding:6px 0 30px;}
 .developers-title{font:700 11px 'Orbitron',monospace;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.d300-widget{position:fixed;right:18px;bottom:18px;z-index:1180;width:min(360px,calc(100vw - 28px));font-size:12px;}
+.d300-widget.min{width:auto;}
+.d300-card{background:linear-gradient(145deg,rgba(11,22,34,.98),rgba(20,38,58,.96));border:1px solid rgba(0,212,255,.35);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.48),0 0 24px rgba(0,212,255,.16);overflow:hidden;}
+body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(232,242,250,.96));}
+.d300-head{display:flex;align-items:center;gap:10px;padding:12px 12px 9px;border-bottom:1px solid rgba(0,212,255,.18);}
+.d300-avatar{width:42px;height:42px;border-radius:50%;position:relative;flex:0 0 auto;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.65);box-shadow:0 0 16px rgba(0,212,255,.4);}
+.d300-avatar::before,.d300-avatar::after{content:'';position:absolute;top:17px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;}
+.d300-avatar::before{left:12px}.d300-avatar::after{right:12px}
+.d300-name{font:900 13px 'Orbitron',monospace;color:var(--acc);letter-spacing:2px;}
+.d300-status{font-size:10px;color:var(--dim);margin-top:2px;}
+.d300-controls{margin-left:auto;display:flex;gap:6px;}
+.d300-mini-btn{border:1px solid var(--brd);background:rgba(0,212,255,.08);color:var(--dim);border-radius:4px;font:700 9px 'Orbitron',monospace;padding:5px 7px;cursor:pointer;}
+.d300-mini-btn:hover{color:var(--acc);border-color:var(--acc);}
+.d300-body{padding:12px;}
+.d300-line{line-height:1.55;color:var(--txt);min-height:38px;}
+.d300-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.d300-actions .action-btn{width:100%;}
+.d300-progress{font:700 10px 'Orbitron',monospace;color:var(--dim);letter-spacing:1px;margin-top:10px;}
+.d300-widget.min .d300-card{border-radius:50%;width:58px;height:58px;cursor:pointer;}
+.d300-widget.min .d300-head{padding:8px;border:none;}
+.d300-widget.min .d300-avatar{width:42px;height:42px;}
+.d300-widget.min .d300-title,.d300-widget.min .d300-controls,.d300-widget.min .d300-body{display:none;}
+.d300-tour-shade{display:none;position:fixed;inset:0;z-index:1165;background:rgba(0,0,0,.44);pointer-events:none;}
+.d300-tour-shade.open{display:block;}
+.d300-highlight{position:relative!important;z-index:1170!important;outline:2px solid var(--acc)!important;box-shadow:0 0 0 6px rgba(0,212,255,.14),0 0 24px rgba(0,212,255,.45)!important;border-radius:6px!important;}
+.d300-pop{position:fixed;z-index:1175;max-width:340px;background:var(--panel);border:1px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 16px 45px rgba(0,0,0,.45);font-size:12px;line-height:1.5;color:var(--txt);}
+.d300-pop-title{font:800 11px 'Orbitron',monospace;color:var(--acc);letter-spacing:1px;margin-bottom:6px;}
+@media(max-width:700px){.d300-widget{right:10px;bottom:10px}.d300-pop{left:10px!important;right:10px!important;bottom:86px!important;top:auto!important;max-width:none}.d300-actions{grid-template-columns:1fr}}
 .resource-panel{margin:14px auto 0;max-width:720px;padding:14px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;text-align:left;}
 .resource-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
 .resource-field label{display:block;font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
@@ -1065,6 +1093,38 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   </section>
 </div>
 
+<div class="d300-tour-shade" id="d300-tour-shade"></div>
+<div class="d300-pop" id="d300-pop" style="display:none">
+  <div class="d300-pop-title" id="d300-pop-title">D-300 GUIDE</div>
+  <div id="d300-pop-text"></div>
+</div>
+
+<aside class="d300-widget" id="d300-widget" aria-live="polite">
+  <div class="d300-card" onclick="if(document.getElementById('d300-widget').classList.contains('min')) d300Expand()">
+    <div class="d300-head">
+      <div class="d300-avatar" aria-hidden="true"></div>
+      <div class="d300-title">
+        <div class="d300-name">D-300</div>
+        <div class="d300-status" id="d300-status">NAVIGATION DRONE ONLINE</div>
+      </div>
+      <div class="d300-controls">
+        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300SayRandom()" id="d300-joke-btn">PING</button>
+        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300Minimize()">_</button>
+      </div>
+    </div>
+    <div class="d300-body">
+      <div class="d300-line" id="d300-line"></div>
+      <div class="d300-actions" id="d300-actions">
+        <button class="action-btn" type="button" onclick="d300StartTour()" id="d300-tour-btn">START GUIDE</button>
+        <button class="action-btn" type="button" onclick="d300Tip()" id="d300-tip-btn">TIP</button>
+        <button class="action-btn" type="button" onclick="d300OpenMenu()" id="d300-menu-btn">NAVIGATE</button>
+        <button class="action-btn feedback-form-link" type="button" onclick="window.open('https://forms.gle/QCvLvF8r3tPzy5a86','_blank','noopener')" id="d300-feedback-btn">FEEDBACK</button>
+      </div>
+      <div class="d300-progress" id="d300-progress"></div>
+    </div>
+  </div>
+</aside>
+
 <script>
 // ===== LANGUAGE =====
 let LANG = localStorage.getItem('ma_lang') || 'en';
@@ -1108,6 +1168,7 @@ en:{
   cmp_title:'Select up to 3 mechs to compare side by side',
   share_compare:'SHARE COMPARISON', share_hangar:'SHARE HANGAR',
   share_choice_title:'SHARE LINK', share_copy_link:'COPY LINK', share_send_tg:'SEND TO TELEGRAM', share_cancel:'CANCEL',
+  d300_status:'NAVIGATION DRONE ONLINE', d300_tour:'START GUIDE', d300_tip:'TIP', d300_nav:'NAVIGATE', d300_feedback:'FEEDBACK',
   cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
   cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
   hr_title:'Pick Your Hangar (up to 5 mechs)', hr_selected:'Selected Mechs',
@@ -1191,6 +1252,7 @@ ua:{
   cmp_title:'Оберіть до 3 мехів для порівняння поруч',
   share_compare:'ПОДІЛИТИСЯ ПОРІВНЯННЯМ', share_hangar:'ПОДІЛИТИСЯ АНГАРОМ',
   share_choice_title:'ПОДІЛИТИСЯ ПОСИЛАННЯМ', share_copy_link:'СКОПІЮВАТИ', share_send_tg:'НАДІСЛАТИ В TELEGRAM', share_cancel:'СКАСУВАТИ',
+  d300_status:'НАВІГАЦІЙНИЙ ДРОН ОНЛАЙН', d300_tour:'ПОЧАТИ ГАЙД', d300_tip:'ПІДКАЗКА', d300_nav:'НАВІГАЦІЯ', d300_feedback:'ФІДБЕК',
   cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
   cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
   hr_title:'Оберіть ваш ангар (до 5 мехів)', hr_selected:'Обрані мехи',
@@ -1242,6 +1304,7 @@ function applyI18n(){
   document.querySelectorAll('[data-i18n-html]').forEach(el=>{el.innerHTML=t(el.dataset.i18nHtml);});
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder);});
   updateThemeButton();
+  d300ApplyLang();
 }
 
 function toggleMobileMenu() {
@@ -2284,6 +2347,7 @@ function switchTab(n,b){
   if(n==='skins')  renderSkins();
   document.getElementById('main-tabs').classList.remove('open');
   document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', 'false');
+  if (typeof d300Tip === 'function' && d300TourIndex < 0) d300Tip();
 }
 
 // ===== HOME DASHBOARD =====
@@ -2295,6 +2359,220 @@ const HOME_META = ['surge','eclipse','orion','hemlock','nomad',
 function goToTab(name) {
   const btn = [...document.querySelectorAll('.tab')].find(b => (b.getAttribute('onclick')||'').includes("'"+name+"'"));
   if (btn) switchTab(name, btn);
+}
+
+// ===== D-300 ASSISTANT =====
+const D300_TEXT = {
+  en: {
+    hello: 'D-300 online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
+    home: 'Home is your command deck: jump to mechs, calculators, maps, skins, and quick tools from here.',
+    gear: 'Mechs tab stores the roster. Use filters, then open a mech card to inspect ranks, role, ability, pros, and cons.',
+    cheat: 'Cheatsheets are the fast memory core: weapon rules, pilot basics, XP, and high-value reminders.',
+    calc: 'Calculator mode: choose mechs, weapons, pilots, or mods first. Then D-300 approves the math ritual.',
+    compare: 'Compare needs at least two mechs. Pick them, then share the comparison link or send it to Telegram.',
+    hangar: 'Hangar Rate checks your squad balance. Select up to five mechs and I will judge them with tasteful circuitry.',
+    promo: 'Promo codes can expire fast. Refresh, copy, redeem, repeat. Very advanced button science.',
+    maps: 'Maps contain callouts and tactical notes. Open a map when your squad needs less chaos and more plan.',
+    skins: 'Skins are clickable. Open a card, browse the gallery, and submit missing skins through the form.',
+    feedback: 'Feedback goes to the Google Form. Missing data, bad price, broken button: send it there.',
+    menu: 'Where should D-300 route you?',
+    tourDone: 'Guide complete. D-300 will remain in the corner and pretend this was effortless.',
+    random: [
+      'Beep status: stylish and mildly overclocked.',
+      'If the math looks scary, the calculator eats it for breakfast.',
+      'Reminder: a good hangar has roles, not just shiny legends.',
+      'Tactical wisdom uploaded: do not fight five enemies alone. Usually.',
+      'Skin gallery contains 184 reasons to click things.',
+      'A-Coins detected. Spending impulse suppression: unstable.',
+      'D-300 fact: buttons work better when pressed intentionally.'
+    ]
+  },
+  ua: {
+    hello: 'D-300 онлайн. Я проведу тебе по хабу, поясню вкладки й іноді видаватиму дуже професійні роботні звуки.',
+    home: 'Головна — це командна панель: звідси можна швидко перейти до мехів, калькуляторів, мап, скінів та інструментів.',
+    gear: 'Вкладка мехів — це ростер. Використовуй фільтри й відкривай картки з рангами, роллю, навичкою, плюсами та мінусами.',
+    cheat: 'Шпаргалки — швидка пам’ять D-300: правила зброї, пілоти, XP і важливі нагадування.',
+    calc: 'Калькулятор: спочатку обери меха, зброю, пілота або мод. Потім D-300 схвалить математичний ритуал.',
+    compare: 'Для порівняння треба мінімум два мехи. Обери їх, а потім скопіюй лінк або надішли в Telegram.',
+    hangar: 'Оцінка ангара перевіряє баланс складу. Обери до п’яти мехів, і я ввічливо засуджу дисбаланс.',
+    promo: 'Промокоди швидко зникають. Оновив, скопіював, активував, повторив. Наука про кнопки.',
+    maps: 'Мапи мають позивні й тактичні нотатки. Відкривай їх, коли команді треба менше хаосу й більше плану.',
+    skins: 'Скіни клікабельні. Відкрий карточку, гортай галерею, а відсутні скіни надсилай через форму.',
+    feedback: 'Фідбек іде в Google Form. Немає даних, неправильна ціна, зламана кнопка — усе туди.',
+    menu: 'Куди D-300 прокладе маршрут?',
+    tourDone: 'Гайд завершено. D-300 лишається в кутку й робить вигляд, що це було легко.',
+    random: [
+      'Біп-статус: стильно й трохи перегріто.',
+      'Якщо математика лякає, калькулятор з’їсть її на сніданок.',
+      'Нагадування: хороший ангар має ролі, а не тільки блискучих легендарок.',
+      'Тактична мудрість завантажена: не бийся сам проти п’ятьох. Зазвичай.',
+      'У галереї скінів 184 причини натискати на речі.',
+      'A-Монети виявлено. Система стримування витрат нестабільна.',
+      'Факт D-300: кнопки краще працюють, коли їх натискають навмисно.'
+    ]
+  }
+};
+
+const D300_TOUR = [
+  { tab:'home', selector:'header', title:'D-300', key:'home' },
+  { tab:'home', selector:'#home-content .home-nav-grid', title:'Route Deck', key:'home' },
+  { tab:'gear', selector:'#gh-mech-controls', title:'Mech Roster', key:'gear' },
+  { tab:'calc', selector:'#pane-calc .calc-subtabs', title:'Calculators', key:'calc' },
+  { tab:'compare', selector:'#pane-compare .cmp-slots', title:'Compare', key:'compare' },
+  { tab:'hangar', selector:'#pane-hangar .hr-grid', title:'Hangar Rate', key:'hangar' },
+  { tab:'maps', selector:'#pane-maps .mg-grid', title:'Maps', key:'maps' },
+  { tab:'skins', selector:'#pane-skins .skin-grid', title:'Skins', key:'skins' },
+  { tab:'home', selector:'.feedback-form-link', title:'Feedback', key:'feedback' }
+];
+
+let d300TourIndex = -1;
+let d300RobotTimer = null;
+
+function d300Text(key) {
+  return (D300_TEXT[LANG] || D300_TEXT.en)[key] || D300_TEXT.en[key] || key;
+}
+
+function d300ApplyLang() {
+  const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  set('d300-status', t('d300_status'));
+  set('d300-tour-btn', t('d300_tour'));
+  set('d300-tip-btn', t('d300_tip'));
+  set('d300-menu-btn', t('d300_nav'));
+  set('d300-feedback-btn', t('d300_feedback'));
+  const line = document.getElementById('d300-line');
+  if (line && !line.textContent.trim()) line.textContent = d300Text('hello');
+}
+
+function d300SetLine(text) {
+  const line = document.getElementById('d300-line');
+  if (line) line.textContent = text;
+}
+
+function d300ActiveTab() {
+  const pane = document.querySelector('.pane.active');
+  return pane ? pane.id.replace('pane-', '') : 'home';
+}
+
+function d300Tip() {
+  const tab = d300ActiveTab();
+  d300SetLine(d300Text(tab === 'gear' ? 'gear' : tab) || d300Text('hello'));
+  d300DefaultActions();
+}
+
+function d300DefaultActions() {
+  const actions = document.getElementById('d300-actions');
+  if (!actions) return;
+  actions.innerHTML = `
+    <button class="action-btn" type="button" onclick="d300StartTour()">${t('d300_tour')}</button>
+    <button class="action-btn" type="button" onclick="d300Tip()">${t('d300_tip')}</button>
+    <button class="action-btn" type="button" onclick="d300OpenMenu()">${t('d300_nav')}</button>
+    <button class="action-btn feedback-form-link" type="button" onclick="window.open('https://forms.gle/QCvLvF8r3tPzy5a86','_blank','noopener')">${t('d300_feedback')}</button>`;
+}
+
+function d300OpenMenu() {
+  d300SetLine(d300Text('menu'));
+  const actions = document.getElementById('d300-actions');
+  const routes = [['gear','MECHS'],['calc','CALC'],['compare','COMPARE'],['hangar','HANGAR'],['maps','MAPS'],['skins','SKINS']];
+  actions.innerHTML = routes.map(([tab, label]) =>
+    `<button class="action-btn" type="button" onclick="goToTab('${tab}');d300Tip();d300DefaultActions()">${label}</button>`
+  ).join('') + `<button class="tool-btn" type="button" onclick="d300DefaultActions();d300Tip()">${LANG === 'ua' ? 'НАЗАД' : 'BACK'}</button>`;
+}
+
+function d300StartTour() {
+  d300TourIndex = 0;
+  localStorage.setItem('d300_seen_tour', '1');
+  d300Expand();
+  d300RenderTourStep();
+}
+
+function d300RenderTourStep() {
+  const step = D300_TOUR[d300TourIndex];
+  d300ClearHighlight();
+  if (!step) return d300EndTour();
+  if (step.tab && d300ActiveTab() !== step.tab) goToTab(step.tab);
+  setTimeout(() => {
+    let target = document.querySelector(step.selector);
+    if (!target) target = document.querySelector(`[onclick*="'${step.tab}'"]`) || document.querySelector('header');
+    target?.scrollIntoView({ behavior:'smooth', block:'center' });
+    target?.classList.add('d300-highlight');
+    d300PositionPop(target, step);
+    const progress = document.getElementById('d300-progress');
+    if (progress) progress.textContent = `${d300TourIndex + 1} / ${D300_TOUR.length}`;
+    d300SetLine(d300Text(step.key));
+    document.getElementById('d300-tour-shade')?.classList.add('open');
+    document.getElementById('d300-actions').innerHTML = `
+      <button class="tool-btn" type="button" onclick="d300PrevTour()">${LANG === 'ua' ? 'НАЗАД' : 'BACK'}</button>
+      <button class="action-btn" type="button" onclick="d300NextTour()">${d300TourIndex === D300_TOUR.length - 1 ? (LANG === 'ua' ? 'ГОТОВО' : 'DONE') : (LANG === 'ua' ? 'ДАЛІ' : 'NEXT')}</button>
+      <button class="tool-btn" type="button" onclick="d300EndTour()">${LANG === 'ua' ? 'ПРОПУСТИТИ' : 'SKIP'}</button>`;
+  }, 120);
+}
+
+function d300PositionPop(target, step) {
+  const pop = document.getElementById('d300-pop');
+  if (!pop || !target) return;
+  const rect = target.getBoundingClientRect();
+  pop.style.display = 'block';
+  document.getElementById('d300-pop-title').textContent = step.title;
+  document.getElementById('d300-pop-text').textContent = d300Text(step.key);
+  const left = Math.min(Math.max(12, rect.left), window.innerWidth - 360);
+  const top = rect.bottom + 12 < window.innerHeight - 120 ? rect.bottom + 12 : Math.max(12, rect.top - 150);
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+}
+
+function d300NextTour() {
+  d300TourIndex += 1;
+  d300RenderTourStep();
+}
+
+function d300PrevTour() {
+  d300TourIndex = Math.max(0, d300TourIndex - 1);
+  d300RenderTourStep();
+}
+
+function d300ClearHighlight() {
+  document.querySelectorAll('.d300-highlight').forEach(el => el.classList.remove('d300-highlight'));
+}
+
+function d300EndTour() {
+  d300TourIndex = -1;
+  d300ClearHighlight();
+  document.getElementById('d300-tour-shade')?.classList.remove('open');
+  const pop = document.getElementById('d300-pop');
+  if (pop) pop.style.display = 'none';
+  const progress = document.getElementById('d300-progress');
+  if (progress) progress.textContent = '';
+  d300DefaultActions();
+  d300SetLine(d300Text('tourDone'));
+}
+
+function d300SayRandom() {
+  const lines = (D300_TEXT[LANG] || D300_TEXT.en).random;
+  d300SetLine(lines[Math.floor(Math.random() * lines.length)]);
+  d300DefaultActions();
+}
+
+function d300Minimize() {
+  document.getElementById('d300-widget')?.classList.add('min');
+  localStorage.setItem('d300_min', '1');
+}
+
+function d300Expand() {
+  document.getElementById('d300-widget')?.classList.remove('min');
+  localStorage.setItem('d300_min', '0');
+}
+
+function d300Init() {
+  d300ApplyLang();
+  d300DefaultActions();
+  d300SetLine(d300Text('hello'));
+  if (localStorage.getItem('d300_min') === '1') d300Minimize();
+  if (!localStorage.getItem('d300_seen_tour')) setTimeout(d300StartTour, 900);
+  clearInterval(d300RobotTimer);
+  d300RobotTimer = setInterval(() => {
+    if (d300TourIndex >= 0 || document.hidden || document.getElementById('d300-widget')?.classList.contains('min')) return;
+    d300SayRandom();
+  }, 42000);
 }
 
 function renderHome() {
@@ -4147,6 +4425,8 @@ renderSkins();
     if (idx >= 0) setTimeout(() => openMgModal(idx), 80);
   }
 })();
+
+d300Init();
 
 // ===== PROMO CODES =====
 async function loadPromoCodes() {

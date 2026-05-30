@@ -412,14 +412,6 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
 .share-modal-url{font-size:11px;color:var(--dim);word-break:break-all;background:var(--bg);border:1px solid var(--brd);border-radius:4px;padding:9px;margin:12px 0;}
 .share-modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
 .share-modal-close{display:block;margin-left:auto;margin-top:12px;}
-.feedback-modal-overlay{display:none;position:fixed;inset:0;z-index:1160;background:rgba(0,0,0,.78);padding:20px;align-items:center;justify-content:center;}
-.feedback-modal-overlay.open{display:flex;}
-.feedback-modal{width:min(560px,100%);max-height:94vh;overflow:auto;background:var(--panel);border:1px solid var(--brd);border-radius:7px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.42);}
-.feedback-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
-.feedback-field label{display:block;font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:5px;}
-.feedback-field select,.feedback-field textarea{width:100%;background:var(--bg);border:1px solid var(--brd);color:var(--txt);border-radius:4px;padding:9px;font:600 12px 'Montserrat',sans-serif;}
-.feedback-field textarea{min-height:118px;resize:vertical;}
-.feedback-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px;}
 .developers-block{text-align:center;padding:6px 0 30px;}
 .developers-title{font:700 11px 'Orbitron',monospace;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
 .resource-panel{margin:14px auto 0;max-width:720px;padding:14px;background:var(--bg);border:1px solid var(--brd);border-radius:4px;text-align:left;}
@@ -912,7 +904,7 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   <div class="skin-intro">
     <strong data-i18n="skins_title">LEGENDARY SKINS</strong><br>
     <span data-i18n="skins_intro">Browse community-favorite legendary skins. Missing one? Send it through feedback and it can be added to the collection.</span>
-    <br><a class="skin-submit" href="#" onclick="openFeedbackForm('Skins');return false" data-i18n="skin_submit">SUBMIT A SKIN</a>
+    <br><a class="skin-submit feedback-form-link" href="https://forms.gle/QCvLvF8r3tPzy5a86" target="_blank" rel="noopener" data-i18n="skin_submit">SUBMIT A SKIN</a>
   </div>
   <div class="skin-controls">
     <input type="text" id="skin-search" oninput="renderSkins()" data-i18n-placeholder="skin_search" placeholder="Search by skin or mech name...">
@@ -973,7 +965,7 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
     <span data-i18n="tg_btn">OPEN IN TELEGRAM</span>
   </a>
   <!-- General feedback form -->
-  <a href="#" onclick="openFeedbackForm('General');return false"
+  <a class="feedback-form-link" href="https://forms.gle/QCvLvF8r3tPzy5a86" target="_blank" rel="noopener"
      style="display:inline-flex;align-items:center;gap:10px;background:#1e2124;color:#fff;text-decoration:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:1.2px;padding:13px 28px;border-radius:8px;border:1px solid rgba(255,50,50,.4);box-shadow:0 0 18px rgba(255,50,50,.25),0 2px 8px rgba(0,0,0,.4);transition:box-shadow .2s,transform .15s"
      onmouseover="this.style.boxShadow='0 0 32px rgba(255,50,50,.5),0 4px 16px rgba(0,0,0,.5)';this.style.transform='translateY(-2px)'"
      onmouseout="this.style.boxShadow='0 0 18px rgba(255,50,50,.25),0 2px 8px rgba(0,0,0,.4)';this.style.transform='translateY(0)'">
@@ -1009,7 +1001,8 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   </div>
   <div>
     <div class="footer-title" data-i18n="footer_contact">CONTACT</div>
-    <a href="https://discord.com/users/1237808141765443644" target="_blank" rel="noopener">Discord Feedback</a>
+    <a class="feedback-form-link" href="https://forms.gle/QCvLvF8r3tPzy5a86" target="_blank" rel="noopener" data-i18n="footer_feedback">Feedback Form</a>
+    <a href="https://discord.com/users/1237808141765443644" target="_blank" rel="noopener">Discord</a>
     <a href="https://t.me/MechArenaHubBot" target="_blank" rel="noopener">Telegram Bot</a>
   </div>
 </footer>
@@ -1077,54 +1070,6 @@ body.light .mg-toolbar{background:rgba(255,255,255,.96);}
   </section>
 </div>
 
-<div class="feedback-modal-overlay" id="feedback-modal" onclick="if(event.target===this)closeFeedbackForm()">
-  <section class="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title">
-    <div class="share-modal-title" id="feedback-modal-title" data-i18n="feedback_form_title">SEND FEEDBACK</div>
-    <div class="skin-meta" data-i18n="feedback_form_intro">Choose the section, pick what is wrong, then describe what should be added or fixed.</div>
-    <div class="feedback-form-grid">
-      <div class="feedback-field">
-        <label for="feedback-section" data-i18n="feedback_section">SECTION</label>
-        <select id="feedback-section">
-          <option>General</option>
-          <option>Calculator</option>
-          <option>Pilot Calculator</option>
-          <option>Mod Calculator</option>
-          <option>Mechs</option>
-          <option>Cheatsheets</option>
-          <option>Compare</option>
-          <option>Hangar Rate</option>
-          <option>Promo Codes</option>
-          <option>Maps</option>
-          <option>Skins</option>
-          <option>Telegram Bot</option>
-        </select>
-      </div>
-      <div class="feedback-field">
-        <label for="feedback-type" data-i18n="feedback_type">WHAT IS WRONG?</label>
-        <select id="feedback-type">
-          <option data-i18n="feedback_opt_missing">Missing item / data</option>
-          <option data-i18n="feedback_opt_wrong">Wrong price, stat, or text</option>
-          <option data-i18n="feedback_opt_image">Image or card problem</option>
-          <option data-i18n="feedback_opt_broken">Button or link does not work</option>
-          <option data-i18n="feedback_opt_translation">Translation issue</option>
-          <option data-i18n="feedback_opt_idea">New feature idea</option>
-          <option data-i18n="feedback_opt_other">Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="feedback-field" style="margin-top:10px">
-      <label for="feedback-details" data-i18n="feedback_details">DETAILS</label>
-      <textarea id="feedback-details" data-i18n-placeholder="feedback_placeholder" placeholder="Describe what is missing or what should be fixed..."></textarea>
-    </div>
-    <div class="feedback-actions">
-      <button class="action-btn" type="button" onclick="copyFeedbackReport()" data-i18n="feedback_copy">COPY REPORT</button>
-      <button class="action-btn" type="button" onclick="sendFeedbackReport()" data-i18n="feedback_send">SEND TO DEVELOPER</button>
-      <button class="tool-btn" type="button" onclick="closeFeedbackForm()" data-i18n="share_cancel">CANCEL</button>
-    </div>
-    <div class="share-msg" id="feedback-msg" style="text-align:left;margin:10px 0 0"></div>
-  </section>
-</div>
-
 <script>
 // ===== LANGUAGE =====
 let LANG = localStorage.getItem('ma_lang') || 'en';
@@ -1187,14 +1132,8 @@ en:{
   skin_list_view:'LIST VIEW', skin_grid_view:'GRID VIEW', skin_submit:'SUBMIT A SKIN',
   skin_close:'CLOSE', skin_prev:'PREVIOUS', skin_next:'NEXT',
   feedback_btn:'SEND FEEDBACK', developers_title:'DEVELOPERS', developer_contact:'CONTACT DEVELOPER',
-  feedback_form_title:'SEND FEEDBACK', feedback_form_intro:'Choose the section, pick what is wrong, then describe what should be added or fixed.',
-  feedback_section:'SECTION', feedback_type:'WHAT IS WRONG?', feedback_details:'DETAILS',
-  feedback_placeholder:'Describe what is missing or what should be fixed...',
-  feedback_opt_missing:'Missing item / data', feedback_opt_wrong:'Wrong price, stat, or text',
-  feedback_opt_image:'Image or card problem', feedback_opt_broken:'Button or link does not work',
-  feedback_opt_translation:'Translation issue', feedback_opt_idea:'New feature idea', feedback_opt_other:'Other',
-  feedback_copy:'COPY REPORT', feedback_send:'SEND TO DEVELOPER',
   footer_disclaimer:'Fan-made companion tool for Mech Arena. Not affiliated with Plarium Global Ltd.',
+  footer_feedback:'Feedback Form',
   footer_legal:'LEGAL', footer_privacy:'Privacy Policy', footer_terms:'Terms of Use', footer_contact:'CONTACT',
   cheat_f2p_builds:'Best F2P Builds (2026 meta)', cheat_gearhub_strat:'Gear Hub F2P Strategy',
   cheat_weapon_cats:'Weapon Categories (all 9)', cheat_weapon_rules:'Weapon Rules',
@@ -1276,14 +1215,8 @@ ua:{
   skin_list_view:'СПИСОК', skin_grid_view:'СІТКА', skin_submit:'НАДІСЛАТИ СКІН',
   skin_close:'ЗАКРИТИ', skin_prev:'ПОПЕРЕДНІЙ', skin_next:'НАСТУПНИЙ',
   feedback_btn:'НАДІСЛАТИ ФІДБЕК', developers_title:'DEVELOPERS', developer_contact:'НАПИСАТИ РОЗРОБНИКУ',
-  feedback_form_title:'НАДІСЛАТИ ФІДБЕК', feedback_form_intro:'Оберіть вкладку, тип проблеми, а потім опишіть, чого не вистачає або що треба виправити.',
-  feedback_section:'ВКЛАДКА', feedback_type:'ЩО НЕ ТАК?', feedback_details:'ДЕТАЛІ',
-  feedback_placeholder:'Опишіть, чого не вистачає або що треба виправити...',
-  feedback_opt_missing:'Не вистачає предмета / даних', feedback_opt_wrong:'Неправильна ціна, стат або текст',
-  feedback_opt_image:'Проблема із зображенням або карткою', feedback_opt_broken:'Кнопка або посилання не працює',
-  feedback_opt_translation:'Проблема з перекладом', feedback_opt_idea:'Ідея нової функції', feedback_opt_other:'Інше',
-  feedback_copy:'СКОПІЮВАТИ ЗВІТ', feedback_send:'НАДІСЛАТИ РОЗРОБНИКУ',
   footer_disclaimer:'Фанатський помічник для Mech Arena. Не пов’язаний із Plarium Global Ltd.',
+  footer_feedback:'Форма фідбеку',
   footer_legal:'ПРАВОВІ УМОВИ', footer_privacy:'Конфіденційність', footer_terms:'Умови використання', footer_contact:'КОНТАКТ',
   cheat_f2p_builds:'Кращі F2P білди (мета 2026)', cheat_gearhub_strat:'Стратегія F2P у Gear Hub',
   cheat_weapon_cats:'Категорії зброї (всього 9)', cheat_weapon_rules:'Правила зброї',
@@ -3021,51 +2954,6 @@ function sendShareTelegram() {
   location.href = tgUrl;
 }
 
-function openFeedbackForm(section = 'General') {
-  const modal = document.getElementById('feedback-modal');
-  const sectionSelect = document.getElementById('feedback-section');
-  const msg = document.getElementById('feedback-msg');
-  if (sectionSelect) sectionSelect.value = section;
-  if (msg) msg.textContent = '';
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => document.getElementById('feedback-details')?.focus(), 80);
-}
-
-function closeFeedbackForm() {
-  document.getElementById('feedback-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function buildFeedbackReport() {
-  const section = document.getElementById('feedback-section')?.value || 'General';
-  const type = document.getElementById('feedback-type')?.selectedOptions[0]?.textContent || 'Other';
-  const details = document.getElementById('feedback-details')?.value.trim() || (LANG === 'ua' ? 'Без деталей.' : 'No details.');
-  return [
-    'Mech Arena Hub feedback',
-    `Section: ${section}`,
-    `Issue: ${type}`,
-    `Page: ${location.origin}${location.pathname}${location.hash}`,
-    '',
-    details
-  ].join('\n');
-}
-
-async function copyFeedbackReport() {
-  const msg = document.getElementById('feedback-msg');
-  try {
-    await navigator.clipboard.writeText(buildFeedbackReport());
-    if (msg) msg.textContent = LANG === 'ua' ? 'Звіт скопійовано. Можна вставити його в Discord.' : 'Report copied. You can paste it into Discord.';
-  } catch (e) {
-    if (msg) msg.textContent = LANG === 'ua' ? 'Не вдалося скопіювати звіт.' : 'Could not copy the report.';
-  }
-}
-
-async function sendFeedbackReport() {
-  await copyFeedbackReport();
-  window.open('https://discord.com/users/1237808141765443644', '_blank', 'noopener');
-}
-
 async function shareLink(hash, msgId) {
   const url = location.origin + location.pathname + hash;
   const msg = document.getElementById(msgId);
@@ -3808,10 +3696,6 @@ function closeSkinModal() {
 }
 
 document.addEventListener('keydown', event => {
-  if (document.getElementById('feedback-modal')?.classList.contains('open')) {
-    if (event.key === 'Escape') closeFeedbackForm();
-    return;
-  }
   if (document.getElementById('share-modal')?.classList.contains('open')) {
     if (event.key === 'Escape') closeShareChoice();
     return;

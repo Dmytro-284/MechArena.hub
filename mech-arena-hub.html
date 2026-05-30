@@ -398,6 +398,7 @@ body.light::after{opacity:.22;}
 body.light header h1{text-shadow:none;}
 body.light .mg-modal-overlay{background:rgba(17,32,48,.62);}
 body.light .mg-toolbar{background:rgba(255,255,255,.96);}
+body.welcome-open .app{filter:blur(6px);pointer-events:none;user-select:none;}
 .top-tools{display:flex;justify-content:flex-end;align-items:center;padding:4px 0 8px;gap:6px;}
 .tool-btn,.mobile-menu-btn,.action-btn{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:7px 12px;border:1px solid var(--brd);background:rgba(0,212,255,.06);color:var(--dim);cursor:pointer;border-radius:3px;letter-spacing:1px;transition:all .2s;}
 .tool-btn:hover,.mobile-menu-btn:hover,.action-btn:hover{border-color:var(--acc);color:var(--acc);}
@@ -450,6 +451,17 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .d300-spotlight-clone{position:absolute;left:0;top:0;transform-origin:top left;pointer-events:none;}
 .d300-spotlight-clone .footer-title{font:700 10px 'Orbitron',monospace;color:var(--acc);letter-spacing:1.5px;margin-bottom:7px;}
 .d300-spotlight-clone a{display:block;color:var(--txt);text-decoration:none;margin:3px 0;}
+.welcome-modal-overlay{display:none;position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.58);align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(3px);}
+.welcome-modal-overlay.open{display:flex;}
+.welcome-card{width:min(560px,100%);background:var(--panel);border:1px solid rgba(0,212,255,.4);border-radius:14px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 34px rgba(0,212,255,.18);}
+.welcome-title{font:900 20px 'Orbitron',monospace;color:var(--acc);letter-spacing:3px;margin-bottom:8px;}
+.welcome-text{color:var(--dim);font-size:13px;line-height:1.65;margin-bottom:18px;}
+.welcome-group{margin-top:14px;}
+.welcome-label{font:700 10px 'Orbitron',monospace;color:var(--dim);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase;}
+.welcome-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.welcome-option{padding:10px 12px;background:var(--bg);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font:700 11px 'Orbitron',monospace;letter-spacing:1px;cursor:pointer;transition:all .18s;}
+.welcome-option.active,.welcome-option:hover{border-color:var(--acc);color:var(--acc);box-shadow:0 0 14px rgba(0,212,255,.15);}
+.welcome-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:20px;}
 .d300-pop{position:fixed;z-index:1175;max-width:340px;background:var(--panel);border:1px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 16px 45px rgba(0,0,0,.45);font-size:12px;line-height:1.5;color:var(--txt);}
 .d300-pop-title{font:800 11px 'Orbitron',monospace;color:var(--acc);letter-spacing:1px;margin-bottom:6px;}
 @media(max-width:700px){.d300-widget{right:10px;bottom:10px}.d300-pop{left:10px!important;right:10px!important;bottom:86px!important;top:auto!important;max-width:none}.d300-actions{grid-template-columns:1fr}}
@@ -1104,6 +1116,37 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
   </section>
 </div>
 
+<div class="welcome-modal-overlay" id="welcome-modal">
+  <section class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="welcome-title" id="welcome-title">MECH ARENA HUB</div>
+    <div class="welcome-text" data-i18n="welcome_text">Set up your hub before launch. D-300 can guide you through the site on first run.</div>
+    <div class="welcome-group">
+      <div class="welcome-label" data-i18n="welcome_theme">THEME</div>
+      <div class="welcome-options">
+        <button class="welcome-option" type="button" data-welcome-theme="dark" onclick="welcomeSetTheme('dark')" data-i18n="welcome_dark">DARK</button>
+        <button class="welcome-option" type="button" data-welcome-theme="light" onclick="welcomeSetTheme('light')" data-i18n="welcome_light">LIGHT</button>
+      </div>
+    </div>
+    <div class="welcome-group">
+      <div class="welcome-label" data-i18n="welcome_language">LANGUAGE</div>
+      <div class="welcome-options">
+        <button class="welcome-option" type="button" data-welcome-lang="en" onclick="welcomeSetLang('en')">ENGLISH</button>
+        <button class="welcome-option" type="button" data-welcome-lang="ua" onclick="welcomeSetLang('ua')">УКРАЇНСЬКА</button>
+      </div>
+    </div>
+    <div class="welcome-group">
+      <div class="welcome-label" data-i18n="welcome_tutorial">D-300 TUTORIAL</div>
+      <div class="welcome-options">
+        <button class="welcome-option" type="button" data-welcome-tour="yes" onclick="welcomeSetTour(true)" data-i18n="welcome_tour_yes">START TUTORIAL</button>
+        <button class="welcome-option" type="button" data-welcome-tour="no" onclick="welcomeSetTour(false)" data-i18n="welcome_tour_no">SKIP FOR NOW</button>
+      </div>
+    </div>
+    <div class="welcome-actions">
+      <button class="action-btn" type="button" onclick="welcomeApply()" data-i18n="welcome_enter">ENTER HUB</button>
+    </div>
+  </section>
+</div>
+
 <div class="d300-tour-shade" id="d300-tour-shade"></div>
 <div class="d300-spotlight" id="d300-spotlight"></div>
 <div class="d300-pop" id="d300-pop" style="display:none">
@@ -1182,6 +1225,10 @@ en:{
   share_compare:'SHARE COMPARISON', share_hangar:'SHARE HANGAR',
   share_choice_title:'SHARE LINK', share_copy_link:'COPY LINK', share_send_tg:'SEND TO TELEGRAM', share_cancel:'CANCEL',
   d300_status:'NAVIGATION DRONE ONLINE', d300_tour:'START GUIDE', d300_tip:'TIP', d300_nav:'NAVIGATE', d300_feedback:'FEEDBACK',
+  welcome_text:'Set up your hub before launch. D-300 can guide you through the site on first run.',
+  welcome_theme:'THEME', welcome_dark:'DARK', welcome_light:'LIGHT',
+  welcome_language:'LANGUAGE', welcome_tutorial:'D-300 TUTORIAL',
+  welcome_tour_yes:'START TUTORIAL', welcome_tour_no:'SKIP FOR NOW', welcome_enter:'ENTER HUB',
   cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
   cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
   hr_title:'Pick Your Hangar (up to 5 mechs)', hr_selected:'Selected Mechs',
@@ -1266,6 +1313,10 @@ ua:{
   share_compare:'ПОДІЛИТИСЯ ПОРІВНЯННЯМ', share_hangar:'ПОДІЛИТИСЯ АНГАРОМ',
   share_choice_title:'ПОДІЛИТИСЯ ПОСИЛАННЯМ', share_copy_link:'СКОПІЮВАТИ', share_send_tg:'НАДІСЛАТИ В TELEGRAM', share_cancel:'СКАСУВАТИ',
   d300_status:'НАВІГАЦІЙНИЙ ДРОН ОНЛАЙН', d300_tour:'ПОЧАТИ ГАЙД', d300_tip:'ПІДКАЗКА', d300_nav:'НАВІГАЦІЯ', d300_feedback:'ФІДБЕК',
+  welcome_text:'Налаштуй хаб перед запуском. D-300 може провести короткий гайд по сайту.',
+  welcome_theme:'ТЕМА', welcome_dark:'ТЕМНА', welcome_light:'СВІТЛА',
+  welcome_language:'МОВА', welcome_tutorial:'ТУТОРІАЛ D-300',
+  welcome_tour_yes:'ПРОЙТИ ТУТОРІАЛ', welcome_tour_no:'ПОКИ ПРОПУСТИТИ', welcome_enter:'УВІЙТИ В ХАБ',
   cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
   cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
   hr_title:'Оберіть ваш ангар (до 5 мехів)', hr_selected:'Обрані мехи',
@@ -1335,6 +1386,12 @@ function updateThemeButton() {
 function toggleTheme() {
   document.body.classList.toggle('light');
   localStorage.setItem('ma_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateThemeButton();
+}
+
+function setThemeMode(mode) {
+  document.body.classList.toggle('light', mode === 'light');
+  localStorage.setItem('ma_theme', mode === 'light' ? 'light' : 'dark');
   updateThemeButton();
 }
 
@@ -1413,6 +1470,62 @@ function setLang(l) {
   if (currentMech) renderDetail(MECHS[currentMech]);
   if (typeof pilotRarity !== 'undefined') setPilotRarity(pilotRarity);
   if (typeof LEGENDARY_SKINS !== 'undefined') renderSkins();
+}
+
+const welcomeState = {
+  theme: localStorage.getItem('ma_theme') || 'dark',
+  lang: LANG,
+  tour: true
+};
+
+function welcomeRefreshChoices() {
+  document.querySelectorAll('[data-welcome-theme]').forEach(btn => btn.classList.toggle('active', btn.dataset.welcomeTheme === welcomeState.theme));
+  document.querySelectorAll('[data-welcome-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.welcomeLang === welcomeState.lang));
+  document.querySelectorAll('[data-welcome-tour]').forEach(btn => btn.classList.toggle('active', (btn.dataset.welcomeTour === 'yes') === welcomeState.tour));
+}
+
+function welcomeSetTheme(mode) {
+  welcomeState.theme = mode;
+  setThemeMode(mode);
+  welcomeRefreshChoices();
+}
+
+function welcomeSetLang(lang) {
+  welcomeState.lang = lang;
+  setLang(lang);
+  welcomeRefreshChoices();
+}
+
+function welcomeSetTour(value) {
+  welcomeState.tour = value;
+  welcomeRefreshChoices();
+}
+
+function showWelcomeModal() {
+  const modal = document.getElementById('welcome-modal');
+  if (!modal) return;
+  welcomeRefreshChoices();
+  modal.classList.add('open');
+  document.body.classList.add('welcome-open');
+}
+
+function closeWelcomeModal() {
+  document.getElementById('welcome-modal')?.classList.remove('open');
+  document.body.classList.remove('welcome-open');
+}
+
+function welcomeApply() {
+  setThemeMode(welcomeState.theme);
+  setLang(welcomeState.lang);
+  localStorage.setItem('mah_welcome_done', '1');
+  closeWelcomeModal();
+  if (welcomeState.tour) {
+    localStorage.removeItem('d300_seen_tour');
+    setTimeout(d300StartTour, 350);
+  } else {
+    localStorage.setItem('d300_seen_tour', '1');
+    d300SetLine(d300Text('hello'));
+  }
 }
 
 // ============================================================
@@ -2677,7 +2790,11 @@ function d300Init() {
   d300SetLine(d300Text('hello'));
   requestAnimationFrame(d300ReturnHome);
   if (localStorage.getItem('d300_min') === '1') d300Minimize();
-  if (!localStorage.getItem('d300_seen_tour')) setTimeout(d300StartTour, 900);
+  if (!localStorage.getItem('mah_welcome_done')) {
+    setTimeout(showWelcomeModal, 250);
+  } else if (!localStorage.getItem('d300_seen_tour')) {
+    setTimeout(d300StartTour, 900);
+  }
   clearInterval(d300RobotTimer);
   d300RobotTimer = setInterval(() => {
     if (d300TourIndex >= 0 || document.hidden || document.getElementById('d300-widget')?.classList.contains('min')) return;

@@ -427,11 +427,11 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .d300-avatar{width:42px;height:42px;border-radius:50%;position:relative;flex:0 0 auto;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.65);box-shadow:0 0 16px rgba(0,212,255,.4);}
 .d300-avatar::before,.d300-avatar::after{content:'';position:absolute;top:17px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;}
 .d300-avatar::before{left:12px}.d300-avatar::after{right:12px}
-.d300-drone{position:fixed;left:0;top:0;z-index:1185;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.75);box-shadow:0 0 18px rgba(0,212,255,.45),0 8px 20px rgba(0,0,0,.35);transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1),transform .35s;pointer-events:none;}
+.d300-drone{position:absolute;left:50%;top:50%;z-index:1185;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.75);box-shadow:0 0 18px rgba(0,212,255,.45),0 8px 20px rgba(0,0,0,.35);transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1),transform .35s;pointer-events:none;}
 .d300-drone::before,.d300-drone::after{content:'';position:absolute;top:21px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 9px #fff;}
 .d300-drone::before{left:15px}.d300-drone::after{right:15px}
-.d300-drone.flying{transform:translateY(-4px) rotate(-3deg);}
-.d300-drone.docked{transform:scale(.9);}
+.d300-drone.flying{position:fixed;transform:translateY(-4px) rotate(-3deg);}
+.d300-drone.docked{position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%) scale(.9);}
 .d300-name{font:900 13px 'Orbitron',monospace;color:var(--acc);letter-spacing:2px;}
 .d300-status{font-size:10px;color:var(--dim);margin-top:2px;}
 .d300-controls{margin-left:auto;display:flex;gap:6px;}
@@ -1156,12 +1156,12 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
   <div class="d300-pop-title" id="d300-pop-title">ORACLE GUIDE</div>
   <div id="d300-pop-text"></div>
 </div>
-<div class="d300-drone docked" id="d300-drone" aria-hidden="true"></div>
-
 <aside class="d300-widget" id="d300-widget" aria-live="polite">
   <div class="d300-card" onclick="if(document.getElementById('d300-widget').classList.contains('min')) d300Expand()">
     <div class="d300-head">
-      <div class="d300-dock-pad" aria-hidden="true"></div>
+      <div class="d300-dock-pad" aria-hidden="true">
+        <div class="d300-drone docked" id="d300-drone"></div>
+      </div>
       <div class="d300-title">
         <div class="d300-name">Oracle</div>
         <div class="d300-status" id="d300-status">NAVIGATION DRONE ONLINE</div>
@@ -2741,12 +2741,11 @@ function d300FlyToTarget(target) {
 
 function d300ReturnHome() {
   const drone = document.getElementById('d300-drone');
-  const dock = document.querySelector('.d300-dock-pad');
-  if (!drone || !dock) return;
-  const d = dock.getBoundingClientRect();
-  const size = drone.offsetWidth || 54;
-  drone.style.left = (d.left + d.width / 2 - size / 2) + 'px';
-  drone.style.top = (d.top + d.height / 2 - size / 2) + 'px';
+  if (!drone) return;
+  drone.style.left = '';
+  drone.style.top = '';
+  drone.style.right = '';
+  drone.style.bottom = '';
   drone.classList.remove('flying');
   drone.classList.add('docked');
 }

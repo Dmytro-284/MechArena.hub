@@ -367,6 +367,8 @@ select:focus{border-color:var(--acc);}
 .promo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;}
 .promo-card{background:var(--panel);border:1px solid var(--brd);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s;position:relative;}
 .promo-card:hover{border-color:rgba(0,212,255,.4);box-shadow:0 4px 20px rgba(0,212,255,.08);}
+.promo-card.promo-new{border-color:rgba(255,64,64,.9);box-shadow:0 0 0 1px rgba(255,64,64,.45),0 0 24px rgba(255,64,64,.16);}
+.promo-new-badge{position:absolute;top:10px;right:10px;padding:4px 8px;background:linear-gradient(135deg,#ff3030,#9b0000);border:1px solid rgba(255,255,255,.25);border-radius:999px;color:#fff;font-family:'Orbitron',monospace;font-size:9px;font-weight:900;letter-spacing:1.5px;box-shadow:0 0 14px rgba(255,48,48,.45);z-index:2;}
 @keyframes cardGlow{0%{box-shadow:0 0 0 rgba(0,212,255,0)}40%{box-shadow:0 0 28px rgba(0,212,255,.55),inset 0 0 20px rgba(0,212,255,.08)}100%{box-shadow:0 0 0 rgba(0,212,255,0)}}
 .promo-card.copied-flash{animation:cardGlow .7s ease-out;}
 .promo-code-wrap{padding:18px 14px 10px;text-align:center;}
@@ -1120,7 +1122,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 <div class="welcome-modal-overlay" id="welcome-modal">
   <section class="welcome-card" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="welcome-title" id="welcome-title">MECH ARENA HUB</div>
-    <div class="welcome-text" data-i18n="welcome_text">Set up your hub before launch. D-300 can guide you through the site on first run.</div>
+    <div class="welcome-text" data-i18n="welcome_text">Set up your hub before launch. Oracle can guide you through the site on first run.</div>
     <div class="welcome-group">
       <div class="welcome-label" data-i18n="welcome_theme">THEME</div>
       <div class="welcome-options">
@@ -1136,7 +1138,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
       </div>
     </div>
     <div class="welcome-group">
-      <div class="welcome-label" data-i18n="welcome_tutorial">D-300 TUTORIAL</div>
+      <div class="welcome-label" data-i18n="welcome_tutorial">ORACLE TUTORIAL</div>
       <div class="welcome-options">
         <button class="welcome-option" type="button" data-welcome-tour="yes" onclick="welcomeSetTour(true)" data-i18n="welcome_tour_yes">START TUTORIAL</button>
         <button class="welcome-option" type="button" data-welcome-tour="no" onclick="welcomeSetTour(false)" data-i18n="welcome_tour_no">SKIP FOR NOW</button>
@@ -1151,7 +1153,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 <div class="d300-tour-shade" id="d300-tour-shade"></div>
 <div class="d300-spotlight" id="d300-spotlight"></div>
 <div class="d300-pop" id="d300-pop" style="display:none">
-  <div class="d300-pop-title" id="d300-pop-title">D-300 GUIDE</div>
+  <div class="d300-pop-title" id="d300-pop-title">ORACLE GUIDE</div>
   <div id="d300-pop-text"></div>
 </div>
 <div class="d300-drone docked" id="d300-drone" aria-hidden="true"></div>
@@ -1161,7 +1163,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
     <div class="d300-head">
       <div class="d300-dock-pad" aria-hidden="true"></div>
       <div class="d300-title">
-        <div class="d300-name">D-300</div>
+        <div class="d300-name">Oracle</div>
         <div class="d300-status" id="d300-status">NAVIGATION DRONE ONLINE</div>
       </div>
       <div class="d300-controls">
@@ -1226,9 +1228,9 @@ en:{
   share_compare:'SHARE COMPARISON', share_hangar:'SHARE HANGAR',
   share_choice_title:'SHARE LINK', share_copy_link:'COPY LINK', share_send_tg:'SEND TO TELEGRAM', share_cancel:'CANCEL',
   d300_status:'NAVIGATION DRONE ONLINE', d300_tour:'START GUIDE', d300_tip:'TIP', d300_nav:'NAVIGATE', d300_feedback:'FEEDBACK',
-  welcome_text:'Set up your hub before launch. D-300 can guide you through the site on first run.',
+  welcome_text:'Set up your hub before launch. Oracle can guide you through the site on first run.',
   welcome_theme:'THEME', welcome_dark:'DARK', welcome_light:'LIGHT',
-  welcome_language:'LANGUAGE', welcome_tutorial:'D-300 TUTORIAL',
+  welcome_language:'LANGUAGE', welcome_tutorial:'ORACLE TUTORIAL',
   welcome_tour_yes:'START TUTORIAL', welcome_tour_no:'SKIP FOR NOW', welcome_enter:'ENTER HUB',
   cmp_slot1:'SLOT 1', cmp_slot2:'SLOT 2', cmp_slot3:'SLOT 3',
   cmp_pick:'Click to pick a mech', cmp_choose:'— Choose Mech —',
@@ -1314,9 +1316,9 @@ ua:{
   share_compare:'ПОДІЛИТИСЯ ПОРІВНЯННЯМ', share_hangar:'ПОДІЛИТИСЯ АНГАРОМ',
   share_choice_title:'ПОДІЛИТИСЯ ПОСИЛАННЯМ', share_copy_link:'СКОПІЮВАТИ', share_send_tg:'НАДІСЛАТИ В TELEGRAM', share_cancel:'СКАСУВАТИ',
   d300_status:'НАВІГАЦІЙНИЙ ДРОН ОНЛАЙН', d300_tour:'ПОЧАТИ ГАЙД', d300_tip:'ПІДКАЗКА', d300_nav:'НАВІГАЦІЯ', d300_feedback:'ФІДБЕК',
-  welcome_text:'Налаштуй хаб перед запуском. D-300 може провести короткий гайд по сайту.',
+  welcome_text:'Налаштуй хаб перед запуском. Oracle може провести короткий гайд по сайту.',
   welcome_theme:'ТЕМА', welcome_dark:'ТЕМНА', welcome_light:'СВІТЛА',
-  welcome_language:'МОВА', welcome_tutorial:'ТУТОРІАЛ D-300',
+  welcome_language:'МОВА', welcome_tutorial:'ТУТОРІАЛ ORACLE',
   welcome_tour_yes:'ПРОЙТИ ТУТОРІАЛ', welcome_tour_no:'ПОКИ ПРОПУСТИТИ', welcome_enter:'УВІЙТИ В ХАБ',
   cmp_slot1:'СЛОТ 1', cmp_slot2:'СЛОТ 2', cmp_slot3:'СЛОТ 3',
   cmp_pick:'Натисніть, щоб обрати меха', cmp_choose:'— Обрати меха —',
@@ -2488,22 +2490,22 @@ function goToTab(name) {
   if (btn) switchTab(name, btn);
 }
 
-// ===== D-300 ASSISTANT =====
+// ===== ORACLE ASSISTANT =====
 const D300_TEXT = {
   en: {
-    hello: 'D-300 online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
+    hello: 'Oracle online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
     home: 'Home is your command deck: jump to mechs, calculators, maps, skins, and quick tools from here.',
     gear: 'Mechs tab stores the roster. Use filters, then open a mech card to inspect ranks, role, ability, pros, and cons.',
     cheat: 'Cheatsheets are the fast memory core: weapon rules, pilot basics, XP, and high-value reminders.',
-    calc: 'Calculator mode: choose mechs, weapons, pilots, or mods first. Then D-300 approves the math ritual.',
+    calc: 'Calculator mode: choose mechs, weapons, pilots, or mods first. Then Oracle approves the math ritual.',
     compare: 'Compare needs at least two mechs. Pick them, then share the comparison link or send it to Telegram.',
     hangar: 'Hangar Rate checks your squad balance. Select up to five mechs and I will judge them with tasteful circuitry.',
     promo: 'Promo codes can expire fast. Refresh, copy, redeem, repeat. Very advanced button science.',
     maps: 'Maps contain callouts and tactical notes. Open a map when your squad needs less chaos and more plan.',
     skins: 'Skins are clickable. Open a card, browse the gallery, and submit missing skins through the form.',
     feedback: 'Feedback goes to the Google Form. Missing data, bad price, broken button: send it there.',
-    menu: 'Where should D-300 route you?',
-    tourDone: 'Guide complete. D-300 will remain in the corner and pretend this was effortless.',
+    menu: 'Where should Oracle route you?',
+    tourDone: 'Guide complete. Oracle will remain in the corner and pretend this was effortless.',
     random: [
       'Beep status: stylish and mildly overclocked.',
       'If the math looks scary, the calculator eats it for breakfast.',
@@ -2511,23 +2513,23 @@ const D300_TEXT = {
       'Tactical wisdom uploaded: do not fight five enemies alone. Usually.',
       'Skin gallery contains 184 reasons to click things.',
       'A-Coins detected. Spending impulse suppression: unstable.',
-      'D-300 fact: buttons work better when pressed intentionally.'
+      'Oracle fact: buttons work better when pressed intentionally.'
     ]
   },
   ua: {
-    hello: 'D-300 онлайн. Я проведу тебе по хабу, поясню вкладки й іноді видаватиму дуже професійні роботні звуки.',
+    hello: 'Oracle онлайн. Я проведу тебе по хабу, поясню вкладки й іноді видаватиму дуже професійні роботні звуки.',
     home: 'Головна — це командна панель: звідси можна швидко перейти до мехів, калькуляторів, мап, скінів та інструментів.',
     gear: 'Вкладка мехів — це ростер. Використовуй фільтри й відкривай картки з рангами, роллю, навичкою, плюсами та мінусами.',
-    cheat: 'Шпаргалки — швидка пам’ять D-300: правила зброї, пілоти, XP і важливі нагадування.',
-    calc: 'Калькулятор: спочатку обери меха, зброю, пілота або мод. Потім D-300 схвалить математичний ритуал.',
+    cheat: 'Шпаргалки — швидка пам’ять Oracle: правила зброї, пілоти, XP і важливі нагадування.',
+    calc: 'Калькулятор: спочатку обери меха, зброю, пілота або мод. Потім Oracle схвалить математичний ритуал.',
     compare: 'Для порівняння треба мінімум два мехи. Обери їх, а потім скопіюй лінк або надішли в Telegram.',
     hangar: 'Оцінка ангара перевіряє баланс складу. Обери до п’яти мехів, і я ввічливо засуджу дисбаланс.',
     promo: 'Промокоди швидко зникають. Оновив, скопіював, активував, повторив. Наука про кнопки.',
     maps: 'Мапи мають позивні й тактичні нотатки. Відкривай їх, коли команді треба менше хаосу й більше плану.',
     skins: 'Скіни клікабельні. Відкрий карточку, гортай галерею, а відсутні скіни надсилай через форму.',
     feedback: 'Фідбек іде в Google Form. Немає даних, неправильна ціна, зламана кнопка — усе туди.',
-    menu: 'Куди D-300 прокладе маршрут?',
-    tourDone: 'Гайд завершено. D-300 лишається в кутку й робить вигляд, що це було легко.',
+    menu: 'Куди Oracle прокладе маршрут?',
+    tourDone: 'Гайд завершено. Oracle лишається в кутку й робить вигляд, що це було легко.',
     random: [
       'Біп-статус: стильно й трохи перегріто.',
       'Якщо математика лякає, калькулятор з’їсть її на сніданок.',
@@ -2535,13 +2537,13 @@ const D300_TEXT = {
       'Тактична мудрість завантажена: не бийся сам проти п’ятьох. Зазвичай.',
       'У галереї скінів 184 причини натискати на речі.',
       'A-Монети виявлено. Система стримування витрат нестабільна.',
-      'Факт D-300: кнопки краще працюють, коли їх натискають навмисно.'
+      'Факт Oracle: кнопки краще працюють, коли їх натискають навмисно.'
     ]
   }
 };
 
 const D300_TOUR = [
-  { tab:'home', selector:'header', title:'D-300', key:'home' },
+  { tab:'home', selector:'header', title:'Oracle', key:'home' },
   { tab:'home', selector:'#home-content .home-nav-grid', title:'Route Deck', key:'home' },
   { tab:'gear', selector:'#gh-mech-controls', title:'Mech Roster', key:'gear' },
   { tab:'calc', selector:'#pane-calc .calc-subtabs', title:'Calculators', key:'calc' },
@@ -2603,10 +2605,21 @@ function d300OpenMenu() {
   d300SetLine(d300Text('menu'));
   d300KeepDocked();
   const actions = document.getElementById('d300-actions');
-  const routes = [['gear','MECHS'],['calc','CALC'],['compare','COMPARE'],['hangar','HANGAR'],['maps','MAPS'],['skins','SKINS']];
+  const routes = [
+    ['home', t('tab_home')],
+    ['gear', t('tab_mechs')],
+    ['cheat', t('tab_cheat')],
+    ['calc', t('tab_calc')],
+    ['compare', t('tab_compare')],
+    ['hangar', t('tab_hangar')],
+    ['promo', t('tab_promo')],
+    ['maps', t('tab_maps')],
+    ['skins', t('tab_skins')]
+  ];
   actions.innerHTML = routes.map(([tab, label]) =>
     `<button class="action-btn" type="button" onclick="goToTab('${tab}');d300Tip();d300DefaultActions()">${label}</button>`
   ).join('') + `<button class="tool-btn" type="button" onclick="d300DefaultActions();d300Tip()">${LANG === 'ua' ? 'НАЗАД' : 'BACK'}</button>`;
+  d300KeepDocked();
 }
 
 function d300StartTour() {
@@ -2739,7 +2752,10 @@ function d300ReturnHome() {
 }
 
 function d300KeepDocked() {
-  if (d300TourIndex < 0) requestAnimationFrame(d300ReturnHome);
+  if (d300TourIndex >= 0) return;
+  requestAnimationFrame(d300ReturnHome);
+  setTimeout(d300ReturnHome, 80);
+  setTimeout(d300ReturnHome, 220);
 }
 
 function d300NextTour() {
@@ -2784,20 +2800,20 @@ function d300SayRandom() {
 function d300Minimize() {
   document.getElementById('d300-widget')?.classList.add('min');
   localStorage.setItem('d300_min', '1');
-  requestAnimationFrame(d300ReturnHome);
+  d300KeepDocked();
 }
 
 function d300Expand() {
   document.getElementById('d300-widget')?.classList.remove('min');
   localStorage.setItem('d300_min', '0');
-  requestAnimationFrame(d300ReturnHome);
+  d300KeepDocked();
 }
 
 function d300Init() {
   d300ApplyLang();
   d300DefaultActions();
   d300SetLine(d300Text('hello'));
-  requestAnimationFrame(d300ReturnHome);
+  d300KeepDocked();
   if (localStorage.getItem('d300_min') === '1') d300Minimize();
   if (!localStorage.getItem('mah_welcome_done')) {
     setTimeout(showWelcomeModal, 250);
@@ -4735,9 +4751,12 @@ function renderPromoCodes(codes, lastUpdated) {
     return;
   }
 
-  grid.innerHTML = codes.map(c => {
+  const sortedCodes = [...codes].sort((a, b) => Number(Boolean(b.is_new)) - Number(Boolean(a.is_new)));
+  grid.innerHTML = sortedCodes.map(c => {
     const reward = c.reward ? `<div class="promo-reward">${escHtml(c.reward)}</div>` : '';
-    return `<div class="promo-card" id="card-${c.id}">
+    const isNew = Boolean(c.is_new);
+    return `<div class="promo-card${isNew ? ' promo-new' : ''}" id="card-${c.id}">
+      ${isNew ? '<div class="promo-new-badge">*NEW*</div>' : ''}
       <div class="promo-code-wrap">
         <div class="promo-code-text">${escHtml(c.code)}</div>
       </div>

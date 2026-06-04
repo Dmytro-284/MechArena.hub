@@ -4,8 +4,11 @@ CREATE TABLE IF NOT EXISTS promo_codes (
   id      UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
   code    TEXT    NOT NULL,
   reward  TEXT    NOT NULL DEFAULT '',
-  active  BOOLEAN NOT NULL DEFAULT true
+  active  BOOLEAN NOT NULL DEFAULT true,
+  is_new  BOOLEAN NOT NULL DEFAULT false
 );
+
+ALTER TABLE promo_codes ADD COLUMN IF NOT EXISTS is_new BOOLEAN NOT NULL DEFAULT false;
 
 ALTER TABLE promo_codes ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "public_read" ON promo_codes FOR SELECT USING (true);

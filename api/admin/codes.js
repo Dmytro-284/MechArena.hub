@@ -42,13 +42,13 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { code, reward } = req.body || {};
+    const { code, reward, is_new } = req.body || {};
     if (!code) return res.status(400).json({ error: 'code is required' });
 
     const r    = await fetch(base, {
       method:  'POST',
       headers: sbHeaders(),
-      body:    JSON.stringify({ code: code.trim().toUpperCase(), reward: (reward || '').trim(), active: true })
+      body:    JSON.stringify({ code: code.trim().toUpperCase(), reward: (reward || '').trim(), active: true, is_new: Boolean(is_new) })
     });
     const rows = await r.json();
     if (!r.ok) return res.status(r.status).json(rows);
@@ -65,6 +65,7 @@ module.exports = async function handler(req, res) {
     if ('code'   in body) row.code   = String(body.code).trim().toUpperCase();
     if ('reward' in body) row.reward = String(body.reward || '').trim();
     if ('active' in body) row.active = Boolean(body.active);
+    if ('is_new' in body) row.is_new = Boolean(body.is_new);
 
     const r    = await fetch(`${base}?id=eq.${id}`, { method: 'PATCH', headers: sbHeaders(), body: JSON.stringify(row) });
     const rows = await r.json();

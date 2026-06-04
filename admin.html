@@ -84,6 +84,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .tbl-row:hover{background:rgba(0,212,255,.03);}
 .td{padding:10px 14px;font-size:13px;overflow:hidden;}
 .td-code{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--acc);}
+.code-new-badge{display:inline-flex;margin-left:8px;padding:2px 6px;border-radius:999px;background:rgba(255,48,48,.14);border:1px solid rgba(255,48,48,.55);color:#ff4d4d;font-family:'Orbitron',monospace;font-size:8px;font-weight:900;letter-spacing:1px;vertical-align:middle;}
 .td-reward{color:var(--acc3);font-weight:600;}
 .td-actions{display:flex;gap:6px;padding:8px 10px;}
 .act-btn{padding:4px 10px;background:transparent;border:1px solid var(--brd);color:var(--dim);font-size:11px;cursor:pointer;border-radius:3px;transition:all .15s;font-family:'Montserrat',sans-serif;}
@@ -199,6 +200,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
               <input type="text" class="finput" id="f-reward" placeholder="500 A-Coins + 3 crates">
             </div>
           </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
+            <label class="flbl" style="margin:0">Mark as *NEW*</label>
+            <label class="toggle">
+              <input type="checkbox" id="f-is-new">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
           <div class="form-actions">
             <button class="btn-secondary" onclick="toggleAddForm()">CANCEL</button>
             <button class="btn-primary" onclick="submitAdd()">SAVE</button>
@@ -309,6 +318,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <span class="toggle-track"></span>
           <span class="toggle-thumb"></span>
         </label>
+        <label class="flbl" style="margin:0;margin-left:14px">*NEW*</label>
+        <label class="toggle">
+          <input type="checkbox" id="e-is-new">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
       </div>
     </div>
     <div class="modal-foot">
@@ -411,7 +426,7 @@ function renderTable() {
           <span class="toggle-track"></span><span class="toggle-thumb"></span>
         </label>
       </div>
-      <div class="td td-code">${esc(c.code)}</div>
+      <div class="td td-code">${esc(c.code)}${c.is_new ? '<span class="code-new-badge">*NEW*</span>' : ''}</div>
       <div class="td td-reward">${esc(c.reward) || '—'}</div>
       <div class="td td-actions">
         <button class="act-btn edit" onclick="openEdit('${c.id}')">Edit</button>
@@ -425,14 +440,14 @@ function toggleAddForm() {
   const open = box.classList.toggle('visible');
   btn.classList.toggle('open', open);
   btn.textContent = open ? '✕ CANCEL' : '＋ ADD NEW PROMO CODE';
-  if (!open) { g('f-code').value = ''; g('f-reward').value = ''; }
+  if (!open) { g('f-code').value = ''; g('f-reward').value = ''; g('f-is-new').checked = false; }
 }
 
 async function submitAdd() {
   const code = g('f-code').value.trim();
   if (!code) { toast('Code is required', true); return; }
   try {
-    const item = await api('POST', '/api/admin/codes', { code, reward: g('f-reward').value.trim() });
+    const item = await api('POST', '/api/admin/codes', { code, reward: g('f-reward').value.trim(), is_new: g('f-is-new').checked });
     allCodes.unshift(item); updateStats(); renderTable(); toggleAddForm(); toast('Code added ✓');
   } catch { toast('Failed to save', true); }
 }
@@ -440,7 +455,7 @@ async function submitAdd() {
 function openEdit(id) {
   const c = allCodes.find(x => x.id === id); if (!c) return;
   g('e-id').value = c.id; g('e-code').value = c.code;
-  g('e-reward').value = c.reward || ''; g('e-active').checked = c.active;
+  g('e-reward').value = c.reward || ''; g('e-active').checked = c.active; g('e-is-new').checked = Boolean(c.is_new);
   g('edit-modal').classList.add('open');
 }
 function closeEditModal() { g('edit-modal').classList.remove('open'); }
@@ -449,7 +464,7 @@ async function submitEdit() {
   const id = g('e-id').value, code = g('e-code').value.trim();
   if (!code) { toast('Code is required', true); return; }
   try {
-    const updated = await api('PUT', `/api/admin/codes?id=${id}`, { code, reward: g('e-reward').value.trim(), active: g('e-active').checked });
+    const updated = await api('PUT', `/api/admin/codes?id=${id}`, { code, reward: g('e-reward').value.trim(), active: g('e-active').checked, is_new: g('e-is-new').checked });
     const idx = allCodes.findIndex(c => c.id === id);
     if (idx >= 0) allCodes[idx] = updated;
     updateStats(); renderTable(); closeEditModal(); toast('Updated ✓');

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1206,7 +1206,8 @@ en:{
   lbl_ability_stats:'ABILITY STATS — RANK', lbl_hp_rank:'HP at Rank',
   lbl_speed:'Speed', lbl_power:'Power', lbl_energy_rank:'Energy at Rank', lbl_max_energy:'Max Energy (R7)',
   lbl_of_max_game:'% of max in game', lbl_of_max:'% of max',
-  lbl_energy_pips:'ENERGY PIPS AT RANK', lbl_pros:'PROS', lbl_cons:'CONS',
+  lbl_energy_pips:'ENERGY PIPS AT RANK',
+  lbl_combat_profile:'COMBAT PROFILE', lbl_ability_notes:'ABILITY NOTES',
   lbl_spotlight:'MECH SPOTLIGHT', lbl_gear_tier:'Gear Hub Tier',
   lbl_approx:'Approximate — exact data not available',
   nav_mechs_title:'MECHS', nav_compare_title:'COMPARE', nav_calc_title:'CALCULATOR',
@@ -1294,7 +1295,8 @@ ua:{
   lbl_ability_stats:'ПАРАМЕТРИ НАВИЧКИ — РАНГ', lbl_hp_rank:'HP на ранзі',
   lbl_speed:'Швидкість', lbl_power:'Сила', lbl_energy_rank:'Енергія на ранзі', lbl_max_energy:'Макс. енергія (R7)',
   lbl_of_max_game:'% від макс. у грі', lbl_of_max:'% від макс.',
-  lbl_energy_pips:'ЕНЕРГІЯ НА РАНЗІ', lbl_pros:'ПЛЮСИ', lbl_cons:'МІНУСИ',
+  lbl_energy_pips:'ЕНЕРГІЯ НА РАНЗІ',
+  lbl_combat_profile:'БОЙОВИЙ ПРОФІЛЬ', lbl_ability_notes:'НОТАТКИ НАВИЧКИ',
   lbl_spotlight:'ОГЛЯД МЕХА', lbl_gear_tier:'Рівень Gear Hub',
   lbl_approx:'Наближено — точні дані відсутні',
   nav_mechs_title:'МЕХИ', nav_compare_title:'ПОРІВНЯННЯ', nav_calc_title:'КАЛЬКУЛЯТОР',
@@ -1551,322 +1553,230 @@ function welcomeApply() {
 const MECHS = {
   paragon:{name:'Paragon',role:'Attacker',rarity:'Common',energy:32,speed:18,icon:'🤖',color:'#aaaaaa',gearTier:1,startRank:1,
     ability:{name:'Boost',desc:'Redirects power to drive systems for a quick speed burst (~+7 km/h). Useful for capturing points or escaping.'},
-    pros:['Heavy energy (32E) — can equip any weapon combo','Good starter mech for learning','Decent HP for a common mech'],
-    cons:['Ability is weak — just a speed burst','Outclassed quickly by every specialist','No unique niche once you progress'],
     bestBuilds:['2× Rocket Mortar 12 (backline sniper)','2× Longarm 12','Rail Gun 16 + Disc Launcher 8'],
     ranks:{1:{hp:9000,energy:8},2:{hp:15700,energy:12},3:{hp:24200,energy:16},4:{hp:35100,energy:20},5:{hp:48800,energy:24},6:{hp:66100,energy:28},7:{hp:85400,energy:32}}},
 
   lancer:{name:'Lancer',role:'Scout',rarity:'Common',energy:16,speed:25,icon:'🦅',color:'#cc4444',gearTier:1,startRank:1,
     ability:{name:'Jump Jets',desc:'Activates thrusters to jump over walls and reach rooftops. Allows high-ground advantage and projectile dodging.'},
-    pros:['Iconic ability — unique vertical movement','Fast (25 km/h) — great for beacon capture','Jump lets you dodge Javelin Racks'],
-    cons:['Only 16E — very limited weapon choice','Map-dependent — useless without vertical terrain','Easy to kill on the ground'],
     bestBuilds:['Javelin Rack 8 + Shotgun 4 (high-ground rain)','2× Arc Torrent 6','Missile Rack 8 + Shotgun 4'],
     ranks:{1:{hp:9000,energy:4},2:{hp:15700,energy:6},3:{hp:24200,energy:8},4:{hp:35100,energy:10},5:{hp:48800,energy:12},6:{hp:66100,energy:14},7:{hp:85400,energy:16}}},
 
   juggernaut:{name:'Juggernaut',role:'Tank',rarity:'Common',energy:24,speed:16,icon:'🛡️',color:'#5588aa',gearTier:2,startRank:1,
     ability:{name:'Personal Shield',desc:'Activates a personal shield that protects the Mech from damage.'},
-    pros:['2nd highest HP in game','360° shield — no weak flanks','Solid mid-game tank'],
-    cons:['16 km/h — slowest class, can\'t chase or retreat','Shield can be bypassed by Arc Torrents, Rocket Mortars','Outclassed by Aegis and Brickhouse late game'],
     bestBuilds:['2× Arc Torrent 10 (abuse high HP)','Disc Launcher 12 + Pod Gun 8','2× Ember Gun 8'],
     ranks:{1:{hp:13500,energy:6},2:{hp:24800,energy:8},3:{hp:43100,energy:12},4:{hp:66700,energy:16},5:{hp:87000,energy:18},6:{hp:112100,energy:20},7:{hp:152200,energy:24}}},
 
   md:{name:'M.D.',role:'Support',rarity:'Common',energy:16,speed:18,icon:'💊',color:'#44aaaa',gearTier:1,startRank:1,
     ability:{name:'Repair Field',desc:'Repairs damage to all friendly Mechs within the field radius.'},
-    pros:['Only common healer','Useful in organized team play'],
-    cons:['16E only — very limited weapons','Replaced by Salvor and Guardian at higher ranks','Bots rarely stand still to be healed'],
     bestBuilds:['Disc Launcher 8 + Fragment Gun 6','Thermal Lance 6 + RPG 6'],
     ranks:{1:{hp:9000,energy:4},2:{hp:18600,energy:6},3:{hp:28700,energy:8},4:{hp:41700,energy:10},5:{hp:56000,energy:12},6:{hp:78400,energy:14},7:{hp:101400,energy:16}}},
 
   puma:{name:'Puma',role:'Attacker',rarity:'Uncommon',energy:32,speed:22,icon:'🐆',color:'#88cc88',gearTier:2,startRank:2,
     ability:{name:'Shield Wall',desc:'Deploys a static shield that blocks enemy projectiles until it expires or is destroyed.'},
-    pros:['Cheap Gear Hub filler for stars'],
-    cons:['No real niche vs Lancer or Shadow','Skip unless needed for progression'],
     bestBuilds:['Shotgun 4 + Thermal Lance 4'],
     ranks:{1:{hp:6000,energy:8},2:{hp:12400,energy:12},3:{hp:19200,energy:16},4:{hp:27800,energy:20},5:{hp:38700,energy:24},6:{hp:52300,energy:28},7:{hp:67600,energy:32}}},
 
   slingshot:{name:'Slingshot',role:'Scout',rarity:'Uncommon',energy:24,speed:25,icon:'⚡',color:'#88cc88',gearTier:2,startRank:2,
     ability:{name:'Force Dash',desc:'Launches this Mech forward. Colliding with any object creates an AOE Smash that deals damage to enemies in its vicinity.'},
-    pros:['Tied fastest speed (25 km/h)','24E — decent weapon capacity','Good early-game assassin'],
-    cons:['Outclassed by Killshot and Nomad later','Uncommon tier — limited ceiling'],
     bestBuilds:['Disc Launcher 8 + Shotgun 4','2× Fragment Gun 6'],
     ranks:{1:{hp:6000,energy:6},2:{hp:11000,energy:8},3:{hp:19200,energy:12},4:{hp:29600,energy:16},5:{hp:38700,energy:18},6:{hp:49800,energy:20},7:{hp:67600,energy:24}}},
 
   panther:{name:'Panther',role:'Attacker',rarity:'Epic',energy:32,speed:20,icon:'🐈‍⬛',color:'#8844aa',gearTier:4,startRank:3,
     ability:{name:'Stasis Barrier',desc:'Deploys a barrier that blocks bullets and applies a Stasis Effect to enemies that enter.'},
-    pros:['32E — heaviest loadout possible','Stasis Barrier is uniquely powerful — blocks shots AND counters snipers','Great backline anchor'],
-    cons:['Ability requires positioning knowledge','Slower than pure scouts at 20 km/h'],
     bestBuilds:['2× Graviton Beam 10 (backline + barrier)','2× Rail Gun 16','Storm Rack 10 + Graviton Beam 10'],
     ranks:{1:{hp:7500,energy:8},2:{hp:21900,energy:12},3:{hp:33900,energy:16},4:{hp:49100,energy:20},5:{hp:68300,energy:24},6:{hp:92400,energy:28},7:{hp:119500,energy:32}}},
 
   killshot:{name:'Killshot',role:'Scout',rarity:'Epic',energy:24,speed:25,icon:'💀',color:'#cc2222',gearTier:5,startRank:3,
     ability:{name:'Melee Dash',desc:'Launches this Mech forward at high speed. Colliding with any object creates an AOE Smash that deals significant damage to enemies in its vicinity.'},
-    pros:['Tied fastest speed (25 km/h)','Melee Dash is one of the strongest abilities — damage + mobility','5s cooldown is almost always available','Versatile — works in every situation'],
-    cons:['Lower HP vs tanks — dies fast if caught','Countered hard by Juggernaut, Ares, Zephyr, Surge','Outclassed by Nomad at legendary tier'],
     bestBuilds:['Disc Launcher 12 + Missile Rack 8','2× Arc Torrent 8','Revoker 10 + Disc Launcher 8'],
     ranks:{1:{hp:7500,energy:6},2:{hp:19500,energy:8},3:{hp:33900,energy:12},4:{hp:52300,energy:16},5:{hp:68300,energy:18},6:{hp:88000,energy:20},7:{hp:119500,energy:24}}},
 
   ares:{name:'Ares',role:'Tank',rarity:'Rare',energy:24,speed:18,icon:'⚔️',color:'#cc5500',gearTier:3,startRank:3,
     ability:{name:'Wide Shield',desc:'Activates a portable shield that protects the Mech and allies from enemy fire.'},
-    pros:['Directional shield has no time limit — very durable','EMP explosion on break punishes enemies','Higher speed than Juggernaut at 18 km/h','First strong tank in the Gear Hub'],
-    cons:['Flanks are completely exposed — back and sides take full damage','Shield HP doesn\'t refresh unless broken','Outclassed by Aegis and Brickhouse later'],
     bestBuilds:['2× Arc Torrent 8 (shield + CQC)','Disc Launcher 8 + Missile Rack 8','2× Carbine 8'],
     ranks:{1:{hp:12000,energy:6},2:{hp:26200,energy:8},3:{hp:45600,energy:12},4:{hp:70400,energy:16},5:{hp:91900,energy:18},6:{hp:118400,energy:20},7:{hp:160800,energy:24}}},
 
   shadow:{name:'Shadow',role:'Scout',rarity:'Rare',energy:16,speed:22,icon:'👤',color:'#334455',gearTier:2,startRank:1,
     ability:{name:'Stealth',desc:'While active, the Mech moves faster and is ignored by enemy targeting systems.'},
-    pros:['Fast for a light mech','Stealth enables invisible beacon captures'],
-    cons:['16E only — very limited','Stealth breaks immediately on firing','Outclassed by Killshot, Slingshot, Eclipse immediately'],
     bestBuilds:['Shotgun 4 + Fragment Gun 6'],
     ranks:{1:{hp:6000,energy:4},2:{hp:14700,energy:6},3:{hp:22800,energy:8},4:{hp:33000,energy:10},5:{hp:46000,energy:12},6:{hp:62200,energy:14},7:{hp:80400,energy:16}}},
 
   guardian:{name:'Guardian',role:'Attacker',rarity:'Rare',energy:32,speed:16,icon:'💉',color:'#22aaaa',gearTier:3,startRank:3,
     ability:{name:'System Crash',desc:'Disables Weapons and puts Abilities on cooldown.'},
-    pros:['32E heavy — supports any weapon combo','System Crash disables enemy weapons AND ability through walls','Strong area-denial — can shut down entire team','Good HP pool'],
-    cons:['16 km/h — very slow for an attacker','Hemlock\'s ECM Shot can disable System Crash','Easy backline target'],
     bestBuilds:['2× Disc Launcher 12 (heal + attack through walls)','Storm Rack 10 + Pod Gun 8','2× Helix Rack 8'],
     ranks:{1:{hp:10500,energy:8},2:{hp:25800,energy:12},3:{hp:39900,energy:16},4:{hp:57800,energy:20},5:{hp:80400,energy:24},6:{hp:108800,energy:28},7:{hp:140700,energy:32}}},
 
   cheetah:{name:'Cheetah',role:'Support',rarity:'Epic',energy:24,speed:20,icon:'🐈',color:'#aaaa22',gearTier:3,startRank:3,
     ability:{name:'Mines',desc:'Drops a proximity mine on the battlefield. Each mine deals intense area damage when triggered.'},
-    pros:['Area-denial utility — useful for holding beacons','Mines can be very effective in narrow corridors'],
-    cons:['Mines visible and avoidable at higher divisions','20 km/h is mediocre for a scout'],
     bestBuilds:['Shotgun 4 + Thermal Lance 4','Fragment Gun 6 + RPG 4'],
     ranks:{1:{hp:8300,energy:6},2:{hp:21400,energy:8},3:{hp:37200,energy:12},4:{hp:57600,energy:16},5:{hp:75100,energy:18},6:{hp:96800,energy:20},7:{hp:131400,energy:24}}},
 
   zephyr:{name:'Zephyr',role:'Support',rarity:'Epic',energy:24,speed:19,icon:'⚡',color:'#2244bb',gearTier:3,startRank:3,
     ability:{name:'Shock Pulse',desc:'Triggers an energy pulse, applying an EMP Effect that stops enemy Mechs from moving or attacking.'},
-    pros:['EMP disables entire area — massive team utility','Counters Killshot, Surge dashes hard','24E — decent mid-range weapons'],
-    cons:['Support role — depends on team to capitalize the stun','Medium speed at 19 km/h','EMP can be activated from stealth or around corners'],
     bestBuilds:['2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8','2× Disc Launcher 8'],
     ranks:{1:{hp:7500,energy:6},2:{hp:19500,energy:8},3:{hp:33900,energy:12},4:{hp:52300,energy:16},5:{hp:68300,energy:18},6:{hp:88000,energy:20},7:{hp:119500,energy:24}}},
 
   brickhouse:{name:'Brickhouse',role:'Support',rarity:'Legendary',energy:24,speed:14,icon:'🏠',color:'#aa6622',gearTier:7,startRank:3,
     ability:{name:'Overcharger',desc:'Amplify your weapon systems. Works even better on nearby allies.'},
-    pros:['241,500 HP — among the highest HP tanks in the game','Double Damage ability — burst threat unlike any tank','Strong solo-carry potential'],
-    cons:['14 km/h — extremely slow even for a tank','Skip recommendation in Gear Hub — costs too many A-coins','Outclassed defensively by Aegis late-game'],
     bestBuilds:['2× Storm Rack 10 (double damage)','2× Disc Launcher 12','Revoker 10 + Graviton Beam 10'],
     ranks:{1:{hp:12800,energy:6},2:{hp:39300,energy:8},3:{hp:68400,energy:12},4:{hp:105800,energy:16},5:{hp:138000,energy:18},6:{hp:177800,energy:20},7:{hp:241500,energy:24}}},
 
   redox:{name:'Redox',role:'Attacker',rarity:'Legendary',energy:32,speed:18,icon:'🔄',color:'#22bb55',gearTier:4,startRank:3,
     ability:{name:'Caustic Blast',desc:'Emits a chemical burst that applies Stasis and a Corrosion Effect to nearby enemies, slowing and damaging them.'},
-    pros:['32E — full weapon flexibility','Caustic Blast slows AND corrodes — double debuff','Good HP for an attacker'],
-    cons:['Short range — need to be in melee distance to land ability','Ability is less reliable than direct damage or shields'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Graviton Beam 10','2× Rocket Mortar 10'],
     ranks:{1:{hp:9000,energy:8},2:{hp:31200,energy:12},3:{hp:48300,energy:16},4:{hp:70000,energy:20},5:{hp:97400,energy:24},6:{hp:131800,energy:28},7:{hp:170400,energy:32}}},
 
   surge:{name:'Surge',role:'Scout',rarity:'Legendary',energy:24,speed:25,icon:'💥',color:'#ff6600',gearTier:7,startRank:5,
     ability:{name:'Storm Dash',desc:'Launches forward. Colliding with any object results in an EMP Smash. This AOE attack applies an EMP Debuff to any enemies in its radius, and applies a Stealth Buff to this Mech so it cannot be targeted.'},
-    pros:['One of the best mechs in the game','EMP Dash combines Killshot\'s mobility with Zephyr\'s stun','Tied fastest speed (25 km/h)','24E — great weapon options','Counters Killshot entirely'],
-    cons:['9,375 A-coins — most expensive unlock in game','Counter: Panther\'s Stasis Barrier blocks the dash stun'],
     bestBuilds:['2× Revoker 10 (dash in, shred)','2× Storm Rack 10','Revoker 10 + Disc Launcher 12'],
     ranks:{1:{hp:9000,energy:6},2:{hp:27800,energy:8},3:{hp:48300,energy:12},4:{hp:74700,energy:16},5:{hp:97400,energy:18},6:{hp:125500,energy:20},7:{hp:170400,energy:24}}},
 
   arachnos:{name:'Arachnos',role:'Support',rarity:'Rare',energy:32,speed:14,icon:'🕷️',color:'#773399',gearTier:4,startRank:4,
     ability:{name:'Spider Turret',desc:'Deploys a small destructible turret. When an enemy approaches it, the turret will activate and attack.'},
-    pros:['32E — can carry heavy weapons for a support','Spider Turret provides passive damage and area pressure'],
-    cons:['14 km/h — very slow','Considered C-tier at high divisions','Turret is avoidable with awareness'],
     bestBuilds:['2× Helix Rack 8','Disc Launcher 12 + Helix Rack 8'],
     ranks:{1:{hp:9000,energy:8},2:{hp:22100,energy:12},3:{hp:34200,energy:16},4:{hp:49500,energy:20},5:{hp:68900,energy:24},6:{hp:93300,energy:28},7:{hp:120600,energy:32}}},
 
   stalker:{name:'Stalker',role:'Attacker',rarity:'Rare',energy:24,speed:22,icon:'👁️',color:'#554477',gearTier:5,startRank:4,
     ability:{name:'Predator Drive',desc:'Overloads core amplifiers, causing the Mech to deal - and take - more damage. Also recovers some HP for each enemy destroyed.'},
-    pros:['Predator Drive boosts damage output temporarily','22 km/h — decent scout speed'],
-    cons:['24E — moderate weapon choice','Predator Drive increases damage TAKEN too — risky at low HP','Outclassed by Eclipse and Panther'],
     bestBuilds:['Disc Launcher 8 + Fragment Gun 6'],
     ranks:{1:{hp:10500,energy:6},2:{hp:22900,energy:8},3:{hp:39900,energy:12},4:{hp:61600,energy:16},5:{hp:80400,energy:18},6:{hp:103600,energy:20},7:{hp:140700,energy:24}}},
 
   tengu:{name:'Tengu',role:'Scout',rarity:'Rare',energy:16,speed:14,icon:'👹',color:'#cc2244',gearTier:4,startRank:4,
     ability:{name:'Sky Strike',desc:'Launches the Mech into the air, activating stealth systems so the Mech cannot be targeted. Also immune to EMP Effects while airborne. On landing, deals heavy damage and applies a Stasis Effect in a radius.'},
-    pros:['Sky Strike is EMP-immune while airborne — counters Zephyr and Surge'],
-    cons:['Only 16E — cannot carry viable weapons','14 km/h slow AND 16E max = worst combo in game','D-tier — avoid'],
     bestBuilds:['Fragment Gun 6 + RPG 4'],
     ranks:{1:{hp:10500,energy:4},2:{hp:25800,energy:6},3:{hp:39900,energy:8},4:{hp:57800,energy:10},5:{hp:80400,energy:12},6:{hp:108800,energy:14},7:{hp:140700,energy:16}}},
 
   aegis:{name:'Aegis',role:'Tank',rarity:'Epic',energy:24,speed:20,icon:'🔮',color:'#4477cc',gearTier:6,startRank:4,
     ability:{name:'Dome Shield',desc:'Deploys a dome which blocks enemy weapons and most abilities. The Dome Shield disappears when its HP reaches 0 or when the timer runs out.'},
-    pros:['Top S-tier tank','215,000 HP — extremely tanky','750k HP dome = nearly indestructible shield for team','20 km/h — fastest tank class','Can fire through own dome'],
-    cons:['Dashing mechs (Surge) can enter the dome','Hemlock\'s ECM Shot disables Aegis ability','Zephyr EMP passes through dome'],
     bestBuilds:['2× Pod Gun 8 (range + dome combo)','2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8'],
     ranks:{1:{hp:13500,energy:6},2:{hp:35000,energy:8},3:{hp:60900,energy:12},4:{hp:94200,energy:16},5:{hp:122900,energy:18},6:{hp:158400,energy:20},7:{hp:215100,energy:24}}},
 
   orion:{name:'Orion',role:'Support',rarity:'Epic',energy:24,speed:23,icon:'🌟',color:'#aaaa22',gearTier:5,startRank:4,
     ability:{name:"Hunter's Mark",desc:"Fire a tracking flare at an enemy Mech. If you hit, will apply a Marked Effect and a brief Stasis Effect. All Weapon attacks against Marked Mechs count as back hits, and also deal bonus Damage."},
-    pros:["Hunter's Mark is one of the best damage-amplifying abilities in the game","24E — meta weapons","23 km/h — fast for a support","Excellent in 1v1 and team fights"],
-    cons:["Flare has travel time — fast mechs can dodge it","Cloaked mechs (Eclipse, Shadow) cannot be targeted","Less effective solo without teammates to capitalize the mark"],
     bestBuilds:['2× Storm Rack 10 (mark + barrage)','2× EM Rifle 16 (long-range mark kills)','Storm Rack 10 + Overdriver 10'],
     ranks:{1:{hp:9800,energy:6},2:{hp:25300,energy:8},3:{hp:44000,energy:12},4:{hp:68000,energy:16},5:{hp:88800,energy:18},6:{hp:114400,energy:20},7:{hp:155300,energy:24}}},
 
   redeemer:{name:'Redeemer',role:'Scout',rarity:'Epic',energy:24,speed:22,icon:'↩️',color:'#4488bb',gearTier:5,startRank:4,
     ability:{name:'Backtrack',desc:'Returns this Mech to where it was standing moments ago and removes any Debuffs.'},
-    pros:['Backtrack is a unique defensive tool — escape any situation','Debuff removal at max rank is extremely valuable','22 km/h — decent scout speed'],
-    cons:['Takes practice to use backtrack effectively','Backtrack can sometimes go out of bounds on small maps'],
     bestBuilds:['2× Disc Launcher 12','Revoker 8 + Disc Launcher 8','Storm Rack 8 + Missile Rack 8'],
     ranks:{1:{hp:10500,energy:6},2:{hp:27200,energy:8},3:{hp:47400,energy:12},4:{hp:73300,energy:16},5:{hp:95600,energy:18},6:{hp:123200,energy:20},7:{hp:167300,energy:24}}},
 
   sentinel:{name:'Sentinel',role:'Tank',rarity:'Epic',energy:24,speed:15,icon:'🚧',color:'#556677',gearTier:5,startRank:4,
     ability:{name:'Tall Shield',desc:'Deploys a vertical barrier which can block arcing projectiles. Max Level Bonus: Tall Shield regenerates faster as Sentinel takes Damage.'},
-    pros:['Provides cover for team'],
-    cons:['Weak overall — skip in Gear Hub','15 km/h — slow and not tanky enough vs Aegis','24E helps but ability is inferior'],
     bestBuilds:['Pod Gun 8 + Missile Rack 8'],
     ranks:{1:{hp:12800,energy:6},2:{hp:33100,energy:8},3:{hp:57500,energy:12},4:{hp:89000,energy:16},5:{hp:116100,energy:18},6:{hp:149600,energy:20},7:{hp:203100,energy:24}}},
 
   gatecrasher:{name:'Gatecrasher',role:'Attacker',rarity:'Legendary',energy:32,speed:21,icon:'💣',color:'#cc7700',gearTier:10,startRank:5,
     ability:{name:'Ion Pod',desc:'Fires a Pod that sticks and causes an Ion Blast. When sticking to objects, it releases an Ion Beam that deals damage over time to enemies on the opposite side. When sticking to Mechs, there is no Beam.'},
-    pros:['221,600 HP — 2nd highest among attackers (after Dreadnought)','32E — heaviest loadout','21 km/h — surprisingly fast for this bulk','Ion Pod enables unique wall-penetration plays'],
-    cons:['Largest hitbox in game — vulnerable to AOE','Ion Pod is hard to aim and requires map knowledge','Skip per F2P guide — inefficient A-coin spend'],
     bestBuilds:['2× Rail Gun 16 (pod finisher)','2× EM Rifle 16','Disc Launcher 12 + Rail Gun 16'],
     ranks:{1:{hp:11700,energy:8},2:{hp:40600,energy:12},3:{hp:62800,energy:16},4:{hp:91000,energy:20},5:{hp:126700,energy:24},6:{hp:171400,energy:28},7:{hp:221600,energy:32}}},
 
   bastion:{name:'Bastion',role:'Tank',rarity:'Legendary',energy:24,speed:14,icon:'🏯',color:'#557755',gearTier:9,startRank:5,
     ability:{name:'Blast Shield',desc:'Activates a ring shield around the Mech to absorb damage. When the shield HP hits zero, it releases a spherical explosion that deals damage and applies an EMP debuff to enemy Mechs within its radius.'},
-    pros:['32E — strongest tank loadout','340,920 HP — HIGHEST HP in the entire game','Blast Shield explodes when broken — EMP punishes attackers'],
-    cons:['14 km/h — slowest even by tank standards','F2P guide: skip — inefficient A-coin spend','Aegis outclasses it defensively'],
     bestBuilds:['2× Disc Launcher 12','2× Rocket Mortar 12','Storm Rack 10 + Pod Gun 10'],
     ranks:{1:{hp:18000,energy:6},2:{hp:55560,energy:8},3:{hp:96600,energy:12},4:{hp:149400,energy:16},5:{hp:194880,energy:18},6:{hp:251040,energy:20},7:{hp:340920,energy:24}}},
 
   onyx:{name:'Onyx',role:'Attacker',rarity:'Legendary',energy:32,speed:18,icon:'⬛',color:'#222233',gearTier:9,startRank:5,
     ability:{name:'Quad Rocket',desc:'A built-in Ability Weapon with a cooldown timer. When activated, launches four rockets that fly in a direct line and deal Splash Damage on impact.'},
-    pros:['32E + built-in weapon = extremely high damage ceiling','Quad Rocket splash can hit multiple targets'],
-    cons:['Skip per F2P guide — inefficient A-coin spend','~100,000 HP is low for a legendary tank-sized mech','Quad Rocket damage is modest at high divisions'],
     bestBuilds:['2× Disc Launcher 12 + Quad Rocket ability','2× Storm Rack 10','Revoker 10 + Disc Launcher 16'],
     ranks:{1:{hp:10500,energy:8},2:{hp:36400,energy:12},3:{hp:56300,energy:16},4:{hp:81700,energy:20},5:{hp:113700,energy:24},6:{hp:153800,energy:28},7:{hp:198900,energy:32}}},
 
   eclipse:{name:'Eclipse',role:'Scout',rarity:'Legendary',energy:24,speed:22,icon:'🌑',color:'#3322aa',gearTier:7,startRank:5,
     ability:{name:'Phase Cloak',desc:"When active, the Mech's Speed increases, it is ignored by enemy targeting systems, and cannot be affected by Debuffs."},
-    pros:['S-tier scout','Cloak + speed boost = excellent ambush and escape','24E — meta weapons fit perfectly','Strong sustained backline fighter'],
-    cons:['Cloak breaks on weapon fire — can\'t fire while cloaked','22 km/h — slightly slower than Surge/Killshot'],
     bestBuilds:['2× Minigun 10 (cloak + sustained DPS)','2× Pod Gun 10','Minigun 10 + Storm Rack 8'],
     ranks:{1:{hp:9000,energy:6},2:{hp:27800,energy:8},3:{hp:48300,energy:12},4:{hp:74700,energy:16},5:{hp:97400,energy:18},6:{hp:125500,energy:20},7:{hp:170400,energy:24}}},
 
   nomad:{name:'Nomad',role:'Scout',rarity:'Legendary',energy:24,speed:25,icon:'🦋',color:'#7722cc',gearTier:10,startRank:5,
     ability:{name:'Chain Dash',desc:'Launches the Mech forward, causing it to temporarily take reduced Damage. If it directly hits a Mech, it deals Damage to it and has a short time within which it can Dash to a different Mech.'},
-    pros:['S-tier — top meta scout','Chain Dash chains across multiple mechs — unique multi-target ability','Tied fastest speed (25 km/h)','24E — perfect weapon capacity','Reduced damage during dash — survivability in close combat'],
-    cons:['Chaining requires direct hits — can be blocked by distance or cover','Less defensive utility than Eclipse or Deathwalker'],
     bestBuilds:['2× Revoker 10','Storm Rack 10 + Revoker 8','2× Disc Launcher 12'],
     ranks:{1:{hp:9600,energy:6},2:{hp:29600,energy:8},3:{hp:51500,energy:12},4:{hp:79700,energy:16},5:{hp:103900,energy:18},6:{hp:133900,energy:20},7:{hp:181800,energy:24}}},
 
   hemlock:{name:'Hemlock',role:'Support',rarity:'Legendary',energy:24,speed:20,icon:'☠️',color:'#22aa44',gearTier:8,startRank:5,
     ability:{name:'ECM Shot',desc:'Applies the Daze effect, disabling its target after a short delay. If the target is damaged, Daze is replaced by a short EMP effect. The total duration never exceeds the Daze Duration stat.'},
-    pros:['S-tier support','ECM Shot counters ability-heavy mechs (Guardian, Aegis)','24E — meta weapon combos','Strong solo carry'],
-    cons:['Requires landing ECM + follow-up damage for full EMP — skill-based'],
     bestBuilds:['Storm Rack 10 + Revoker 10','2× Storm Rack 10','Storm Rack 10 + Disc Launcher 12'],
     ranks:{1:{hp:10800,energy:6},2:{hp:33300,energy:8},3:{hp:58000,energy:12},4:{hp:89600,energy:16},5:{hp:116900,energy:18},6:{hp:150600,energy:20},7:{hp:204500,energy:24}}},
 
   scorpius:{name:'Scorpius',role:'Attacker',rarity:'Legendary',energy:32,speed:16,icon:'🦂',color:'#aa2244',gearTier:7,startRank:5,
     ability:{name:'Javelin Array',desc:'A built-in Ability Weapon with its own Cooldown timer. Launches a powerful Javelin salvo at its locked target, who is not notified of the lock.'},
-    pros:['32E — can carry heavy weapons','Javelin Array is homing and silent — enemy has no warning before impact'],
-    cons:['F2P guide: skip — not worth A-coins','C-tier — Hemlock and Orion do more in same energy class'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Helix Rack 8'],
     ranks:{1:{hp:9300,energy:8},2:{hp:32300,energy:12},3:{hp:49900,energy:16},4:{hp:72300,energy:20},5:{hp:100700,energy:24},6:{hp:136200,energy:28},7:{hp:176100,energy:32}}},
 
   vortex:{name:'Vortex',role:'Tank',rarity:'Legendary',energy:24,speed:17,icon:'🌀',color:'#2266aa',gearTier:8,startRank:5,
     ability:{name:'Nanobot Field',desc:"The Mech's Speed increases, and it forms a field of microscopic machines around itself, dealing continuous Damage to enemies and reducing Damage to the Mech and its Teammates."},
-    pros:['Unique triple-use ability — damage + speed + protection','24E — decent weaponry'],
-    cons:['C-tier competitive play','17 km/h — sluggish for a support','Limited range on nanobot field'],
     bestBuilds:['2× Pod Gun 8','Disc Launcher 8 + Storm Rack 8'],
     ranks:{1:{hp:17160,energy:6},2:{hp:52800,energy:8},3:{hp:91800,energy:12},4:{hp:141840,energy:16},5:{hp:185160,energy:18},6:{hp:238560,energy:20},7:{hp:323880,energy:24}}},
 
   seeker:{name:'Seeker',role:'Attacker',rarity:'Legendary',energy:24,speed:22,icon:'🎯',color:'#cc6622',gearTier:8,startRank:5,
     ability:{name:'Warp',desc:'Teleports to an enemy within range. While teleporting, Seeker cannot take Damage. On arrival, activates a personal Shield and deals Bonus Damage for a short time before being teleported back.'},
-    pros:['24E — meta weapons','Warp is invincible during teleport — immune to all damage while warping'],
-    cons:['C-tier — ability requires coordination','22 km/h average scout speed'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Pod Gun 8'],
     ranks:{1:{hp:10200,energy:6},2:{hp:31500,energy:8},3:{hp:54700,energy:12},4:{hp:84600,energy:16},5:{hp:110400,energy:18},6:{hp:142300,energy:20},7:{hp:193200,energy:24}}},
 
   mimicker:{name:'Mimicker',role:'Scout',rarity:'Legendary',energy:32,speed:22,icon:'🪞',color:'#aaaaff',gearTier:8,startRank:5,
     ability:{name:'Adaptation',desc:'Scans an enemy and gets a temporary boost based on their Role: Damage, Shield, Stealth, Speed, or Repair.'},
-    pros:['32E — UNIQUE: only scout with heavy energy','Can equip any weapon combo including dual 16E','22 km/h — decent speed for the loadout capacity'],
-    cons:['Mimic ability is situational at high divisions','C-tier currently — ability rarely decisive'],
     bestBuilds:['2× Rail Gun 16 (unique scout sniper)','2× EM Rifle 16','Disc Launcher 16 + Rail Gun 16'],
     ranks:{1:{hp:9300,energy:8},2:{hp:32300,energy:12},3:{hp:49900,energy:16},4:{hp:72300,energy:20},5:{hp:100700,energy:24},6:{hp:136200,energy:28},7:{hp:176100,energy:32}}},
 
   solis:{name:'Solis',role:'Support',rarity:'Legendary',energy:32,speed:20,icon:'☀️',color:'#ddaa00',gearTier:8,startRank:5,
     ability:{name:'Optic Override',desc:'Throws an orb, which applies the Blind effect on impact, overriding the vision of enemies within radius. Blinded Mechs are unable to see and cannot use Weapons or Abilities that require a target lock.'},
-    pros:['32E — heavy loadout available','Optic Override disables guided weapons AND abilities — powerful vs Orion, Killshot, Surge','Can be used twice before cooldown — more coverage','Area-of-effect on miss'],
-    cons:['C-tier overall — ability niche at top level','Low HP for a legendary mech','Relies on enemies using guided weapons to be most effective'],
     bestBuilds:['2× Disc Launcher 12 (32E = dual 12E guided)','Rail Gun 16 + Disc Launcher 16','2× Storm Rack 10 + Rail Gun 16 slot'],
     ranks:{1:{hp:9000,energy:8},2:{hp:31200,energy:12},3:{hp:48300,energy:16},4:{hp:70000,energy:20},5:{hp:97400,energy:24},6:{hp:131800,energy:28},7:{hp:170400,energy:32}}},
 
   lacewing:{name:'Lacewing',role:'Scout',rarity:'Legendary',energy:24,speed:23,icon:'🦟',color:'#77bbbb',gearTier:8,startRank:5,
     ability:{name:'Mine Jump',desc:'Leaps into the air, dropping a Mine at its position each time it jumps.'},
-    pros:['23 km/h — near top speed','24E — strong weapon options','B-tier — competitive'],
-    cons:['Mines deal modest damage at higher divisions'],
     bestBuilds:['Revoker 10 + Disc Launcher 12','2× Storm Rack 8'],
     ranks:{1:{hp:10500,energy:6},2:{hp:32400,energy:8},3:{hp:56300,energy:12},4:{hp:87100,energy:16},5:{hp:113700,energy:18},6:{hp:146500,energy:20},7:{hp:198900,energy:24}}},
 
   blockhorn:{name:'Blockhorn',role:'Tank',rarity:'Legendary',energy:32,speed:16,icon:'🦬',color:'#885522',gearTier:9,startRank:5,
     ability:{name:'Barricade',desc:'Deploys an impassable Barricade which blocks enemy fire and most Abilities. Has an Amp Zone behind it, which increases the Damage dealt by allies within. Lasts until it hits 0 HP or the timer elapses.'},
-    pros:['32E — full loadout','Barricade provides unique team cover','B-tier — solid defensive anchor'],
-    cons:['16 km/h tank speed','Barricade is fixed — enemies can go around it'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Pod Gun 10','2× Rocket Mortar 12'],
     ranks:{1:{hp:12000,energy:8},2:{hp:41600,energy:12},3:{hp:64400,energy:16},4:{hp:93300,energy:20},5:{hp:129900,energy:24},6:{hp:175800,energy:28},7:{hp:227300,energy:32}}},
 
   deathwalker:{name:'Deathwalker',role:'Tank',rarity:'Legendary',energy:32,speed:24,icon:'💀',color:'#553366',gearTier:9,startRank:5,
     ability:{name:'Reanimate',desc:'Once activated, a point appears on the ground and speed increases. If Deathwalker is killed while the Ability is active, it returns to that point with 100% of the HP it had at activation, plus a % of total HP. Also invulnerable while being returned.'},
-    pros:['24 km/h — near-top speed','Reanimate = second chance at life','B-tier — strong late-game scout'],
-    cons:['Reanimate point must be placed before taking fatal damage'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Revoker 8'],
     ranks:{1:{hp:12000,energy:8},2:{hp:41600,energy:12},3:{hp:64400,energy:16},4:{hp:93300,energy:20},5:{hp:129900,energy:24},6:{hp:175800,energy:28},7:{hp:227300,energy:32}}},
 
   outlaw:{name:'Outlaw',role:'Attacker',rarity:'Legendary',energy:32,speed:20,icon:'🤠',color:'#aa7722',gearTier:9,startRank:5,
     ability:{name:'Foul Play',desc:'Targets an enemy Mech, even through walls, to disable its Weapons and put its Ability on Cooldown. The time this takes depends on how far the target is. Any other enemies within a certain radius of the target are also affected.'},
-    pros:['Foul Play disables enemy weapons AND ability through walls','A-tier — solid competitive pick','32E — maximum loadout potential'],
-    cons:['Long cooldown — must choose timing carefully','Has range limit — need to be within range'],
     bestBuilds:['2× Disc Launcher 12','Storm Rack 10 + Graviton Beam 10'],
     ranks:{1:{hp:11300,energy:8},2:{hp:39000,energy:12},3:{hp:60400,energy:16},4:{hp:87500,energy:20},5:{hp:121800,energy:24},6:{hp:164800,energy:28},7:{hp:213100,energy:32}}},
 
   salvor:{name:'Salvor',role:'Support',rarity:'Legendary',energy:32,speed:24,icon:'🚑',color:'#22aa77',gearTier:8,startRank:5,
     ability:{name:'Regen Shot',desc:'Locks onto any allied Mech and fires a projectile that heals a portion of their HP and partially heals Salvor. Ability has 3 charges. Hold the Ability button to fire all projectiles quickly at a single target.'},
-    pros:['Best dedicated healer — fires 3 missiles that heal 60k+ HP if all land','32E — can carry meaningful weapons while healing','24 km/h — fastest support class','A-tier support'],
-    cons:['227,300 HP — high HP for a support class','Relies on teammates being within range'],
     bestBuilds:['Helix Rack 8 + Disc Launcher 12','2× Helix Rack 8','Disc Launcher 12 + Storm Rack 8'],
     ranks:{1:{hp:12000,energy:8},2:{hp:41600,energy:12},3:{hp:64400,energy:16},4:{hp:93300,energy:20},5:{hp:129900,energy:24},6:{hp:175800,energy:28},7:{hp:227300,energy:32}}},
 
   dreadnought:{name:'Dreadnought',role:'Attacker',rarity:'Legendary',energy:32,speed:17,icon:'🚀',color:'#5577bb',gearTier:9,startRank:5,
     ability:{name:'Wipe Out',desc:'Rains down missiles in front of Dreadnought, which damages enemies within the area and applies an EMP effect. If this kills an enemy, Dreadnought\'s Speed increases and its Ability Cooldown is reset.'},
-    pros:['S-tier attacker','Wipe Out stuns on every rocket hit — massive CC','Kill = instant cooldown reset = chain kills','32E — full loadout'],
-    cons:['17 km/h — slow for its role','Range and splash weapons counter it well','Rockets can be dodged by fast mechs'],
     bestBuilds:['2× Rocket Mortar 12','Storm Rack 10 + Rocket Mortar 10','2× Storm Rack 10'],
     ranks:{1:{hp:12000,energy:8},2:{hp:41600,energy:12},3:{hp:64400,energy:16},4:{hp:93300,energy:20},5:{hp:129900,energy:24},6:{hp:175800,energy:28},7:{hp:227300,energy:32}}},
 
   parasite:{name:'Parasite',role:'Tank',rarity:'Legendary',energy:24,speed:22,icon:'🦠',color:'#336622',gearTier:9,startRank:5,
     ability:{name:'Redirection',desc:'Locks onto an enemy in front and links with it. While active, Parasite redirects a percentage of the Damage it receives to the linked enemy. Parasite also receives less Damage.'},
-    pros:['Redirection reflects incoming damage back to your target','24E — meta weapon options','B-tier'],
-    cons:['22 km/h average scout speed','Damage only redirects while ability is active — timing critical'],
     bestBuilds:['2× Disc Launcher 12','Revoker 10 + Storm Rack 8'],
     ranks:{1:{hp:13800,energy:6},2:{hp:42600,energy:8},3:{hp:74100,energy:12},4:{hp:114500,energy:16},5:{hp:149400,energy:18},6:{hp:192500,energy:20},7:{hp:261300,energy:24}}},
 
   volti:{name:'Volti',role:'Attacker',rarity:'Legendary',energy:32,speed:19,icon:'⚡',color:'#aacc00',gearTier:8,startRank:5,
     ability:{name:'Thunderstorm',desc:'Locks on and teleports a drone to the target. The drone projects a damaging zone and applies Shock. The more enemies in the damage zone, the shorter the Ability Duration. Damage does not bypass Shields.'},
-    pros:['A-tier attacker','Thunderstorm ignores cover — punishes campers and wall-huggers','24E — meta weapons'],
-    cons:['19 km/h — average attacker speed','Thunderstorm requires staying near target for duration'],
     bestBuilds:['2× Storm Rack 10','Storm Rack 10 + Overdriver 10','Disc Launcher 12 + Storm Rack 8'],
     ranks:{1:{hp:11000,energy:8},2:{hp:38000,energy:12},3:{hp:58800,energy:16},4:{hp:85200,energy:20},5:{hp:118500,energy:24},6:{hp:160400,energy:28},7:{hp:207400,energy:32}}},
 
   silverthorn:{name:'Silverthorn',role:'Attacker',rarity:'Legendary',energy:32,speed:20,icon:'⚔️',color:'#aabbcc',gearTier:9,startRank:5,
     ability:{name:'Blade Burst',desc:'Fires five blades, damaging and slowing on hit. After a time, the blades retract, dealing Splash Damage around the target(s) based on Damage dealt to them by Silverthorn while the Ability was active.'},
-    pros:['A-tier attacker','Blade Burst can theoretically hit entire enemy team','Chain explosions deal massive multi-target damage','32E — full loadout','Slowing effect reduces enemy mobility'],
-    cons:['Blades fire quickly — hard to aim all 5 intentionally','20 km/h — standard attacker speed'],
     bestBuilds:['2× Storm Rack 10','2× Disc Launcher 12','Overdriver 12 + Storm Rack 10'],
     ranks:{1:{hp:11700,energy:8},2:{hp:40600,energy:12},3:{hp:62800,energy:16},4:{hp:91000,energy:20},5:{hp:126700,energy:24},6:{hp:171400,energy:28},7:{hp:221600,energy:32}}},
 
   blizzfrost:{name:'Blizzfrost',role:'Scout',rarity:'Legendary',energy:24,speed:20,icon:'❄️',color:'#88ccee',gearTier:9,startRank:5,
     ability:{name:'Icy Grip',desc:'Creates a zone that freezes enemies and makes Blizzfrost immune to Stasis. Frozen enemies take Damage and cannot move or use movement Abilities. The more enemies frozen, the less Damage Blizzfrost takes (scales up to 2). If no enemies are frozen, Blizzfrost takes less Damage and gets a Speed boost.'},
-    pros:['B-tier — Christmas 2025 addition','Freeze is unique — different from EMP stun','Stasis immunity is rare and valuable','24E — meta weapons'],
-    cons:['Frozen enemies can still shoot back — position carefully','Speed boost is only consolation if no freeze landed'],
     bestBuilds:['2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8','2× Pod Gun 8'],
     ranks:{1:{hp:9600,energy:6},2:{hp:29600,energy:8},3:{hp:51500,energy:12},4:{hp:79700,energy:16},5:{hp:103900,energy:18},6:{hp:133900,energy:20},7:{hp:181800,energy:24}}},
 
   citadel:{name:'Citadel',role:'Support',rarity:'Legendary',energy:24,speed:18,icon:'🏰',color:'#776655',gearTier:10,startRank:5,
     ability:{name:'Seismic Field',desc:'Creates a zone that reduces enemy speed and prevents activation of their movement Abilities. Receives a speed boost and shield, which gains HP for each enemy in the zone (up to 3). If Shield breaks, Ability Cooldown is reduced.'},
-    pros:['Unique support tank hybrid — shield for teammates','24E — decent weapon options','B-tier — solid in organized team play'],
-    cons:['18 km/h — below average speed','24E limits weapon ceiling vs heavy mechs','Relatively new — limited community data'],
     bestBuilds:['2× Pod Gun 8 (2×8E = 16E, within 24E cap)','Storm Rack 10 + Disc Launcher 8 (18E total)','Graviton Beam 10 + Missile Rack 8 (18E total)'],
     ranks:{1:{hp:17160,energy:6},2:{hp:52800,energy:8},3:{hp:91800,energy:12},4:{hp:141840,energy:16},5:{hp:185160,energy:18},6:{hp:238560,energy:20},7:{hp:323880,energy:24}}},
   tailsting:{name:'Tailsting',role:'Attacker',rarity:'Legendary',energy:24,speed:22,icon:'📡',color:'#5c7ee6',gearTier:10,startRank:null,noImage:true,
     ability:{name:'Signal Jammer',desc:"Fires a sphere which applies the Restrict status effect on a hit. While under this effect, enemies can't activate their Ability or use Weapons, and they receive increased Damage. A % of Damage also bypasses enemy Shields. Targets are prevented from rotating the top part of their Mech's chassis."},
-    pros:['Restrict shuts down weapons and abilities on hit','80% shield bypass makes it dangerous into shield-heavy mechs','22 km/h and 24E give solid attacker flexibility'],
-    cons:['Requires landing the sphere to trigger Restrict','24E limits weapon ceiling compared with 32E attackers','New mech — meta value still needs live testing'],
     bestBuilds:['2× Storm Rack 10','Revoker 10 + Disc Launcher 8','Pod Gun 10 + Graviton Beam 10'],
     ranks:{1:{hp:10200,energy:6,power:79},2:{hp:31500,energy:8,power:159},3:{hp:54700,energy:12,power:276},4:{hp:84600,energy:16,power:427},5:{hp:110400,energy:18,power:557},6:{hp:142300,energy:20,power:718},7:{hp:193200,energy:24,power:975}}},
 };
@@ -1874,233 +1784,141 @@ const MECHS = {
 const MECHS_UA = {
   paragon: {
     ability_desc: 'Перенаправляє потужність до рушіїв для швидкого прискорення (~+7 км/г). Корисно для захоплення маяків або відступу.',
-    pros: ['Важка енергія (32E) — підходить будь-яка зброя', 'Ідеальний для початківців', 'Непоганий HP для звичайного меха'],
-    cons: ['Здатність слабка — просто прискорення', 'Швидко поступається спеціалістам', 'Немає унікальної ніші для прогресу'],
   },
   lancer: {
     ability_desc: 'Активує реактивні двигуни для стрибка через стіни та на дахи. Дає перевагу висоти та можливість ухилятися від снарядів.',
-    pros: ['Унікальна вертикальна мобільність', 'Швидкий (25 км/г) — ідеальний для захоплення маяків', 'Стрибок дозволяє ухилятися від Javelin Rack'],
-    cons: ['Лише 16E — обмежений вибір зброї', 'Залежить від карти — марний без вертикального рельєфу', 'Легко вбити на землі'],
   },
   juggernaut: {
     ability_desc: 'Активує особистий щит, який захищає від пошкоджень.',
-    pros: ['2-й за HP у грі', 'Щит на 360° — немає слабких флангів', 'Надійний середньоігровий танк'],
-    cons: ['16 км/г — найповільніший клас', 'Щит пробивається Arc Torrent, Rocket Mortar', 'Поступається Aegis та Brickhouse'],
   },
   md: {
     ability_desc: 'Відновлює пошкодження всіх союзних мехів в радіусі поля.',
-    pros: ['Єдиний звичайний хілер', 'Корисний у командній грі'],
-    cons: ['Лише 16E — дуже обмежена зброя', 'Замінюється Salvor та Guardian', 'Боти рідко стоять нерухомо для лікування'],
   },
   puma: {
     ability_desc: 'Розгортає статичний щит, який блокує снаряди ворогів до закінчення часу або знищення.',
-    pros: ['Дешеве заповнення Gear Hub для зірок'],
-    cons: ['Немає реальної ніші порівняно з Lancer або Shadow', 'Пропустити, якщо не потрібно для прогресу'],
   },
   slingshot: {
     ability_desc: 'Запускає меха вперед. Зіткнення з будь-яким об\'єктом створює AOE удар, що завдає шкоди ворогам поблизу.',
-    pros: ['Найшвидший (25 км/г)', '24E — непоганий потенціал зброї', 'Хороший ранній ассасин'],
-    cons: ['Поступається Killshot та Nomad пізніше', 'Рівень Uncommon — обмелена стеля'],
   },
   panther: {
     ability_desc: 'Розгортає бар\'єр, який блокує кулі та застосовує ефект Stasis до ворогів, що входять.',
-    pros: ['32E — найважчий можливий набір', 'Stasis Barrier унікально потужна — блокує постріли і контрить снайперів', 'Чудовий тиловий якір'],
-    cons: ['Здатність потребує позиційних знань', 'Повільніший за чистих розвідників — 20 км/г'],
   },
   killshot: {
     ability_desc: 'Запускає меха вперед на великій швидкості. Зіткнення з будь-яким об\'єктом створює AOE удар зі значною шкодою.',
-    pros: ['Найшвидший (25 км/г)', 'Melee Dash — одна з найсильніших здатностей — шкода + мобільність', 'Кулдаун 5с — майже завжди доступна', 'Універсальна — підходить для будь-якої ситуації'],
-    cons: ['Менший HP ніж у танків — гине швидко', 'Контрять Juggernaut, Ares, Zephyr, Surge', 'Поступається Nomad'],
   },
   ares: {
     ability_desc: 'Активує переносний щит, що захищає меха та союзників від ворожого вогню.',
-    pros: ['Щит без обмеження часу — дуже витривалий', 'EMP-вибух при руйнуванні карає ворогів', 'Швидший за Juggernaut — 18 км/г', 'Перший потужний танк у Gear Hub'],
-    cons: ['Фланги повністю відкриті — спина та боки отримують повну шкоду', 'HP щита не відновлюється без руйнування', 'Поступається Aegis та Brickhouse пізніше'],
   },
   shadow: {
     ability_desc: 'Під час активації мех рухається швидше і ігнорується системами наведення ворогів.',
-    pros: ['Непоганий для легкого меха', 'Маскування дозволяє захоплювати маяки непомітно'],
-    cons: ['Лише 16E — дуже обмежена зброя', 'Маскування зникає при пострілі', 'Поступається Killshot, Slingshot, Eclipse одразу'],
   },
   guardian: {
     ability_desc: 'Вимикає зброю та переводить здатності на кулдаун.',
-    pros: ['System Crash вимикає зброю та здатність ворога крізь стіни', 'Масовий контроль — може відключити цілу команду', '32E — підтримує будь-яку комбінацію зброї', 'Хороший запас HP'],
-    cons: ['16 км/г — дуже повільний', 'ECM Shot Hemlock може відключити System Crash', 'Легка ціль на задньому фланзі'],
   },
   cheetah: {
     ability_desc: 'Кидає контактну міну на поле бою. Кожна міна завдає інтенсивної шкоди по площі при спрацюванні.',
-    pros: ['Контроль зони — корисний для утримання маяків', 'Міни дуже ефективні у вузьких коридорах'],
-    cons: ['Міни видимі і обходяться досвідченими гравцями', '20 км/г — посередня швидкість для розвідника'],
   },
   zephyr: {
     ability_desc: 'Запускає енергетичний імпульс, застосовуючи ефект EMP, що зупиняє мехів від руху та атаки.',
-    pros: ['EMP вимикає ціле укриття — масштабна командна корисність', 'Контрить ривки Killshot та Surge', '24E — непогана зброя середнього радіусу'],
-    cons: ['Роль підтримки — потребує команди для використання EMP', 'Середня швидкість 19 км/г', 'EMP може бути активований із маскування або з-за кута'],
   },
   brickhouse: {
     ability_desc: 'Підсилює системи зброї. Ще краще працює на союзників поруч.',
-    pros: ['241 500 HP — один із найвищих серед танків у грі', 'Overcharger подвоює шкоду — унікальна ударна загроза для танка', 'Сильний соло-кері потенціал'],
-    cons: ['14 км/г — надзвичайно повільний', 'Пропустити в Gear Hub — занадто багато A-монет', 'Поступається Aegis в обороні'],
   },
   redox: {
     ability_desc: 'Випускає хімічний вибух, що застосовує Stasis та ефект Корозії до ворогів поблизу, сповільнюючи та пошкоджуючи їх.',
-    pros: ['32E — повна гнучкість зброї', 'Caustic Blast сповільнює ТА роз\'їдає — подвійний дебафф', 'Непоганий HP для атакуючого'],
-    cons: ['Короткий радіус — потрібна ближня дистанція', 'Здатність менш надійна ніж пряма шкода або щити'],
   },
   surge: {
     ability_desc: 'Запускається вперед. Зіткнення з об\'єктом викликає EMP Удар. AOE атака застосовує EMP до ворогів у радіусі та Stealth Buff до меха.',
-    pros: ['Один із найкращих мехів у грі', 'EMP-ривок поєднує мобільність Killshot із оглушенням Zephyr', 'Найшвидший (25 км/г)', '24E — чудові варіанти зброї', 'Повністю контрить Killshot'],
-    cons: ['9375 A-монет — найдорожча розблокування в грі', 'Stasis Barrier Panther блокує оглушення при ривку'],
   },
   arachnos: {
     ability_desc: 'Розгортає маленьку турель, що знищується. Коли ворог підходить, турель активується і атакує.',
-    pros: ['32E — може нести важку зброю для підтримки', 'Spider Turret дає пасивний тиск і контроль зони'],
-    cons: ['14 км/г — дуже повільний', 'C-рівень на вищих дивізіонах', 'Турель обходиться обізнаними гравцями'],
   },
   stalker: {
     ability_desc: 'Перевантажує підсилювачі ядра, змушуючи меха завдавати — та отримувати — більше шкоди. Також відновлює HP за кожного знищеного ворога.',
-    pros: ['Predator Drive тимчасово підвищує шкоду — режим ризику/нагороди', '22 км/г — непогана швидкість'],
-    cons: ['24E — помірний вибір зброї', 'Predator Drive збільшує також ОТРИМУВАНУ шкоду — уникати при низькому HP', 'Поступається Eclipse та Panther'],
   },
   tengu: {
     ability_desc: 'Піднімає меха в повітря, активуючи систему маскування. Імунітет до EMP у повітрі. При приземленні завдає важкої шкоди та Stasis в радіусі.',
-    pros: ['Sky Strike дає імунітет до EMP у повітрі — жорсткий контр Zephyr', 'Невразливий під час польоту — виживає в оглушеннях'],
-    cons: ['Лише 16E — неможливо нести ефективну зброю', '14 км/г + 16E = найгірша комбінація в грі', 'D-рівень — уникати'],
   },
   aegis: {
     ability_desc: 'Розгортає купол, що блокує зброю ворогів та більшість здатностей. Зникає при 0 HP або після закінчення часу.',
-    pros: ['Топ S-рівень танк', '215 000 HP — надзвичайно витривалий', 'Купол 750k HP — майже незнищенний щит для команди', '20 км/г — найшвидший клас танків', 'Може стріляти крізь власний купол'],
-    cons: ['Механи із ривком (Surge) можуть входити в купол', 'ECM Shot Hemlock вимикає здатність Aegis', 'EMP Zephyr проходить крізь купол'],
   },
   orion: {
     ability_desc: 'Випускає ракету-маяк. При влучанні застосовує ефект Позначки та короткий Stasis. Всі атаки по позначеному цілі рахуються як удар у спину.',
-    pros: ['Hunter\'s Mark — одна з найкращих здатностей для підсилення шкоди', '24E — метазброя', '23 км/г — швидкий для підтримки', 'Відмінний у 1v1 та командних боях'],
-    cons: ['Ракета летить — швидкі мехи можуть ухилитися', 'Мехи у маскуванні (Eclipse, Shadow) не стають ціллю', 'Менш ефективний поодинці'],
   },
   redeemer: {
     ability_desc: 'Повертає меха туди, де він стояв кілька секунд тому, і знімає дебаффи.',
-    pros: ['Backtrack — унікальний захисний інструмент — вихід з будь-якої ситуації', 'Зняття дебаффу дуже цінне', '22 км/г — непогана швидкість'],
-    cons: ['Потрібна практика для ефективного використання', 'Backtrack може виходити за межі карти на малих картах'],
   },
   sentinel: {
     ability_desc: 'Розгортає вертикальний бар\'єр, що блокує навісні снаряди. Макс. бонус: щит регенерує швидше коли Sentinel отримує шкоду.',
-    pros: ['Забезпечує укриття для команди', 'Tall Shield блокує навісні снаряди'],
-    cons: ['Слабкий загалом — пропустити в Gear Hub', '15 км/г — повільний і не такий живучий як Aegis', '24E допомагає, але здатність поступається'],
   },
   gatecrasher: {
     ability_desc: 'Випускає капсулу, що прилипає та викликає іонний вибух. При прилипанні до об\'єктів — іонний промінь крізь стіну. При прилипанні до мехів — промінь відсутній.',
-    pros: ['221 600 HP — 2-й найвищий серед атакуючих (після Dreadnought)', '32E — найважчий набір', '21 км/г — несподівано швидкий для таких розмірів', 'Ion Pod дає унікальні атаки крізь стіни'],
-    cons: ['Найбільший hitbox у грі — вразливий до AOE', 'Ion Pod важко прицілити — потрібне знання карти', 'Пропустити за гайдом F2P'],
   },
   bastion: {
     ability_desc: 'Активує кільцевий щит навколо меха для поглинання шкоди. При 0 HP щита — сферичний вибух із EMP дебаффом для ворогів у радіусі.',
-    pros: ['32E — найсильніший набір танка', '340 920 HP — НАЙВИЩИЙ HP у всій грі', 'Blast Shield вибухає при руйнуванні — EMP карає атакуючих'],
-    cons: ['14 км/г — найповільніший навіть серед танків', 'Пропустити за гайдом F2P', 'Aegis перевершує в обороні'],
   },
   onyx: {
     ability_desc: 'Вбудована зброя з кулдауном. При активації — чотири ракети що летять прямо та завдають шкоди по площі при влученні.',
-    pros: ['32E + вбудована зброя = надзвичайно висока стеля шкоди', 'Quad Rocket по площі може вразити кількох ворогів'],
-    cons: ['Пропустити за гайдом F2P', '~100 000 HP — низько для легендарного', 'Шкода Quad Rocket скромна на вищих дивізіонах'],
   },
   eclipse: {
     ability_desc: 'Під час активації мех прискорюється, ігнорується системами наведення і не може бути уражений дебаффами.',
-    pros: ['S-рівень розвідник', 'Маскування + прискорення = відмінні засідки та відходи', '24E — метазброя ідеально підходить', 'Сильний стійкий боєць на задньому фланзі'],
-    cons: ['Маскування зникає при пострілі — не можна стріляти під маскуванням', '22 км/г — трохи повільніший за Surge/Killshot'],
   },
   nomad: {
     ability_desc: 'Запускає меха вперед, тимчасово зменшуючи отримувану шкоду. При прямому влучанні в меха — завдає шкоди та дає короткий час для ривку до іншого меха.',
-    pros: ['S-рівень — топ-мета розвідник', 'Chain Dash послідовно вражає кількох мехів — унікальна здатність ланцюгування', 'Найшвидший (25 км/г)', '24E — ідеальна ємність зброї', 'Знижена шкода під час ривку — виживаність у ближньому бою'],
-    cons: ['Ланцюгування вимагає прямих влучань — можна промахнутися якщо ворог рухається', 'Потрібна агресивна позиція — велика небезпека'],
   },
   hemlock: {
     ability_desc: 'Застосовує ефект Daze, вимикаючи ціль після короткої затримки. При завданні шкоди — Daze замінюється коротким EMP.',
-    pros: ['S-рівень підтримка', 'ECM Shot контрить мехів із сильними здатностями (Guardian, Aegis)', '24E — метакомбінації зброї', 'Сильний соло-кері'],
-    cons: ['Потрібно влучити ECM + завдати шкоди для повного EMP — вимагає навичок'],
   },
   scorpius: {
     ability_desc: 'Вбудована зброя з кулдауном. Запускає потужний залп Javelin по заблокованій цілі, яка не отримує попередження про захоплення.',
-    pros: ['32E — може нести важку зброю', 'Javelin Array — без попередження для ворога перед влученням'],
-    cons: ['Пропустити за гайдом F2P', 'C-рівень — Hemlock та Orion ефективніші'],
   },
   vortex: {
     ability_desc: 'Мех прискорюється та формує поле нанороботів навколо себе, завдаючи постійної шкоди ворогам та зменшуючи шкоду мехам та союзникам.',
-    pros: ['Унікальна потрійна здатність — шкода + швидкість + захист', '24E — непогана зброя'],
-    cons: ['C-рівень у конкурентній грі', '17 км/г — повільний для підтримки', 'Обмежений радіус поля нанороботів'],
   },
   seeker: {
     ability_desc: 'Телепортується до ворога в радіусі. Під час телепортації — невразливий. При прибутті — особистий щит та бонусна шкода на короткий час, потім телепортується назад.',
-    pros: ['Warp дає імунітет під час телепортації — не отримує шкоди', 'Особистий щит при прибутті + бонусна шкода', '24E — метазброя'],
-    cons: ['C-рівень — здатність потребує координації', '22 км/г — середня швидкість'],
   },
   mimicker: {
     ability_desc: 'Сканує ворога та отримує тимчасовий буст залежно від їх ролі: Шкода, Щит, Маскування, Швидкість або Відновлення.',
-    pros: ['32E — УНІКАЛЬНИЙ: єдиний розвідник із важкою енергією', 'Може нести будь-яку комбінацію зброї включно з двома 16E', '22 км/г — непогана швидкість для такої ємності'],
-    cons: ['Здатність ситуативна на вищих дивізіонах', 'C-рівень наразі — рідко вирішує вихід бою'],
   },
   solis: {
     ability_desc: 'Кидає сферу, що застосовує ефект Сліпоти при влученні, перекриваючи зір ворогів у радіусі. Осліплені мехи не можуть бачити та використовувати зброю з наведенням.',
-    pros: ['32E — важкий набір доступний', 'Optic Override вимикає наведену зброю та здатності', 'Можна використати двічі перед кулдауном — більше покриття', 'AOE ефект при промаху'],
-    cons: ['C-рівень загалом', 'Низький HP для легендарного меха', 'Ефективна лише проти ворогів з наведеною зброєю'],
   },
   lacewing: {
     ability_desc: 'Підстрибує в повітря, скидаючи міну при кожному стрибку.',
-    pros: ['23 км/г — близько до топ-швидкості', '24E — сильні варіанти зброї', 'B-рівень — конкурентоспроможний'],
-    cons: ['Міни завдають скромної шкоди на вищих дивізіонах'],
   },
   blockhorn: {
     ability_desc: 'Розгортає непрохідний Barricade, що блокує вогонь та більшість здатностей. Має Amp Zone позаду — збільшує шкоду союзників всередині. Триває до 0 HP або кінця таймера.',
-    pros: ['32E — повний набір', 'Barricade дає унікальне укриття для команди', 'B-рівень — надійний оборонний якір'],
-    cons: ['16 км/г — швидкість танка', 'Barricade фіксований — вороги можуть обійти'],
   },
   deathwalker: {
     ability_desc: 'При активації — точка з\'являється на землі та швидкість зростає. Якщо Deathwalker гине поки здатність активна — повертається до точки з 100% HP на момент активації плюс % від загального HP.',
-    pros: ['24 км/г — близько до топ-швидкості', 'Reanimate = другий шанс на life', 'B-рівень — сильний пізньоігровий мех'],
-    cons: ['Точку відновлення треба розмістити до отримання фатальної шкоди', 'Здатність не дає переваг без попередньої підготовки'],
   },
   outlaw: {
     ability_desc: 'Атакує ворожого меха, навіть крізь стіни, вимикаючи його зброю та переводячи здатність на кулдаун. Час залежить від відстані. Впливає на інших ворогів у радіусі цілі.',
-    pros: ['Foul Play вимикає зброю та здатність ворога крізь стіни', 'A-рівень — сильний конкурентний вибір', '32E — максимальний потенціал набору'],
-    cons: ['Довгий кулдаун — треба точно вибирати час', 'Обмеження відстані — потрібно бути в радіусі'],
   },
   salvor: {
     ability_desc: 'Наводиться на союзного меха та випускає снаряд, що лікує частину їх HP і частково лікує Salvor. 3 заряди. Утримання кнопки — всі снаряди в одну ціль.',
-    pros: ['Найкращий хілер — 3 ракети лікують 60k+ HP якщо всі влучають', '32E — може нести серйозну зброю під час лікування', '24 км/г — найшвидший клас підтримки', 'A-рівень підтримка'],
-    cons: ['227 300 HP — високий HP для підтримки', 'Потрібно щоб союзники були в зоні досяжності'],
   },
   dreadnought: {
     ability_desc: 'Обстрілює ракетами перед Dreadnought, пошкоджуючи ворогів у зоні та застосовуючи EMP. Вбивство скидає кулдаун та збільшує швидкість.',
-    pros: ['S-рівень атакуючий', 'Wipe Out оглушує від кожного влучання ракети — масовий CC', 'Вбивство = миттєвий скид кулдауну = серійні вбивства', '32E — повний набір'],
-    cons: ['17 км/г — повільний для ролі', 'Зброя дальнього радіусу та по площі контрить його', 'Ракети можна ухилитися швидким мехом'],
   },
   parasite: {
     ability_desc: 'Наводиться на ворога попереду та зв\'язується з ним. Поки активна — Parasite перенаправляє частину отриманої шкоди до зв\'язаного ворога та отримує менше шкоди.',
-    pros: ['Redirection відображає вхідну шкоду назад до цілі', '24E — метаопції зброї', 'B-рівень'],
-    cons: ['Шкода перенаправляється лише коли здатність активна — критична синхронізація', '22 км/г — середня швидкість'],
   },
   volti: {
     ability_desc: 'Наводиться та телепортує дрона до цілі. Дрон проектує зону шкоди та застосовує Shock. Більше ворогів у зоні — коротша тривалість здатності. Шкода не проходить крізь щити.',
-    pros: ['A-рівень атакуючий', 'Thunderstorm ігнорує укриття — карає тих хто ховається за стінами', '24E — метазброя'],
-    cons: ['19 км/г — середня швидкість атакуючого', 'Thunderstorm вимагає залишатися поруч із ціллю'],
   },
   silverthorn: {
     ability_desc: 'Випускає п\'ять лез, що завдають шкоди та сповільнюють при влучанні. Через деякий час леза повертаються, завдаючи Splash Damage навколо цілей на основі завданої шкоди.',
-    pros: ['A-рівень атакуючий', 'Blade Burst може теоретично вразити всю ворожу команду', 'Ланцюгові вибухи завдають масштабної шкоди по кількох цілях', '32E — повний набір', 'Ефект сповільнення зменшує мобільність ворогів'],
-    cons: ['Леза вистрілюють швидко — важко прицілити всі 5 навмисно', '20 км/г — стандартна швидкість атакуючого'],
   },
   blizzfrost: {
     ability_desc: 'Створює зону, що заморожує ворогів та дає Blizzfrost імунітет до Stasis. Заморожені вороги отримують шкоду та не можуть рухатися або використовувати здатності переміщення.',
-    pros: ['B-рівень — різдвяне доповнення 2025', 'Заморозка унікальна — відрізняється від EMP-оглушення', 'Імунітет до Stasis — рідкісна та цінна здатність', '24E — метазброя'],
-    cons: ['Заморожені вороги все ще можуть стріляти — правильна позиція критична', 'Прискорення лише як компенсація якщо заморозка не влучила'],
   },
   citadel: {
     ability_desc: 'Створює зону, що зменшує швидкість ворогів та блокує їх здатності переміщення. Отримує прискорення та щит, що набирає HP за кожного ворога в зоні (до 3). При руйнуванні щита — зменшується кулдаун.',
-    pros: ['Унікальний гібрид підтримки-танка — щит для союзників', '24E — непогані варіанти зброї', 'B-рівень — надійний у організованій командній грі'],
-    cons: ['18 км/г — нижче середнього', '24E обмежує збройний потенціал порівняно з важкими мехами', 'Відносно новий — обмежені дані спільноти'],
   },
   tailsting: {
     ability_desc: 'Випускає сферу, яка при влучанні застосовує ефект Restrict. Під цим ефектом вороги не можуть активувати навичку або використовувати зброю, а також отримують підвищену шкоду. Частина шкоди обходить щити ворога. Цілі не можуть обертати верхню частину корпусу меха.',
-    pros: ['Restrict вимикає зброю та навички при влучанні', '80% обходу щитів робить Tailsting небезпечним проти щитових мехів', '22 км/г і 24E дають хорошу гнучкість для атакуючого'],
-    cons: ['Потрібно влучити сферою, щоб запустити Restrict', '24E обмежує стелю зброї порівняно з 32E атакуючими', 'Новий мех — мета ще потребує перевірки в боях'],
   },
 };
 
@@ -2359,6 +2177,63 @@ function loadYtVideo(vid){
   w.style.cursor='default';
 }
 
+function getCombatProfile(m){
+  const maxRank=Math.max(...Object.keys(m.ranks).map(Number));
+  const maxHp=m.ranks[maxRank]?.hp||0;
+  const ua=LANG==='ua';
+  const loadout=m.energy>=32?(ua?'Важкий / 32E':'Heavy / 32E'):m.energy>=24?(ua?'Середній / 24E':'Medium / 24E'):(ua?'Легкий / 16E':'Light / 16E');
+  const mobility=m.speed>=25?(ua?'Дуже швидкий':'Very fast'):m.speed>=23?(ua?'Швидкий':'Fast'):m.speed>=20?(ua?'Збалансований':'Balanced'):m.speed>=17?(ua?'Повільний':'Slow'):(ua?'Дуже повільний':'Very slow');
+  const durability=maxHp>=300000?(ua?'Екстремальна':'Extreme'):maxHp>=220000?(ua?'Висока':'High'):maxHp>=160000?(ua?'Міцна':'Sturdy'):maxHp>=100000?(ua?'Середня':'Medium'):(ua?'Легка':'Light');
+  return [
+    [ua?'Роль':'Role', ua?t('role_'+m.role.toLowerCase()):m.role],
+    [ua?'Збірка':'Loadout', loadout],
+    [ua?'Мобільність':'Mobility', `${mobility} · ${m.speed} km/h`],
+    [ua?'Живучість':'Durability', `${durability} · ${maxHp.toLocaleString()} HP`],
+    [ua?'Тип навички':'Ability Type', getAbilityType(m)]
+  ];
+}
+
+function getAbilityType(m){
+  const d=m.ability.desc||'';
+  const ua=LANG==='ua';
+  const types=[];
+  if(/EMP|stasis|daze|blind|restrict|disable|slow|freeze|shock/i.test(d))types.push(ua?'Контроль':'Control');
+  if(/shield|barrier|dome|barricade|protect|block|damage reduction|less damage/i.test(d))types.push(ua?'Захист':'Defense');
+  if(/heal|repair|regen|restor/i.test(d))types.push(ua?'Лікування':'Heal');
+  if(/damage|rocket|missile|mine|turret|beam|blast|explosion|javelin|blade|corrosion/i.test(d))types.push(ua?'Шкода':'Damage');
+  if(/jump|dash|teleport|speed|stealth|cloak|return|backtrack/i.test(d))types.push(ua?'Мобільність':'Mobility');
+  return types.slice(0,3).join(' + ') || (ua?'Utility':'Utility');
+}
+
+function getAbilityNotes(m,key,abilityDesc){
+  const ua=LANG==='ua';
+  const ranks=Object.keys(m.ranks).map(Number);
+  const minRank=Math.min(...ranks), maxRank=Math.max(...ranks);
+  const r1=m.ranks[minRank], rMax=m.ranks[maxRank];
+  const ar=MECH_ABILITY_RANKS[key]||[];
+  const d=m.ability.desc||'';
+  const condition=/hit/i.test(d)?(ua?'Needs a hit to apply its main effect':'Needs a hit to apply its main effect'):
+    /target|lock|locked/i.test(d)?(ua?'Needs a target or lock':'Needs a target or lock'):
+    /field|zone|radius|nearby|within/i.test(d)?(ua?'Works around a zone or radius':'Works around a zone or radius'):
+    /deploy|barrier|shield|barricade|turret|mine/i.test(d)?(ua?'Depends on placement':'Depends on placement'):
+    (ua?'Effect follows the ability text':'Effect follows the ability text');
+  const scaling=ar.length
+    ? (ua?`Tracks ${ar.length} rank-based ability stats`:`Tracks ${ar.length} rank-based ability stats`)
+    : (ua?'No separate rank ability stats listed':'No separate rank ability stats listed');
+  return [
+    [ua?'Умова':'Condition', condition],
+    [ua?'Скейлінг':'Scaling', scaling],
+    [ua?'Ранги':'Rank Path', `R${minRank}: ${r1.energy}E / ${r1.hp.toLocaleString()} HP → R${maxRank}: ${rMax.energy}E / ${rMax.hp.toLocaleString()} HP`]
+  ];
+}
+
+function infoRowsHTML(rows){
+  return rows.map(([label,value])=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+    <span style="font-size:10px;color:var(--dim);letter-spacing:.8px;text-transform:uppercase">${label}</span>
+    <span style="font-size:12px;color:var(--txt);text-align:right;font-weight:700">${value}</span>
+  </div>`).join('');
+}
+
 function renderDetail(m){
   const rd=getRankData(m,currentRank);
   const hpPct=Math.min(100,Math.round(rd.hp/HP_MAX*100));
@@ -2372,10 +2247,8 @@ function renderDetail(m){
   const key=Object.keys(MECHS).find(k=>MECHS[k]===m);
   const ua=MECHS_UA[key];
   const abilityDesc=(LANG==='ua'&&ua?.ability_desc)?ua.ability_desc:m.ability.desc;
-  const pros=(LANG==='ua'&&ua?.pros)?ua.pros:m.pros;
-  const cons=(LANG==='ua'&&ua?.cons)?ua.cons:m.cons;
-  const prosHTML=pros.map(p=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--acc3)">✓ ${p}</span>`).join('');
-  const consHTML=cons.map(c=>`<span style="display:block;padding:3px 0;font-size:12px;color:var(--red)">✗ ${c}</span>`).join('');
+  const combatProfileHTML=infoRowsHTML(getCombatProfile(m));
+  const abilityNotesHTML=infoRowsHTML(getAbilityNotes(m,key,abilityDesc));
 
   const ar=MECH_ABILITY_RANKS[key];
   const abilityStatsHTML=ar?ar.map(([lbl,unit,vals])=>{
@@ -2454,12 +2327,12 @@ function renderDetail(m){
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px">
         <div>
-          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc3);letter-spacing:1px;margin-bottom:6px">${t('lbl_pros')}</div>
-          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${prosHTML}</div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc3);letter-spacing:1px;margin-bottom:6px">${t('lbl_combat_profile')}</div>
+          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${combatProfileHTML}</div>
         </div>
         <div>
-          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:6px">${t('lbl_cons')}</div>
-          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${consHTML}</div>
+          <div style="font-family:Orbitron,monospace;font-size:10px;color:var(--acc2);letter-spacing:1px;margin-bottom:6px">${t('lbl_ability_notes')}</div>
+          <div style="background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:10px">${abilityNotesHTML}</div>
         </div>
       </div>
 
@@ -2522,7 +2395,7 @@ const D300_TEXT = {
   en: {
     hello: 'Oracle online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
     home: 'Home is your command deck: jump to mechs, calculators, maps, skins, and quick tools from here.',
-    gear: 'Mechs tab stores the roster. Use filters, then open a mech card to inspect ranks, role, ability, pros, and cons.',
+    gear: 'Mechs tab stores the roster. Use filters, then open a mech card to inspect ranks, combat profile, and ability notes.',
     cheat: 'Cheatsheets are the fast memory core: weapon rules, pilot basics, XP, and high-value reminders.',
     calc: 'Calculator mode: choose mechs, weapons, pilots, or mods first. Then Oracle approves the math ritual.',
     compare: 'Compare needs at least two mechs. Pick them, then share the comparison link or send it to Telegram.',
@@ -2546,7 +2419,7 @@ const D300_TEXT = {
   ua: {
     hello: 'Oracle онлайн. Я проведу тебе по хабу, поясню вкладки й іноді видаватиму дуже професійні роботні звуки.',
     home: 'Головна — це командна панель: звідси можна швидко перейти до мехів, калькуляторів, мап, скінів та інструментів.',
-    gear: 'Вкладка мехів — це ростер. Використовуй фільтри й відкривай картки з рангами, роллю, навичкою, плюсами та мінусами.',
+    gear: 'Вкладка мехів — це ростер. Використовуй фільтри й відкривай картки з рангами, бойовим профілем і нотатками навички.',
     cheat: 'Шпаргалки — швидка пам’ять Oracle: правила зброї, пілоти, XP і важливі нагадування.',
     calc: 'Калькулятор: спочатку обери меха, зброю, пілота або мод. Потім Oracle схвалить математичний ритуал.',
     compare: 'Для порівняння треба мінімум два мехи. Обери їх, а потім скопіюй лінк або надішли в Telegram.',
@@ -3686,6 +3559,22 @@ function renderCmpTable() {
     return `<div class="cmp-row" style="align-items:start"><div class="cmp-label" style="padding-top:14px">Ability</div>${cells}</div>`;
   }
 
+  function compactInfoCell(rows) {
+    return rows.map(([label,value])=>`<div style="font-size:11px;color:var(--txt);padding:2px 0;text-align:left">
+      <span style="color:var(--dim);text-transform:uppercase;font-size:9px">${label}:</span> ${value}
+    </div>`).join('');
+  }
+
+  function profileRow(label, getter) {
+    return `<div class="cmp-row" style="align-items:start">
+      <div class="cmp-label">${label}</div>
+      ${compareSlots.map(k => {
+        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
+        return `<div class="cmp-cell" style="align-items:start;text-align:left">${compactInfoCell(getter(k))}</div>`;
+      }).join('')}
+    </div>`;
+  }
+
   const headCells = compareSlots.map((k, i) => {
     if (!k) return '<div class="cmp-th" style="color:var(--brd)">EMPTY</div>';
     const m = MECHS[k]; const rc = RARITY_COLOR[m.rarity];
@@ -3712,22 +3601,9 @@ function renderCmpTable() {
     ${numRow('Start Rank', compareSlots.map(k => k ? MECHS[k].startRank : null), '', bestWorst(compareSlots.map(k => k && MECHS[k].startRank ? -MECHS[k].startRank : -Infinity)), false, 0)}
     <div class="cmp-row"><div class="cmp-section-head">ABILITY</div></div>
     ${abilRow()}
-    <div class="cmp-row"><div class="cmp-section-head">PROS &amp; CONS</div></div>
-    ${compareSlots.map((k,i) => '').join('')}
-    <div class="cmp-row" style="align-items:start">
-      <div class="cmp-label">Pros</div>
-      ${compareSlots.map(k => {
-        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
-        return `<div class="cmp-cell" style="align-items:start;text-align:left">${MECHS[k].pros.map(p=>`<div style="font-size:11px;color:var(--acc3);padding:2px 0">✓ ${p}</div>`).join('')}</div>`;
-      }).join('')}
-    </div>
-    <div class="cmp-row" style="align-items:start">
-      <div class="cmp-label">Cons</div>
-      ${compareSlots.map(k => {
-        if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
-        return `<div class="cmp-cell" style="align-items:start;text-align:left">${MECHS[k].cons.map(c=>`<div style="font-size:11px;color:var(--red);padding:2px 0">✗ ${c}</div>`).join('')}</div>`;
-      }).join('')}
-    </div>
+    <div class="cmp-row"><div class="cmp-section-head">PROFILE NOTES</div></div>
+    ${profileRow('Combat Profile', k => getCombatProfile(MECHS[k]))}
+    ${profileRow('Ability Notes', k => getAbilityNotes(MECHS[k], k, MECHS[k].ability.desc))}
     <div class="cmp-row" style="align-items:start">
       <div class="cmp-label">Best Builds</div>
       ${compareSlots.map(k => {

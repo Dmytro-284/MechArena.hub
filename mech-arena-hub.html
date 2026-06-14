@@ -10,9 +10,10 @@
 <meta name="apple-mobile-web-app-title" content="MA Hub">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 <title>Mech Arena Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='9' fill='%23060c14'/%3E%3Cpolygon points='56,32 44,11.6 20,11.6 8,32 20,52.4 44,52.4' fill='%2300d4ff1a' stroke='%2300d4ff' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 :root{
   --bg:#060c14;--panel:#0b1622;--p2:#0d1c2e;--brd:#1a3a5c;
@@ -555,6 +556,64 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
   .mech-avatar{width:90px;height:90px;}
   .calc-tiles{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));}
   .promo-grid{grid-template-columns:1fr!important;}
+}
+@media(max-width:768px){
+  body{font-size:14px;}
+  .app{padding:10px 10px 150px;}
+  .top-tools{position:sticky;top:0;z-index:60;background:linear-gradient(180deg,var(--bg),rgba(6,12,20,.88));backdrop-filter:blur(8px);padding:8px 0;}
+  .tool-btn,.mobile-menu-btn,.action-btn,.ctype-btn,.calc-btn,.promo-refresh,.mg-mode-btn,.skin-submit{min-height:40px;}
+  input,select,button{font-size:16px;}
+  .home-nav-grid,.home-stats-row,.home-meta-grid{grid-template-columns:1fr!important;}
+  .home-nav-card{min-height:104px;}
+  .home-stat-card{padding:14px 10px;}
+  .gh-layout{display:block;}
+  .gh-sidebar{max-height:none!important;margin-bottom:12px;}
+  .gh-list{max-height:310px;}
+  .gh-detail{max-height:none;overflow:visible;}
+  .rank-section,.stats-section{padding:14px;}
+  .stats-grid,.qref,.cmp-slots,.hr-breakdown,.resource-fields,.resource-result{grid-template-columns:1fr!important;}
+  .calc-subtabs,.calc-type-row,.mg-mode-row,.skin-controls{display:grid;grid-template-columns:1fr;gap:8px;}
+  .calc-subtabs,.mg-mode-row{border:none;}
+  .calc-tab,.mg-mode-btn{border:1px solid var(--brd);border-radius:4px;bottom:0;}
+  .calc-type-row input,.calc-type-row select,.skin-controls input,.skin-controls select,.map-tools input{width:100%;max-width:none;min-width:0;margin-left:0!important;}
+  .calc-settings-grid2{grid-template-columns:1fr!important;}
+  .star-row,.level-row,.mod-level-row{gap:7px;}
+  .star-btn,.lvl-btn,.mlvl-btn{min-width:42px;min-height:38px;}
+  .cmp-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .cmp-thead,.cmp-row{min-width:620px;}
+  .cmp-slot{min-height:150px;}
+  .map-tools{display:grid;grid-template-columns:1fr;gap:8px;}
+  .mg-grid,.skin-grid{grid-template-columns:1fr!important;}
+  .skin-grid.list .skin-card{grid-template-columns:96px 1fr;}
+  .skin-modal-overlay,.share-modal-overlay,.mg-modal-overlay{padding:10px;}
+  .skin-modal,.share-modal,.mg-modal-box{max-height:88vh;width:100%;}
+  .skin-modal-image{height:min(58vh,420px);}
+  .site-footer{margin-bottom:92px;}
+  .d300-widget{right:10px;bottom:10px;width:min(350px,calc(100vw - 20px));}
+  .d300-widget.min .d300-card{width:64px;height:64px;}
+  .d300-actions{grid-template-columns:1fr;}
+  .d300-pop{left:10px!important;right:10px!important;bottom:88px!important;top:auto!important;max-width:none;}
+}
+@media(max-width:420px){
+  .app{padding:8px 8px 150px;}
+  header{padding:18px 0 14px;}
+  header p{line-height:1.5;}
+  .tabs.open{grid-template-columns:1fr;}
+  .tab{min-height:40px;font-size:8px;}
+  .mech-header{padding:16px;}
+  .mech-title h2{font-size:1rem;}
+  .mech-badges{gap:5px;}
+  .ab-stats-grid{grid-template-columns:1fr!important;}
+  .cr{display:block;}
+  .ck,.cv{display:block;text-align:left!important;margin-top:3px;}
+  .share-modal-actions,.welcome-options{grid-template-columns:1fr;}
+  .welcome-card{padding:18px 14px;}
+  .developers-block a,#tg-bot-btn,.feedback-form-link{width:100%;justify-content:center;}
+  .d300-head{gap:8px;padding:10px;}
+  .d300-name{font-size:12px;letter-spacing:1.5px;}
+  .d300-status{font-size:9px;}
+  .d300-controls{gap:4px;}
+  .d300-mini-btn{padding:5px 6px;}
 }
 .lang-btn.active{background:rgba(0,212,255,.2)!important;border-color:var(--acc)!important;color:var(--acc)!important;}
 </style>
@@ -1160,7 +1219,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
       </div>
       <div class="d300-controls">
         <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300SayRandom()" id="d300-joke-btn">PING</button>
-        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300Minimize()">&times;</button>
+        <button class="d300-mini-btn" type="button" onclick="event.stopPropagation();d300Close()">&times;</button>
       </div>
     </div>
     <div class="d300-body">
@@ -1532,7 +1591,7 @@ function welcomeApply() {
   closeWelcomeModal();
   if (welcomeState.tour) {
     localStorage.removeItem('d300_seen_tour');
-    setTimeout(d300StartTour, 350);
+    d300StartTour();
   } else {
     localStorage.setItem('d300_seen_tour', '1');
     d300SetLine(d300Text('hello'));
@@ -2750,6 +2809,11 @@ function d300Minimize() {
   document.getElementById('d300-widget')?.classList.add('min');
   localStorage.setItem('d300_min', '1');
   d300KeepDocked();
+}
+
+function d300Close() {
+  if (d300TourIndex >= 0) d300EndTour();
+  d300Minimize();
 }
 
 function d300Expand() {

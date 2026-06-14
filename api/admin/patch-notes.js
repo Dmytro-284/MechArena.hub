@@ -1,6 +1,14 @@
 const SB_URL     = () => process.env.SUPABASE_URL;
 const SB_SERVICE = () => process.env.SUPABASE_SERVICE_KEY;
 
+function missingEnv(keys) {
+  return keys.filter(key => !process.env[key]);
+}
+
+function sendError(res, status, code, message) {
+  return res.status(status).json({ code, error: message });
+}
+
 function sbHeaders() {
   const key = SB_SERVICE();
   return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' };
@@ -23,13 +31,22 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Authorization,Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!checkAuth(req))          return res.status(401).json({ error: 'Unauthorized' });
+  if (missingEnv(['ADMIN_USERNAME', 'ADMIN_PASSWORD']).length) {
+    return sendError(res, 500, 'ADMIN_ENV_MISSING', 'Admin username/password are not configured on the server.');
+  }
+  if (!checkAuth(req)) {
+    return sendError(res, 401, 'UNAUTHORIZED', 'Invalid admin username or password.');
+  }
+  if (missingEnv(['SUPABASE_URL', 'SUPABASE_SERVICE_KEY']).length) {
+    return sendError(res, 500, 'SUPABASE_ENV_MISSING', 'Supabase admin environment variables are not configured on the server.');
+  }
 
   const base = `${SB_URL()}/rest/v1/patch_notes`;
 
   if (req.method === 'GET') {
     const r    = await fetch(`${base}?select=*&order=created_at.desc`, { headers: sbHeaders() });
-    const rows = await r.json();
+    const rows = await r.json().catch(() => null);
+    if (!r.ok) return sendError(res, r.status, 'SUPABASE_GET_FAILED', 'Supabase refused the patch notes request.');
     return res.json(Array.isArray(rows) ? rows : []);
   }
 

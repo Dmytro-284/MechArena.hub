@@ -54,6 +54,9 @@ const T = {
     btn_calc:        '🧮 Калькулятор',
     btn_hangar:      '🏆 Рейтинг ангара',
     btn_promo:       '🎁 Промо',
+    btn_maps:        '🗺️ Карти',
+    btn_skins:       '⭐ Скіни',
+    btn_cheats:      '📋 Шпаргалки',
     btn_menu:        '🏠 Меню',
     btn_back:        '◀ Назад',
     btn_next:        'Далі ▶',
@@ -118,13 +121,21 @@ const T = {
     promo_warn:      '⚠️ Коди мають термін дії — активуй якомога швидше!',
     promo_err:       `🎁 <b>ПРОМО КОДИ</b>\n\n⚠️ Не вдалося завантажити коди.\n`,
     promo_open:      (url) => `<a href="${url}/#promo">Відкрий сайт</a> для перегляду кодів.`,
+    maps_hdr:        (label) => `🗺️ <b>ПУТІВНИК КАРТАМИ</b>\n${label}\n\n`,
+    maps_hint:       '💡 Повні тактики, стрілки й callouts відкривай на сайті.',
+    skins_hdr:       (n,p,pt) => `⭐ <b>ЛЕГЕНДАРНІ СКІНИ</b> (${n})\nСторінка ${p}/${pt}\n\n`,
+    skins_hint:      'Натисни кнопку сайту, щоб відкрити повну галерею з картками.',
+    cheats_hdr:      '📋 <b>ШПАРГАЛКИ</b>\n\nОбери коротку довідку:',
+    cheats_weapons:  '🔫 <b>ЗБРОЯ</b>\n\n• Sniper: Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum.\n• Missile: Storm Rack, Missile Rack, Disruptor, Hornet, Cryo Launcher.\n• Close range: Ember Gun, Fragment Gun, Revoker, Arc Torrent.\n• Beam: Graviton Beam, Particle Beam, Stasis Beam.',
+    cheats_pilots:   '👤 <b>ПІЛОТИ</b>\n\nПідбирай пілота під тип зброї. Рідкість пілота впливає на вартість прокачки, а імпланти — на реальну силу білда.',
+    cheats_xp:       '⭐ <b>XP / ПРОКАЧКА</b>\n\nКалькулятор на сайті і в боті рахує кредити, A-Coins і схеми для мехів/зброї, а також пілотів і модів.',
     mech_rank:       (r) => `📊 РАНГ ${r}`,
     mech_hp:         '❤️ HP',
     mech_energy:     '⚡ Енергія',
     mech_ability_hdr:'⚡ НАВИЧКА',
     mech_ability_stats:(r) => `📈 ПАРАМЕТРИ НАВИЧКИ (Ранг ${r})`,
-    mech_pros:       '✅ ПЛЮСИ',
-    mech_cons:       '❌ МІНУСИ',
+    mech_pros:       '📊 БОЙОВИЙ ПРОФІЛЬ',
+    mech_cons:       '⚙️ НОТАТКИ НАВИЧКИ',
     mech_not_found:  'Меха не знайдено.',
     mech_page:       (p,t) => `\nСторінка ${p}/${t}`,
   },
@@ -138,6 +149,9 @@ const T = {
     btn_calc:        '🧮 Calculator',
     btn_hangar:      '🏆 Hangar Rating',
     btn_promo:       '🎁 Promo',
+    btn_maps:        '🗺️ Maps',
+    btn_skins:       '⭐ Skins',
+    btn_cheats:      '📋 Cheatsheets',
     btn_menu:        '🏠 Menu',
     btn_back:        '◀ Back',
     btn_next:        'Next ▶',
@@ -202,13 +216,21 @@ const T = {
     promo_warn:      '⚠️ Codes expire — redeem as soon as possible!',
     promo_err:       `🎁 <b>PROMO CODES</b>\n\n⚠️ Failed to load codes.\n`,
     promo_open:      (url) => `<a href="${url}/#promo">Open the site</a> to view codes.`,
+    maps_hdr:        (label) => `🗺️ <b>MAP GUIDE</b>\n${label}\n\n`,
+    maps_hint:       '💡 Open the full site for tactics, arrows, and callouts.',
+    skins_hdr:       (n,p,pt) => `⭐ <b>LEGENDARY SKINS</b> (${n})\nPage ${p}/${pt}\n\n`,
+    skins_hint:      'Use the site button to open the full gallery with skin cards.',
+    cheats_hdr:      '📋 <b>CHEATSHEETS</b>\n\nChoose a quick reference:',
+    cheats_weapons:  '🔫 <b>WEAPONS</b>\n\n• Sniper: Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum.\n• Missile: Storm Rack, Missile Rack, Disruptor, Hornet, Cryo Launcher.\n• Close range: Ember Gun, Fragment Gun, Revoker, Arc Torrent.\n• Beam: Graviton Beam, Particle Beam, Stasis Beam.',
+    cheats_pilots:   '👤 <b>PILOTS</b>\n\nMatch pilots to weapon type. Pilot rarity affects upgrade cost, while implants define the real build power.',
+    cheats_xp:       '⭐ <b>XP / UPGRADES</b>\n\nThe site and bot calculators cover Credits, A-Coins, and Blueprints for mechs/weapons, plus pilots and mods.',
     mech_rank:       (r) => `📊 RANK ${r}`,
     mech_hp:         '❤️ HP',
     mech_energy:     '⚡ Energy',
     mech_ability_hdr:'⚡ ABILITY',
     mech_ability_stats:(r) => `📈 ABILITY STATS (Rank ${r})`,
-    mech_pros:       '✅ PROS',
-    mech_cons:       '❌ CONS',
+    mech_pros:       '📊 COMBAT PROFILE',
+    mech_cons:       '⚙️ ABILITY NOTES',
     mech_not_found:  'Mech not found.',
     mech_page:       (p,t) => `\nPage ${p}/${t}`,
   }
@@ -223,12 +245,21 @@ function loadFile(fname, vname) {
   const code = fs.readFileSync(path.join(__dirname, '..', fname), 'utf8');
   return (new Function(code + `\nreturn ${vname};`))();
 }
-let _cc=null, _cl=null, _pc=null, _mc=null, _ms=null;
+let _cc=null, _cl=null, _pc=null, _mc=null, _ms=null, _skins=null;
 function calcCosts()  { return _cc || (_cc = loadFile('calc-data-mech-costs.js',   'CALC_MECH_COSTS'));   }
 function calcList()   { return _cl || (_cl = loadFile('calc-data-list.js',          'CALC_LIST'));         }
 function pilotCosts() { return _pc || (_pc = loadFile('calc-data-pilot-costs.js',   'CALC_PILOT_COSTS')); }
 function modCosts()   { return _mc || (_mc = loadFile('calc-data-mod-costs.js',     'CALC_MOD_COSTS'));    }
 function modsList()   { return _ms || (_ms = loadFile('calc-data-mods.js',          'CALC_MODS'));         }
+function legendarySkins() {
+  if (_skins) return _skins;
+  const html = fs.readFileSync(path.join(__dirname, '..', 'mech-arena-hub.html'), 'utf8');
+  const match = html.match(/const LEGENDARY_SKINS = \[([\s\S]*?)\]\.map/);
+  if (!match) return (_skins = []);
+  const rows = (new Function(`return [${match[1]}];`))();
+  _skins = rows.map(([name, mech]) => ({ name, mech }));
+  return _skins;
+}
 
 // ─── MECH SHORT KEYS (to fit 64-byte callback_data) ──────
 const SHORT = {
@@ -467,11 +498,16 @@ const MECHS = {
     p:['B-tier','Freeze is unique — different from EMP stun','Stasis immunity is rare and valuable','24E — meta weapons'],
     c:['Frozen enemies can still shoot back','Speed boost only if no freeze landed'],
     rk:{1:{h:9600,e:6},2:{h:29600,e:8},3:{h:51500,e:12},4:{h:79700,e:16},5:{h:103900,e:18},6:{h:133900,e:20},7:{h:181800,e:24}}},
-  citadel:{n:'Citadel',role:'Support',rar:'Legendary',e:24,spd:18,g:10,sr:5,
-    a:{n:'Seismic Field',d:'Creates a zone that reduces enemy speed and prevents activation of their movement Abilities. Receives a speed boost and shield, which gains HP for each enemy in the zone.'},
-    p:['Unique support tank hybrid — shield for teammates','24E — decent weapon options','B-tier — solid in organized team play'],
-    c:['18 km/h — below average speed'],
-    rk:{1:{h:17160,e:6},2:{h:52800,e:8},3:{h:91800,e:12},4:{h:141840,e:16},5:{h:185160,e:18},6:{h:238560,e:20},7:{h:323880,e:24}}},
+  citadel:{n:'Citadel',role:'Support',rar:'Legendary',e:24,spd:19,g:10,sr:5,
+    a:{n:'Seismic Field',d:'Creates a zone that reduces enemy speed and prevents activation of their movement Abilities. Receives a speed boost and shield, which gains HP for each enemy in the zone (up to 3). If Shield breaks, Ability Cooldown is reduced.'},
+    p:['24E support with 19 km/h speed','High R7 HP: 269,900','Seismic Field controls enemy movement abilities'],
+    c:['Shield and field values scale by rank','Best value depends on team positioning inside the field'],
+    rk:{1:{h:14300,e:6,p:107},2:{h:44000,e:8,p:261},3:{h:76500,e:12,p:453},4:{h:118200,e:16,p:701},5:{h:154300,e:18,p:916},6:{h:198800,e:20,p:1179},7:{h:269900,e:24,p:1601}}},
+  tailsting:{n:'Tailsting',role:'Attacker',rar:'Legendary',e:24,spd:22,g:10,sr:null,
+    a:{n:'Signal Jammer',d:"Fires a sphere which applies Restrict on hit. Restricted enemies can't activate Abilities or use Weapons, receive increased Damage, and part of Damage bypasses Shields."},
+    p:['24E attacker with 22 km/h speed','Restrict disables enemy Abilities and Weapons','Signal Jammer has 90m range'],
+    c:['Restrict duration is 4s at all ranks','Shield bypass is 80% at all ranks'],
+    rk:{1:{h:10200,e:6,p:79},2:{h:31500,e:8,p:159},3:{h:54700,e:12,p:276},4:{h:84600,e:16,p:427},5:{h:110400,e:18,p:557},6:{h:142300,e:20,p:718},7:{h:193200,e:24,p:975}}},
 };
 
 // ─── ABILITY RANK STATS ───────────────────────────────────
@@ -518,7 +554,8 @@ const MAR = {
   parasite:[['Cooldown','s',[11,11,11,11,11,11,11]],['Duration','s',[12,12,12,12,12,12,12]],['Dmg Reduction','',[' 10%',' 10%',' 10%',' 10%',' 10%',' 10%',' 10%']],['Dmg Redirected','',[' 35%',' 35%',' 35%',' 35%',' 35%',' 35%',' 35%']]],
   blockhorn:[['Cooldown','s',[9,9,9,9,9,9,9]],['Duration','s',[7,7,7,7,7,7,7]],['Barricade HP','',[53000,92200,142600,206700,287600,389100,503100]]],
   deathwalker:[['Cooldown','s',[15,15,15,15,15,15,15]],['Duration','s',[15,15,15,15,15,15,15]],['Invulnerability','s',[3,3,3,3,3,3,3]],['Speed Boost','',['+60%','+60%','+60%','+60%','+60%','+60%','+60%']]],
-  citadel:[['Cooldown','s',[10,10,10,10,10,10,10]],['Shield HP','',[13000,20100,35000,54100,70500,90900,123400]]],
+  citadel:[['Cooldown','s',[10,10,10,10,10,10,10]],['Ability Duration','s',[8,8,8,8,8,8,8]],['Seismic Field Size',' m²',['20 x 13','20 x 13','20 x 13','20 x 13','20 x 13','20 x 13','20 x 13']],['Citadel Shield Durability','',[13000,20100,35000,54100,70500,90900,123400]],['Bonus Shield Durability','',[5000,7700,13400,20800,27100,35000,47500]],['Enemy Speed Reduction','',['-60%','-60%','-60%','-60%','-60%','-60%','-60%']],['Citadel Speed Increase','',['+60%','+60%','+60%','+60%','+60%','+60%','+60%']],['Status Effect Reduction','',['-75%','-75%','-75%','-75%','-75%','-75%','-75%']]],
+  tailsting:[['Cooldown','s',[12,12,12,12,12,12,12]],['Signal Jammer DMG','',[2202,4125,5218,6555,8187,10171,11797]],['Signal Jammer Range','m',[90,90,90,90,90,90,90]],['Signal Jammer DMG Radius','m',[10,10,10,10,10,10,10]],['Restrict Duration','s',[4,4,4,4,4,4,4]],['Restrict Extra Damage','',['+30%','+30%','+30%','+30%','+30%','+30%','+30%']],['Shield Bypass','',['80%','80%','80%','80%','80%','80%','80%']]],
   salvor:[['Cooldown','s',[12,12,12,12,12,12,12]],['HP Healed (Ally)','',[6330,11020,17040,24700,34370,46500,60130]],['HP Healed (Self)','',[3190,5540,8570,12420,17280,23380,30230]]],
   silverthorn:[['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[3.5,3.5,3.5,3.5,3.5,3.5,3.5]],['Blade Count','',[5,5,5,5,5,5,5]],['Spd Reduction','',['-40%','-40%','-40%','-40%','-40%','-40%','-40%']]],
 };
@@ -551,7 +588,8 @@ function menuKbd(lang) {
   return kbd(
     [btn(tr(lang,'btn_mechs'), 'mechs:all:0'),   btn(tr(lang,'btn_compare'), 'cmp:')],
     [btn(tr(lang,'btn_calc'),  'calc'),           btn(tr(lang,'btn_hangar'),  'hr:')],
-    [btn(tr(lang,'btn_promo'), 'promo')],
+    [btn(tr(lang,'btn_promo'), 'promo'),          btn(tr(lang,'btn_maps'),    'maps:cpc:0')],
+    [btn(tr(lang,'btn_skins'), 'skins:0'),        btn(tr(lang,'btn_cheats'),  'cheats')],
   );
 }
 
@@ -1090,21 +1128,21 @@ async function promoText(lang) {
 }
 
 // ─ Maps ─
-function mapsText(mode, page) {
+function mapsText(mode, page, lang) {
   const maps = mode === 'cpc' ? MAP_CPC : MAP_5V5;
   const pages = Math.ceil(maps.length / ITEMS_PER_PAGE);
   const slice = maps.slice(page * ITEMS_PER_PAGE, (page+1)*ITEMS_PER_PAGE);
-  const label = mode === 'cpc' ? '📍 CPC — Захоплення точок (13 карт)' : '⚔️ 5v5 Дезматч (36 карт)';
-  let txt = `🗺️ <b>ПУТІВНИК КАРТАМИ</b>\n${label}\n\n`;
+  const label = mode === 'cpc' ? `📍 CPC — Control Point Capture (${MAP_CPC.length})` : `⚔️ 5v5 Deathmatch (${MAP_5V5.length})`;
+  let txt = tr(lang,'maps_hdr',label);
   slice.forEach((name, i) => {
     txt += `${page * ITEMS_PER_PAGE + i + 1}. ${esc(name)}\n`;
   });
-  txt += `\nСторінка ${page+1}/${pages}\n💡 Відкрий повний путівник зі стратегіями на сайті.`;
+  txt += `\n${tr(lang,'page',page+1,pages)}\n${tr(lang,'maps_hint')}`;
   txt += FOOTER;
   return txt;
 }
 
-function mapsKbd(mode, page) {
+function mapsKbd(mode, page, lang) {
   const maps = mode === 'cpc' ? MAP_CPC : MAP_5V5;
   const pages = Math.ceil(maps.length / ITEMS_PER_PAGE);
   const nav = [];
@@ -1114,8 +1152,50 @@ function mapsKbd(mode, page) {
     [btn(mode==='cpc'?'✅ 📍 CPC':'📍 CPC','maps:cpc:0'),
      btn(mode==='5v5'?'✅ ⚔️ 5v5':'⚔️ 5v5','maps:5v5:0')],
     nav.length ? nav : [],
-    [lnk('🌐 Відкрити на сайті', `${SITE_URL}#maps`), btn('🏠 Меню', 'menu')],
+    [lnk(tr(lang,'btn_open_site'), `${SITE_URL}#maps`), btn(tr(lang,'btn_menu'), 'menu')],
   );
+}
+
+function skinsText(page, lang) {
+  const skins = legendarySkins().sort((a,b) => a.name.localeCompare(b.name));
+  const pages = Math.max(1, Math.ceil(skins.length / ITEMS_PER_PAGE));
+  page = Math.min(Math.max(0, page), pages - 1);
+  const slice = skins.slice(page * ITEMS_PER_PAGE, (page+1) * ITEMS_PER_PAGE);
+  let txt = tr(lang,'skins_hdr',skins.length,page+1,pages);
+  slice.forEach((s, i) => {
+    txt += `${page * ITEMS_PER_PAGE + i + 1}. <b>${esc(s.name)}</b> — ${esc(s.mech)}\n`;
+  });
+  txt += `\n${tr(lang,'skins_hint')}${FOOTER}`;
+  return txt;
+}
+
+function skinsKbd(page, lang) {
+  const skins = legendarySkins();
+  const pages = Math.max(1, Math.ceil(skins.length / ITEMS_PER_PAGE));
+  const nav = [];
+  if (page > 0) nav.push(btn('◀', `skins:${page-1}`));
+  if (page < pages - 1) nav.push(btn('▶', `skins:${page+1}`));
+  return kbd(
+    nav.length ? nav : [],
+    [lnk(tr(lang,'btn_open_site'), `${SITE_URL}#skins`), btn(tr(lang,'btn_menu'), 'menu')],
+  );
+}
+
+function cheatsText(lang) {
+  return tr(lang,'cheats_hdr') + FOOTER;
+}
+
+function cheatsKbd(lang) {
+  return kbd(
+    [btn('🔫 Weapons', 'cheat:weapons'), btn('👤 Pilots', 'cheat:pilots')],
+    [btn('⭐ XP / Upgrades', 'cheat:xp')],
+    [lnk(tr(lang,'btn_open_site'), `${SITE_URL}#cheat`), btn(tr(lang,'btn_menu'), 'menu')],
+  );
+}
+
+function cheatDetailText(topic, lang) {
+  const key = topic === 'pilots' ? 'cheats_pilots' : topic === 'xp' ? 'cheats_xp' : 'cheats_weapons';
+  return tr(lang,key) + FOOTER;
 }
 
 // ─── CALLBACK HANDLERS ───────────────────────────────────
@@ -1294,6 +1374,28 @@ async function handleCallbackQuery(cbq) {
     const text = await promoText(lang);
     return upd(text, kbd([btn(tr(lang,'btn_refresh'), 'promo'), btn(tr(lang,'btn_menu'), 'menu')]));
   }
+
+  // Maps
+  if (d.startsWith('maps:')) {
+    const [, mode, page] = d.split(':');
+    const safeMode = mode === '5v5' ? '5v5' : 'cpc';
+    return upd(mapsText(safeMode, +(page || 0), lang), mapsKbd(safeMode, +(page || 0), lang));
+  }
+
+  // Skins
+  if (d === 'skins' || d.startsWith('skins:')) {
+    const page = +(d.split(':')[1] || 0);
+    return upd(skinsText(page, lang), skinsKbd(page, lang));
+  }
+
+  // Cheatsheets
+  if (d === 'cheats') {
+    return upd(cheatsText(lang), cheatsKbd(lang));
+  }
+  if (d.startsWith('cheat:')) {
+    const topic = d.split(':')[1] || 'weapons';
+    return upd(cheatDetailText(topic, lang), kbd([btn(tr(lang,'btn_back'), 'cheats'), btn(tr(lang,'btn_menu'), 'menu')]));
+  }
 }
 
 // ─── MESSAGE HANDLER ─────────────────────────────────────
@@ -1320,6 +1422,12 @@ async function handleMessage(msg) {
     const promoTxt = await promoText(lang);
     return send(cid, promoTxt, { reply_markup: kbd([btn(tr(lang,'btn_refresh'),'promo'),btn(tr(lang,'btn_menu'),'menu')]) });
   }
+  if (['/maps','/карти'].includes(txt))
+    return send(cid, mapsText('cpc',0,lang), { reply_markup: mapsKbd('cpc',0,lang) });
+  if (['/skins','/скіни'].includes(txt))
+    return send(cid, skinsText(0,lang), { reply_markup: skinsKbd(0,lang) });
+  if (['/cheatsheets','/cheats','/шпаргалки'].includes(txt))
+    return send(cid, cheatsText(lang), { reply_markup: cheatsKbd(lang) });
 
   // search mech by name
   const key = Object.keys(MECHS).find(k => MECHS[k].n.toLowerCase() === txt);

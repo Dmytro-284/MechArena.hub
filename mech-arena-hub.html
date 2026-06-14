@@ -427,16 +427,16 @@ body.welcome-open .app{filter:blur(6px);pointer-events:none;user-select:none;}
 .d300-card{background:linear-gradient(145deg,rgba(11,22,34,.98),rgba(20,38,58,.96));border:1px solid rgba(0,212,255,.35);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.48),0 0 24px rgba(0,212,255,.16);overflow:hidden;position:relative;}
 body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(232,242,250,.96));}
 .d300-head{display:flex;align-items:center;gap:10px;padding:12px 12px 9px;border-bottom:1px solid rgba(0,212,255,.18);}
-.d300-dock-pad{width:48px;height:48px;border-radius:50%;position:relative;flex:0 0 auto;background:radial-gradient(circle,rgba(0,212,255,.22),rgba(0,212,255,.06) 56%,transparent 57%);border:1px dashed rgba(0,212,255,.48);box-shadow:inset 0 0 14px rgba(0,212,255,.18);}
+.d300-dock-pad{width:64px;height:64px;border-radius:50%;position:relative;flex:0 0 auto;background:radial-gradient(circle,rgba(0,212,255,.28),rgba(0,212,255,.08) 56%,transparent 57%);border:1px dashed rgba(0,212,255,.58);box-shadow:inset 0 0 16px rgba(0,212,255,.22),0 0 18px rgba(0,212,255,.12);}
 .d300-dock-pad::after{content:'';position:absolute;inset:12px;border-radius:50%;border:1px solid rgba(255,107,0,.5);}
-.d300-avatar{width:42px;height:42px;border-radius:50%;position:relative;flex:0 0 auto;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.65);box-shadow:0 0 16px rgba(0,212,255,.4);}
-.d300-avatar::before,.d300-avatar::after{content:'';position:absolute;top:17px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;}
-.d300-avatar::before{left:12px}.d300-avatar::after{right:12px}
-.d300-drone{position:absolute;left:50%;top:50%;z-index:1185;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 50% 45%,var(--acc) 0 10%,#13283a 11% 48%,var(--acc2) 49% 52%,#07131f 53%);border:1px solid rgba(0,212,255,.75);box-shadow:0 0 18px rgba(0,212,255,.45),0 8px 20px rgba(0,0,0,.35);transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1),transform .35s;pointer-events:none;}
-.d300-drone::before,.d300-drone::after{content:'';position:absolute;top:21px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 9px #fff;}
-.d300-drone::before{left:15px}.d300-drone::after{right:15px}
-.d300-drone.flying{position:fixed;transform:translateY(-4px) rotate(-3deg);}
-.d300-drone.docked{position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%) scale(.9);}
+.d300-drone{position:absolute;left:50%;top:50%;z-index:1185;width:112px;height:88px;filter:drop-shadow(0 0 18px rgba(0,212,255,.65)) drop-shadow(0 0 28px rgba(255,107,0,.28)) drop-shadow(0 12px 18px rgba(0,0,0,.62));transition:left .58s cubic-bezier(.2,.8,.2,1),top .58s cubic-bezier(.2,.8,.2,1),transform .35s,filter .25s;pointer-events:none;}
+.d300-drone::before{content:'';position:absolute;left:50%;top:53%;width:78%;height:46%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,212,255,.28),rgba(0,212,255,.08) 48%,transparent 72%);filter:blur(7px);transform:translate(-50%,-50%);z-index:-1;}
+.d300-drone-img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;}
+.d300-led{position:absolute;left:50%;top:35%;width:9px;height:9px;border-radius:50%;background:#ff2d2d;box-shadow:0 0 9px rgba(255,45,45,.98),0 0 18px rgba(255,45,45,.65);transform:translate(-50%,-50%);transition:background .18s,box-shadow .18s,transform .18s;}
+.d300-drone.tour-active .d300-led{background:#64ff3d;box-shadow:0 0 10px rgba(100,255,61,.98),0 0 22px rgba(100,255,61,.78),0 0 34px rgba(100,255,61,.34);transform:translate(-50%,-50%) scale(1.22);}
+.d300-drone.launching{filter:drop-shadow(0 0 24px rgba(100,255,61,.72)) drop-shadow(0 0 34px rgba(0,212,255,.42)) drop-shadow(0 12px 20px rgba(0,0,0,.62));}
+.d300-drone.flying{position:fixed;transform:translateY(-6px) rotate(-3deg);}
+.d300-drone.docked{position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translate(-50%,-50%) scale(.82);}
 .d300-name{font:900 13px 'Orbitron',monospace;color:var(--acc);letter-spacing:2px;}
 .d300-status{font-size:10px;color:var(--dim);margin-top:2px;}
 .d300-controls{margin-left:auto;display:flex;gap:6px;}
@@ -450,6 +450,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .d300-widget.min .d300-card{border-radius:50%;width:58px;height:58px;cursor:pointer;}
 .d300-widget.min .d300-head{padding:8px;border:none;}
 .d300-widget.min .d300-dock-pad{width:42px;height:42px;}
+.d300-widget.min .d300-drone{width:76px;height:60px;}
 .d300-widget.min .d300-title,.d300-widget.min .d300-controls,.d300-widget.min .d300-body{display:none;}
 .d300-tour-shade{display:none;position:fixed;inset:0;z-index:1165;background:rgba(0,0,0,.72);pointer-events:none;}
 .d300-tour-shade.open{display:block;}
@@ -521,18 +522,6 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 .legal-box h2{font:700 15px 'Orbitron',monospace;color:var(--acc);margin-bottom:14px;}
 .legal-box p{margin:0 0 12px;line-height:1.7;color:var(--txt);font-size:13px;}
 .legal-close{float:right;}
-
-
-
-/* ===== PWA banner ===== */
-.pwa-banner{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid rgba(0,212,255,.3);border-radius:6px;padding:10px 16px;margin-bottom:14px;}
-.pwa-banner.show{display:flex;}
-.pwa-banner-text{flex:1;font-size:12px;color:var(--txt);}
-.pwa-banner-text strong{display:block;font-family:'Orbitron',monospace;font-size:10px;color:var(--acc);margin-bottom:2px;}
-.pwa-install-btn{padding:8px 16px;background:rgba(0,212,255,.12);border:1px solid var(--acc);color:var(--acc);font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;border-radius:3px;white-space:nowrap;}
-.pwa-install-btn:hover{background:rgba(0,212,255,.22);}
-.pwa-dismiss{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;padding:0 4px;line-height:1;}
-
 /* ===== MOBILE ===== */
 @media(max-width:768px){
   .app{padding:10px;}
@@ -578,11 +567,6 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 </head>
 <body>
 <div class="app">
-<div class="pwa-banner" id="pwa-banner">
-  <div class="pwa-banner-text"><strong>⬡ INSTALL MECH ARENA HUB</strong>Install as an app — works offline, launches instantly</div>
-  <button class="pwa-install-btn" id="pwa-install-btn">INSTALL</button>
-  <button class="pwa-dismiss" id="pwa-dismiss">✕</button>
-</div>
 <header>
   <h1>⬡ MECH ARENA HUB</h1>
   <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 46 Mechs · Full Arsenal</p>
@@ -1165,7 +1149,10 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
   <div class="d300-card" onclick="if(document.getElementById('d300-widget').classList.contains('min')) d300Expand()">
     <div class="d300-head">
       <div class="d300-dock-pad" aria-hidden="true">
-        <div class="d300-drone docked" id="d300-drone"></div>
+        <div class="d300-drone docked" id="d300-drone">
+          <img class="d300-drone-img" src="icons/oracle-drone.png" alt="">
+          <span class="d300-led"></span>
+        </div>
       </div>
       <div class="d300-title">
         <div class="d300-name">Oracle</div>
@@ -2465,6 +2452,8 @@ const D300_TOUR = [
 let d300TourIndex = -1;
 let d300RobotTimer = null;
 let d300CurrentTarget = null;
+let d300TourLaunchTimer = null;
+let d300AudioCtx = null;
 
 function d300Text(key) {
   return (D300_TEXT[LANG] || D300_TEXT.en)[key] || D300_TEXT.en[key] || key;
@@ -2530,11 +2519,61 @@ function d300OpenMenu() {
   d300KeepDocked();
 }
 
-function d300StartTour() {
+function d300SetDroneActive(active) {
+  const drone = document.getElementById('d300-drone');
+  if (!drone) return;
+  drone.classList.toggle('tour-active', Boolean(active));
+  if (!active) drone.classList.remove('launching');
+}
+
+async function d300PlayLaunchBeep() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return Promise.resolve();
+    const ctx = d300AudioCtx || new AudioCtx();
+    d300AudioCtx = ctx;
+    const fire = () => {
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(.3, ctx.currentTime);
+      master.connect(ctx.destination);
+      const playTone = (delay, freq, endFreq) => {
+        const start = ctx.currentTime + delay;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, start);
+        osc.frequency.exponentialRampToValueAtTime(endFreq, start + .09);
+        gain.gain.setValueAtTime(.0001, start);
+        gain.gain.exponentialRampToValueAtTime(.26, start + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, start + .11);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(start);
+        osc.stop(start + .12);
+      };
+      playTone(0, 920, 1320);
+      playTone(.14, 1220, 1680);
+      setTimeout(() => master.disconnect(), 420);
+    };
+    const resume = ctx.resume ? ctx.resume().catch(() => {}) : Promise.resolve();
+    resume.then(fire).catch(() => {});
+  } catch {
+  }
+  return new Promise(resolve => setTimeout(resolve, 360));
+}
+
+async function d300StartTour() {
+  clearTimeout(d300TourLaunchTimer);
   d300TourIndex = 0;
   localStorage.setItem('d300_seen_tour', '1');
   d300Expand();
-  d300RenderTourStep();
+  d300SetDroneActive(true);
+  document.getElementById('d300-drone')?.classList.add('launching');
+  await d300PlayLaunchBeep();
+  d300TourLaunchTimer = setTimeout(() => {
+    document.getElementById('d300-drone')?.classList.remove('launching');
+    d300RenderTourStep();
+  }, 180);
 }
 
 function d300RenderTourStep() {
@@ -2637,8 +2676,8 @@ function d300FlyToTarget(target) {
   const drone = document.getElementById('d300-drone');
   if (!drone || !target) return;
   const rect = target.getBoundingClientRect();
-  const x = Math.max(14, Math.min(window.innerWidth - 70, rect.left - 70));
-  const y = Math.max(14, Math.min(window.innerHeight - 76, rect.top + Math.min(32, rect.height / 2)));
+  const x = Math.max(14, Math.min(window.innerWidth - 130, rect.left - 118));
+  const y = Math.max(14, Math.min(window.innerHeight - 108, rect.top + Math.min(34, rect.height / 2)));
   drone.classList.remove('docked');
   drone.classList.add('flying');
   drone.style.left = x + 'px';
@@ -2660,6 +2699,7 @@ function d300ReturnHome() {
 
 function d300KeepDocked() {
   if (d300TourIndex >= 0) return;
+  d300SetDroneActive(false);
   requestAnimationFrame(d300ReturnHome);
   setTimeout(d300ReturnHome, 80);
   setTimeout(d300ReturnHome, 220);
@@ -2685,6 +2725,7 @@ function d300ClearHighlight() {
 }
 
 function d300EndTour() {
+  clearTimeout(d300TourLaunchTimer);
   d300TourIndex = -1;
   d300ClearHighlight();
   document.getElementById('d300-tour-shade')?.classList.remove('open');
@@ -2694,6 +2735,7 @@ function d300EndTour() {
   if (progress) progress.textContent = '';
   d300DefaultActions();
   d300SetLine(d300Text('tourDone'));
+  d300SetDroneActive(false);
   d300ReturnHome();
 }
 
@@ -4725,33 +4767,6 @@ function escHtml(s) {
 
 
 // ===== PWA =====
-let _deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  _deferredPrompt = e;
-  const banner = document.getElementById('pwa-banner');
-  if (banner) banner.style.display = 'flex';
-});
-window.addEventListener('appinstalled', () => {
-  const banner = document.getElementById('pwa-banner');
-  if (banner) banner.style.display = 'none';
-  _deferredPrompt = null;
-});
-document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-  if (!_deferredPrompt) return;
-  _deferredPrompt.prompt();
-  const { outcome } = await _deferredPrompt.userChoice;
-  if (outcome === 'accepted') {
-    const banner = document.getElementById('pwa-banner');
-    if (banner) banner.style.display = 'none';
-  }
-  _deferredPrompt = null;
-});
-document.getElementById('pwa-dismiss')?.addEventListener('click', () => {
-  const banner = document.getElementById('pwa-banner');
-  if (banner) banner.style.display = 'none';
-});
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {});

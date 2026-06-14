@@ -1,7 +1,7 @@
-const CACHE = 'mah-v19';
+const CACHE = 'mah-v21';
 const PRECACHE = ['/', '/mech-arena-hub.html', '/calc-data-list.js', '/calc-data-mech-costs.js',
   '/calc-data-pilots.js', '/calc-data-pilot-costs.js', '/calc-data-mods.js', '/calc-data-mod-costs.js',
-  '/icons/icon-192.png', '/icons/icon-512.png', '/favicon.svg'];
+  '/icons/icon-192.png', '/icons/icon-512.png', '/icons/oracle-drone.png', '/favicon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

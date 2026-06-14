@@ -56,7 +56,7 @@ const T = {
     btn_promo:       '🎁 Промо',
     btn_maps:        '🗺️ Карти',
     btn_skins:       '⭐ Скіни',
-    btn_cheats:      '📋 Шпаргалки',
+    btn_cheats:      '🎓 Академія',
     btn_menu:        '🏠 Меню',
     btn_back:        '◀ Назад',
     btn_next:        'Далі ▶',
@@ -125,7 +125,12 @@ const T = {
     maps_hint:       '💡 Повні тактики, стрілки й callouts відкривай на сайті.',
     skins_hdr:       (n,p,pt) => `⭐ <b>ЛЕГЕНДАРНІ СКІНИ</b> (${n})\nСторінка ${p}/${pt}\n\n`,
     skins_hint:      'Натисни кнопку сайту, щоб відкрити повну галерею з картками.',
-    cheats_hdr:      '📋 <b>ШПАРГАЛКИ</b>\n\nОбери коротку довідку:',
+    cheats_hdr:      '🎓 <b>АКАДЕМІЯ</b>\n\nКороткі уроки про прогресію, ролі, ресурси, зброю та пілотів.',
+    academy_basics:  '🚀 <b>ПОЧАТИ ТУТ</b>\n\nЗбери збалансований ангар: фронтлайн, розвідник, контроль/підтримка і два дамагери. Перед великими інвестиціями перевір меха в Mechs і Compare.',
+    academy_progression:'📈 <b>ПРОГРЕСІЯ</b>\n\nРухай Gear Hub поступово. Не зливай A-Монети в тимчасові ранні варіанти; бережи їх для сильних довгострокових відкриттів.',
+    academy_weapons: '🔧 <b>ЗБРОЯ</b>\n\nЗброя 8E і нижче отримує другу копію автоматично. Для 10E+ спершу потрібен Rank 6. Підбирай тип зброї під роль меха.',
+    academy_pilots:  '👤 <b>ПІЛОТИ</b>\n\nПідбирай пілота під тип зброї. Rare має 2 слоти імплантів, Epic — 3, Legendary — 4.',
+    academy_resources:'💰 <b>РЕСУРСИ</b>\n\nПеред апгрейдом рахуй Credits, Blueprints, A-Coins, XP пілотів і частини модів у калькуляторі, щоб не витратити запас випадково.',
     cheats_weapons:  '🔫 <b>ЗБРОЯ</b>\n\n• Sniper: Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum.\n• Missile: Storm Rack, Missile Rack, Disruptor, Hornet, Cryo Launcher.\n• Close range: Ember Gun, Fragment Gun, Revoker, Arc Torrent.\n• Beam: Graviton Beam, Particle Beam, Stasis Beam.',
     cheats_pilots:   '👤 <b>ПІЛОТИ</b>\n\nПідбирай пілота під тип зброї. Рідкість пілота впливає на вартість прокачки, а імпланти — на реальну силу білда.',
     cheats_xp:       '⭐ <b>XP / ПРОКАЧКА</b>\n\nКалькулятор на сайті і в боті рахує кредити, A-Coins і схеми для мехів/зброї, а також пілотів і модів.',
@@ -151,7 +156,7 @@ const T = {
     btn_promo:       '🎁 Promo',
     btn_maps:        '🗺️ Maps',
     btn_skins:       '⭐ Skins',
-    btn_cheats:      '📋 Cheatsheets',
+    btn_cheats:      '🎓 Academy',
     btn_menu:        '🏠 Menu',
     btn_back:        '◀ Back',
     btn_next:        'Next ▶',
@@ -220,7 +225,12 @@ const T = {
     maps_hint:       '💡 Open the full site for tactics, arrows, and callouts.',
     skins_hdr:       (n,p,pt) => `⭐ <b>LEGENDARY SKINS</b> (${n})\nPage ${p}/${pt}\n\n`,
     skins_hint:      'Use the site button to open the full gallery with skin cards.',
-    cheats_hdr:      '📋 <b>CHEATSHEETS</b>\n\nChoose a quick reference:',
+    cheats_hdr:      '🎓 <b>ACADEMY</b>\n\nShort lessons for progression, roles, resources, weapons, and pilots.',
+    academy_basics:  '🚀 <b>START HERE</b>\n\nBuild a balanced hangar: one frontline, one scout, one controller/support, and two damage dealers. Check Mechs and Compare before big investments.',
+    academy_progression:'📈 <b>PROGRESSION</b>\n\nPush Gear Hub steadily. Avoid dumping A-Coins into early throwaway picks; save them for strong long-term unlocks.',
+    academy_weapons: '🔧 <b>WEAPONS</b>\n\nWeapons 8E and below unlock a second copy automatically. For 10E+ weapons, reach Rank 6 first. Match weapon type to mech role.',
+    academy_pilots:  '👤 <b>PILOTS</b>\n\nMatch pilots to weapon type. Rare pilots have 2 implant slots, Epic have 3, Legendary have 4.',
+    academy_resources:'💰 <b>RESOURCES</b>\n\nUse the calculator before upgrades. Track Credits, Blueprints, A-Coins, pilot XP, and mod parts before spending.',
     cheats_weapons:  '🔫 <b>WEAPONS</b>\n\n• Sniper: Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum.\n• Missile: Storm Rack, Missile Rack, Disruptor, Hornet, Cryo Launcher.\n• Close range: Ember Gun, Fragment Gun, Revoker, Arc Torrent.\n• Beam: Graviton Beam, Particle Beam, Stasis Beam.',
     cheats_pilots:   '👤 <b>PILOTS</b>\n\nMatch pilots to weapon type. Pilot rarity affects upgrade cost, while implants define the real build power.',
     cheats_xp:       '⭐ <b>XP / UPGRADES</b>\n\nThe site and bot calculators cover Credits, A-Coins, and Blueprints for mechs/weapons, plus pilots and mods.',
@@ -1187,14 +1197,19 @@ function cheatsText(lang) {
 
 function cheatsKbd(lang) {
   return kbd(
-    [btn('🔫 Weapons', 'cheat:weapons'), btn('👤 Pilots', 'cheat:pilots')],
-    [btn('⭐ XP / Upgrades', 'cheat:xp')],
+    [btn('🚀 Basics', 'cheat:basics'), btn('📈 Progression', 'cheat:progression')],
+    [btn('🔧 Weapons', 'cheat:weapons'), btn('👤 Pilots', 'cheat:pilots')],
+    [btn('💰 Resources', 'cheat:resources')],
     [lnk(tr(lang,'btn_open_site'), `${SITE_URL}#cheat`), btn(tr(lang,'btn_menu'), 'menu')],
   );
 }
 
 function cheatDetailText(topic, lang) {
-  const key = topic === 'pilots' ? 'cheats_pilots' : topic === 'xp' ? 'cheats_xp' : 'cheats_weapons';
+  const key = topic === 'pilots' ? 'academy_pilots'
+    : topic === 'resources' || topic === 'xp' ? 'academy_resources'
+    : topic === 'progression' ? 'academy_progression'
+    : topic === 'weapons' ? 'academy_weapons'
+    : 'academy_basics';
   return tr(lang,key) + FOOTER;
 }
 
@@ -1388,7 +1403,7 @@ async function handleCallbackQuery(cbq) {
     return upd(skinsText(page, lang), skinsKbd(page, lang));
   }
 
-  // Cheatsheets
+  // Academy
   if (d === 'cheats') {
     return upd(cheatsText(lang), cheatsKbd(lang));
   }
@@ -1426,7 +1441,7 @@ async function handleMessage(msg) {
     return send(cid, mapsText('cpc',0,lang), { reply_markup: mapsKbd('cpc',0,lang) });
   if (['/skins','/скіни'].includes(txt))
     return send(cid, skinsText(0,lang), { reply_markup: skinsKbd(0,lang) });
-  if (['/cheatsheets','/cheats','/шпаргалки'].includes(txt))
+  if (['/academy','/академія','/cheatsheets','/cheats','/шпаргалки'].includes(txt))
     return send(cid, cheatsText(lang), { reply_markup: cheatsKbd(lang) });
 
   // search mech by name

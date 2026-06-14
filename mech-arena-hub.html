@@ -628,7 +628,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 <div class="app">
 <header>
   <h1>⬡ MECH ARENA HUB</h1>
-  <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 46 Mechs · Full Arsenal</p>
+  <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Academy &bull; v4.0 — All 46 Mechs · Full Arsenal</p>
 </header>
 
 <div class="top-tools">
@@ -640,7 +640,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 <div class="tabs" id="main-tabs">
   <button class="tab active" onclick="switchTab('home',this)" data-i18n="tab_home">🏠 HOME</button>
   <button class="tab" onclick="switchTab('gear',this)" data-i18n="tab_mechs">MECHS</button>
-  <button class="tab" onclick="switchTab('cheat',this)" data-i18n="tab_cheat">CHEATSHEETS</button>
+  <button class="tab" onclick="switchTab('cheat',this)" data-i18n="tab_cheat">🎓 ACADEMY</button>
   <button class="tab" onclick="switchTab('calc',this)" data-i18n="tab_calc">CALCULATOR</button>
   <button class="tab" onclick="switchTab('compare',this)" data-i18n="tab_compare">⚡ COMPARE</button>
   <button class="tab" onclick="switchTab('hangar',this)" data-i18n="tab_hangar">🏆 HANGAR RATE</button>
@@ -691,7 +691,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 </div>
 </div>
 
-<!-- ===== CHEATSHEETS ===== -->
+<!-- ===== ACADEMY ===== -->
 <div id="pane-cheat" class="pane">
 <div id="pane-cheat-content"></div>
 </div>
@@ -1241,11 +1241,11 @@ let LANG = localStorage.getItem('ma_lang') || 'en';
 
 const UI_TEXT = {
 en:{
-  tab_home:'🏠 HOME', tab_mechs:'MECHS', tab_cheat:'CHEATSHEETS',
+  tab_home:'🏠 HOME', tab_mechs:'MECHS', tab_cheat:'🎓 ACADEMY',
   tab_calc:'CALCULATOR', tab_compare:'⚡ COMPARE', tab_hangar:'🏆 HANGAR RATE',
   tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE', tab_skins:'⭐ SKINS',
   menu_btn:'MENU', theme_light:'LIGHT THEME', theme_dark:'DARK THEME',
-  header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 46 Mechs · Full Arsenal',
+  header_sub:'Build Calculator &bull; Gear Hub &bull; Academy &bull; v4.0 — All 46 Mechs · Full Arsenal',
   search_mechs:'🔍  Search mechs...', label_role:'ROLE:', label_rarity:'RARITY:',
   empty_mech:'← Select a mech to view details',
   lbl_ability:'ABILITY', lbl_select_rank:'SELECT RANK',
@@ -1257,11 +1257,11 @@ en:{
   lbl_spotlight:'MECH SPOTLIGHT', lbl_gear_tier:'Gear Hub Tier',
   lbl_approx:'Approximate — exact data not available',
   nav_mechs_title:'MECHS', nav_compare_title:'COMPARE', nav_calc_title:'CALCULATOR',
-  nav_cheat_title:'CHEATSHEETS', nav_hangar_title:'HANGAR RATE', nav_maps_title:'MAP GUIDE',
+  nav_cheat_title:'ACADEMY', nav_hangar_title:'HANGAR RATE', nav_maps_title:'MAP GUIDE',
   nav_mechs_desc:'All 46 mechs — stats, abilities & rank progression',
   nav_compare_desc:'Compare up to 3 mechs side by side',
   nav_calc_desc:'Upgrade costs for mechs, weapons, pilots & mods',
-  nav_cheat_desc:'Quick reference — ranges, effects and game mechanics',
+  nav_cheat_desc:'Learn progression, roles, resources and smart upgrade choices',
   nav_hangar_desc:'Rate your 5-mech hangar — role, rarity & meta score',
   nav_maps_desc:'Callouts, beacon spots & strategies per map',
   home_roster:'Roster Breakdown', home_meta:'Meta Picks', home_total:'Total Mechs',
@@ -1306,6 +1306,15 @@ en:{
   footer_disclaimer:'Fan-made companion tool for Mech Arena. Not affiliated with Plarium Global Ltd.',
   footer_feedback:'Feedback Form',
   footer_legal:'LEGAL', footer_privacy:'Privacy Policy', footer_terms:'Terms of Use', footer_contact:'CONTACT',
+  academy_intro:'Learn the core systems before spending resources. These lessons turn the old quick notes into a clear path.',
+  academy_start:'Start Here', academy_progression:'Progression', academy_combat:'Combat Basics',
+  academy_weapons:'Weapons & Pilots', academy_resources:'Resources', academy_f2p:'Recommended F2P Path',
+  academy_start_body:'Start with a balanced 5-mech hangar: one frontline, one scout, one controller/support, and two damage dealers. Use Mechs and Compare before investing.',
+  academy_progression_body:'Push Gear Hub steadily, but avoid dumping A-Coins into early throwaway picks. Save for strong unlocks like Aegis, Surge, Eclipse, Orion, Panther, Hemlock or Nomad.',
+  academy_combat_body:'Map control wins games. Capture beacons, rotate with your team, use cover, and do not take 1v5 fights unless your escape plan is already online.',
+  academy_weapons_body:'Weapons 8E and below unlock a second copy automatically. For 10E+ weapons, reach Rank 6 first. Match pilots to weapon type and use implant slots wisely.',
+  academy_resources_body:'Use the calculator before big upgrades. Track Credits, Blueprints, A-Coins, pilot XP and mod parts so a shiny button does not eat your entire stash.',
+  academy_f2p_body:'Early tiers: star only. Mid tiers: Ares/Guardian, then Orion/Panther/Killshot. Later: Aegis, Surge, Eclipse, Hemlock and Nomad are safer long-term targets.',
   cheat_f2p_builds:'Best F2P Builds (2026 meta)', cheat_gearhub_strat:'Gear Hub F2P Strategy',
   cheat_weapon_cats:'Weapon Categories (all 9)', cheat_weapon_rules:'Weapon Rules',
   cheat_pilot_sys:'Pilot System',
@@ -1330,11 +1339,11 @@ en:{
   tg_btn:'OPEN IN TELEGRAM',
 },
 ua:{
-  tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'ШПАРГАЛКИ',
+  tab_home:'🏠 ГОЛОВНА', tab_mechs:'МЕХИ', tab_cheat:'🎓 АКАДЕМІЯ',
   tab_calc:'КАЛЬКУЛЯТОР', tab_compare:'⚡ ПОРІВНЯННЯ', tab_hangar:'🏆 РЕЙТИНГ АНГАРА',
   tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ', tab_skins:'⭐ СКІНИ',
   menu_btn:'МЕНЮ', theme_light:'СВІТЛА ТЕМА', theme_dark:'ТЕМНА ТЕМА',
-  header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 46 мехів · Повний арсенал',
+  header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Академія &bull; v4.0 — Всі 46 мехів · Повний арсенал',
   search_mechs:'🔍  Пошук мехів...', label_role:'РОЛЬ:', label_rarity:'РІДКІСТЬ:',
   empty_mech:'← Оберіть меха для перегляду деталей',
   lbl_ability:'НАВИЧКА', lbl_select_rank:'ОБРАТИ РАНГ',
@@ -1346,11 +1355,11 @@ ua:{
   lbl_spotlight:'ОГЛЯД МЕХА', lbl_gear_tier:'Рівень Gear Hub',
   lbl_approx:'Наближено — точні дані відсутні',
   nav_mechs_title:'МЕХИ', nav_compare_title:'ПОРІВНЯННЯ', nav_calc_title:'КАЛЬКУЛЯТОР',
-  nav_cheat_title:'ШПАРГАЛКИ', nav_hangar_title:'РЕЙТИНГ АНГАРА', nav_maps_title:'ПУТІВНИК',
+  nav_cheat_title:'АКАДЕМІЯ', nav_hangar_title:'РЕЙТИНГ АНГАРА', nav_maps_title:'ПУТІВНИК',
   nav_mechs_desc:'Всі 46 мехів — характеристики, навички та прокачка',
   nav_compare_desc:'Порівняйте до 3 мехів поруч',
   nav_calc_desc:'Витрати на апгрейд мехів, зброї, пілотів і модів',
-  nav_cheat_desc:'Швидка довідка — дальності, ефекти та механіки гри',
+  nav_cheat_desc:'Навчання прогресії, ролям, ресурсам і розумним апгрейдам',
   nav_hangar_desc:'Оцініть свій ангар з 5 мехів — роль, рідкість і мета',
   nav_maps_desc:'Позивні, позиції на маяках та стратегії по картах',
   home_roster:'Розподіл за ролями', home_meta:'Мета-вибір', home_total:'Всього мехів',
@@ -1395,6 +1404,15 @@ ua:{
   footer_disclaimer:'Фанатський помічник для Mech Arena. Не пов’язаний із Plarium Global Ltd.',
   footer_feedback:'Форма фідбеку',
   footer_legal:'ПРАВОВІ УМОВИ', footer_privacy:'Конфіденційність', footer_terms:'Умови використання', footer_contact:'КОНТАКТ',
+  academy_intro:'Вивчи базові системи до витрати ресурсів. Ці уроки перетворюють старі нотатки на зрозумілий маршрут.',
+  academy_start:'Почати тут', academy_progression:'Прогресія', academy_combat:'База бою',
+  academy_weapons:'Зброя та пілоти', academy_resources:'Ресурси', academy_f2p:'Рекомендований F2P шлях',
+  academy_start_body:'Почни зі збалансованого ангара на 5 мехів: фронтлайн, розвідник, контроль/підтримка і два дамагери. Перед інвестиціями користуйся Mechs і Compare.',
+  academy_progression_body:'Рухай Gear Hub поступово, але не зливай A-Монети в тимчасові ранні варіанти. Бережи їх для сильних відкриттів на кшталт Aegis, Surge, Eclipse, Orion, Panther, Hemlock або Nomad.',
+  academy_combat_body:'Контроль мапи виграє матчі. Забирай маяки, рухайся з командою, грай від укриттів і не йди 1v5, якщо план відступу ще не готовий.',
+  academy_weapons_body:'Зброя 8E і нижче отримує другу копію автоматично. Для 10E+ спершу потрібен Rank 6. Підбирай пілотів під тип зброї й не марнуй слоти імплантів.',
+  academy_resources_body:'Перед великими апгрейдами користуйся калькулятором. Рахуй кредити, схеми, A-Монети, XP пілотів і частини модів, щоб блискуча кнопка не з’їла весь запас.',
+  academy_f2p_body:'Ранні тири: тільки зірки. Середина: Ares/Guardian, потім Orion/Panther/Killshot. Далі Aegis, Surge, Eclipse, Hemlock і Nomad — безпечніші довгострокові цілі.',
   cheat_f2p_builds:'Кращі F2P білди (мета 2026)', cheat_gearhub_strat:'Стратегія F2P у Gear Hub',
   cheat_weapon_cats:'Категорії зброї (всього 9)', cheat_weapon_rules:'Правила зброї',
   cheat_pilot_sys:'Система пілотів',
@@ -1536,7 +1554,7 @@ function setLang(l) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
   applyI18n();
   renderHome();
-  renderCheatsheet();
+  renderAcademy();
   if (currentMech) renderDetail(MECHS[currentMech]);
   if (typeof pilotRarity !== 'undefined') setPilotRarity(pilotRarity);
   if (typeof LEGENDARY_SKINS !== 'undefined') renderSkins();
@@ -2451,7 +2469,7 @@ const D300_TEXT = {
     hello: 'Oracle online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
     home: 'Home is your command deck: jump to mechs, calculators, maps, skins, and quick tools from here.',
     gear: 'Mechs tab stores the roster. Use filters, then open a mech card to inspect ranks, combat profile, and ability notes.',
-    cheat: 'Cheatsheets are the fast memory core: weapon rules, pilot basics, XP, and high-value reminders.',
+    cheat: 'Academy teaches the core systems: progression, roles, resources, weapons, pilots, and smart upgrade timing.',
     calc: 'Calculator mode: choose mechs, weapons, pilots, or mods first. Then Oracle approves the math ritual.',
     compare: 'Compare needs at least two mechs. Pick them, then share the comparison link or send it to Telegram.',
     hangar: 'Hangar Rate checks your squad balance. Select up to five mechs and I will judge them with tasteful circuitry.',
@@ -2475,7 +2493,7 @@ const D300_TEXT = {
     hello: 'Oracle онлайн. Я проведу тебе по хабу, поясню вкладки й іноді видаватиму дуже професійні роботні звуки.',
     home: 'Головна — це командна панель: звідси можна швидко перейти до мехів, калькуляторів, мап, скінів та інструментів.',
     gear: 'Вкладка мехів — це ростер. Використовуй фільтри й відкривай картки з рангами, бойовим профілем і нотатками навички.',
-    cheat: 'Шпаргалки — швидка пам’ять Oracle: правила зброї, пілоти, XP і важливі нагадування.',
+    cheat: 'Академія пояснює базові системи: прогресію, ролі, ресурси, зброю, пілотів і розумний час для апгрейдів.',
     calc: 'Калькулятор: спочатку обери меха, зброю, пілота або мод. Потім Oracle схвалить математичний ритуал.',
     compare: 'Для порівняння треба мінімум два мехи. Обери їх, а потім скопіюй лінк або надішли в Telegram.',
     hangar: 'Оцінка ангара перевіряє баланс складу. Обери до п’яти мехів, і я ввічливо засуджу дисбаланс.',
@@ -2904,7 +2922,7 @@ function renderHome() {
     {icon:'🤖', tab:'gear',    title:t('nav_mechs_title'),   desc:t('nav_mechs_desc')},
     {icon:'⚡', tab:'compare', title:t('nav_compare_title'), desc:t('nav_compare_desc')},
     {icon:'🧮', tab:'calc',    title:t('nav_calc_title'),    desc:t('nav_calc_desc')},
-    {icon:'📋', tab:'cheat',   title:t('nav_cheat_title'),   desc:t('nav_cheat_desc')},
+    {icon:'🎓', tab:'cheat',   title:t('nav_cheat_title'),   desc:t('nav_cheat_desc')},
     {icon:'🏆', tab:'hangar',  title:t('nav_hangar_title'),  desc:t('nav_hangar_desc')},
     {icon:'🗺️', tab:'maps',   title:t('nav_maps_title'),    desc:t('nav_maps_desc')},
     {icon:'⭐', tab:'skins',   title:t('skins_title'),        desc:t('skins_intro')},
@@ -2946,9 +2964,31 @@ function renderHome() {
     <div class="home-meta-grid">${metaHTML}</div>`;
 }
 
-function renderCheatsheet(){
+function academyLesson(icon, title, body, rows = '') {
+  return `<div class="card">
+    <div class="ctitle">${icon} ${title}</div>
+    <div style="font-size:13px;line-height:1.7;color:var(--txt);margin-bottom:${rows ? '12px' : '0'}">${body}</div>
+    ${rows ? `<div class="cc">${rows}</div>` : ''}
+  </div>`;
+}
+
+function renderAcademy(){
   const el=document.getElementById('pane-cheat-content');
   if(!el)return;
+  const f2pRows = `
+    <div class="cr"><span class="ck">Tier 1–2</span><span class="cv">Paragon, Lancer, Juggernaut — ${t('cheat_stars_only')}</span></div>
+    <div class="cr"><span class="ck">Tier 3–4</span><span class="cv">Ares ✓ · Guardian (free promo) · avoid Shadow</span></div>
+    <div class="cr"><span class="ck">Tier 5</span><span class="cv">Orion ✓ · Panther ✓ · Killshot ✓ · skip Sentinel</span></div>
+    <div class="cr"><span class="ck">Tier 6</span><span class="cv">Aegis ✓ + Pod Gun 8 · ${t('cheat_save_acoins')}</span></div>
+    <div class="cr"><span class="ck">Tier 7</span><span class="cv">Surge ✓ · Eclipse ✓ (A-Coins) · avoid Scorpius</span></div>
+    <div class="cr"><span class="ck">Tier 8–10</span><span class="cv">Hemlock ✓ · Nomad ✓ · skip Bastion, Gatecrasher, Onyx</span></div>`;
+  const weaponRows = `
+    <div class="cr"><span class="ck">${t('cheat_weapon_cats')}</span><span class="cv">${t('cheat_assault')} · ${t('cheat_missile')} · ${t('cheat_beam')} · ${t('cheat_cqc')} · ${t('cheat_sniper')} · ${t('cheat_guided')} · ${t('cheat_artillery')} · ${t('cheat_heavy')} · ${t('cheat_barrage')}</span></div>
+    <div class="cr"><span class="ck">${t('cheat_copies_auto')}</span><span class="cv">All weapons 8E and below</span></div>
+    <div class="cr"><span class="ck">${t('cheat_2nd_copy')}</span><span class="cv">Must reach Rank 6 first</span></div>
+    <div class="cr"><span class="ck">${t('cheat_rare_pilots')}</span><span class="cv">${t('cheat_implants_rare')}</span></div>
+    <div class="cr"><span class="ck">${t('cheat_epic_pilots')}</span><span class="cv">${t('cheat_implants_epic')}</span></div>
+    <div class="cr"><span class="ck">${t('cheat_leg_pilots')}</span><span class="cv">${t('cheat_implants_leg')}</span></div>`;
   el.innerHTML=`
 <div class="qref">
   <div class="qc"><div class="qn">45</div><div class="ql">${t('cheat_total_mechs')}</div></div>
@@ -2958,71 +2998,31 @@ function renderCheatsheet(){
   <div class="qc"><div class="qn">800/160</div><div class="ql">${t('cheat_xp')}</div></div>
   <div class="qc"><div class="qn">9</div><div class="ql">${t('cheat_wcats')}</div></div>
 </div>
+<div class="card" style="margin-bottom:14px">
+  <div class="ctitle">🎓 ${t('tab_cheat')}</div>
+  <div style="font-size:13px;line-height:1.7;color:var(--dim)">${t('academy_intro')}</div>
+</div>
 <div class="ccols">
   <div>
-    <div class="stitle">${t('cheat_f2p_builds')}</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Surge (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Eclipse (24E)</span><span class="cv">2× Minigun 10 (20E) or Pod Gun 10 + Minigun 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Aegis (24E)</span><span class="cv">2× Pod Gun 8 (16E) or Graviton Beam 10 + Pod Gun 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Orion (24E)</span><span class="cv">2× Storm Rack 10 (20E) or Storm Rack 10 + Overdriver 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Panther (32E)</span><span class="cv">2× Graviton Beam 10 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Hemlock (24E)</span><span class="cv">Storm Rack 10 + Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">Killshot (24E)</span><span class="cv">Disc Launcher 12 + Missile Rack 8 (20E) or 2× Revoker 8 (16E)</span></div>
-      <div class="cr"><span class="ck">Gatecrasher (32E)</span><span class="cv">2× Rail Gun 16 (32E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Dreadnought (32E)</span><span class="cv">2× Rocket Mortar 12 (24E) or Storm Rack 16 + Rocket Mortar 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Salvor (32E)</span><span class="cv">Helix Rack 8 + Disc Launcher 12 (20E) or Rail Gun 16 + Disc Launcher 16 (32E)</span></div>
-      <div class="cr"><span class="ck">Nomad (24E)</span><span class="cv">2× Revoker 10 (20E) or Storm Rack 10 + Disc Launcher 8 (18E)</span></div>
-      <div class="cr"><span class="ck">${t('cheat_best_hanger')}</span><span class="cv">Surge · Eclipse · Aegis · Orion/Panther · Hemlock/Nomad</span></div>
-    </div>
-    <div class="stitle">${t('cheat_gearhub_strat')}</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">Tier 1–2</span><span class="cv">Paragon, Lancer, Juggernaut — ${t('cheat_stars_only')}</span></div>
-      <div class="cr"><span class="ck">Tier 3–4</span><span class="cv">Ares ✓ · Guardian (free promo) · avoid Shadow</span></div>
-      <div class="cr"><span class="ck">Tier 5</span><span class="cv">Orion ✓ · Panther ✓ · Killshot ✓ · skip Sentinel</span></div>
-      <div class="cr"><span class="ck">Tier 6</span><span class="cv">Aegis ✓ + Pod Gun 8 · ${t('cheat_save_acoins')}</span></div>
-      <div class="cr"><span class="ck">Tier 7</span><span class="cv">Surge ✓ · Eclipse ✓ (A-coins) · avoid Scorpius</span></div>
-      <div class="cr"><span class="ck">Tier 8–10</span><span class="cv">Hemlock ✓ · Nomad ✓ · skip Bastion, Gatecrasher, Onyx</span></div>
-      <div class="cr"><span class="ck">${t('cheat_best_weapons')}</span><span class="cv">Storm Rack · Revoker · Pod Gun · Graviton Beam · Overdriver</span></div>
-      <div class="cr"><span class="ck">${t('cheat_avoid')}</span><span class="cv">Particle Beam · Chain Gun · Gauss Rifle · F-tier starters</span></div>
-    </div>
+    ${academyLesson('🚀', t('academy_start'), t('academy_start_body'))}
+    ${academyLesson('📈', t('academy_progression'), t('academy_progression_body'))}
+    ${academyLesson('🛤️', t('academy_f2p'), t('academy_f2p_body'), f2pRows)}
   </div>
   <div>
-    <div class="stitle">${t('cheat_weapon_cats')}</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">${t('cheat_assault')}</span><span class="cv">Minigun, Pod Gun, Carbine, Overdriver, Repeater, Suppressor, Reaver</span></div>
-      <div class="cr"><span class="ck">${t('cheat_missile')}</span><span class="cv">Missile Rack, Blast RPG, Disruptor, Hornet, Fuse Mortar, Cryo Launcher, Charge Rocket</span></div>
-      <div class="cr"><span class="ck">${t('cheat_beam')}</span><span class="cv">Arc Torrent, Graviton Beam, Particle Beam, Burrow Beam, Stasis Beam, Thermal Lance</span></div>
-      <div class="cr"><span class="ck">${t('cheat_cqc')}</span><span class="cv">Ember Gun, Fragment Gun, Shotgun, Revoker, Howler, Quasher, Fusion Cannon</span></div>
-      <div class="cr"><span class="ck">${t('cheat_sniper')}</span><span class="cv">Railgun, EM Rifle, Longarm, Tetra Rifle, Continuum, Dreadshot, Savant, Quantum Gun, Oracle, Viper, Gauss Rifle</span></div>
-      <div class="cr"><span class="ck">${t('cheat_guided')}</span><span class="cv">Disc Launcher, Strike Rocket, Gemini</span></div>
-      <div class="cr"><span class="ck">${t('cheat_artillery')}</span><span class="cv">Javelin Rack, Helix Rack, Rocket Mortar, Nade Launcher, Cryo Javelin</span></div>
-      <div class="cr"><span class="ck">${t('cheat_heavy')}</span><span class="cv">Chain Gun, Voltaic RPG, Berserker</span></div>
-      <div class="cr"><span class="ck">${t('cheat_barrage')}</span><span class="cv">Storm Rack, Hellfire</span></div>
-    </div>
-    <div class="stitle">${t('cheat_weapon_rules')}</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">${t('cheat_copies_auto')}</span><span class="cv">All weapons 8E and below</span></div>
-      <div class="cr"><span class="ck">${t('cheat_2nd_copy')}</span><span class="cv">Must reach Rank 6 first</span></div>
-      <div class="cr"><span class="ck">${t('cheat_energy_lvls')}</span><span class="cv">2 / 4 / 6 / 8 / 10 / 12 / 14 / 16</span></div>
-    </div>
-    <div class="stitle">${t('cheat_pilot_sys')}</div>
-    <div class="cc">
-      <div class="cr"><span class="ck">${t('cheat_rare_pilots')}</span><span class="cv">${t('cheat_implants_rare')}</span></div>
-      <div class="cr"><span class="ck">${t('cheat_epic_pilots')}</span><span class="cv">${t('cheat_implants_epic')}</span></div>
-      <div class="cr"><span class="ck">${t('cheat_leg_pilots')}</span><span class="cv">${t('cheat_implants_leg')}</span></div>
-      <div class="cr"><span class="ck">${t('cheat_xp_wl')}</span><span class="cv">800 / 160 (${t('cheat_skip_after')})</span></div>
-      <div class="cr"><span class="ck">${t('cheat_all_pilots')}</span><span class="cv">${t('cheat_hp_dmg')}</span></div>
-    </div>
+    ${academyLesson('🎯', t('academy_combat'), t('academy_combat_body'))}
+    ${academyLesson('🔧', t('academy_weapons'), t('academy_weapons_body'), weaponRows)}
+    ${academyLesson('💰', t('academy_resources'), t('academy_resources_body'))}
   </div>
 </div>`;
 }
+
+function renderCheatsheet(){ renderAcademy(); }
 
 // Init
 buildMechList();
 selectMech('paragon');
 renderHome();
-renderCheatsheet();
+renderAcademy();
 applyI18n();
 
 // ===== CALCULATOR =====

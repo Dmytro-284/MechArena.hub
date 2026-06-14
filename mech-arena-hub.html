@@ -1193,7 +1193,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
       </div>
     </div>
     <div class="welcome-actions">
-      <button class="action-btn" type="button" onclick="welcomeApply()" data-i18n="welcome_enter">ENTER HUB</button>
+      <button class="action-btn" type="button" onclick="welcomeApply(event)" data-i18n="welcome_enter">ENTER HUB</button>
     </div>
   </section>
 </div>
@@ -1584,14 +1584,15 @@ function closeWelcomeModal() {
   document.body.classList.remove('welcome-open');
 }
 
-function welcomeApply() {
+async function welcomeApply(event) {
+  const beepPromise = welcomeState.tour ? d300PlayLaunchBeep() : null;
   setThemeMode(welcomeState.theme);
   setLang(welcomeState.lang);
   localStorage.setItem('mah_welcome_done', '1');
   closeWelcomeModal();
   if (welcomeState.tour) {
     localStorage.removeItem('d300_seen_tour');
-    d300StartTour();
+    d300StartTour({ beepPromise });
   } else {
     localStorage.setItem('d300_seen_tour', '1');
     d300SetLine(d300Text('hello'));
@@ -2621,8 +2622,6 @@ async function d300PlayLaunchBeep() {
   try {
     const ctx = d300GetAudioContext();
     if (!ctx) return new Promise(resolve => setTimeout(resolve, 180));
-    d300PrimeAudio();
-    if (ctx.resume) await ctx.resume().catch(() => {});
     const master = ctx.createGain();
     master.gain.setValueAtTime(.34, ctx.currentTime);
     master.connect(ctx.destination);
@@ -2643,20 +2642,23 @@ async function d300PlayLaunchBeep() {
     };
     playTone(0, 920, 1320);
     playTone(.14, 1220, 1680);
+    d300AudioPrimed = true;
+    const resumePromise = ctx.resume ? ctx.resume().catch(() => {}) : Promise.resolve();
     setTimeout(() => master.disconnect(), 420);
+    await Promise.race([resumePromise, new Promise(resolve => setTimeout(resolve, 80))]);
   } catch {
   }
   return new Promise(resolve => setTimeout(resolve, 360));
 }
 
-async function d300StartTour() {
+async function d300StartTour(options = {}) {
   clearTimeout(d300TourLaunchTimer);
   d300TourIndex = 0;
   localStorage.setItem('d300_seen_tour', '1');
   d300Expand();
   d300SetDroneActive(true);
   document.getElementById('d300-drone')?.classList.add('launching');
-  await d300PlayLaunchBeep();
+  await (options.beepPromise || d300PlayLaunchBeep());
   d300TourLaunchTimer = setTimeout(() => {
     document.getElementById('d300-drone')?.classList.remove('launching');
     d300RenderTourStep();

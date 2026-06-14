@@ -1447,6 +1447,10 @@ en:{'Cooldown':'Cooldown','Duration':'Duration','Damage':'Damage','Shield HP':'S
   'Signal Jammer DMG':'Signal Jammer DMG','Signal Jammer Range':'Signal Jammer Range',
   'Signal Jammer DMG Radius':'Signal Jammer DMG Radius','Restrict Duration':'Restrict Duration',
   'Restrict Extra Damage':'Restrict Extra Damage','Shield Bypass':'Shield Bypass',
+  'Ability Duration':'Ability Duration','Seismic Field Size':'Seismic Field Size',
+  'Citadel Shield Durability':'Citadel Shield Durability','Bonus Shield Durability':'Bonus Shield Durability',
+  'Enemy Speed Reduction':'Enemy Speed Reduction','Citadel Speed Increase':'Citadel Speed Increase',
+  'Status Effect Reduction':'Status Effect Reduction',
   'Mech Heal/s':'Mech Heal/s',
 },
 ua:{'Cooldown':'Перезарядка','Duration':'Тривалість','Damage':'Шкода','Shield HP':'HP щита',
@@ -1473,6 +1477,10 @@ ua:{'Cooldown':'Перезарядка','Duration':'Тривалість','Damag
   'Signal Jammer Range':'Дальність Signal Jammer','Signal Jammer DMG Radius':'Радіус шкоди Signal Jammer',
   'Restrict Duration':'Тривалість Restrict','Restrict Extra Damage':'Додаткова шкода Restrict',
   'Shield Bypass':'Обхід щита',
+  'Ability Duration':'Тривалість навички','Seismic Field Size':'Розмір Seismic Field',
+  'Citadel Shield Durability':'Міцність щита Citadel','Bonus Shield Durability':'Бонусна міцність щита',
+  'Enemy Speed Reduction':'Зниження швидкості ворога','Citadel Speed Increase':'Прискорення Citadel',
+  'Status Effect Reduction':'Зниження статусних ефектів',
 }};
 function tStat(k){return(STAT_LABELS[LANG]||STAT_LABELS.en)[k]||k;}
 
@@ -1771,10 +1779,10 @@ const MECHS = {
     bestBuilds:['2× Graviton Beam 10','Pod Gun 10 + Storm Rack 8','2× Pod Gun 8'],
     ranks:{1:{hp:9600,energy:6},2:{hp:29600,energy:8},3:{hp:51500,energy:12},4:{hp:79700,energy:16},5:{hp:103900,energy:18},6:{hp:133900,energy:20},7:{hp:181800,energy:24}}},
 
-  citadel:{name:'Citadel',role:'Support',rarity:'Legendary',energy:24,speed:18,icon:'🏰',color:'#776655',gearTier:10,startRank:5,
+  citadel:{name:'Citadel',role:'Support',rarity:'Legendary',energy:24,speed:19,icon:'🏰',color:'#776655',gearTier:10,startRank:5,
     ability:{name:'Seismic Field',desc:'Creates a zone that reduces enemy speed and prevents activation of their movement Abilities. Receives a speed boost and shield, which gains HP for each enemy in the zone (up to 3). If Shield breaks, Ability Cooldown is reduced.'},
     bestBuilds:['2× Pod Gun 8 (2×8E = 16E, within 24E cap)','Storm Rack 10 + Disc Launcher 8 (18E total)','Graviton Beam 10 + Missile Rack 8 (18E total)'],
-    ranks:{1:{hp:17160,energy:6},2:{hp:52800,energy:8},3:{hp:91800,energy:12},4:{hp:141840,energy:16},5:{hp:185160,energy:18},6:{hp:238560,energy:20},7:{hp:323880,energy:24}}},
+    ranks:{1:{hp:14300,energy:6,power:107},2:{hp:44000,energy:8,power:261},3:{hp:76500,energy:12,power:453},4:{hp:118200,energy:16,power:701},5:{hp:154300,energy:18,power:916},6:{hp:198800,energy:20,power:1179},7:{hp:269900,energy:24,power:1601}}},
   tailsting:{name:'Tailsting',role:'Attacker',rarity:'Legendary',energy:24,speed:22,icon:'📡',color:'#5c7ee6',gearTier:10,startRank:null,noImage:true,
     ability:{name:'Signal Jammer',desc:"Fires a sphere which applies the Restrict status effect on a hit. While under this effect, enemies can't activate their Ability or use Weapons, and they receive increased Damage. A % of Damage also bypasses enemy Shields. Targets are prevented from rotating the top part of their Mech's chassis."},
     bestBuilds:['2× Storm Rack 10','Revoker 10 + Disc Launcher 8','Pod Gun 10 + Graviton Beam 10'],
@@ -1967,7 +1975,7 @@ const MECH_ABILITY_RANKS={
   parasite:   [['Cooldown','s',[11,11,11,11,11,11,11]],['Duration','s',[12,12,12,12,12,12,12]],['Dmg Received','',[' 10%',' 10%',' 10%',' 10%',' 10%',' 10%',' 10%']],['Dmg Redirected','',[' 35%',' 35%',' 35%',' 35%',' 35%',' 35%',' 35%']]],
   blockhorn:  [['Cooldown','s',[9,9,9,9,9,9,9]],['Duration','s',[7,7,7,7,7,7,7]],['Barricade HP','',[53000,92200,142600,206700,287600,389100,503100]]],
   deathwalker:[['Cooldown','s',[15,15,15,15,15,15,15]],['Duration','s',[15,15,15,15,15,15,15]],['Invulnerability','s',[3,3,3,3,3,3,3]],['Speed Boost','',['+60%','+60%','+60%','+60%','+60%','+60%','+60%']]],
-  citadel:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[9.6,9.6,9.6,9.6,9.6,9.6,9.6]],['Shield HP','',[13000,20100,35000,54100,70500,90900,123400]],['Bonus Shield HP','',[5000,7700,13400,20800,27100,35000,47500]]],
+  citadel:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Ability Duration','s',[8,8,8,8,8,8,8]],['Seismic Field Size',' m²',['20 x 13','20 x 13','20 x 13','20 x 13','20 x 13','20 x 13','20 x 13']],['Citadel Shield Durability','',[13000,20100,35000,54100,70500,90900,123400]],['Bonus Shield Durability','',[5000,7700,13400,20800,27100,35000,47500]],['Enemy Speed Reduction','',['-60%','-60%','-60%','-60%','-60%','-60%','-60%']],['Citadel Speed Increase','',['+60%','+60%','+60%','+60%','+60%','+60%','+60%']],['Status Effect Reduction','',['-75%','-75%','-75%','-75%','-75%','-75%','-75%']]],
   salvor:     [['Cooldown','s',[12,12,12,12,12,12,12]],['HP Healed (Ally)','',[6330,11020,17040,24700,34370,46500,60130]],['HP Healed (Self)','',[3190,5540,8570,12420,17280,23380,30230]],['Range','m',[100,100,100,100,100,100,100]]],
   silverthorn:[['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[3.5,3.5,3.5,3.5,3.5,3.5,3.5]],['Blade Count','',[5,5,5,5,5,5,5]],['Spd Reduction','',['-40%','-40%','-40%','-40%','-40%','-40%','-40%']]],
   tailsting:  [['Cooldown','s',[12,12,12,12,12,12,12]],['Signal Jammer DMG','',[2202,4125,5218,6555,8187,10171,11797]],['Signal Jammer Range','m',[90,90,90,90,90,90,90]],['Signal Jammer DMG Radius','m',[10,10,10,10,10,10,10]],['Restrict Duration','s',[4,4,4,4,4,4,4]],['Restrict Extra Damage','',['+30%','+30%','+30%','+30%','+30%','+30%','+30%']],['Shield Bypass','',['80%','80%','80%','80%','80%','80%','80%']]],

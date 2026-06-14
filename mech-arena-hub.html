@@ -2513,6 +2513,38 @@ let d300RobotTimer = null;
 let d300CurrentTarget = null;
 let d300TourLaunchTimer = null;
 let d300AudioCtx = null;
+let d300AudioPrimed = false;
+
+function d300GetAudioContext() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return null;
+  if (!d300AudioCtx) d300AudioCtx = new AudioCtx();
+  return d300AudioCtx;
+}
+
+function d300PrimeAudio() {
+  if (d300AudioPrimed) return;
+  try {
+    const ctx = d300GetAudioContext();
+    if (!ctx) return;
+    const unlock = () => {
+      const gain = ctx.createGain();
+      const osc = ctx.createOscillator();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.01);
+      setTimeout(() => gain.disconnect(), 30);
+      d300AudioPrimed = true;
+    };
+    const resumed = ctx.resume ? ctx.resume() : Promise.resolve();
+    resumed.then(unlock).catch(() => {});
+  } catch {
+  }
+}
+
+document.addEventListener('pointerdown', d300PrimeAudio, { capture: true, once: true });
 
 function d300Text(key) {
   return (D300_TEXT[LANG] || D300_TEXT.en)[key] || D300_TEXT.en[key] || key;
@@ -2587,35 +2619,31 @@ function d300SetDroneActive(active) {
 
 async function d300PlayLaunchBeep() {
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return Promise.resolve();
-    const ctx = d300AudioCtx || new AudioCtx();
-    d300AudioCtx = ctx;
-    const fire = () => {
-      const master = ctx.createGain();
-      master.gain.setValueAtTime(.3, ctx.currentTime);
-      master.connect(ctx.destination);
-      const playTone = (delay, freq, endFreq) => {
-        const start = ctx.currentTime + delay;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(freq, start);
-        osc.frequency.exponentialRampToValueAtTime(endFreq, start + .09);
-        gain.gain.setValueAtTime(.0001, start);
-        gain.gain.exponentialRampToValueAtTime(.26, start + .012);
-        gain.gain.exponentialRampToValueAtTime(.0001, start + .11);
-        osc.connect(gain);
-        gain.connect(master);
-        osc.start(start);
-        osc.stop(start + .12);
-      };
-      playTone(0, 920, 1320);
-      playTone(.14, 1220, 1680);
-      setTimeout(() => master.disconnect(), 420);
+    const ctx = d300GetAudioContext();
+    if (!ctx) return new Promise(resolve => setTimeout(resolve, 180));
+    d300PrimeAudio();
+    if (ctx.resume) await ctx.resume().catch(() => {});
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(.34, ctx.currentTime);
+    master.connect(ctx.destination);
+    const playTone = (delay, freq, endFreq) => {
+      const start = ctx.currentTime + delay;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, start);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, start + .09);
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.exponentialRampToValueAtTime(.3, start + .012);
+      gain.gain.exponentialRampToValueAtTime(.0001, start + .11);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(start);
+      osc.stop(start + .12);
     };
-    const resume = ctx.resume ? ctx.resume().catch(() => {}) : Promise.resolve();
-    resume.then(fire).catch(() => {});
+    playTone(0, 920, 1320);
+    playTone(.14, 1220, 1680);
+    setTimeout(() => master.disconnect(), 420);
   } catch {
   }
   return new Promise(resolve => setTimeout(resolve, 360));

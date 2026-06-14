@@ -96,13 +96,18 @@ select:focus{border-color:var(--acc);}
 .rarity-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
 /* Detail panel */
-.gh-detail{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.gh-detail{background:var(--panel);border:1px solid var(--brd);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:0;overscroll-behavior:contain;}
 .gh-empty{display:flex;align-items:center;justify-content:center;flex:1;color:var(--dim);font-size:13px;text-align:center;padding:40px;}
 
 /* Mech header */
 .mech-header{padding:24px;background:linear-gradient(135deg,rgba(0,212,255,.06) 0%,transparent 60%);border-bottom:1px solid var(--brd);display:flex;gap:24px;align-items:flex-start;}
 .mech-avatar{width:140px;height:140px;flex-shrink:0;border-radius:4px;border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);position:relative;overflow:hidden;}
 .mech-avatar img{width:100%;height:100%;object-fit:contain;position:relative;z-index:1;}
+.mech-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:42px;line-height:1;position:relative;z-index:1;color:var(--acc);background:radial-gradient(circle at 50% 50%,rgba(0,212,255,.18),rgba(0,0,0,.14) 62%,transparent 63%);}
+.mitem-icon .mech-img-placeholder{font-size:21px;border-radius:4px;}
+.home-mech-mini-icon .mech-img-placeholder{font-size:18px;border-radius:4px;}
+.cmp-mech-icon .mech-img-placeholder{font-size:34px;border-radius:4px;}
+.hr-tile-icon .mech-img-placeholder{font-size:25px;border-radius:4px;}
 .mech-avatar::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(0,212,255,.08),transparent 70%);}
 .mech-avatar .rarity-label{position:absolute;bottom:0;left:0;right:0;text-align:center;font-family:Orbitron,monospace;font-size:9px;letter-spacing:2px;z-index:2;padding:4px 0 5px;background:linear-gradient(transparent,rgba(0,0,0,.7));}
 .mech-title h2{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;margin-bottom:4px;}
@@ -130,7 +135,7 @@ select:focus{border-color:var(--acc);}
 .ab-stat-val{font-size:13px;font-weight:700;color:var(--acc2);}
 
 /* Stats grid */
-.stats-section{padding:20px 24px;flex:1;overflow-y:auto;min-height:0;}
+.stats-section{padding:20px 24px;flex:1;overflow-y:auto;min-height:0;overscroll-behavior:contain;}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .stat-block{background:var(--bg);border:1px solid var(--brd);border-radius:3px;padding:12px 14px;}
 .stat-block-label{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
@@ -580,7 +585,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
 </div>
 <header>
   <h1>⬡ MECH ARENA HUB</h1>
-  <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal</p>
+  <p data-i18n-html="header_sub">Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 46 Mechs · Full Arsenal</p>
 </header>
 
 <div class="top-tools">
@@ -1194,19 +1199,19 @@ en:{
   tab_calc:'CALCULATOR', tab_compare:'⚡ COMPARE', tab_hangar:'🏆 HANGAR RATE',
   tab_promo:'🎁 PROMO', tab_maps:'🗺️ MAP GUIDE', tab_skins:'⭐ SKINS',
   menu_btn:'MENU', theme_light:'LIGHT THEME', theme_dark:'DARK THEME',
-  header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 45 Mechs · Full Arsenal',
+  header_sub:'Build Calculator &bull; Gear Hub &bull; Cheatsheets &bull; v4.0 — All 46 Mechs · Full Arsenal',
   search_mechs:'🔍  Search mechs...', label_role:'ROLE:', label_rarity:'RARITY:',
   empty_mech:'← Select a mech to view details',
   lbl_ability:'ABILITY', lbl_select_rank:'SELECT RANK',
   lbl_ability_stats:'ABILITY STATS — RANK', lbl_hp_rank:'HP at Rank',
-  lbl_speed:'Speed', lbl_energy_rank:'Energy at Rank', lbl_max_energy:'Max Energy (R7)',
+  lbl_speed:'Speed', lbl_power:'Power', lbl_energy_rank:'Energy at Rank', lbl_max_energy:'Max Energy (R7)',
   lbl_of_max_game:'% of max in game', lbl_of_max:'% of max',
   lbl_energy_pips:'ENERGY PIPS AT RANK', lbl_pros:'PROS', lbl_cons:'CONS',
   lbl_spotlight:'MECH SPOTLIGHT', lbl_gear_tier:'Gear Hub Tier',
   lbl_approx:'Approximate — exact data not available',
   nav_mechs_title:'MECHS', nav_compare_title:'COMPARE', nav_calc_title:'CALCULATOR',
   nav_cheat_title:'CHEATSHEETS', nav_hangar_title:'HANGAR RATE', nav_maps_title:'MAP GUIDE',
-  nav_mechs_desc:'All 45 mechs — stats, abilities & rank progression',
+  nav_mechs_desc:'All 46 mechs — stats, abilities & rank progression',
   nav_compare_desc:'Compare up to 3 mechs side by side',
   nav_calc_desc:'Upgrade costs for mechs, weapons, pilots & mods',
   nav_cheat_desc:'Quick reference — ranges, effects and game mechanics',
@@ -1282,19 +1287,19 @@ ua:{
   tab_calc:'КАЛЬКУЛЯТОР', tab_compare:'⚡ ПОРІВНЯННЯ', tab_hangar:'🏆 РЕЙТИНГ АНГАРА',
   tab_promo:'🎁 ПРОМО', tab_maps:'🗺️ ПУТІВНИК КАРТАМИ', tab_skins:'⭐ СКІНИ',
   menu_btn:'МЕНЮ', theme_light:'СВІТЛА ТЕМА', theme_dark:'ТЕМНА ТЕМА',
-  header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 45 мехів · Повний арсенал',
+  header_sub:'Калькулятор апгрейдів &bull; Мехи &bull; Шпаргалки &bull; v4.0 — Всі 46 мехів · Повний арсенал',
   search_mechs:'🔍  Пошук мехів...', label_role:'РОЛЬ:', label_rarity:'РІДКІСТЬ:',
   empty_mech:'← Оберіть меха для перегляду деталей',
   lbl_ability:'НАВИЧКА', lbl_select_rank:'ОБРАТИ РАНГ',
   lbl_ability_stats:'ПАРАМЕТРИ НАВИЧКИ — РАНГ', lbl_hp_rank:'HP на ранзі',
-  lbl_speed:'Швидкість', lbl_energy_rank:'Енергія на ранзі', lbl_max_energy:'Макс. енергія (R7)',
+  lbl_speed:'Швидкість', lbl_power:'Сила', lbl_energy_rank:'Енергія на ранзі', lbl_max_energy:'Макс. енергія (R7)',
   lbl_of_max_game:'% від макс. у грі', lbl_of_max:'% від макс.',
   lbl_energy_pips:'ЕНЕРГІЯ НА РАНЗІ', lbl_pros:'ПЛЮСИ', lbl_cons:'МІНУСИ',
   lbl_spotlight:'ОГЛЯД МЕХА', lbl_gear_tier:'Рівень Gear Hub',
   lbl_approx:'Наближено — точні дані відсутні',
   nav_mechs_title:'МЕХИ', nav_compare_title:'ПОРІВНЯННЯ', nav_calc_title:'КАЛЬКУЛЯТОР',
   nav_cheat_title:'ШПАРГАЛКИ', nav_hangar_title:'РЕЙТИНГ АНГАРА', nav_maps_title:'ПУТІВНИК',
-  nav_mechs_desc:'Всі 45 мехів — характеристики, навички та прокачка',
+  nav_mechs_desc:'Всі 46 мехів — характеристики, навички та прокачка',
   nav_compare_desc:'Порівняйте до 3 мехів поруч',
   nav_calc_desc:'Витрати на апгрейд мехів, зброї, пілотів і модів',
   nav_cheat_desc:'Швидка довідка — дальності, ефекти та механіки гри',
@@ -1437,6 +1442,9 @@ en:{'Cooldown':'Cooldown','Duration':'Duration','Damage':'Damage','Shield HP':'S
   'Orb Count':'Orb Count','Warp Range':'Warp Range','Field Damage/s':'Field Damage/s',
   'Field Radius':'Field Radius','Dmg Received':'Dmg Received','Dmg Redirected':'Dmg Redirected',
   'Damage/Mag':'Damage/Mag','Damage/tick':'Damage/tick','HP Restoration':'HP Restoration',
+  'Signal Jammer DMG':'Signal Jammer DMG','Signal Jammer Range':'Signal Jammer Range',
+  'Signal Jammer DMG Radius':'Signal Jammer DMG Radius','Restrict Duration':'Restrict Duration',
+  'Restrict Extra Damage':'Restrict Extra Damage','Shield Bypass':'Shield Bypass',
   'Mech Heal/s':'Mech Heal/s',
 },
 ua:{'Cooldown':'Перезарядка','Duration':'Тривалість','Damage':'Шкода','Shield HP':'HP щита',
@@ -1459,7 +1467,10 @@ ua:{'Cooldown':'Перезарядка','Duration':'Тривалість','Damag
   'Blind Duration':'Тривалість сліпоти','Orb Count':'Кількість сфер','Warp Range':'Дальність телепортації',
   'Field Damage/s':'Шкода поля/с','Field Radius':'Радіус поля','Dmg Received':'Отримана шкода',
   'Dmg Redirected':'Перенаправлена шкода','Damage/Mag':'Шкода/магазин','Damage/tick':'Шкода/тік',
-  'HP Restoration':'Відновлення HP',
+  'HP Restoration':'Відновлення HP','Signal Jammer DMG':'Шкода Signal Jammer',
+  'Signal Jammer Range':'Дальність Signal Jammer','Signal Jammer DMG Radius':'Радіус шкоди Signal Jammer',
+  'Restrict Duration':'Тривалість Restrict','Restrict Extra Damage':'Додаткова шкода Restrict',
+  'Shield Bypass':'Обхід щита',
 }};
 function tStat(k){return(STAT_LABELS[LANG]||STAT_LABELS.en)[k]||k;}
 
@@ -1532,7 +1543,7 @@ function welcomeApply() {
 }
 
 // ============================================================
-// MECH DATABASE — all 45 mechs, full rank data
+// MECH DATABASE — all 46 mechs, full rank data
 // HP values scale: startHP at rank1, maxHP at rank6-lv7
 // Energy scales with rank for medium/heavy (starts lower)
 // Speed is constant. Starting rank per rarity.
@@ -1852,6 +1863,12 @@ const MECHS = {
     cons:['18 km/h — below average speed','24E limits weapon ceiling vs heavy mechs','Relatively new — limited community data'],
     bestBuilds:['2× Pod Gun 8 (2×8E = 16E, within 24E cap)','Storm Rack 10 + Disc Launcher 8 (18E total)','Graviton Beam 10 + Missile Rack 8 (18E total)'],
     ranks:{1:{hp:17160,energy:6},2:{hp:52800,energy:8},3:{hp:91800,energy:12},4:{hp:141840,energy:16},5:{hp:185160,energy:18},6:{hp:238560,energy:20},7:{hp:323880,energy:24}}},
+  tailsting:{name:'Tailsting',role:'Attacker',rarity:'Legendary',energy:24,speed:22,icon:'📡',color:'#5c7ee6',gearTier:10,startRank:null,noImage:true,
+    ability:{name:'Signal Jammer',desc:"Fires a sphere which applies the Restrict status effect on a hit. While under this effect, enemies can't activate their Ability or use Weapons, and they receive increased Damage. A % of Damage also bypasses enemy Shields. Targets are prevented from rotating the top part of their Mech's chassis."},
+    pros:['Restrict shuts down weapons and abilities on hit','80% shield bypass makes it dangerous into shield-heavy mechs','22 km/h and 24E give solid attacker flexibility'],
+    cons:['Requires landing the sphere to trigger Restrict','24E limits weapon ceiling compared with 32E attackers','New mech — meta value still needs live testing'],
+    bestBuilds:['2× Storm Rack 10','Revoker 10 + Disc Launcher 8','Pod Gun 10 + Graviton Beam 10'],
+    ranks:{1:{hp:10200,energy:6,power:79},2:{hp:31500,energy:8,power:159},3:{hp:54700,energy:12,power:276},4:{hp:84600,energy:16,power:427},5:{hp:110400,energy:18,power:557},6:{hp:142300,energy:20,power:718},7:{hp:193200,energy:24,power:975}}},
 };
 
 const MECHS_UA = {
@@ -2080,6 +2097,11 @@ const MECHS_UA = {
     pros: ['Унікальний гібрид підтримки-танка — щит для союзників', '24E — непогані варіанти зброї', 'B-рівень — надійний у організованій командній грі'],
     cons: ['18 км/г — нижче середнього', '24E обмежує збройний потенціал порівняно з важкими мехами', 'Відносно новий — обмежені дані спільноти'],
   },
+  tailsting: {
+    ability_desc: 'Випускає сферу, яка при влучанні застосовує ефект Restrict. Під цим ефектом вороги не можуть активувати навичку або використовувати зброю, а також отримують підвищену шкоду. Частина шкоди обходить щити ворога. Цілі не можуть обертати верхню частину корпусу меха.',
+    pros: ['Restrict вимикає зброю та навички при влучанні', '80% обходу щитів робить Tailsting небезпечним проти щитових мехів', '22 км/г і 24E дають хорошу гнучкість для атакуючого'],
+    cons: ['Потрібно влучити сферою, щоб запустити Restrict', '24E обмежує стелю зброї порівняно з 32E атакуючими', 'Новий мех — мета ще потребує перевірки в боях'],
+  },
 };
 
 // Ability scaling stats per rank (R1–R7)
@@ -2130,6 +2152,7 @@ const MECH_ABILITY_RANKS={
   citadel:    [['Cooldown','s',[10,10,10,10,10,10,10]],['Duration','s',[9.6,9.6,9.6,9.6,9.6,9.6,9.6]],['Shield HP','',[13000,20100,35000,54100,70500,90900,123400]],['Bonus Shield HP','',[5000,7700,13400,20800,27100,35000,47500]]],
   salvor:     [['Cooldown','s',[12,12,12,12,12,12,12]],['HP Healed (Ally)','',[6330,11020,17040,24700,34370,46500,60130]],['HP Healed (Self)','',[3190,5540,8570,12420,17280,23380,30230]],['Range','m',[100,100,100,100,100,100,100]]],
   silverthorn:[['Cooldown','s',[7,7,7,7,7,7,7]],['Duration','s',[3.5,3.5,3.5,3.5,3.5,3.5,3.5]],['Blade Count','',[5,5,5,5,5,5,5]],['Spd Reduction','',['-40%','-40%','-40%','-40%','-40%','-40%','-40%']]],
+  tailsting:  [['Cooldown','s',[12,12,12,12,12,12,12]],['Signal Jammer DMG','',[2202,4125,5218,6555,8187,10171,11797]],['Signal Jammer Range','m',[90,90,90,90,90,90,90]],['Signal Jammer DMG Radius','m',[10,10,10,10,10,10,10]],['Restrict Duration','s',[4,4,4,4,4,4,4]],['Restrict Extra Damage','',['+30%','+30%','+30%','+30%','+30%','+30%','+30%']],['Shield Bypass','',['80%','80%','80%','80%','80%','80%','80%']]],
 };
 
 // Role icons for list
@@ -2293,7 +2316,7 @@ function buildMechList(){
     div.className='mech-item'+(currentMech===k?' active':'');
     div.onclick=()=>selectMech(k);
     div.innerHTML=`
-      <div class="mitem-icon"><img src="https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png" alt="${m.name}" loading="lazy"></div>
+      <div class="mitem-icon">${mechVisualHtml(m, 'loading="lazy"')}</div>
       <div class="mitem-info">
         <div class="mitem-name">${m.name}</div>
         <div class="mitem-sub">${m.role} · <span style="color:${RARITY_COLOR[m.rarity]}">${m.rarity}</span> · ${m.energy}E</div>
@@ -2327,7 +2350,7 @@ function getRankData(m, r){
 const PATCH_NOTES_STUB=[
 ];
 
-const MECH_VIDEOS={paragon:'cqmE_-bu22w',lancer:'cKxEt8woC0w',juggernaut:'EPAYO-4FBj0',md:'BeC3MuCvTJg',puma:'ofF_yZd21Uc',slingshot:'uZ1kPlVwIec',panther:'8xLvZ_xQHvQ',killshot:'jjFs0HLdR7Y',ares:'OtT9oD7vcKY',shadow:'UCamhsPU1g0',guardian:'fiPl4492rTU',cheetah:'SpMyXjH8r5c',zephyr:'5qiREoyXetQ',brickhouse:'BAztKEjigRw',redox:'n5Xo3HeRCJI',surge:'6Mgy9NyJEgo',arachnos:'qef6beBO4is',stalker:'Q5xmymL8kcs',tengu:'_L0BnfBIaYU',aegis:'SqWm17EpgD4',orion:'EPHbeip6L-c',redeemer:'oMQ04GhqmXk',sentinel:'Y6_bvDfa85A',gatecrasher:'jMkV0VuQoSs',bastion:'38rnFVdCO_I',onyx:'tkp6HdF8-X8',eclipse:'LZhw6-8Ol8I',nomad:'WVqyIJoxQUk',hemlock:'4YQNDXYJPcM',scorpius:'TUKtm54PnQE',vortex:'7PV-ty1t8cI',seeker:'Pry-GyhjvYQ',mimicker:'BEN5iq8U3mk',solis:'tn-2fO9mFCY',lacewing:'_0AreMAtwGY',blockhorn:'Pj1QVmoCwFE',deathwalker:'FFUGyFKBQnY',outlaw:'rmDSXxNk0OU',salvor:'M8TLdpaGQdE',dreadnought:'_tDOEfRZuGQ',parasite:'QnRj327uXso',volti:'VTnP7PsKHhg',silverthorn:'y9ZKsC8_10g',blizzfrost:'_1wUdKobC8I',citadel:'CMRWjXGsgpk'};
+const MECH_VIDEOS={paragon:'cqmE_-bu22w',lancer:'cKxEt8woC0w',juggernaut:'EPAYO-4FBj0',md:'BeC3MuCvTJg',puma:'ofF_yZd21Uc',slingshot:'uZ1kPlVwIec',panther:'8xLvZ_xQHvQ',killshot:'jjFs0HLdR7Y',ares:'OtT9oD7vcKY',shadow:'UCamhsPU1g0',guardian:'fiPl4492rTU',cheetah:'SpMyXjH8r5c',zephyr:'5qiREoyXetQ',brickhouse:'BAztKEjigRw',redox:'n5Xo3HeRCJI',surge:'6Mgy9NyJEgo',arachnos:'qef6beBO4is',stalker:'Q5xmymL8kcs',tengu:'_L0BnfBIaYU',aegis:'SqWm17EpgD4',orion:'EPHbeip6L-c',redeemer:'oMQ04GhqmXk',sentinel:'Y6_bvDfa85A',gatecrasher:'jMkV0VuQoSs',bastion:'38rnFVdCO_I',onyx:'tkp6HdF8-X8',eclipse:'LZhw6-8Ol8I',nomad:'WVqyIJoxQUk',hemlock:'4YQNDXYJPcM',scorpius:'TUKtm54PnQE',vortex:'7PV-ty1t8cI',seeker:'Pry-GyhjvYQ',mimicker:'BEN5iq8U3mk',solis:'tn-2fO9mFCY',lacewing:'_0AreMAtwGY',blockhorn:'Pj1QVmoCwFE',deathwalker:'FFUGyFKBQnY',outlaw:'rmDSXxNk0OU',salvor:'M8TLdpaGQdE',dreadnought:'_tDOEfRZuGQ',parasite:'QnRj327uXso',volti:'VTnP7PsKHhg',silverthorn:'y9ZKsC8_10g',blizzfrost:'_1wUdKobC8I',citadel:'CMRWjXGsgpk',tailsting:'QPRy7QsI5Ng'};
 
 function loadYtVideo(vid){
   const w=document.getElementById('yt-'+vid);
@@ -2364,7 +2387,7 @@ function renderDetail(m){
   document.getElementById('gh-detail').innerHTML=`
     <div class="mech-header">
       <div class="mech-avatar" style="border-color:${m.color}66">
-        <img src="https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png" alt="${m.name}">
+        ${mechVisualHtml(m)}
         <div class="rarity-label" style="color:${m.color}">${m.rarity.toUpperCase()}</div>
       </div>
       <div class="mech-title" style="flex:1">
@@ -2397,6 +2420,10 @@ function renderDetail(m){
           <div class="stat-block-label">${t('lbl_speed')}</div>
           <div class="stat-block-val green">${m.speed} km/h</div>
         </div>
+        ${rd.power ? `<div class="stat-block">
+          <div class="stat-block-label">${t('lbl_power')}</div>
+          <div class="stat-block-val orange">${rd.power.toLocaleString()}</div>
+        </div>` : ''}
         <div class="stat-block">
           <div class="stat-block-label">${t('lbl_energy_rank')} ${currentRank}</div>
           <div class="stat-block-val">${rd.energy}E</div>
@@ -2888,7 +2915,7 @@ function renderHome() {
       <div class="home-meta-col-hdr" style="color:${HOME_ROLE_COLORS[r]}">${ROLE_ICON[r]} ${r.toUpperCase()}</div>
       ${metaByRole[r].map(m=>`
         <div class="home-mech-mini" onclick="goToTab('gear');setTimeout(()=>selectMech('${m.key}'),80)">
-          <div class="home-mech-mini-icon"><img src="https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png" alt="${m.name}" loading="lazy"></div>
+          <div class="home-mech-mini-icon">${mechVisualHtml(m, 'loading="lazy"')}</div>
           <div class="home-mech-mini-name">${m.name}</div>
           <div class="home-mech-mini-rar" style="color:var(--${m.rarity.toLowerCase()})">${m.rarity.toUpperCase().slice(0,3)}</div>
         </div>`).join('')}
@@ -3030,7 +3057,19 @@ function getMechIcon(name) {
   }
   return '🤖';
 }
+function mechImgSrc(m) {
+  return `https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png`;
+}
+function mechPlaceholderHtml(m) {
+  return `<div class="mech-img-placeholder" title="${m.name}">${m.icon || '?'}</div>`;
+}
+function mechVisualHtml(m, attrs='') {
+  if (m.noImage) return mechPlaceholderHtml(m);
+  return `<img src="${mechImgSrc(m)}" alt="${m.name}" ${attrs}>`;
+}
 function getMechImgHtml(name) {
+  const found = Object.values(MECHS).find(m => m.name === name);
+  if (found?.noImage) return mechPlaceholderHtml(found);
   const clean = name.replace(/[^a-zA-Z0-9]/g,'');
   return `<img src="https://mecharena.infohubhq.in/mech_weapon_images/${clean}.png" alt="${name}" style="width:100%;height:100%;object-fit:contain;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);filter:drop-shadow(0 0 4px rgba(0,212,255,.4))">`;
 }
@@ -3559,7 +3598,7 @@ function renderCmpSlot(idx) {
   slot.innerHTML = `
     <button class="cmp-clear" onclick="clearCmpSlot(${idx})">✕</button>
     <div class="cmp-slot-num">SLOT ${idx + 1}</div>
-    <div class="cmp-mech-icon"><img src="https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png" alt="${m.name}"></div>
+    <div class="cmp-mech-icon">${mechVisualHtml(m)}</div>
     <div class="cmp-mech-name" style="color:${rc}">${m.name}</div>
     <div class="cmp-mech-sub">${m.role} · <span style="color:${rc}">${m.rarity}</span></div>
     <div class="cmp-mech-sub">${m.energy}E · Tier ${m.gearTier}</div>`;
@@ -3605,6 +3644,7 @@ function renderCmpTable() {
     const cells = compareSlots.map((k, i) => {
       if (!k) return '<div class="cmp-cell"><span class="cmp-dash">—</span></div>';
       const v = vals[i];
+      if (v === null || v === undefined || Number.isNaN(v)) return '<div class="cmp-cell"><span class="cmp-dash">вЂ”</span></div>';
       const cls = cellClass(v, bw, invert);
       const pct = barMax ? Math.round(v / barMax * 100) : 0;
       const barColor = cls === 'best' ? 'var(--acc3)' : cls === 'worst' ? 'var(--red)' : 'var(--acc)';
@@ -3669,7 +3709,7 @@ function renderCmpTable() {
     ${textRow('Role', compareSlots.map(k => k ? MECHS[k].role : '—'))}
     ${rarRow()}
     ${numRow('Gear Tier', tierVals, '', bestWorst(tierVals.map(v => v ? -v : -Infinity)), false, 0)}
-    ${numRow('Start Rank', compareSlots.map(k => k ? MECHS[k].startRank : null), '', bestWorst(compareSlots.map(k => k ? -MECHS[k].startRank : -Infinity)), false, 0)}
+    ${numRow('Start Rank', compareSlots.map(k => k ? MECHS[k].startRank : null), '', bestWorst(compareSlots.map(k => k && MECHS[k].startRank ? -MECHS[k].startRank : -Infinity)), false, 0)}
     <div class="cmp-row"><div class="cmp-section-head">ABILITY</div></div>
     ${abilRow()}
     <div class="cmp-row"><div class="cmp-section-head">PROS &amp; CONS</div></div>
@@ -3857,7 +3897,7 @@ function renderHangarTiles(q = '') {
     return `<div class="hr-tile${sel ? ' selected' : ''}" onclick="toggleHangarSlot('${k}')"
       style="border-color:${sel ? rc : 'var(--brd)'}" title="${m.name} · ${m.role} · ${m.rarity}">
       ${sel ? `<span style="position:absolute;top:3px;right:5px;font-size:9px;color:${rc};font-weight:900">✓</span>` : ''}
-      <div class="hr-tile-icon"><img src="https://mecharena.infohubhq.in/mech_weapon_images/${m.name.replace(/[^a-zA-Z0-9]/g,'')}.png" alt="${m.name}" loading="lazy"></div>
+      <div class="hr-tile-icon">${mechVisualHtml(m, 'loading="lazy"')}</div>
       <div class="hr-tile-name" style="color:${sel ? rc : 'var(--txt)'}">${m.name}</div>
     </div>`;
   }).join('');

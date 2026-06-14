@@ -39,6 +39,7 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization,Content-Type');
 
+  try {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (missingEnv(['ADMIN_USERNAME', 'ADMIN_PASSWORD']).length) {
     return sendError(res, 500, 'ADMIN_ENV_MISSING', 'Admin username/password are not configured on the server.');
@@ -102,5 +103,9 @@ module.exports = async function handler(req, res) {
     return res.json({ success: true });
   }
 
-  res.status(405).end();
+  return res.status(405).end();
+  } catch (ex) {
+    console.error('Admin codes API failed:', ex);
+    return sendError(res, 500, 'ADMIN_FUNCTION_FAILED', 'Admin API crashed. Check Vercel Function Logs for the stack trace.');
+  }
 };

@@ -3024,6 +3024,9 @@ function d300Expand() {
 function d300Init() {
   if (!ORACLE_ASSISTANT_ENABLED) {
     localStorage.setItem('d300_seen_tour', '1');
+    if (!localStorage.getItem('mah_welcome_done')) {
+      setTimeout(showWelcomeModal, 250);
+    }
     return;
   }
   d300ApplyLang();

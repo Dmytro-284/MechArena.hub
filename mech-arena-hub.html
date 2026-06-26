@@ -1322,6 +1322,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
   </section>
 </div>
 
+<!-- Oracle drone/station is temporarily disabled; keep markup for easy restore.
 <div class="d300-tour-shade" id="d300-tour-shade"></div>
 <div class="d300-spotlight" id="d300-spotlight"></div>
 <div class="d300-pop" id="d300-pop" style="display:none">
@@ -1360,6 +1361,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
     </div>
   </div>
 </aside>
+-->
 
 <script>
 // ===== LANGUAGE =====
@@ -2576,7 +2578,7 @@ function switchTab(n,b){
   if(n==='skins')  renderSkins();
   document.getElementById('main-tabs').classList.remove('open');
   document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', 'false');
-  if (typeof d300Tip === 'function' && d300TourIndex < 0) d300Tip();
+  if (ORACLE_ASSISTANT_ENABLED && typeof d300Tip === 'function' && d300TourIndex < 0) d300Tip();
 }
 
 // ===== HOME DASHBOARD =====
@@ -2591,6 +2593,9 @@ function goToTab(name) {
 }
 
 // ===== ORACLE ASSISTANT =====
+// Oracle drone/station is disabled without deleting the implementation.
+// Flip to true if the Oracle assistant should be restored.
+const ORACLE_ASSISTANT_ENABLED = false;
 // Tutorial is disabled without deleting the implementation.
 // Flip to true if the guided Oracle tour should be restored.
 const ORACLE_TUTORIAL_ENABLED = false;
@@ -2701,6 +2706,7 @@ function d300Text(key) {
 }
 
 function d300ApplyLang() {
+  if (!ORACLE_ASSISTANT_ENABLED) return;
   const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
   set('d300-status', t('d300_status'));
   set('d300-tour-btn', t('d300_tour'));
@@ -2722,6 +2728,7 @@ function d300ActiveTab() {
 }
 
 function d300Tip() {
+  if (!ORACLE_ASSISTANT_ENABLED) return;
   const tab = d300ActiveTab();
   d300SetLine(d300Text(tab === 'gear' ? 'gear' : tab) || d300Text('hello'));
   d300DefaultActions();
@@ -2729,6 +2736,7 @@ function d300Tip() {
 }
 
 function d300DefaultActions() {
+  if (!ORACLE_ASSISTANT_ENABLED) return;
   const actions = document.getElementById('d300-actions');
   if (!actions) return;
   const tourButton = ORACLE_TUTORIAL_ENABLED
@@ -2804,6 +2812,10 @@ async function d300PlayLaunchBeep() {
 }
 
 async function d300StartTour(options = {}) {
+  if (!ORACLE_ASSISTANT_ENABLED) {
+    localStorage.setItem('d300_seen_tour', '1');
+    return;
+  }
   if (!ORACLE_TUTORIAL_ENABLED) {
     localStorage.setItem('d300_seen_tour', '1');
     d300Tip();
@@ -3010,6 +3022,10 @@ function d300Expand() {
 }
 
 function d300Init() {
+  if (!ORACLE_ASSISTANT_ENABLED) {
+    localStorage.setItem('d300_seen_tour', '1');
+    return;
+  }
   d300ApplyLang();
   d300DefaultActions();
   d300SetLine(d300Text('hello'));

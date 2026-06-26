@@ -1,4 +1,4 @@
-const CACHE = 'mah-v27';
+const CACHE = 'mah-v28';
 const PRECACHE = ['/', '/mech-arena-hub.html', '/calc-data-list.js', '/calc-data-mech-costs.js',
   '/calc-data-pilots.js', '/calc-data-pilot-costs.js', '/calc-data-mods.js', '/calc-data-mod-costs.js',
   '/icons/icon-192.png', '/icons/icon-512.png', '/icons/oracle-drone.png', '/icons/tg-bot-avatar.png', '/favicon.svg'];

@@ -1307,6 +1307,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
         <button class="welcome-option" type="button" data-welcome-lang="ua" onclick="welcomeSetLang('ua')">УКРАЇНСЬКА</button>
       </div>
     </div>
+    <!-- Oracle tutorial is temporarily disabled; keep markup for easy restore.
     <div class="welcome-group">
       <div class="welcome-label" data-i18n="welcome_tutorial">ORACLE TUTORIAL</div>
       <div class="welcome-options">
@@ -1314,6 +1315,7 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
         <button class="welcome-option" type="button" data-welcome-tour="no" onclick="welcomeSetTour(false)" data-i18n="welcome_tour_no">SKIP FOR NOW</button>
       </div>
     </div>
+    -->
     <div class="welcome-actions">
       <button class="action-btn" type="button" onclick="welcomeApply(event)" data-i18n="welcome_enter">ENTER HUB</button>
     </div>
@@ -1347,7 +1349,9 @@ body.light .d300-card{background:linear-gradient(145deg,rgba(255,255,255,.98),rg
     <div class="d300-body">
       <div class="d300-line" id="d300-line"></div>
       <div class="d300-actions" id="d300-actions">
+        <!-- Oracle tutorial disabled; keep the button commented for easy restore.
         <button class="action-btn" type="button" onclick="d300StartTour()" id="d300-tour-btn">START GUIDE</button>
+        -->
         <button class="action-btn" type="button" onclick="d300Tip()" id="d300-tip-btn">TIP</button>
         <button class="action-btn" type="button" onclick="d300OpenMenu()" id="d300-menu-btn">NAVIGATE</button>
         <button class="action-btn feedback-form-link" type="button" onclick="window.open('https://forms.gle/QCvLvF8r3tPzy5a86','_blank','noopener')" id="d300-feedback-btn">FEEDBACK</button>
@@ -1685,7 +1689,7 @@ function setLang(l) {
 const welcomeState = {
   theme: localStorage.getItem('ma_theme') || 'dark',
   lang: LANG,
-  tour: true
+  tour: false
 };
 
 function welcomeRefreshChoices() {
@@ -1725,12 +1729,13 @@ function closeWelcomeModal() {
 }
 
 async function welcomeApply(event) {
-  const beepPromise = welcomeState.tour ? d300PlayLaunchBeep() : null;
+  const shouldStartTour = ORACLE_TUTORIAL_ENABLED && welcomeState.tour;
+  const beepPromise = shouldStartTour ? d300PlayLaunchBeep() : null;
   setThemeMode(welcomeState.theme);
   setLang(welcomeState.lang);
   localStorage.setItem('mah_welcome_done', '1');
   closeWelcomeModal();
-  if (welcomeState.tour) {
+  if (shouldStartTour) {
     localStorage.removeItem('d300_seen_tour');
     d300StartTour({ beepPromise });
   } else {
@@ -2586,6 +2591,10 @@ function goToTab(name) {
 }
 
 // ===== ORACLE ASSISTANT =====
+// Tutorial is disabled without deleting the implementation.
+// Flip to true if the guided Oracle tour should be restored.
+const ORACLE_TUTORIAL_ENABLED = false;
+
 const D300_TEXT = {
   en: {
     hello: 'Oracle online. I can guide you through the hub, explain tabs, and occasionally emit extremely professional robot noises.',
@@ -2722,8 +2731,11 @@ function d300Tip() {
 function d300DefaultActions() {
   const actions = document.getElementById('d300-actions');
   if (!actions) return;
+  const tourButton = ORACLE_TUTORIAL_ENABLED
+    ? `<button class="action-btn" type="button" onclick="d300StartTour()">${t('d300_tour')}</button>`
+    : '';
   actions.innerHTML = `
-    <button class="action-btn" type="button" onclick="d300StartTour()">${t('d300_tour')}</button>
+    ${tourButton}
     <button class="action-btn" type="button" onclick="d300Tip()">${t('d300_tip')}</button>
     <button class="action-btn" type="button" onclick="d300OpenMenu()">${t('d300_nav')}</button>
     <button class="action-btn feedback-form-link" type="button" onclick="window.open('https://forms.gle/QCvLvF8r3tPzy5a86','_blank','noopener')">${t('d300_feedback')}</button>`;
@@ -2792,6 +2804,11 @@ async function d300PlayLaunchBeep() {
 }
 
 async function d300StartTour(options = {}) {
+  if (!ORACLE_TUTORIAL_ENABLED) {
+    localStorage.setItem('d300_seen_tour', '1');
+    d300Tip();
+    return;
+  }
   clearTimeout(d300TourLaunchTimer);
   d300TourIndex = 0;
   localStorage.setItem('d300_seen_tour', '1');
@@ -3000,7 +3017,7 @@ function d300Init() {
   if (localStorage.getItem('d300_min') === '1') d300Minimize();
   if (!localStorage.getItem('mah_welcome_done')) {
     setTimeout(showWelcomeModal, 250);
-  } else if (!localStorage.getItem('d300_seen_tour')) {
+  } else if (ORACLE_TUTORIAL_ENABLED && !localStorage.getItem('d300_seen_tour')) {
     setTimeout(d300StartTour, 900);
   }
   clearInterval(d300RobotTimer);
